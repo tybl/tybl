@@ -1,0 +1,11 @@
+[
+	{ include: ["<SDL2/SDL_error.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_events.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_hints.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_keyboard.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_keycode.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_pixels.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_rect.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_render.h>", private, "<SDL2/SDL.h>", public ] },
+	{ include: ["<SDL2/SDL_video.h>", private, "<SDL2/SDL.h>", public ] }
+]
