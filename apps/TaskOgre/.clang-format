@@ -1,0 +1,11 @@
+---
+Language:                          Cpp
+BasedOnStyle:                      LLVM
+AlwaysBreakBeforeMultilineStrings: true
+AlwaysBreakTemplateDeclarations:   Yes
+BreakConstructorInitializers:      BeforeComma
+BreakInheritanceList:              BeforeComma
+PointerAlignment:                  Left
+SpacesInContainerLiterals:         false
+...
+

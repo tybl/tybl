@@ -1,0 +1,10 @@
+---
+Checks:          '-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,google-readability-casting,modernize-deprecated-headers,modernize-use-nullptr,-modernize-use-trailing-return-type,readability-container-size-empty,readability-redundant-string-init,readability-simplify-boolean-expr'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     file
+CheckOptions:
+  - key:             readability-redundant-access-specifiers.CheckFirstDeclaration
+    value:           '1'
+...
+

@@ -1,0 +1,14 @@
+---
+# Reasons for excluded checks
+# - 'fuchsia-default-arguments-calls': This check prevents usage of a large part of the standard library
+# - 'fuchsia-trailing-return': This check is at odds with the 'modernize-use-trailing-return-type' check
+# - 'llvm-header-guard': I like the concept of this check, but it vacillates between requiring full and relative paths
+Checks:         '*,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     file
+CheckOptions:
+  - key:             readability-redundant-access-specifiers.CheckFirstDeclaration
+    value:           '1'
+...
+

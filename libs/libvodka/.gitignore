@@ -1,0 +1,8 @@
+# I have slaved over every single file in the repository. Are you suggesting
+# that I might want to ignore configuration management of one of those files??
+# Or, heaven forbid, a whole directory?!?
+#
+# Just kidding. But, I figure the tools and workflows you use during development
+# are highly personal and would hate to collect a bunch of cruft in this file.
+# Might I suggest configuring a global git ignore file on your system?
+# https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#_core_excludesfile

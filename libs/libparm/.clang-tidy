@@ -1,0 +1,12 @@
+---
+# Reasons for excluded checks
+# - 'llvm-header-guard': I would like this check, but it vacillates between full and relative paths
+Checks:         '*,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     file
+CheckOptions:
+  - key:             readability-redundant-access-specifiers.CheckFirstDeclaration
+    value:           '1'
+...
+

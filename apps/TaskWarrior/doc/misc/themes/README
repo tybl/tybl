@@ -1,0 +1,25 @@
+Themes
+
+To generate samples of themes, first execute the 'setup' script to generate the
+sample data.  Note that this data may need to be tweaked to include qualities
+that need to be illustrated in theme sample.
+
+Using a dark-background terminal (black recommended), run the following:
+
+  run.dark
+
+Using a light-background terminal, run the following:
+
+  run.light
+
+Using a solarized dark terminal, run the following:
+
+  run.solar.dark
+
+Using a solarized light terminal, run the following:
+
+  run.solar.light
+
+Note that for the solarized themes, the terminal color palette needs to be set
+to specific colors.
+
