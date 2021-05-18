@@ -1,0 +1,4 @@
+# TaskOgre
+
+I would like to build a task management application that I can use in most locations where I am working. I work in different areas from my phone, to my laptop, to my work computer. With the exception of the work computer, these devices spend the majority of their time on the same network. The nice thing is that the ...
+Alright, let me back up a second.  I need to have a central store of truth for the task management. Having tasks in a bunch of different locations is generally a bad idea and leads to losing track of some of them or double tracking them. Generally, having a central location for data is managed by a central server. In my case, where most of my systems are running in my home network, but my work laptop occasionally runs on my work network, it might be useful to create a docker image capable of being spun up that can act as the central server. 
