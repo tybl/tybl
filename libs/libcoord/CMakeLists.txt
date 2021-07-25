@@ -14,9 +14,6 @@ set(IS_ROOT_PROJECT CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 if(IS_ROOT_PROJECT)
   include(CTest)
 endif()
-include(FetchContent)
-include(util/cmake/CompilerSettings.cmake)
-include(util/cmake/Linters.cmake)
 
 FetchContent_Declare(eigen
   GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
