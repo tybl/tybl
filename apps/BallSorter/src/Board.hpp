@@ -32,30 +32,30 @@ public:
 
   ~Board() override;
 
-  bool is_solved() const override;
+  auto is_solved() const -> bool override;
 
-  std::vector<Edge> generate_steps() const override;
+  auto generate_steps() const -> std::vector<Edge> override;
 
-  INode const* operator + (Edge const& e) const override;
+  auto operator + (Edge const& e) const -> INode const* override;
 
   void print() const override;
 
   void print_steps() const override;
 
-  size_t priority() const override;
+  auto priority() const -> size_t override;
 
-  size_t distance() const override;
+  auto distance() const -> size_t override;
 
-  bool operator<(Board const& o) const;
+  auto operator<(Board const& o) const -> bool;
 
 private:
 
   void apply(Edge const& e);
-  size_t count_suffix_matching(std::string const& s, char c) const;
+  static auto count_suffix_matching(std::string const& s, char c) -> size_t;
   size_t calc_priority() const;
   bool is_full(std::string const& s) const;
   bool is_full_and_homogeneous(std::string const& s) const;
-  bool is_homogeneous(std::string const& s) const;
+  static auto is_homogeneous(std::string const& s) -> bool;
   bool is_valid(Edge const& e) const;
 
 };

@@ -7,7 +7,7 @@
 
 struct INode {
   virtual ~INode() = default;
-  virtual bool is_solved() const = 0;
+  virtual auto is_solved() const -> bool = 0;
   virtual std::vector<Edge> generate_steps() const = 0;
   virtual INode const* operator + (Edge const& e) const = 0;
   virtual void print() const = 0;
