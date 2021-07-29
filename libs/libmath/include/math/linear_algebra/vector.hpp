@@ -3,7 +3,7 @@
 
 #include <array>
 
-namespace tybl::math {
+namespace tybl::math::linear_algebra {
 
 template <typename T, std::size_t N>
 class vector {
@@ -22,4 +22,4 @@ public:
 
 }; // class vector
 
-} // namespace tybl::math
+} // namespace tybl::math::linear_algebra
