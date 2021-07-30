@@ -174,13 +174,13 @@ struct basic_unsigned_integer {
 private:
    TYPE multiply_at_index(size_t index, larger_uint value) {
       larger_uint result = value * mantissa[index];
-      mantissa[index] = result & limb_mask;
-      return result >> binary_digits;
+      mantissa[index] = static_cast<TYPE>(result & limb_mask);
+      return static_cast<TYPE>(result >> binary_digits);
    }
    TYPE add_at_index(size_t index, larger_uint value) {
       larger_uint result = value + mantissa[index];
-      mantissa[index] = result & limb_mask;
-      return result >> binary_digits;
+      mantissa[index] = static_cast<TYPE>(result & limb_mask);
+      return static_cast<TYPE>(result >> binary_digits);
    }
 public:
    std::array<TYPE, size> mantissa;

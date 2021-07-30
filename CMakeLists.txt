@@ -5,12 +5,19 @@ cmake_minimum_required(VERSION 3.14) # FetchContent_MakeAvailable
 
 project(tybl
 	VERSION 0.0.0
-	DESCRIPTION "Collection of C++ libraries and tools by me"
+	DESCRIPTION "Collection of C++ libraries, applications and tools written by me"
 	LANGUAGES CXX)
 
+include(CTest)
 include(FetchContent)
 include(utils/cmake/CompilerSettings.cmake)
 include(utils/cmake/Linters.cmake)
+
+# Use doctest as unit test framework
+FetchContent_Declare(doctest
+  GIT_REPOSITORY https://github.com/onqtam/doctest.git
+  GIT_TAG        "2.4.6")
+FetchContent_MakeAvailable(doctest)
 
 add_subdirectory(libs)
 add_subdirectory(apps)
