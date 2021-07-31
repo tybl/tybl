@@ -4,8 +4,8 @@
 cmake_minimum_required(VERSION 3.14) # FetchContent_MakeAvailable
 
 add_library(math)
-target_compile_features(math PUBLIC cxx_static_assert)
 target_include_directories(math PUBLIC include)
+target_link_libraries(math PUBLIC compiler_settings)
 target_sources(math
   INTERFACE
     include/math/stats/distribution.hpp

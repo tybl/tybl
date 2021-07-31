@@ -69,6 +69,9 @@ struct vector {
   [[nodiscard]] constexpr auto data() noexcept -> pointer { return static_cast<pointer>(m_elems); }
   [[nodiscard]] constexpr auto data() const noexcept -> const_pointer { return static_cast<const_pointer>(m_elems); }
 
+  // comparisons:
+  auto operator<=>(vector<T, N> const&) const = default;
+
 }; // class vector
 
 } // namespace tybl::math::linear_algebra
