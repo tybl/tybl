@@ -3,7 +3,7 @@
 
 #include <array>
 
-namespace tybl::math::linear_algebra {
+namespace tybl::math::lynel {
 
 template <typename T, std::size_t N>
 class vector {

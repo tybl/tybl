@@ -3,7 +3,7 @@
 
 #include <array>
 
-namespace tybl::math::linear_algebra {
+namespace tybl::math::lynel {
 
 template <typename Type, std::size_t Rows, std::size_t Cols>
 class matrix {
