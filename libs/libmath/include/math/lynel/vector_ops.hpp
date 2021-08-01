@@ -14,6 +14,17 @@ auto operator+(vector<T,N> const& l, vector<T,N> const& r) -> vector<T,N> {
   return result;
 }
 
+template <typename T, size_t N>
+auto operator*(T l, vector<T,N> r) -> vector<T,N> {
+  for (auto& e : r) { e *= l; }
+  return r;
+}
+
+template <typename T, size_t N>
+constexpr auto operator*(vector<T,N> const& l, T r) -> vector<T,N> {
+  return r * l;
+}
+
 } // namespace tybl::math::lynel
 
 #endif // TYBL_MATH_LYNEL_VECTOROPS_HPP
