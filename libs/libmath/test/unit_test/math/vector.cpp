@@ -22,3 +22,13 @@ TEST_CASE("Associative law for vector addition") {
 
   CHECK(l == r);
 }
+
+TEST_CASE("Commutative law for vector addition") {
+  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
+
+  auto l = a + b;
+  auto r = b + a;
+
+  CHECK(l == r);
+}
