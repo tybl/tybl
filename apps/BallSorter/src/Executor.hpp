@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #ifndef EXECUTOR_HPP
 #define EXECUTOR_HPP
 

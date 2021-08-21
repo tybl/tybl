@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #ifndef BOARD_HPP
 #define BOARD_HPP
 

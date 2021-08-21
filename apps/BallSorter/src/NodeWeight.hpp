@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #ifndef NODEWEIGHT_HPP
 #define NODEWEIGHT_HPP
 

@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #ifndef EDGE_HPP
 #define EDGE_HPP
 

@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include "vodka/type_traits/integral_constant.hpp"
 #include "vodka/type_traits/is_same.hpp"
 

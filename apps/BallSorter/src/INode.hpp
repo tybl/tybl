@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #ifndef INODE_HPP
 #define INODE_HPP
 

@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include "math/lynel/vector.hpp"
 
 #include <algorithm>
