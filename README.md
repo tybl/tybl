@@ -1,7 +1,7 @@
 ## C++ Standard Library implementations:
 * [Microsoft STL](https://github.com/microsoft/STL)
 * [GCC libstdc++](https://github.com/gcc-mirror/gcc/tree/master/libstdc%2B%2B-v3)
-* [LLVM libc++](https://github.com/llvm/llvm-project/tree/master/libcxx)
+* [LLVM libc++](https://github.com/llvm/llvm-project/tree/main/libcxx)
 * [EA STL](https://github.com/electronicarts/EASTL)
 
 ## C++ Best Practices
