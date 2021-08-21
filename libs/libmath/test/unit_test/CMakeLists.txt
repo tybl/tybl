@@ -23,3 +23,7 @@ add_test(NAME distribution_t COMMAND distribution_ut)
 add_executable(vector_ut math/vector.cpp)
 target_link_libraries(vector_ut PRIVATE math compiler_settings doctest::doctest)
 add_test(NAME vector_t COMMAND vector_ut)
+
+add_executable(next_power_of_two_ut math/next_power_of_two.cpp)
+target_link_libraries(next_power_of_two_ut PRIVATE math compiler_settings doctest::doctest)
+add_test(NAME next_power_of_two_t COMMAND next_power_of_two_ut)
