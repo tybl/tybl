@@ -1,7 +1,7 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.14) # FetchContent_MakeAvailable
+cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
 add_library(math)
 target_include_directories(math PUBLIC include)

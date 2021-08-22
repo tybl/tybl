@@ -1,7 +1,7 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.14) # FetchContent_MakeAvailable
+cmake_minimum_required(VERSION 3.0)
 
 # Define unit tests as executable targets
 add_executable(fixed_point_ut math/fixed_point.cpp)

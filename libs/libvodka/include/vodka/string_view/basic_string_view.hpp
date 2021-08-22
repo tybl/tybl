@@ -8,6 +8,7 @@
 
 #include <cassert>   // assert()
 #include <iosfwd>    // std::ostream
+#include <limits>    // std::numeric_limits
 #include <stdexcept> // std::out_of_range
 #include <string>    // std::char_traits
 

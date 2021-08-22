@@ -2,6 +2,7 @@
 #pragma once
 #ifndef TYBL_VODKA_SPAN_SPAN_HPP
 #define TYBL_VODKA_SPAN_SPAN_HPP
+#if 0
 
 #include "vodka/array/array.hpp"
 #include "vodka/type_traits/false_type.hpp"
@@ -73,7 +74,7 @@ struct __is_span_compatible_container<_Tp, _ElementType,
                 std::is_convertible_v<remove_pointer_t<decltype(data(declval<_Tp &>()))>(*)[],
                                  _ElementType(*)[]>,
                 nullptr_t>::type
-        >>
+        > >
     : public true_type {};
 
 
@@ -437,5 +438,6 @@ template<class _Container>
     span(const _Container&) -> span<const typename _Container::value_type>;
 
 } // namespace tybl::vodka
+#endif
 
 #endif // TYBL_VODKA_SPAN_SPAN_HPP
