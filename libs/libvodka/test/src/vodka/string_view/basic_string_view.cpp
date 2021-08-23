@@ -3,6 +3,6 @@
 
 template struct tybl::vodka::basic_string_view<char>;
 
-int main() {
+void create_string_view_object() {
   tybl::vodka::string_view sv("This");
 }

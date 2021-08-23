@@ -2,7 +2,7 @@
 #include "vodka/type_traits/integral_constant.hpp"
 #include "vodka/type_traits/is_same.hpp"
 
-int main() {
+void integral_constant_test() {
   using two_t  = tybl::vodka::integral_constant<int, 2>;
   using four_t = tybl::vodka::integral_constant<int, 4>;
 
