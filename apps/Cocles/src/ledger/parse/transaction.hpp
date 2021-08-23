@@ -37,7 +37,7 @@ private:
 
 } // namespace parse
 
-// TODO(tblyons): Move the parse function to another file. Probably src/ledger/parse.hpp
+// TODO(tybl): Move the parse function to another file. Probably src/ledger/parse.hpp
 inline
 ledger::parse::Transaction Parse(std::string const& input) {
    return ledger::parse::Transaction(input);

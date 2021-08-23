@@ -6,7 +6,7 @@
 namespace vodka::coord {
 
 auto lla_t::to_ecef() const -> ecef_t {
-  // TODO(tblyons): Implement this function
+  // TODO(tybl): Implement this function
   throw std::runtime_error(__func__);
 }
 

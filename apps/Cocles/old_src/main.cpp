@@ -468,14 +468,14 @@ struct ledger_t {
    void replay_event(const add_transaction_event_t& event) {
       ledger::identifier_t<transaction_t> tid = transaction_table.insert({event.date, event.memo});
       for (auto adj : event.adjustments) {
-         // TODO(tblyons): throw exception if adjustment already exists
+         // TODO(tybl): throw exception if adjustment already exists
          adjustment_table.insert({tid, adj.account_id, adj.amount});
       }
    }
 
    void replay_event(const add_account_event_t& event) {
       account_t account(event.name, event.type);
-      // TODO(tblyons): throw exception if account already exists
+      // TODO(tybl): throw exception if account already exists
       account_table.insert(account);
    }
 

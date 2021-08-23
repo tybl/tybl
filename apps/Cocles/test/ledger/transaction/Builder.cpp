@@ -3,7 +3,7 @@
 
 #include "doctest/doctest.h"
 
-TEST_CASE("tblyons/cocles#3") {
+TEST_CASE("tybl/cocles#3") {
    using namespace ledger;
 
    CHECK(Transaction::Builder().set_date("2019-03-09").set_payee("Wegman's")

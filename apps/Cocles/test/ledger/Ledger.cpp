@@ -8,7 +8,7 @@
 
 #include "doctest/doctest.h"
 
-TEST_CASE("tblyons/cocles#4") {
+TEST_CASE("tybl/cocles#4") {
    using namespace ledger;
    Ledger ledger;
 
@@ -34,7 +34,7 @@ TEST_CASE("tblyons/cocles#4") {
    CHECK(prior_size == post_size);
 }
 
-TEST_CASE("tblyons/cocles#5") {
+TEST_CASE("tybl/cocles#5") {
    using namespace ledger;
    Ledger ledger;
 

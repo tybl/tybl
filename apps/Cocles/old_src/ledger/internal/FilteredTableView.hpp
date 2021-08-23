@@ -9,7 +9,7 @@
 template<typename TYPE>
 struct FilteredTableView {
 
-   // TODO(tblyons): Add predicate function to determine which entries to make available
+   // TODO(tybl): Add predicate function to determine which entries to make available
    explicit FilteredTableView(const ledger::internal::RecordKeeper<TYPE>& tab, std::function<bool(const TYPE&)> p)
       : records(tab)
       , pred(p) { }

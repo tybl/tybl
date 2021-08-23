@@ -43,7 +43,7 @@ struct Database {
 
    void set_type(AccountEntry record, AccountTypeEntry type);
 
-   // TODO(tblyons): find_account_by_type should be able to return many AccountEntrys
+   // TODO(tybl): find_account_by_type should be able to return many AccountEntrys
    FilteredTableView<Account> find_account_by_type(AccountTypeEntry type) const;
 
    // Methods for interacting with Transactions
@@ -61,7 +61,7 @@ struct Database {
 
    void set_date(TransactionEntry record, const date::year_month_day& date);
 
-   // TODO(tblyons): find_transaction_by_date should be able to return many TransactionEntrys
+   // TODO(tybl): find_transaction_by_date should be able to return many TransactionEntrys
    FilteredTableView<Transaction> find_transaction_by_date(const date::year_month_day& date) const;
 
    const std::string& get_memo(TransactionEntry record) const;
@@ -85,14 +85,14 @@ struct Database {
 
    void set_account(AdjustmentEntry record, AccountEntry account);
 
-   // TODO(tblyons): find_adjustment_by_account shoule be able to return many AdjustmentEntrys
+   // TODO(tybl): find_adjustment_by_account shoule be able to return many AdjustmentEntrys
    AdjustmentEntry find_adjustment_by_account(AccountEntry account) const;
 
    TransactionEntry get_transaction(AdjustmentEntry record) const;
 
    void set_transaction(AdjustmentEntry record, TransactionEntry transaction);
 
-   // TODO(tblyons): find_adjustment_by_transaction should be able to return many AdjustmentEntrys
+   // TODO(tybl): find_adjustment_by_transaction should be able to return many AdjustmentEntrys
    AdjustmentEntry find_adjustment_by_transaction(TransactionEntry transaction) const;
 
 private:

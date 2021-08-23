@@ -66,7 +66,7 @@ std::ostream& operator<<(std::ostream& out, const fixed_point_t<RATIO>& fp) {
    if /*constexpr*/ (RATIO::den == 1) {
       return out << fp.whole_number();
    } else if /*constexpr*/ ((RATIO::den % 10) == 0) {
-      // TODO(tblyons): Set width of fractional component
+      // TODO(tybl): Set width of fractional component
       return out << fp.whole_number() << '.' << fp.fraction().m_numerator;
    } else {
       return out << fp.whole_number() << ' ' << fp.fraction().m_numerator << '/' << fp.fraction().m_denominator;

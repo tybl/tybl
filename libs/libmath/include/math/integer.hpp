@@ -4,7 +4,7 @@
 
 #include <array>
 #include <functional> // std::equal, std::lexicographical_compare
-#include <iostream> // TODO(tblyons): Remove use of std::cerr
+#include <iostream> // TODO(tybl): Remove use of std::cerr
 #include <limits> // std::numeric_limits
 #include <ostream> // insertion operator
 #include <string>
@@ -107,7 +107,7 @@ struct basic_unsigned_integer {
       return *this;
    }
    basic_unsigned_integer& operator/=(const basic_unsigned_integer& /*other*/) {
-      // TODO(tblyons): implement operator/=()
+      // TODO(tybl): implement operator/=()
       throw std::bad_function_call();
       return *this;
    }
@@ -120,7 +120,7 @@ struct basic_unsigned_integer {
       return temp;
    }
    basic_unsigned_integer& operator>>=(size_t /*places*/) {
-      // TODO(tblyons): implement operator>>=()
+      // TODO(tybl): implement operator>>=()
       throw std::bad_function_call();
       return *this;
    }

@@ -13,7 +13,7 @@ ecef_t::operator Eigen::Vector3d() const {
 }
 
 auto ecef_t::to_lla() const -> lla_t {
-  // TODO(tlyons): Implement this function
+  // TODO(tybl): Implement this function
   static_cast<void>(this);
   throw std::runtime_error(__func__);
 }
