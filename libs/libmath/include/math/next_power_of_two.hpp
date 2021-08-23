@@ -13,16 +13,14 @@ TYPE next_power_of_two(TYPE number) {
   static_assert(std::is_integral<TYPE>::value, "next_power_of_two(): cannot use bit shifts on floating point numbers");
   TYPE result = number - 1;
   for (size_t i = 1; i < std::numeric_limits<TYPE>::digits; i <<= 1) {
-    result |= result >> i;
+    result |= static_cast<TYPE>(result >> i);
   }
   return result + 1;
 }
 
 // The above algorithm doesn't work for booleans.
-// Since powers of two aren't defined in a boolean, it would be easiest to
-// simply always return 0
 template <>
-bool next_power_of_two<bool>(bool /*number*/) { return false; }
+bool next_power_of_two<bool>(bool /*number*/);
 
 } // namespace tybl::math
 
