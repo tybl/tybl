@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#include "rae.hpp"
+#include "coord/rae.hpp"
 
-#include "frd.hpp"
+#include "coord/frd.hpp"
 
 namespace vodka::coord {
 

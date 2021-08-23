@@ -18,6 +18,13 @@ FetchContent_Declare(doctest
   GIT_REPOSITORY https://github.com/onqtam/doctest.git
   GIT_TAG        "2.4.6")
 FetchContent_MakeAvailable(doctest)
+FetchContent_Declare(units
+  GIT_REPOSITORY https://github.com/nholthaus/units.git
+  GIT_SHALLOW    TRUE
+  GIT_TAG        "v2.3.1")
+FetchContent_MakeAvailable(units)
+
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
 
 add_subdirectory(libs)
 add_subdirectory(apps)

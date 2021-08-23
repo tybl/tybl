@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#include "enu.hpp"
+#include "coord/enu.hpp"
 
-#include "ecef.hpp"
+#include "coord/ecef.hpp"
 
 namespace vodka::coord {
 

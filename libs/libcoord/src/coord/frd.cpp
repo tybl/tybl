@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#include "frd.hpp"
+#include "coord/frd.hpp"
 
-#include "ecef.hpp"
+#include "coord/ecef.hpp"
 
 #include <Eigen/Geometry>
 
