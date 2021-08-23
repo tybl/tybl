@@ -1,5 +1,4 @@
 // License: The Unlicense (https://unlicense.org)
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 
 #include "math/lynel/vector.hpp"
 #include "math/lynel/vector_ops.hpp"

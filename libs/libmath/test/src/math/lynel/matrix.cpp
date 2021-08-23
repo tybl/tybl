@@ -1,5 +1,4 @@
 // License: The Unlicense (https://unlicense.org)
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "math/lynel/matrix.hpp"
 
 #include <doctest/doctest.h>
