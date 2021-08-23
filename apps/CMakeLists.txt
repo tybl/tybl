@@ -3,5 +3,5 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.0)
 
-add_subdirectory(StackSorter)
+add_subdirectory(StackSolver)
 add_subdirectory(Cocles)
