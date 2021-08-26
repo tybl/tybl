@@ -59,3 +59,5 @@
 * [Compiler Explorer](https://godbolt.org/)
 * [Quick Bench](http://quick-bench.com/)
 * [coz profiler](https://github.com/plasma-umass/coz)
+* [rr](https://rr-project.org/): record a failure once, then debug the recording, deterministically, as many times as you want.
+* [Sourcetrail](https://www.sourcetrail.com/): Graphical source code explorer
