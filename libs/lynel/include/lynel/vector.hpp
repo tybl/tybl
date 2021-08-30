@@ -34,8 +34,6 @@ struct vector {
     }
   }
 
-  constexpr void swap(vector& a) noexcept(std::is_nothrow_swappable<value_type>::value);
-
   // iterators:
   [[nodiscard]] constexpr auto begin() noexcept -> iterator { return iterator(data()); }
   [[nodiscard]] constexpr auto begin() const noexcept -> const_iterator { return const_iterator(data()); }
