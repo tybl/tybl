@@ -8,7 +8,6 @@ target_include_directories(coord PUBLIC include)
 target_link_libraries(coord
   PUBLIC
     Eigen3::Eigen
-    units
 )
 target_sources(coord
   PRIVATE
