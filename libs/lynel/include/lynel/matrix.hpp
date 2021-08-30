@@ -1,9 +1,11 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_LYNEL_MATRIX_HPP
+#define TYBL_LYNEL_MATRIX_HPP
 
 #include <array>
 
-namespace tybl::math::lynel {
+namespace tybl::lynel {
 
 template <typename Type, std::size_t Rows, std::size_t Cols>
 class matrix {
@@ -22,4 +24,6 @@ public:
 
 }; // class matrix
 
-} // namespace tybl::math::linear_algebra
+} // namespace tybl::lynel
+
+#endif // TYBL_LYNEL_MATRIX_HPP

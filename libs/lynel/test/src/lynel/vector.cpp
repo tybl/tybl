@@ -5,16 +5,16 @@
 
 #include <doctest/doctest.h>
 
-TEST_CASE("tybl::math::vector") {
-  tybl::math::lynel::vector<double,3> v;
+TEST_CASE("tybl::lynel::vector") {
+  tybl::lynel::vector<double,3> v;
   v(1) = 5.5;
   CHECK(v(1) == 5.5);
 }
 
 TEST_CASE("Associative law for vector addition") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
-  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
-  tybl::math::lynel::vector<double,3> c{ 7, 8, 9 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> b{ 4, 5, 6 };
+  tybl::lynel::vector<double,3> c{ 7, 8, 9 };
 
   auto l = (a + b)+ c;
   auto r =  a +(b + c);
@@ -23,8 +23,8 @@ TEST_CASE("Associative law for vector addition") {
 }
 
 TEST_CASE("Commutative law for vector addition") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
-  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> b{ 4, 5, 6 };
 
   auto l = a + b;
   auto r = b + a;
@@ -33,7 +33,7 @@ TEST_CASE("Commutative law for vector addition") {
 }
 
 TEST_CASE("Associate law for scalar-vector multiplication") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
   double s = 5.0;
   double t = 3.0;
 
@@ -44,8 +44,8 @@ TEST_CASE("Associate law for scalar-vector multiplication") {
 }
 
 TEST_CASE("Commutative law for scalar-vector multiplication") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
-  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> b{ 4, 5, 6 };
   double t = 9.0;
 
   auto l = t * (a + b);
@@ -55,9 +55,9 @@ TEST_CASE("Commutative law for scalar-vector multiplication") {
 }
 
 TEST_CASE("dot product") {
-  tybl::math::lynel::vector<double,3> a{ 1, 0, 0 };
-  tybl::math::lynel::vector<double,3> b{ 0, 2, 0 };
-  tybl::math::lynel::vector<double,3> c{ 2, 2, 2 };
+  tybl::lynel::vector<double,3> a{ 1, 0, 0 };
+  tybl::lynel::vector<double,3> b{ 0, 2, 0 };
+  tybl::lynel::vector<double,3> c{ 2, 2, 2 };
 
   CHECK(1.0 == dot_product(a,a));
   CHECK(0.0 == dot_product(a,b));
@@ -66,8 +66,8 @@ TEST_CASE("dot product") {
 }
 
 TEST_CASE("Commutative law for the dot product") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
-  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> b{ 4, 5, 6 };
 
   auto l = dot_product(a, b);
   auto r = dot_product(b, a);
@@ -76,9 +76,9 @@ TEST_CASE("Commutative law for the dot product") {
 }
 
 TEST_CASE("Distributive law for the dot product") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
-  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
-  tybl::math::lynel::vector<double,3> c{ 7, 8, 9 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> b{ 4, 5, 6 };
+  tybl::lynel::vector<double,3> c{ 7, 8, 9 };
 
   auto l = dot_product(a, (b + c));
   auto r = dot_product(a, b) + dot_product(a, c);
@@ -87,8 +87,8 @@ TEST_CASE("Distributive law for the dot product") {
 }
 
 TEST_CASE("Scalar factorization for the dot product") {
-  tybl::math::lynel::vector<double,3> a{ 1, 2, 3 };
-  tybl::math::lynel::vector<double,3> b{ 4, 5, 6 };
+  tybl::lynel::vector<double,3> a{ 1, 2, 3 };
+  tybl::lynel::vector<double,3> b{ 4, 5, 6 };
   double t = 9.0;
 
   auto l = dot_product(t * a, b);

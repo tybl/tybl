@@ -11,3 +11,5 @@ target_sources(lynel_t
     src/lynel/vector.cpp
     src/main.cpp
 )
+
+add_test(NAME test_lynel COMMAND lynel_t)
