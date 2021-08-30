@@ -3,12 +3,6 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13)
 
-add_executable(lynel_t)
-target_link_libraries(lynel_t PRIVATE compiler_settings test_base lynel)
-target_sources(lynel_t
-  PRIVATE
-    src/lynel/matrix.cpp
-    src/lynel/vector.cpp
-)
-
-add_test(NAME test_lynel COMMAND lynel_t)
+add_library(test_base)
+target_link_libraries(test_base PUBLIC doctest::doctest)
+target_sources(test_base PRIVATE src/main.cpp)

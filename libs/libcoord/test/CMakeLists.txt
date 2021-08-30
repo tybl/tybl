@@ -3,10 +3,12 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13)
 
+#[[ 
+# TODO: Create unit tests
 add_executable(libcoord_t)
-target_link_libraries(libcoord_t PRIVATE compiler_settings doctest::doctest)
+target_link_libraries(libcoord_t PRIVATE compiler_settings test_base)
 target_sources(libcoord_t
   PRIVATE
-    src/main.cpp
 )
 add_test(NAME test_libcoord COMMAND libcoord_t)
+]]
