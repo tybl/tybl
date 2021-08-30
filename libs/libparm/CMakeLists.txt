@@ -10,4 +10,4 @@ target_sources(parm
     include/parm/Application.hpp
     include/parm/Parameter.hpp)
 
-add_subdirectory(test)
+#add_subdirectory(test)
