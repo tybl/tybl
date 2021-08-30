@@ -63,3 +63,16 @@ TEST_CASE("transpose 3x3") {
   CHECK(n(1,2) == m(2,1));
   CHECK(n(2,2) == m(2,2));
 }
+
+TEST_CASE("matrix multiplication") {
+  matrix<double,2,3> a0 = { 3,4,0,0,4,1 };
+  matrix<double,3,3> a1 = { 2,-1,2,4,0,0,0,1,1 };
+  matrix<double,2,3> aa = { 22,-3,6,16,1,1 };
+  auto m = multiply(a0,a1);
+  CHECK(aa(0,0) == m(0,0));
+  CHECK(aa(0,1) == m(0,1));
+  CHECK(aa(0,2) == m(0,2));
+  CHECK(aa(1,0) == m(1,0));
+  CHECK(aa(1,1) == m(1,1));
+  CHECK(aa(1,2) == m(1,2));
+}
