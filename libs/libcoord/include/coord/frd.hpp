@@ -3,7 +3,6 @@
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include <units.h>
 
 namespace vodka::coord {
 
@@ -13,23 +12,21 @@ class frd_t {
   Eigen::Vector3d frd;
 public:
 
-  frd_t(units::length::meter_t const& f,
-        units::length::meter_t const& r,
-        units::length::meter_t const& d);
+  frd_t(double f, double r, double d);
 
   auto to_ecef(ecef_t const& ref_pos, Eigen::Quaterniond const& ref_rot) const -> ecef_t;
 
-  auto x() const -> units::length::meter_t;
+  auto x() const -> double;
 
-  auto y() const -> units::length::meter_t;
+  auto y() const -> double;
 
-  auto z() const -> units::length::meter_t;
+  auto z() const -> double;
 
-  auto f() const -> units::length::meter_t;
+  auto f() const -> double;
 
-  auto r() const -> units::length::meter_t;
+  auto r() const -> double;
 
-  auto d() const -> units::length::meter_t;
+  auto d() const -> double;
 
 }; // class frd_t
 

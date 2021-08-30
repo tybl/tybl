@@ -7,37 +7,35 @@
 
 namespace vodka::coord {
 
-frd_t::frd_t(units::length::meter_t const& f,
-             units::length::meter_t const& r,
-             units::length::meter_t const& d)
-  : frd(f.to<double>(), r.to<double>(), d.to<double>()) { }
+frd_t::frd_t(double f, double r, double d)
+  : frd(f, r, d) { }
 
 auto frd_t::to_ecef(ecef_t const& ref_pos, Eigen::Quaterniond const& ref_rot) const -> ecef_t {
   return ecef_t(ref_rot * frd + static_cast<Eigen::Vector3d>(ref_pos));
 }
 
-auto frd_t::x() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[0]);
+auto frd_t::x() const -> double {
+  return frd[0];
 }
 
-auto frd_t::y() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[1]);
+auto frd_t::y() const -> double {
+  return frd[1];
 }
 
-auto frd_t::z() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[2]);
+auto frd_t::z() const -> double {
+  return frd[2];
 }
 
-auto frd_t::f() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[0]);
+auto frd_t::f() const -> double {
+  return frd[0];
 }
 
-auto frd_t::r() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[1]);
+auto frd_t::r() const -> double {
+  return frd[1];
 }
 
-auto frd_t::d() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[2]);
+auto frd_t::d() const -> double {
+  return frd[2];
 }
 
 } // namespace vodka::coord

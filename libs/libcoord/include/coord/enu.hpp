@@ -2,7 +2,6 @@
 #pragma once
 
 #include <Eigen/Core>
-#include <units.h>
 
 namespace vodka::coord {
 
@@ -14,17 +13,17 @@ public:
 
   auto to_ecef(ecef_t const& ref_pos) const -> ecef_t;
 
-  auto x() const -> units::length::meter_t;
+  auto x() const -> double;
 
-  auto y() const -> units::length::meter_t;
+  auto y() const -> double;
 
-  auto z() const -> units::length::meter_t;
+  auto z() const -> double;
 
-  auto e() const -> units::length::meter_t;
+  auto e() const -> double;
 
-  auto n() const -> units::length::meter_t;
+  auto n() const -> double;
 
-  auto u() const -> units::length::meter_t;
+  auto u() const -> double;
 
 }; // class enu_t
 

@@ -2,7 +2,6 @@
 #pragma once
 
 #include <Eigen/Core>
-#include <units.h>
 
 namespace vodka::coord {
 
@@ -12,19 +11,17 @@ class ecef_t {
   Eigen::Vector3d ecef;
 public:
 
-  using vec = Eigen::Matrix<units::length::meter_t, 3, 1>;
-
   explicit ecef_t(Eigen::Vector3d pos);
 
   operator Eigen::Vector3d() const;
 
   auto to_lla() const -> lla_t;
 
-  auto x() const -> units::length::meter_t;
+  auto x() const -> double;
 
-  auto y() const -> units::length::meter_t;
+  auto y() const -> double;
 
-  auto z() const -> units::length::meter_t;
+  auto z() const -> double;
 
 }; // class ecef_t
 

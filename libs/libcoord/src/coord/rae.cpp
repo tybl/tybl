@@ -5,31 +5,29 @@
 
 namespace vodka::coord {
 
-rae_t::rae_t(units::length::meter_t const& r,
-             units::angle::radian_t const& a,
-             units::angle::radian_t const& e)
+rae_t::rae_t(double r, double a, double e)
   : mRange(r)
   , mAzimuth(a)
   , mElevation(e)
   { }
 
 auto rae_t::to_frd() const -> frd_t {
-  const auto hyp = units::math::cos(mElevation) * mRange;
-  const auto f = units::math::sin(mAzimuth) * hyp;
-  const auto r = units::math::cos(mAzimuth) * hyp;
-  const auto d = units::math::sin(mElevation) * mRange;
+  const auto hyp = std::cos(mElevation) * mRange;
+  const auto f = std::sin(mAzimuth) * hyp;
+  const auto r = std::cos(mAzimuth) * hyp;
+  const auto d = std::sin(mElevation) * mRange;
   return frd_t(f, r, d);
 }
 
-auto rae_t::range() const -> units::length::meter_t {
+auto rae_t::range() const -> double {
   return mRange;
 }
 
-auto rae_t::azimuth() const -> units::angle::radian_t {
+auto rae_t::azimuth() const -> double {
   return mAzimuth;
 }
 
-auto rae_t::elevation() const -> units::angle::radian_t {
+auto rae_t::elevation() const -> double {
   return mElevation;
 }
 
