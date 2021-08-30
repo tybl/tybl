@@ -18,11 +18,12 @@ struct matrix {
   using const_reference = value_type const&;
   using size_type = size_t;
 
-  //Type m_array[Rows][Cols];
   Type m_array[Rows * Cols];
 
   [[nodiscard]]
   constexpr auto operator()(size_t i, size_t j) const -> const_reference {
+    assert(i < Rows);
+    assert(j < Cols);
     return m_array[i * Cols + j];
   }
 
