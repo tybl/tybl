@@ -10,8 +10,6 @@ target_sources(libmath_t
     src/main.cpp
     src/math/fixed_point.cpp
     src/math/integer.cpp
-    src/math/lynel/matrix.cpp
-    src/math/lynel/vector.cpp
     src/math/next_power_of_two.cpp
     src/math/stats/distribution.cpp
 )

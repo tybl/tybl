@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 
-#include "math/lynel/vector.hpp"
-#include "math/lynel/vector_ops.hpp"
+#include "lynel/vector.hpp"
+#include "lynel/vector_ops.hpp"
 
 #include <doctest/doctest.h>
 

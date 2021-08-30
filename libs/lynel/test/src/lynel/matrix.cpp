@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "math/lynel/matrix.hpp"
+#include "lynel/matrix.hpp"
 
 #include <doctest/doctest.h>
 

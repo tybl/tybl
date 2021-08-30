@@ -3,26 +3,14 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.14) # FetchContent_MakeAvailable
 
-project(lynel
-  VERSION 0.0.1
-  DESCRIPTION "A library for small, dense matrices and vectors"
-  LANGUAGES CXX)
-
-option(BUILD_PROJECT_TESTS "Build and run tests as a subproject" OFF)
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  include(CTest)
-  include(util/cmake/compiler_settings.cmake)
-  include(util/cmake/Linters.cmake)
-endif()
-
-include(FetchContent)
-FetchContent_Declare(libvodka
-  GIT_REPOSITORY https://github.com/tybl/libvodka.git
-  GIT_SHALLOW    TRUE
-  GIT_TAG        origin/main)
-FetchContent_MakeAvailable(libvodka)
-
-if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) OR BUILD_PROJECT_TESTS)
-  add_subdirectory(test)
-endif()
+add_library(lynel INTERFACE)
+target_include_directories(lynel INTERFACE include)
+#target_link_libraries(lynel INTERFACE compiler_settings)
+target_sources(lynel
+  INTERFACE
+    include/lynel/vec.hpp
+    include/lynel/vector.hpp
+    include/lynel/vector_ops.hpp
+    include/lynel/matrix.hpp
+)
+add_subdirectory(test)
