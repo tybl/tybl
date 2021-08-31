@@ -96,7 +96,28 @@ TEST_CASE("Linear Algebra:Theory, Intuition, Code - Practice Problems pg 33") {
   matrix<double,2,1> fa = { 3,12 };
   auto fr = add(f0,f1);
   CHECK(fa == fr);
+}
 
+TEST_CASE("Linear Algebra:Theory, Intuition, Code - Practice Problems pg 33") {
+  // A
+  matrix<double,1,3> a0 = { 4,3,0 };
+  matrix<double,1,3> aa = { -8,-6,0 };
+  auto ar = -2.0 * a0;
+  CHECK(aa == ar);
+
+  // B
+  matrix<double,3,1> b0 = { 0,4,3 };
+  matrix<double,3,1> ba = { 0,4,3 };
+  auto br = (-9.0 + 2.0 * 5.0) * b0;
+  CHECK(ba == br);
+
+  // C
+  matrix<double,4,1> c0 = { 3,3.14,9,-234987234 };
+  matrix<double,4,1> ca = { 0,0,0,0 };
+  auto cr = 0.0 * c0;
+  CHECK(ca == cr);
+
+  // D (symbol algebra not implemented)
 }
 
 TEST_CASE("Linear Algebra:Theory, Intuition, Code - Practice Problems pg 147") {
