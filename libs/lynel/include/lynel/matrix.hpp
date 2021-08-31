@@ -48,6 +48,30 @@ struct matrix {
 
 }; // class matrix
 
+template <typename Type, size_t Rows, size_t Cols>
+auto add(matrix<Type,Rows,Cols> const& lhs, matrix<Type,Rows,Cols> const& rhs) -> matrix<Type,Rows,Cols>
+{
+  matrix<Type,Rows,Cols> result;
+  for (size_t r = 0; r < Rows; ++r) {
+    for (size_t c = 0; c < Cols; ++c) {
+      result(r,c) = lhs(r,c) + rhs(r,c);
+    }
+  }
+  return result;
+}
+
+template <typename Type, size_t Rows, size_t Cols>
+auto subtract(matrix<Type,Rows,Cols> const& lhs, matrix<Type,Rows,Cols> const& rhs) -> matrix<Type,Rows,Cols>
+{
+  matrix<Type,Rows,Cols> result;
+  for (size_t r = 0; r < Rows; ++r) {
+    for (size_t c = 0; c < Cols; ++c) {
+      result(r,c) = lhs(r,c) - rhs(r,c);
+    }
+  }
+  return result;
+}
+
 template <typename Type, size_t Rows, size_t Middle, size_t Cols>
 auto multiply(matrix<Type,Rows,Middle> const& lhs, matrix<Type,Middle,Cols> const& rhs) -> matrix<Type,Rows,Cols>
 {

@@ -53,6 +53,52 @@ TEST_CASE("transpose 3x3") {
   CHECK(n == mt);
 }
 
+TEST_CASE("Linear Algebra:Theory, Intuition, Code - Practice Problems pg 33") {
+  // A
+  matrix<double,1,4> a0 = { 4,5,1,0 };
+  matrix<double,1,4> a1 = { -4,-3,3,10 };
+  matrix<double,1,4> aa = { 0,2,4,10 };
+  auto ar = add(a0,a1);
+  CHECK(aa == ar);
+
+  // B
+  matrix<double,3,1> b0 = { 4,2,0 };
+  matrix<double,3,1> b1 = { 6,-4,60 };
+  matrix<double,3,1> b2 = { 2,-5,40 };
+  matrix<double,3,1> ba = { 0,1,-20 };
+  auto br = add(subtract(b0,b1),b2);
+  CHECK(ba == br);
+
+  // C
+  matrix<double,2,1> c0 = { 1,0 };
+  matrix<double,2,1> c1 = { 1,2 };
+  matrix<double,2,1> ca = { 2,2 };
+  auto cr = add(c0,c1);
+  CHECK(ca == cr);
+
+  // D
+  matrix<double,2,1> d0 = { 2,2 };
+  matrix<double,2,1> d1 = { 3,4 };
+  matrix<double,2,1> da = { -1,-2 };
+  auto dr = subtract(d0,d1);
+  CHECK(da == dr);
+
+  // E
+  matrix<double,2,1> e0 = { -3,1 };
+  matrix<double,2,1> e1 = { 3,-1 };
+  matrix<double,2,1> ea = { 0,0 };
+  auto er = add(e0,e1);
+  CHECK(ea == er);
+
+  // F
+  matrix<double,2,1> f0 = { 1,4 };
+  matrix<double,2,1> f1 = { 2,8 };
+  matrix<double,2,1> fa = { 3,12 };
+  auto fr = add(f0,f1);
+  CHECK(fa == fr);
+
+}
+
 TEST_CASE("Linear Algebra:Theory, Intuition, Code - Practice Problems pg 147") {
   // A
   matrix<double,2,3> a0 = { 3,0,3,1,1,0 };
