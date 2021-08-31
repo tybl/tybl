@@ -38,6 +38,14 @@ struct matrix {
     return *this;
   }
 
+  auto operator==(matrix const& o) const {
+    bool result = true;
+    for (size_t i = 0; i < Rows * Cols; ++i) {
+      result &= (m_array[i] == o.m_array[i]);
+    }
+    return result;
+  }
+
 }; // class matrix
 
 template <typename Type, size_t Rows, size_t Middle, size_t Cols>
