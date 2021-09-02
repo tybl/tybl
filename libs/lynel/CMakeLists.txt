@@ -12,5 +12,7 @@ target_sources(lynel
     include/lynel/vector.hpp
     include/lynel/vector_ops.hpp
     include/lynel/matrix.hpp
+    include/lynel/vec3d.hpp
 )
+
 add_subdirectory(test)
