@@ -3,6 +3,8 @@
 
 #include "coord/ecef.hpp"
 
+#include <stdexcept>
+
 namespace vodka::coord {
 
 auto lla_t::to_ecef() const -> ecef_t {

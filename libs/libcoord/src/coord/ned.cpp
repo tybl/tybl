@@ -10,27 +10,27 @@ auto ned_t::to_ecef(ecef_t const& ref_pos) const -> ecef_t {
 }
 
 auto ned_t::x() const -> double {
-  return ned[0];
+  return ned.x;
 }
 
 auto ned_t::y() const -> double {
-  return ned[1];
+  return ned.y;
 }
 
 auto ned_t::z() const -> double {
-  return ned[2];
+  return ned.z;
 }
 
 auto ned_t::n() const -> double {
-  return ned[0];
+  return ned.x;
 }
 
 auto ned_t::e() const -> double {
-  return ned[1];
+  return ned.y;
 }
 
 auto ned_t::d() const -> double {
-  return ned[2];
+  return ned.z;
 }
 
 } // namespace vodka::coord

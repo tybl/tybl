@@ -3,6 +3,8 @@
 
 #include "coord/frd.hpp"
 
+#include <cmath>
+
 namespace vodka::coord {
 
 rae_t::rae_t(double r, double a, double e)

@@ -7,7 +7,8 @@ add_library(coord)
 target_include_directories(coord PUBLIC include)
 target_link_libraries(coord
   PUBLIC
-    Eigen3::Eigen
+    lynel
+    vodka
 )
 target_sources(coord
   PRIVATE

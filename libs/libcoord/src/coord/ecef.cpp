@@ -2,13 +2,16 @@
 #include "coord/ecef.hpp"
 
 #include "coord/lla.hpp"
+#include "vodka/utility/move.hpp"
+
+#include <stdexcept>
 
 namespace vodka::coord {
 
-ecef_t::ecef_t(Eigen::Vector3d pos)
-  : ecef(std::move(pos)) { }
+ecef_t::ecef_t(tybl::lynel::vec3d pos)
+  : ecef(tybl::vodka::move(pos)) { }
 
-ecef_t::operator Eigen::Vector3d() const {
+ecef_t::operator tybl::lynel::vec3d() const {
   return ecef;
 }
 
@@ -19,15 +22,15 @@ auto ecef_t::to_lla() const -> lla_t {
 }
 
 auto ecef_t::x() const -> double {
-  return ecef[0];
+  return ecef.x;
 }
 
 auto ecef_t::y() const -> double {
-  return ecef[1];
+  return ecef.y;
 }
 
 auto ecef_t::z() const -> double {
-  return ecef[2];
+  return ecef.z;
 }
 
 } // namespace vodka::coord

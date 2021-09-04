@@ -1,14 +1,14 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-#include <Eigen/Core>
+#include "lynel/vec3d.hpp"
 
 namespace vodka::coord {
 
 class ecef_t;
 
 class enu_t {
-  Eigen::Vector3d enu;
+  tybl::lynel::vec3d enu;
 public:
 
   auto to_ecef(ecef_t const& ref_pos) const -> ecef_t;

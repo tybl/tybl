@@ -19,8 +19,6 @@ FetchContent_Declare(doctest
   GIT_TAG        "2.4.6")
 FetchContent_MakeAvailable(doctest)
 
-find_package(Eigen3 3.3 REQUIRED NO_MODULE)
-
 add_subdirectory(utils/doctest)
 add_subdirectory(libs)
 add_subdirectory(apps)
