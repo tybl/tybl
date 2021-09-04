@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 class frd_t;
 
@@ -23,4 +23,4 @@ public:
 
 }; // class rae_t
 
-} // namespace vodka::coord
+} // namespace tybl::coord

@@ -5,7 +5,7 @@
 
 #include <stdexcept>
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 auto lla_t::to_ecef() const -> ecef_t {
   // TODO(tybl): Implement this function
@@ -24,4 +24,4 @@ auto lla_t::altitude() const -> double {
   return mAltitude;
 }
 
-} // namespace vodka::coord
+} // namespace tybl::coord

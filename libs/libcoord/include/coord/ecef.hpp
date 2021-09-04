@@ -3,17 +3,17 @@
 
 #include "lynel/vec3d.hpp"
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 class lla_t;
 
 class ecef_t {
-  tybl::lynel::vec3d ecef;
+  lynel::vec3d ecef;
 public:
 
-  explicit ecef_t(tybl::lynel::vec3d pos);
+  explicit ecef_t(lynel::vec3d pos);
 
-  operator tybl::lynel::vec3d() const;
+  operator lynel::vec3d() const;
 
   auto to_lla() const -> lla_t;
 
@@ -25,4 +25,4 @@ public:
 
 }; // class ecef_t
 
-} // namespace vodka::coord
+} // namespace tybl::coord

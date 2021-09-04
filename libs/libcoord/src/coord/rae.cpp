@@ -5,7 +5,7 @@
 
 #include <cmath>
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 rae_t::rae_t(double r, double a, double e)
   : mRange(r)
@@ -33,4 +33,4 @@ auto rae_t::elevation() const -> double {
   return mElevation;
 }
 
-} // namespace vodka::coord
+} // namespace tybl::coord

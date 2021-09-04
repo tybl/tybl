@@ -3,12 +3,12 @@
 
 #include "lynel/vec3d.hpp"
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 class ecef_t;
 
 class enu_t {
-  tybl::lynel::vec3d enu;
+  lynel::vec3d enu;
 public:
 
   auto to_ecef(ecef_t const& ref_pos) const -> ecef_t;
@@ -27,4 +27,4 @@ public:
 
 }; // class enu_t
 
-} // namespace vodka::coord
+} // namespace tybl::coord

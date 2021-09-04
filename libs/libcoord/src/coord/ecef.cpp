@@ -6,12 +6,12 @@
 
 #include <stdexcept>
 
-namespace vodka::coord {
+namespace tybl::coord {
 
-ecef_t::ecef_t(tybl::lynel::vec3d pos)
-  : ecef(tybl::vodka::move(pos)) { }
+ecef_t::ecef_t(lynel::vec3d pos)
+  : ecef(vodka::move(pos)) { }
 
-ecef_t::operator tybl::lynel::vec3d() const {
+ecef_t::operator lynel::vec3d() const {
   return ecef;
 }
 
@@ -33,4 +33,4 @@ auto ecef_t::z() const -> double {
   return ecef.z;
 }
 
-} // namespace vodka::coord
+} // namespace tybl::coord

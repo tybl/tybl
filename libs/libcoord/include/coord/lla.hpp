@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 class ecef_t;
 
@@ -21,4 +21,4 @@ public:
 
 }; // class lla_c
 
-} // namespace vodka::coord
+} // namespace tybl::coord

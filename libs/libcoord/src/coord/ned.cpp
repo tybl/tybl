@@ -3,7 +3,7 @@
 
 #include "coord/ecef.hpp"
 
-namespace vodka::coord {
+namespace tybl::coord {
 
 auto ned_t::to_ecef(ecef_t const& ref_pos) const -> ecef_t {
   return ref_pos;
@@ -33,4 +33,4 @@ auto ned_t::d() const -> double {
   return ned.z;
 }
 
-} // namespace vodka::coord
+} // namespace tybl::coord
