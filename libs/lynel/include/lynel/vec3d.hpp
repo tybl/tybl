@@ -11,6 +11,10 @@ struct vec3d {
   double z;
 }; // struct vec3d
 
+double dot(vec3d const& l, vec3d const& r);
+
+double length(vec3d const& v);
+
 } // namespace tybl::lynel
 
 #endif // TYBL_LYNEL_VEC3D_HPP
