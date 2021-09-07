@@ -1,11 +1,11 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_LYNEL_VEC_HPP
-#define TYBL_LYNEL_VEC_HPP
+#ifndef TYBL_LINAL_VEC_HPP
+#define TYBL_LINAL_VEC_HPP
 
 #include <cstddef> // std::size_t, std::ptrdiff_t
 
-namespace tybl::lynel {
+namespace tybl::linal {
 
 template <typename T, std::size_t N>
 struct vec {
@@ -55,6 +55,6 @@ public:
 template <>
 using 
 
-} // namespace tybl::lynel
+} // namespace tybl::linal
 
-#endif // TYBL_LYNEL_VEC_HPP
+#endif // TYBL_LINAL_VEC_HPP

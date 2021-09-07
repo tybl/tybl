@@ -7,7 +7,7 @@ add_library(coord)
 target_include_directories(coord PUBLIC include)
 target_link_libraries(coord
   PUBLIC
-    lynel
+    linal
     vodka
 )
 target_sources(coord

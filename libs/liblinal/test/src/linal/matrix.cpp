@@ -1,11 +1,11 @@
 // License: The Unlicense (https://unlicense.org)
-#include "lynel/matrix.hpp"
+#include "linal/matrix.hpp"
 
 #include <doctest/doctest.h>
 
-using namespace tybl::lynel;
+using namespace tybl::linal;
 
-TEST_CASE("tybl::lynel::matrix") {
+TEST_CASE("tybl::linal::matrix") {
   matrix<double,3,3> m;
   m(1,1) = 5.5;
   CHECK(m(1,1) == 5.5);

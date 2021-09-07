@@ -1,14 +1,14 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-#include "lynel/vec3d.hpp"
+#include "linal/vec3d.hpp"
 
 namespace tybl::coord {
 
 class ecef_t;
 
 class ned_t {
-  lynel::vec3d ned;
+  linal::vec3d ned;
 public:
 
   auto to_ecef(ecef_t const& ref_pos) const -> ecef_t;

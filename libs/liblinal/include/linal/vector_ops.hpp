@@ -1,13 +1,13 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_LYNEL_VECTOROPS_HPP
-#define TYBL_LYNEL_VECTOROPS_HPP
+#ifndef TYBL_LINAL_VECTOROPS_HPP
+#define TYBL_LINAL_VECTOROPS_HPP
 
 #include <algorithm>
 #include <cmath>
 #include <numeric>
 
-namespace tybl::lynel {
+namespace tybl::linal {
 
 template <typename T, size_t N>
 auto operator+(vector<T,N> const& l, vector<T,N> const& r) -> vector<T,N> {
@@ -59,6 +59,6 @@ constexpr auto rejection(vector<T,N> const& l, vector<T,N> const& r) -> vector<T
   return l - projection(l,r);
 }
 
-} // namespace tybl::lynel
+} // namespace tybl::linal
 
-#endif // TYBL_LYNEL_VECTOROPS_HPP
+#endif // TYBL_LINAL_VECTOROPS_HPP

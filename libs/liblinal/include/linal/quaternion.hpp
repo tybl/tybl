@@ -1,9 +1,9 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_LYNEL_QUATERNION_HPP
-#define TYBL_LYNEL_QUATERNION_HPP
+#ifndef TYBL_LINAL_QUATERNION_HPP
+#define TYBL_LINAL_QUATERNION_HPP
 
-namespace tybl::lynel {
+namespace tybl::linal {
 
 struct quaternion {
   double x;
@@ -12,6 +12,6 @@ struct quaternion {
   double w;
 }; // struct quaternion
 
-} // namespace tybl::lynel
+} // namespace tybl::linal
 
-#endif // TYBL_LYNEL_QUATERNION_HPP
+#endif // TYBL_LINAL_QUATERNION_HPP

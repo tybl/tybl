@@ -1,13 +1,13 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_LYNEL_VECTOR_HPP
-#define TYBL_LYNEL_VECTOR_HPP
+#ifndef TYBL_LINAL_VECTOR_HPP
+#define TYBL_LINAL_VECTOR_HPP
 
 #include <cassert>     // assert
 #include <stdexcept>   // std::out_of_range
 #include <type_traits> // std::is_nothrow_swappable
 
-namespace tybl::lynel {
+namespace tybl::linal {
 
 template <typename T, std::size_t N>
 struct vector {
@@ -74,6 +74,6 @@ struct vector {
 
 }; // class vector
 
-} // namespace tybl::lynel
+} // namespace tybl::linal
 
-#endif // TYBL_LYNEL_VECTOR_HPP
+#endif // TYBL_LINAL_VECTOR_HPP
