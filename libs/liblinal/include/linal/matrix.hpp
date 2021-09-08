@@ -3,11 +3,13 @@
 #ifndef TYBL_LINAL_MATRIX_HPP
 #define TYBL_LINAL_MATRIX_HPP
 
+#include "linal/basic_matrix.hpp"
+
 #include <assert.h> // assert()
-#include <stddef.h> // size_t
 
 namespace tybl::linal {
 
+// Matrix generalization
 template <typename Type, size_t Rows, size_t Cols>
 struct matrix {
   static_assert(0 < Rows);
