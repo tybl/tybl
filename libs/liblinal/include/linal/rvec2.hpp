@@ -20,20 +20,41 @@ struct basic_matrix<T,1,2> {
   constexpr auto operator==(basic_matrix const& v) const -> bool {
     return (x == v.x) && (y == v.y);
   }
+
+  constexpr auto operator+=(basic_matrix const& v) -> rvec2<T>& {
+    x += v.x;
+    y += v.y;
+    return *this;
+  }
+
+  constexpr auto operator-=(basic_matrix const& v) -> rvec2<T>& {
+    x -= v.x;
+    y -= v.y;
+    return *this;
+  }
+
+  constexpr auto operator*=(value_type s) -> rvec2<T>& {
+    x *= s;
+    y *= s;
+    return *this;
+  }
+
+  constexpr auto operator/=(value_type s) -> rvec2<T>& {
+    x /= s;
+    y /= s;
+    return *this;
+  }
+
 };
 
 template <typename T>
 constexpr auto add(rvec2<T> l, rvec2<T> const& r) -> rvec2<T> {
-  l.x += r.x;
-  l.y += r.y;
-  return l;
+  return l += r;
 }
 
 template <typename T>
 constexpr auto subtract(rvec2<T> l, rvec2<T> const& r) -> rvec2<T> {
-  l.x -= r.x;
-  l.y -= r.y;
-  return l;
+  return l -= r;
 }
 
 } // namespace tybl::linal

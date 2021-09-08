@@ -21,30 +21,50 @@ struct basic_matrix<T,1,3> {
   constexpr auto operator==(basic_matrix const& v) const -> bool {
     return (x == v.x) && (y == v.y) && (z == v.z);
   }
+
+  constexpr auto operator+=(basic_matrix const& v) -> rvec3<T>& {
+    x += v.x;
+    y += v.y;
+    z += v.z;
+    return *this;
+  }
+
+  constexpr auto operator-=(basic_matrix const& v) -> rvec3<T>& {
+    x -= v.x;
+    y -= v.y;
+    z -= v.z;
+    return *this;
+  }
+
+  constexpr auto operator*=(value_type s) -> rvec3<T>& {
+    x *= s;
+    y *= s;
+    z *= s;
+    return *this;
+  }
+
+  constexpr auto operator/=(value_type s) -> rvec3<T>& {
+    x /= s;
+    y /= s;
+    z /= s;
+    return *this;
+  }
+
 };
 
 template <typename T>
 constexpr auto operator*(T s, rvec3<T> v) -> rvec3<T> {
-  v.x *= s;
-  v.y *= s;
-  v.z *= s;
-  return v;
+  return v *= s;
 }
 
 template <typename T>
 constexpr auto add(rvec3<T> l, rvec3<T> const& r) -> rvec3<T> {
-  l.x += r.x;
-  l.y += r.y;
-  l.z += r.z;
-  return l;
+  return l += r;
 }
 
 template <typename T>
 constexpr auto subtract(rvec3<T> l, rvec3<T> const& r) -> rvec3<T> {
-  l.x -= r.x;
-  l.y -= r.y;
-  l.z -= r.z;
-  return l;
+  return l -= r;
 }
 
 } // namespace tybl::linal

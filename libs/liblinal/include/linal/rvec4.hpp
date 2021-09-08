@@ -22,6 +22,39 @@ struct basic_matrix<T,1,4> {
   constexpr auto operator==(basic_matrix const& v) const -> bool {
     return (x == v.x) && (y == v.y) && (z == v.z) && (w == v.w);
   }
+
+  constexpr auto operator+=(basic_matrix const& v) -> rvec4<T>& {
+    x += v.x;
+    y += v.y;
+    z += v.z;
+    w += v.w;
+    return *this;
+  }
+
+  constexpr auto operator-=(basic_matrix const& v) -> rvec4<T>& {
+    x -= v.x;
+    y -= v.y;
+    z -= v.z;
+    w -= v.w;
+    return *this;
+  }
+
+  constexpr auto operator*=(value_type s) -> rvec4<T>& {
+    x *= s;
+    y *= s;
+    z *= s;
+    w *= s;
+    return *this;
+  }
+
+  constexpr auto operator/=(value_type s) -> rvec4<T>& {
+    x /= s;
+    y /= s;
+    z /= s;
+    w /= s;
+    return *this;
+  }
+
 };
 
 template <typename T>
