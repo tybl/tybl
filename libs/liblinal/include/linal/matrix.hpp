@@ -3,9 +3,8 @@
 #ifndef TYBL_LINAL_MATRIX_HPP
 #define TYBL_LINAL_MATRIX_HPP
 
-#include "linal/basic_matrix.hpp"
-
 #include <assert.h> // assert()
+#include <stdlib.h> // size_t
 
 namespace tybl::linal {
 

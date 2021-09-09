@@ -1,16 +1,11 @@
 // License: The Unlicense (https://unlicense.org)
-#include "linal/cvec2.hpp"
-#include "linal/rvec2.hpp"
-#include "linal/cvec3.hpp"
-#include "linal/rvec3.hpp"
-#include "linal/cvec4.hpp"
-#include "linal/rvec4.hpp"
+#include "linal/basic_matrix.hpp"
 
 #include "vodka/type_traits/is_same.hpp"
 
 #include <doctest/doctest.h>
 
-#include <math.h>
+#include <math.h> // M_PI
 
 using namespace tybl::linal;
 
@@ -48,7 +43,7 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") {
   cvec3<double> b_in1 = { 6,-4,60 };
   cvec3<double> b_in2 = { 2,-5,40 };
   cvec3<double> b_ans = { 0,1,-20 };
-  auto b_result = add(subtract(b_in0,b_in1),b_in2);
+  auto b_result = add(sub(b_in0,b_in1),b_in2);
   CHECK(b_ans == b_result);
 
   // C
@@ -62,7 +57,7 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") {
   cvec2<double> d_in0 = { 2,2 };
   cvec2<double> d_in1 = { 3,4 };
   cvec2<double> d_ans = { -1,-2 };
-  auto d_result = subtract(d_in0,d_in1);
+  auto d_result = sub(d_in0,d_in1);
   CHECK(d_ans == d_result);
 
   // E

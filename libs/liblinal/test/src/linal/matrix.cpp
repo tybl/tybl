@@ -1,11 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
 #include "linal/matrix.hpp"
-#include "linal/cvec2.hpp"
-#include "linal/rvec2.hpp"
-#include "linal/cvec3.hpp"
-#include "linal/rvec3.hpp"
-#include "linal/cvec4.hpp"
-#include "linal/rvec4.hpp"
 
 #include <doctest/doctest.h>
 
