@@ -9,7 +9,6 @@ target_sources(linal_t
   PRIVATE
     src/books/LinearAlgebra_TheoryIntuitionCode.cpp
     src/linal/matrix.cpp
-    src/linal/vector.cpp
 )
 
 add_test(NAME test_linal COMMAND linal_t)

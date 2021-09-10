@@ -39,7 +39,8 @@ struct basic_matrix<T,M,N, typename vodka::enable_if_t<is_vec<3,M,N>::value>> {
   constexpr auto operator-=(basic_matrix const& v) -> basic_matrix& { x -= v.x; y -= v.y; z -= v.z; return *this; }
   constexpr auto operator*=(value_type s) -> basic_matrix& { x *= s; y *= s; z *= s; return *this; }
   constexpr auto operator/=(value_type s) -> basic_matrix& { x /= s; y /= s; z /= s; return *this; }
-  constexpr auto dot(basic_matrix const& v) const -> value_type { return (x * v.x) + (y * v.y) + (z * v.z); }
+  constexpr auto dot  (basic_matrix const& v) const -> value_type { return (x * v.x) + (y * v.y) + (z * v.z); }
+  constexpr auto cross(basic_matrix const& v) const -> basic_matrix { return basic_matrix{ (y*v.z)-(z*v.y),(z*v.x)-(x*v.z),(x*v.y)-(y*v.x) }; }
 };
 
 // Rank 4 Column Vector specialization

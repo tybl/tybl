@@ -8,7 +8,7 @@ namespace tybl::coord {
 frd_t::frd_t(double f, double r, double d)
   : frd({f, r, d}) { }
 
-auto frd_t::to_ecef(ecef_t const& ref_pos, linal::quaternion const& ref_rot) const -> ecef_t {
+auto frd_t::to_ecef(ecef_t const& ref_pos, linal::quaternion const& /*ref_rot*/) const -> ecef_t {
   // TODO(tybl)
   //return ecef_t(ref_rot * frd + static_cast<linal::vec3d>(ref_pos));
   return ref_pos;

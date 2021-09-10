@@ -2,14 +2,14 @@
 #pragma once
 
 #include "linal/quaternion.hpp"
-#include "linal/vec3d.hpp"
+#include "linal/basic_matrix.hpp"
 
 namespace tybl::coord {
 
 class ecef_t;
 
 class frd_t {
-  linal::vec3d frd;
+  linal::cvec3<double> frd;
 public:
 
   frd_t(double f, double r, double d);
