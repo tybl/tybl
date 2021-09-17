@@ -1,14 +1,14 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-#include "linal/basic_matrix.hpp"
+#include "lynel/basic_matrix.hpp"
 
 namespace tybl::coord {
 
 class ecef_t;
 
 class enu_t {
-  linal::cvec3<double> enu;
+  lynel::cvec3<double> enu;
 public:
 
   auto to_ecef(ecef_t const& ref_pos) const -> ecef_t;

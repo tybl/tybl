@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "linal/basic_matrix.hpp"
+#include "lynel/basic_matrix.hpp"
 
 #include "vodka/type_traits/is_same.hpp"
 
@@ -7,7 +7,7 @@
 
 #include <math.h> // M_PI
 
-using namespace tybl::linal;
+using namespace tybl::lynel;
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 23") {
   // These practice problems are symbolic manipulations and don't exercise

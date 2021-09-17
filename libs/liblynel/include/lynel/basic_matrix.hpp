@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_LINAL_BASICMATRIX_HPP
-#define TYBL_LINAL_BASICMATRIX_HPP
+#ifndef TYBL_LYNEL_BASICMATRIX_HPP
+#define TYBL_LYNEL_BASICMATRIX_HPP
 
 #include "vodka/algorithm/max.hpp"
 #include "vodka/algorithm/min.hpp"
@@ -9,7 +9,7 @@
 
 #include <stddef.h> // size_t
 
-namespace tybl::linal {
+namespace tybl::lynel {
 
 template <size_t Extent, size_t Rows, size_t Cols>
 struct is_vec : vodka::bool_constant<vodka::max(Rows,Cols) == Extent && vodka::min(Rows,Cols) == 1> {};
@@ -128,6 +128,6 @@ template <typename T, size_t N> using smatrix = basic_matrix<T,N,N>;
 template <typename T, size_t N> using cvector = basic_matrix<T,N,1>;
 template <typename T, size_t N> using rvector = basic_matrix<T,1,N>;
 
-} // namespace tybl::linal
+} // namespace tybl::lynel
 
-#endif // TYBL_LINAL_BASICMATRIX_HPP
+#endif // TYBL_LYNEL_BASICMATRIX_HPP

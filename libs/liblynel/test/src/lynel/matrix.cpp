@@ -1,9 +1,9 @@
 // License: The Unlicense (https://unlicense.org)
-#include "linal/matrix.hpp"
+#include "lynel/matrix.hpp"
 
 #include <doctest/doctest.h>
 
-using namespace tybl::linal;
+using namespace tybl::lynel;
 
 TEST_CASE("matrix::operator==()") {
   matrix<double,3,3> a = { 0,1,2,3,4,5,6,7,8 };
