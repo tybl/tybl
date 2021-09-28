@@ -1,6 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
+// TODO(tybl): This file is superceded by libstats
+
 #include <cmath>
 #include <limits>
 

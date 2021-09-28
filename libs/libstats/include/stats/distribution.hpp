@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
+// TODO(tybl): Replace Eigen with liblynel
 #include <Eigen/Dense>
 
 #include <cmath>
@@ -17,6 +18,7 @@ class distribution {
   Type m_minimum          { std::numeric_limits<Type>::max() };
 public:
 
+  // TODO(tybl): Unintuitive use of operator+=, replace with regular function
   constexpr auto operator+=(Type x) -> distribution& {
     m_count += 1;
     double delta = static_cast<double>(x) - m_mean;
@@ -63,6 +65,7 @@ public:
 
 }; // class distribution
 
+// TODO(tybl): Class name is not descriptive
 template <size_t N>
 class dist {
   static_assert(0 < N, "");
