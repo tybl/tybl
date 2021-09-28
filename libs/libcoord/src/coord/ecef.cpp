@@ -8,10 +8,10 @@
 
 namespace tybl::coord {
 
-ecef_t::ecef_t(linal::vec3d pos)
+ecef_t::ecef_t(lynel::cvec3<double> pos)
   : ecef(vodka::move(pos)) { }
 
-ecef_t::operator linal::vec3d() const {
+ecef_t::operator lynel::cvec3<double>() const {
   return ecef;
 }
 

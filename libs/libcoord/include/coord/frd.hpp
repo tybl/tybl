@@ -1,20 +1,20 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-#include "linal/quaternion.hpp"
-#include "linal/vec3d.hpp"
+#include "lynel/quaternion.hpp"
+#include "lynel/basic_matrix.hpp"
 
 namespace tybl::coord {
 
 class ecef_t;
 
 class frd_t {
-  linal::vec3d frd;
+  lynel::cvec3<double> frd;
 public:
 
   frd_t(double f, double r, double d);
 
-  auto to_ecef(ecef_t const& ref_pos, linal::quaternion const& ref_rot) const -> ecef_t;
+  auto to_ecef(ecef_t const& ref_pos, lynel::quaternion const& ref_rot) const -> ecef_t;
 
   auto x() const -> double;
 

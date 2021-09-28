@@ -1,13 +1,14 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_LINAL_MATRIX_HPP
-#define TYBL_LINAL_MATRIX_HPP
+#ifndef TYBL_LYNEL_MATRIX_HPP
+#define TYBL_LYNEL_MATRIX_HPP
 
 #include <assert.h> // assert()
-#include <stddef.h> // size_t
+#include <stdlib.h> // size_t
 
-namespace tybl::linal {
+namespace tybl::lynel {
 
+// Matrix generalization
 template <typename Type, size_t Rows, size_t Cols>
 struct matrix {
   static_assert(0 < Rows);
@@ -111,6 +112,6 @@ auto transpose(matrix<Type,Rows,Cols> const& m) -> matrix<Type,Cols,Rows> {
   return result;
 }
 
-} // namespace tybl::linal
+} // namespace tybl::lynel
 
-#endif // TYBL_LINAL_MATRIX_HPP
+#endif // TYBL_LYNEL_MATRIX_HPP

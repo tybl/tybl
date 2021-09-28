@@ -1,19 +1,19 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
 
-#include "linal/vec3d.hpp"
+#include "lynel/basic_matrix.hpp"
 
 namespace tybl::coord {
 
 class lla_t;
 
 class ecef_t {
-  linal::vec3d ecef;
+  lynel::cvec3<double> ecef;
 public:
 
-  explicit ecef_t(linal::vec3d pos);
+  explicit ecef_t(lynel::cvec3<double> pos);
 
-  operator linal::vec3d() const;
+  operator lynel::cvec3<double>() const;
 
   auto to_lla() const -> lla_t;
 

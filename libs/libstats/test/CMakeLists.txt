@@ -1,11 +1,13 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.0)
 
-add_subdirectory(libvodka)
-add_subdirectory(libcoord)
-add_subdirectory(libmath)
-add_subdirectory(libparm)
-add_subdirectory(liblynel)
-add_subdirectory(libstats)
+add_executable(libstats_t)
+target_link_libraries(libstats_t
+  PRIVATE
+    doctest::doctest
+    stats)
+target_sources(libstats_t
+  PRIVATE
+    src/main.cpp)
+add_test(NAME test_libstats COMMAND libstats_t)

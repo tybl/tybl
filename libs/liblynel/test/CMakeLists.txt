@@ -3,12 +3,12 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13)
 
-add_executable(linal_t)
-target_link_libraries(linal_t PRIVATE compiler_settings test_base linal)
-target_sources(linal_t
+add_executable(lynel_t)
+target_link_libraries(lynel_t PRIVATE compiler_settings test_base lynel vodka)
+target_sources(lynel_t
   PRIVATE
-    src/linal/matrix.cpp
-    src/linal/vector.cpp
+    src/books/LinearAlgebra_TheoryIntuitionCode.cpp
+    src/lynel/matrix.cpp
 )
 
-add_test(NAME test_linal COMMAND linal_t)
+add_test(NAME test_lynel COMMAND lynel_t)
