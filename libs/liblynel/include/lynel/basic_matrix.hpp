@@ -127,32 +127,17 @@ struct basic_matrix<T,M,N,typename vodka::enable_if_t<is_mat(4,M,N)>> {
 
 template <typename T, size_t M, size_t N> constexpr auto add(basic_matrix<T,M,N> l, basic_matrix<T,M,N> const& r) -> basic_matrix<T,M,N> { return l += r; }
 template <typename T, size_t M, size_t N> constexpr auto sub(basic_matrix<T,M,N> l, basic_matrix<T,M,N> const& r) -> basic_matrix<T,M,N> { return l -= r; }
-template <typename T, size_t M, size_t N> constexpr auto operator*(T s, basic_matrix<T,M,N> v) -> basic_matrix<T,M,N> { return v *= s; }
 
 // Multiplication
-//template <typename T, size_t N> using cvec = basic_matrix<T,N,1>;
-template <typename T, size_t M> constexpr cvec<T,M> mul(basic_matrix<T,M,1> const& l, cvec<T,1> const& r) { return l.x*r.x; }
-template <typename T, size_t M> constexpr cvec<T,M> mul(basic_matrix<T,M,2> const& l, cvec<T,2> const& r) { return l.x*r.x + l.y*r.y; }
-template <typename T, size_t M> constexpr cvec<T,M> mul(basic_matrix<T,M,3> const& l, cvec<T,3> const& r) { return l.x*r.x + l.y*r.y + l.z*r.z; }
-template <typename T, size_t M> constexpr cvec<T,M> mul(basic_matrix<T,M,4> const& l, cvec<T,4> const& r) { return l.x*r.x + l.y*r.y + l.z*r.z + l.w*r.w; }
-template <typename T, size_t M, size_t N> constexpr basic_matrix<T,M,1> mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,1> const& r) { return {mul(l,static_cast<cvec<T,1>>(r.x))}; }
-template <typename T, size_t M, size_t N> constexpr basic_matrix<T,M,2> mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,2> const& r) { return {mul(l,static_cast<cvec<T,1>>(r.x)), mul(l,static_cast<cvec<T,1>>(r.y))}; }
-template <typename T, size_t M, size_t N> constexpr basic_matrix<T,M,3> mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,3> const& r) { return {mul(l,r.x), mul(l,r.y), mul(l,r.z)}; }
-template <typename T, size_t M, size_t N> constexpr basic_matrix<T,M,4> mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,4> const& r) { return {mul(l,r.x), mul(l,r.y), mul(l,r.z), mul(l,r.w)}; }
-/*
-template <typename T>
-constexpr auto mul(basic_matrix<T,2,1> const& l, basic_matrix<T,1,2> const& r) -> basic_matrix<T,2,2> {
-  return basic_matrix<T,2,2>{ l.x*r.x, l.x*r.y, l.y*r.x, l.y*r.y };
-}
-template <typename T>
-constexpr auto mul(basic_matrix<T,3,1> const& l, basic_matrix<T,1,3> const& r) -> basic_matrix<T,3,3> {
-  return basic_matrix<T,3,3>{ l.x*r.x, l.x*r.y, l.x*r.z, l.y*r.x, l.y*r.y, l.y*r.z, l.z*r.x, l.z*r.y, l.z*r.z };
-}
-template <typename T>
-constexpr auto mul(basic_matrix<T,4,1> const& l, basic_matrix<T,1,4> const& r) -> basic_matrix<T,4,4> {
-  return basic_matrix<T,4,4>{ l.x*r.x, l.x*r.y, l.x*r.z, l.x*r.w, l.y*r.x, l.y*r.y, l.y*r.z, l.y*r.w, l.z*r.x, l.z*r.y, l.z*r.z, l.z*r.w, l.w*r.x, l.w*r.y, l.w*r.z, l.w*r.w };
-}
-*/
+template <typename T, size_t M, size_t N> constexpr auto mul(T s, basic_matrix<T,M,N> v) -> basic_matrix<T,M,N> { return v *= s; }
+template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> v, T s) -> basic_matrix<T,M,N> { return v *= s; }
+template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,1> const& l, cvec<T,1> const& r) -> cvec<T,M> { return mul(l,r.x); }
+template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,2> const& l, cvec<T,2> const& r) -> cvec<T,M> { return l.x*r.x + l.y*r.y; }
+template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,3> const& l, cvec<T,3> const& r) -> cvec<T,M> { return l.x*r.x + l.y*r.y + l.z*r.z; }
+template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,4> const& l, cvec<T,4> const& r) -> cvec<T,M> { return l.x*r.x + l.y*r.y + l.z*r.z + l.w*r.w; }
+template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,2> const& r) -> basic_matrix<T,M,2> { return {mul(l,r.x), mul(l,r.y)}; }
+template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,3> const& r) -> basic_matrix<T,M,3> { return {mul(l,r.x), mul(l,r.y), mul(l,r.z)}; }
+template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,4> const& r) -> basic_matrix<T,M,4> { return {mul(l,r.x), mul(l,r.y), mul(l,r.z), mul(l,r.w)}; }
 
 } // namespace tybl::lynel
 
