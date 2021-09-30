@@ -186,6 +186,42 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 62") {
   CHECK(d_ans == d_result);
 }
 
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 64") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 65") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 67") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 78") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 86") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 90") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 97") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 112") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 126") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 128") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 130") {
+}
+
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 142") {
+}
+
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") {
   // A
   basic_matrix<double,2,3> a_in0 = { 3,1,0,1,3,0 };
