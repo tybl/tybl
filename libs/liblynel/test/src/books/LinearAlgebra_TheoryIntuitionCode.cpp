@@ -79,19 +79,19 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 36") {
   // A
   rvec3<double> a_in0 = { 4,3,0 };
   rvec3<double> a_ans = { -8,-6,0 };
-  auto a_result = -2.0 * a_in0;
+  auto a_result = mul(-2.0, a_in0);
   CHECK(a_ans == a_result);
 
   // B
   cvec3<double> b_in0 = { 0,4,3 };
   cvec3<double> b_ans = { 0,4,3 };
-  auto b_result = (-9.0 + 2.0 * 5.0) * b_in0;
+  auto b_result = mul((-9.0 + 2.0 * 5.0),b_in0);
   CHECK(b_ans == b_result);
 
   // C
   cvec4<double> c_in0 = { 3,3.14,9,-234987234 };
   cvec4<double> c_ans = { 0,0,0,0 };
-  auto c_result = 0.0 * c_in0;
+  auto c_result = mul(0.0, c_in0);
   CHECK(c_ans == c_result);
 
   // D (symbol algebra not implemented)
@@ -160,7 +160,7 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 62") {
   // A
   cvec2<int> a_in0 = { -1,1 };
   rvec2<int> a_in1 = { 2,3 };
-  mat2<int> a_ans = { -2,-3,2,3 };
+  mat2<int> a_ans = { -2,2,-3,3 };
   auto a_result = mul(a_in0,a_in1);
   CHECK(a_ans == a_result);
 
@@ -174,25 +174,24 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 62") {
   // C
   cvec3<int> c_in0 = { -1,0,1 };
   rvec3<int> c_in1 = { 1,2,3 };
-  mat3<int> c_ans = { -1,-2,-3,0,0,0,1,2,3 };
+  mat3<int> c_ans = { -1,0,1,-2,0,2,-3,0,3 };
   auto c_result = mul(c_in0,c_in1);
   CHECK(c_ans == c_result);
 
   // D
   cvec4<int> d_in0 = { 1,3,5,7 };
   rvec4<int> d_in1 = { 0,1,1,0 };
-  mat4<int> d_ans = { 0,1,1,0,0,3,3,0,0,5,5,0,0,7,7,0 };
+  mat4<int> d_ans = { 0,0,0,0,1,3,5,7,1,3,5,7,0,0,0,0 };
   auto d_result = mul(d_in0,d_in1);
   CHECK(d_ans == d_result);
 }
 
-#if 0
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") {
   // A
-  matrix<double,2,3> a_in0 = { 3,0,3,1,1,0 };
-  matrix<double,3,2> a_in1 = { 4,4,0,1,4,1 };
-  matrix<double,2,2> a_ans = { 24,15,4,5};
-  auto a_result = multiply(a_in0,a_in1);
+  basic_matrix<double,2,3> a_in0 = { 3,1,0,1,3,0 };
+  basic_matrix<double,3,2> a_in1 = { 4,0,4,4,1,1 };
+  basic_matrix<double,2,2> a_ans = { 24,4,15,5 };
+  auto a_result = mul(a_in0,a_in1);
   CHECK(a_ans == a_result);
 
   // B (symbol algebra not implemented)
@@ -200,17 +199,16 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") 
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 148") {
   // A
-  matrix<double,2,3> a_in0 = { 3,4,0,0,4,1 };
-  matrix<double,3,3> a_in1 = { 2,-1,2,4,0,0,0,1,1 };
-  matrix<double,2,3> a_ans = { 22,-3,6,16,1,1 };
-  auto a_result = multiply(a_in0,a_in1);
+  basic_matrix<double,2,3> a_in0 = { 3,0,4,4,0,1 };
+  basic_matrix<double,3,3> a_in1 = { 2,4,0,-1,0,1,2,0,1 };
+  basic_matrix<double,2,3> a_ans = { 22,16,-3,1,6,1 };
+  auto a_result = mul(a_in0,a_in1);
   CHECK(a_result == a_ans);
 
   // B
-  matrix<double,2,2> b_in0 = { 1,1,1,2 };
-  matrix<double,2,2> b_in1 = { 3,2,0,1 };
-  matrix<double,2,2> b_ans = { 3,3,3,4 };
-  auto b_result = multiply(b_in0,b_in1);
+  basic_matrix<double,2,2> b_in0 = { 1,1,1,2 };
+  basic_matrix<double,2,2> b_in1 = { 3,0,2,1 };
+  basic_matrix<double,2,2> b_ans = { 3,3,3,4 };
+  auto b_result = mul(b_in0,b_in1);
   CHECK(b_result == b_ans);
 }
-#endif
