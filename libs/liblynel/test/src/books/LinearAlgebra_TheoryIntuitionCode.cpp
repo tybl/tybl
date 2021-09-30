@@ -186,13 +186,12 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 62") {
   CHECK(d_ans == d_result);
 }
 
-#if 0
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") {
   // A
-  matrix<double,2,3> a_in0 = { 3,0,3,1,1,0 };
-  matrix<double,3,2> a_in1 = { 4,4,0,1,4,1 };
-  matrix<double,2,2> a_ans = { 24,15,4,5};
-  auto a_result = multiply(a_in0,a_in1);
+  basic_matrix<double,2,3> a_in0 = { 3,1,0,1,3,0 };
+  basic_matrix<double,3,2> a_in1 = { 4,0,4,4,1,1 };
+  basic_matrix<double,2,2> a_ans = { 24,4,15,5 };
+  auto a_result = mul(a_in0,a_in1);
   CHECK(a_ans == a_result);
 
   // B (symbol algebra not implemented)
@@ -200,17 +199,16 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") 
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 148") {
   // A
-  matrix<double,2,3> a_in0 = { 3,4,0,0,4,1 };
-  matrix<double,3,3> a_in1 = { 2,-1,2,4,0,0,0,1,1 };
-  matrix<double,2,3> a_ans = { 22,-3,6,16,1,1 };
-  auto a_result = multiply(a_in0,a_in1);
+  basic_matrix<double,2,3> a_in0 = { 3,0,4,4,0,1 };
+  basic_matrix<double,3,3> a_in1 = { 2,4,0,-1,0,1,2,0,1 };
+  basic_matrix<double,2,3> a_ans = { 22,16,-3,1,6,1 };
+  auto a_result = mul(a_in0,a_in1);
   CHECK(a_result == a_ans);
 
   // B
-  matrix<double,2,2> b_in0 = { 1,1,1,2 };
-  matrix<double,2,2> b_in1 = { 3,2,0,1 };
-  matrix<double,2,2> b_ans = { 3,3,3,4 };
-  auto b_result = multiply(b_in0,b_in1);
+  basic_matrix<double,2,2> b_in0 = { 1,1,1,2 };
+  basic_matrix<double,2,2> b_in1 = { 3,0,2,1 };
+  basic_matrix<double,2,2> b_ans = { 3,3,3,4 };
+  auto b_result = mul(b_in0,b_in1);
   CHECK(b_result == b_ans);
 }
-#endif

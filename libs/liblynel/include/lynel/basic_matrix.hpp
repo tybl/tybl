@@ -132,8 +132,8 @@ template <typename T, size_t M, size_t N> constexpr auto sub(basic_matrix<T,M,N>
 template <typename T, size_t M, size_t N> constexpr auto mul(T s, basic_matrix<T,M,N> v) -> basic_matrix<T,M,N> { return v *= s; }
 template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> v, T s) -> basic_matrix<T,M,N> { return v *= s; }
 template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,1> const& l, cvec<T,1> const& r) -> cvec<T,M> { return mul(l,r.x); }
-template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,2> const& l, cvec<T,2> const& r) -> cvec<T,M> { return l.x*r.x + l.y*r.y; }
-template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,3> const& l, cvec<T,3> const& r) -> cvec<T,M> { return l.x*r.x + l.y*r.y + l.z*r.z; }
+template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,2> const& l, cvec<T,2> const& r) -> cvec<T,M> { return add(mul(l.x,r.x),mul(l.y,r.y)); }
+template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,3> const& l, cvec<T,3> const& r) -> cvec<T,M> { return add(add(mul(l.x,r.x),mul(l.y,r.y)),mul(l.z,r.z)); }
 template <typename T, size_t M> constexpr auto mul(basic_matrix<T,M,4> const& l, cvec<T,4> const& r) -> cvec<T,M> { return l.x*r.x + l.y*r.y + l.z*r.z + l.w*r.w; }
 template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,2> const& r) -> basic_matrix<T,M,2> { return {mul(l,r.x), mul(l,r.y)}; }
 template <typename T, size_t M, size_t N> constexpr auto mul(basic_matrix<T,M,N> const& l, basic_matrix<T,N,3> const& r) -> basic_matrix<T,M,3> { return {mul(l,r.x), mul(l,r.y), mul(l,r.z)}; }
