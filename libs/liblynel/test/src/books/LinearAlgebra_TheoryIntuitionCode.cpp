@@ -187,9 +187,34 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 62") {
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 64") {
+  //cvec3<int> a_in0 = { 1,3,2 };
+  //cvec3<int> a_in1 = { -1,1,-2 };
+  //cvec3<int> a_ans = { -1,3,-4 };
+  //auto a_result = emul(a_in0,a_in1);
+  //CHECK(a_ans == a_result);
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 65") {
+  // A
+  cvec3<int> a_in0 = { 5,3,4 };
+  cvec3<int> a_in1 = { -2,1,-1 };
+  cvec3<int> a_ans = { -7,-3,11 };
+  auto a_result = a_in0.cross(a_in1);
+  CHECK(a_ans == a_result);
+
+  // B
+  cvec3<int> b_in0 = { 1,1,1 };
+  cvec3<int> b_in1 = { 2,2,2 };
+  cvec3<int> b_ans = { 0,0,0 };
+  auto b_result = b_in0.cross(b_in1);
+  CHECK(b_ans == b_result);
+
+  // C
+  cvec3<int> c_in0 = { 1,0,0 };
+  cvec3<int> c_in1 = { 0,1,0 };
+  cvec3<int> c_ans = { 0,0,1 };
+  auto c_result = c_in0.cross(c_in1);
+  CHECK(c_ans == c_result);
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 67") {
@@ -211,6 +236,19 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 112") 
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 126") {
+  // A
+  mat2<int> a_in0 = { 1,2,1,3 };
+  mat2<int> a_in1 = { 4,2,3,1 };
+  mat2<int> a_ans = { 5,4,4,4 };
+  auto a_result = a_in0 + a_in1;
+  CHECK(a_ans == a_result);
+
+  // B
+  basic_matrix<int,3,2> b_in0 = { 0,-4,-3,5,6,0 };
+  basic_matrix<int,3,2> b_in1 = { 0,1,1,1,1,0 };
+  basic_matrix<int,3,2> b_ans = { 0,-3,-2,6,7,0 };
+  auto b_result = b_in0 + b_in1;
+  CHECK(b_ans == b_result);
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 128") {
