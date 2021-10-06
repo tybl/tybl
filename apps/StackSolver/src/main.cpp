@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#include "AStarSearch.hpp"
 #include "Executor.hpp"
 
 #include <chrono>
