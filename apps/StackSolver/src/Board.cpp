@@ -143,8 +143,8 @@ auto Board::is_valid(Edge const& e) const -> bool {
   if (e.StackFrom == e.StackTo) { return false; }
   if (m_contents.at(e.StackFrom).empty()) { return false; }
   if (is_full(m_contents.at(e.StackTo))) { return false; }
-  if (m_contents.at(e.StackTo).empty()) { return true; }
   if (is_full_and_homogeneous(m_contents[e.StackFrom])) { return false; }
+  if (m_contents.at(e.StackTo).empty()) { return true; }
   return m_contents[e.StackTo].back() == m_contents[e.StackFrom].back();
 }
 
