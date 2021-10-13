@@ -49,6 +49,8 @@ public:
 
   auto operator<(Board const& o) const -> bool;
 
+  auto num_found() const -> size_t override;
+
 private:
 
   void apply(Edge const& e);

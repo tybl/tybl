@@ -3,6 +3,7 @@
 #include "Executor.hpp"
 
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 
 auto main(int argc, char const* argv[]) -> int {
@@ -14,7 +15,8 @@ auto main(int argc, char const* argv[]) -> int {
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed_seconds = end-start;
     if (nullptr != solution) {
-      std::cout << "Took " << elapsed_seconds.count() << "s to solve\n";
+      std::cout << std::fixed << std::setprecision(8) << elapsed_seconds.count()
+                << "," << solution->num_found() << "\n";
       solution->print_steps();
     }
   }
