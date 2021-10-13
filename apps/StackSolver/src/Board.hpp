@@ -51,7 +51,7 @@ public:
 
   auto num_found() const -> size_t override;
 
-private:
+public:
 
   void apply(Edge const& e);
   static auto count_suffix_matching(std::string const& s, char c) -> size_t;
