@@ -77,9 +77,10 @@ auto Board::operator+(Edge const& e) const -> INode const* {
 }
 
 void Board::print() const {
-  std::cout << "d: " << distance() << ", p(): " << priority() << std::endl;
+  std::cout << "\nd: " << distance() << ", p(): " << priority();
   size_t height = m_stats->m_max_stack_height;
   for (size_t i = 0; i < height; ++i) {
+    std::cout << '\n';
     size_t r = (height - 1) - i;
     for (auto const& c : m_contents) {
       if (r < c.size()) {
@@ -88,16 +89,16 @@ void Board::print() const {
         std::cout << ' ';
       }
     }
-    std::cout << '\n';
   }
+}
+
+size_t Board::num_found() const {
+  return m_stats->m_boards.size();
 }
 
 void Board::print_steps() const {
   if (nullptr != m_parent) {
     m_parent->print_steps();
-    std::cout << '\n';
-  } else {
-    std::cout << "Found " << m_stats->m_boards.size() << " nodes\n";
   }
   print();
 
@@ -143,8 +144,8 @@ auto Board::is_valid(Edge const& e) const -> bool {
   if (e.StackFrom == e.StackTo) { return false; }
   if (m_contents.at(e.StackFrom).empty()) { return false; }
   if (is_full(m_contents.at(e.StackTo))) { return false; }
-  if (m_contents.at(e.StackTo).empty()) { return true; }
   if (is_full_and_homogeneous(m_contents[e.StackFrom])) { return false; }
+  if (m_contents.at(e.StackTo).empty()) { return true; }
   return m_contents[e.StackTo].back() == m_contents[e.StackFrom].back();
 }
 

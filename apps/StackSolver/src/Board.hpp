@@ -49,7 +49,9 @@ public:
 
   auto operator<(Board const& o) const -> bool;
 
-private:
+  auto num_found() const -> size_t override;
+
+public:
 
   void apply(Edge const& e);
   static auto count_suffix_matching(std::string const& s, char c) -> size_t;
