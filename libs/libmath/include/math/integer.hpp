@@ -66,7 +66,7 @@ struct basic_unsigned_integer {
    basic_unsigned_integer& operator+=(const basic_unsigned_integer& other) {
       larger_uint carry = 0;
       for (size_t i = 0; i < size; ++i) {
-         carry = add_at_index(i, carry + other.mantissa[i]);
+         carry = add_at_index(i, static_cast<larger_uint>(carry + other.mantissa[i]));
       }
       if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
       return *this;
@@ -76,9 +76,9 @@ struct basic_unsigned_integer {
       for (size_t i = 0; i < size; ++i) {
          TYPE temp = mantissa[i];
          bool underflow = (temp < carry);
-         temp -= carry;
+         temp = static_cast<TYPE>(temp - carry);
          underflow |= (temp < other.mantissa[i]);
-         mantissa[i] = temp - other.mantissa[i];
+         mantissa[i] = static_cast<TYPE>(temp - other.mantissa[i]);
          carry = static_cast<TYPE>(underflow);
       }
       return *this;
@@ -88,7 +88,7 @@ struct basic_unsigned_integer {
       for (size_t i = 0; i < size; ++i) {
          larger_uint overflow = multiply_at_index(i, other);
          if (0 != carry) {
-            overflow += add_at_index(i, carry);
+            overflow = static_cast<larger_uint>(overflow + add_at_index(i, carry));
          }
          carry = overflow;
       }
@@ -139,7 +139,7 @@ struct basic_unsigned_integer {
          TYPE carry = 0;
          for (size_t i = whole_shifts; i < size; ++i) {
             TYPE temp = mantissa[i];
-            TYPE overflow = temp >> overflow_shift;
+            TYPE overflow = static_cast<TYPE>(temp >> overflow_shift);
             mantissa[i] = static_cast<TYPE>((temp << limb_shift) | carry);
             carry = overflow;
          }
@@ -173,12 +173,12 @@ struct basic_unsigned_integer {
    }
 private:
    TYPE multiply_at_index(size_t index, larger_uint value) {
-      larger_uint result = value * mantissa[index];
+      larger_uint result = static_cast<larger_uint>(value * mantissa[index]);
       mantissa[index] = static_cast<TYPE>(result & limb_mask);
       return static_cast<TYPE>(result >> binary_digits);
    }
    TYPE add_at_index(size_t index, larger_uint value) {
-      larger_uint result = value + mantissa[index];
+      larger_uint result = static_cast<larger_uint>(value + mantissa[index]);
       mantissa[index] = static_cast<TYPE>(result & limb_mask);
       return static_cast<TYPE>(result >> binary_digits);
    }

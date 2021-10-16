@@ -3,6 +3,9 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
+message(${CMAKE_CXX_COMPILER_VERSION})
+if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "10.1")
+
 add_library(stacksolvelib)
 target_compile_features(stacksolvelib PUBLIC cxx_std_20) # 20: std::set::emplace()
 target_compile_options(stacksolvelib PUBLIC -Wall -Wextra -Wpedantic)
@@ -18,3 +21,8 @@ target_link_libraries(stacksolve PRIVATE stacksolvelib)
 target_sources(stacksolve PRIVATE src/main.cpp)
 
 add_subdirectory(test)
+
+else()
+  message(STATUS "StackSolver requires std::range")
+  message(WARNING "Install gcc 10.1 or greater")
+endif()
