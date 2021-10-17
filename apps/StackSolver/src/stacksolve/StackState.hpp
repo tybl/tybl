@@ -5,6 +5,8 @@
 
 #include "vodka/dynarray2D.hpp"
 
+#include <vector>
+
 namespace tybl::stacksolve {
 
 class StackState {
