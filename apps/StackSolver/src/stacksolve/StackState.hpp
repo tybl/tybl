@@ -50,6 +50,7 @@ public:
   }
 
   auto get_adjacent() const -> std::vector<StackState> {
+    // TODO
     return std::vector<StackState>();
   }
 
