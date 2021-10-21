@@ -23,6 +23,7 @@ struct Board
   std::vector<std::string> m_contents;
   size_t m_priority;
   std::shared_ptr<SharedStats> m_stats;
+  size_t m_id;
   mutable Board const* m_parent;
   mutable size_t m_distance;
 public:

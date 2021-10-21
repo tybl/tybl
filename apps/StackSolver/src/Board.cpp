@@ -11,6 +11,7 @@
 Board::Board(std::istream& input)
   : m_priority(0)
   , m_stats(std::make_shared<SharedStats>())
+  , m_id(0)
   , m_parent(nullptr)
   , m_distance(0)
 {
@@ -35,6 +36,7 @@ Board::Board(Board const& o, Edge const& e)
   : m_contents(o.m_contents)
   , m_priority(0)
   , m_stats(o.m_stats)
+  , m_id(m_stats->m_boards.size())
   , m_parent(&o)
   , m_distance(o.m_distance + 1)
 {
@@ -60,6 +62,7 @@ auto Board::generate_steps() const -> std::vector<Edge> {
       }
     }
   }
+  //std::cout << m_id << "\t: " << m_stats->m_boards.size() << "\t: " << result.size() << "\t: " << distance() << "\n";
   return result;
 }
 
