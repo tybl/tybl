@@ -6,12 +6,14 @@ cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 message(${CMAKE_CXX_COMPILER_VERSION})
 if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "10.1")
 
+	#[[
 add_executable(find_all)
 target_compile_features(find_all PUBLIC cxx_std_20) # 20: std::set::emplace(), std::ranges
 target_sources(find_all
   PRIVATE
     src/find_all.cpp
 )
+]]
 
 add_library(stacksolvelib)
 target_compile_features(stacksolvelib PUBLIC cxx_std_20) # 20: std::set::emplace()
