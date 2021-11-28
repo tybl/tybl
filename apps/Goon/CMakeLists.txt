@@ -3,13 +3,27 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13)
 
+find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+if(SFML_FOUND)
+
+  add_executable(sfml_goon)
+  target_include_directories(sfml_goon PUBLIC src)
+  target_link_libraries(sfml_goon PRIVATE sfml-graphics)
+  target_sources(sfml_goon
+    PRIVATE
+      src/sfml_main.cpp
+  )
+
+else()
+endif()
+
 find_package(SDL2 QUIET)
 if(SDL2_FOUND)
 
-  add_executable(goon)
-  target_include_directories(goon PUBLIC src)
-  target_link_libraries(goon SDL2)
-  target_sources(goon
+  add_executable(sdl2_goon)
+  target_include_directories(sdl2_goon PUBLIC src)
+  target_link_libraries(sdl2_goon SDL2)
+  target_sources(sdl2_goon
     PRIVATE
       src/Dispatcher.cpp
       src/Widget.cpp
@@ -18,6 +32,6 @@ if(SDL2_FOUND)
   )
 
 else()
-  message("Note: SDL2 not found; cannot build Goon.")
-  message("Install SDL2 if you want to build Goon.")
+  message(STATUS "Goon requires SDL2")
+  message(WARNING "Install SDL2")
 endif()

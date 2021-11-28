@@ -3,7 +3,6 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
-message(${CMAKE_CXX_COMPILER_VERSION})
 if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "10.1")
 
 	#[[
