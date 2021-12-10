@@ -16,7 +16,7 @@ TEST_CASE("matrix::operator==()") {
   CHECK(!(b == d));
 }
 
-TEST_CASE("aggregate initialization and correct positional assignment of values") {
+TEST_CASE("aggregate initialization and correct positional assignment of values") { // NOLINT
   matrix<double,3,3> m = { 0,1,2,3,4,5,6,7,8 };
   CHECK(m(0,0) == 0.0);
   CHECK(m(0,1) == 1.0);

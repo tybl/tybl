@@ -8,8 +8,9 @@
 namespace tybl::coord {
 
 auto lla_t::to_ecef() const -> ecef_t {
+  static_cast<void>(this);
   // TODO(tybl): Implement this function
-  throw std::runtime_error(__func__);
+  throw std::runtime_error(__func__); // NOLINT`
 }
 
 auto lla_t::latitude() const -> double {

@@ -10,7 +10,7 @@ namespace tybl::graph {
 
 template <typename Node>
 struct AStarSearch {
-  using Iter = std::set<Node>::iterator;
+  using Iter = typename std::set<Node>::iterator;
   std::set<Node>    m_found;
   std::vector<Iter> m_work_queue;
 public:

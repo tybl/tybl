@@ -9,6 +9,7 @@ frd_t::frd_t(double f, double r, double d)
   : frd({f, r, d}) { }
 
 auto frd_t::to_ecef(ecef_t const& ref_pos, lynel::quaternion const& /*ref_rot*/) const -> ecef_t {
+  static_cast<void>(this);
   // TODO(tybl)
   //return ecef_t(ref_rot * frd + static_cast<lynel::vec3d>(ref_pos));
   return ref_pos;

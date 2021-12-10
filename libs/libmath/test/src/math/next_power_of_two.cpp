@@ -3,7 +3,7 @@
 
 #include "doctest/doctest.h"
 
-TEST_CASE_TEMPLATE("Try some values", T, char, short, int, long) {
+TEST_CASE_TEMPLATE("Try some values", T, char, short, int, long) { // NOLINT
   CHECK(static_cast<T>(0) == tybl::math::next_power_of_two<T>(static_cast<T>(0)));
   CHECK(static_cast<T>(0) == tybl::math::next_power_of_two<T>(static_cast<T>(-1)));
   CHECK(static_cast<T>(1) == tybl::math::next_power_of_two<T>(static_cast<T>(1)));

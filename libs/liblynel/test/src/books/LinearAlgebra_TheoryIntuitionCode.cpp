@@ -5,7 +5,7 @@
 
 #include <doctest/doctest.h>
 
-#include <math.h> // M_PI
+#include <cmath> // M_PI
 
 using namespace tybl::lynel;
 
@@ -30,7 +30,7 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 29") {
   CHECK(!tybl::vodka::is_same<decltype(c),decltype(d)>::value);
 }
 
-TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") {
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") { //NOLINT
   // A
   rvec4<double> a_in0 = { 4,5,1,0 };
   rvec4<double> a_in1 = { -4,-3,3,10 };
@@ -97,7 +97,7 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 36") {
   // D (symbol algebra not implemented)
 }
 
-TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 50") {
+TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 50") { // NOLINT
   // A
   cvec2<int> a_in0 = { -4,-2 };
   cvec2<int> a_in1 = { 1,3 };

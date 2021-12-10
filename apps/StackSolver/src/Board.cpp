@@ -81,7 +81,7 @@ auto Board::operator+(Edge const& e) const -> INode const* {
 
 void Board::print() const {
   std::cout << "\nd: " << distance() << ", p(): " << priority();
-  size_t height = m_stats->m_max_stack_height;
+  const size_t height = m_stats->m_max_stack_height;
   for (size_t i = 0; i < height; ++i) {
     std::cout << '\n';
     size_t r = (height - 1) - i;
