@@ -18,6 +18,7 @@
 ### Interesting
 * [Good commit messages](https://lazau.com/articles/good_commit_messages.html)
 * [You Don't Need Loops](https://github.com/you-dont-need/You-Dont-Need-Loops)
+* [Trunk Base Development](https://trunkbaseddevelopment.com/)
 
 ## Libraries
 
