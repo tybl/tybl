@@ -3,7 +3,7 @@
 ################################################################################
 cmake_minimum_required(VERSION 3.13)
 
-find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+find_package(SFML 2.5 COMPONENTS graphics audio QUIET)
 if(SFML_FOUND)
 
   add_executable(sfml_goon)

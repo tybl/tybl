@@ -18,7 +18,7 @@ ecef_t::operator lynel::cvec3<double>() const {
 auto ecef_t::to_lla() const -> lla_t {
   // TODO(tybl): Implement this function
   static_cast<void>(this);
-  throw std::runtime_error(__func__);
+  throw std::runtime_error(__func__); // NOLINT
 }
 
 auto ecef_t::x() const -> double {

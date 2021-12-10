@@ -18,7 +18,7 @@ auto rae_t::to_frd() const -> frd_t {
   const auto f = std::sin(mAzimuth) * hyp;
   const auto r = std::cos(mAzimuth) * hyp;
   const auto d = std::sin(mElevation) * mRange;
-  return frd_t(f, r, d);
+  return { f, r, d };
 }
 
 auto rae_t::range() const -> double {

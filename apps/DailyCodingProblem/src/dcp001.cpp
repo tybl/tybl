@@ -26,7 +26,7 @@
 #include <vector>
 
 template <typename Type, typename Iter>
-bool dcp001(Type k, Iter beg, Iter end) {
+auto dcp001(Type k, Iter beg, Iter end) -> bool {
   std::vector<Type> values;
   while (beg != end) {
     if (std::binary_search(values.begin(), values.end(), k - *beg)) {
@@ -38,7 +38,7 @@ bool dcp001(Type k, Iter beg, Iter end) {
   return false;
 }
 
-int main() {
+auto main() -> int {
   std::vector<int> input = { 10, 15, 3, 7 };
   assert(dcp001(17, input.begin(), input.end()));
   std::vector<int> test_input = { 10, 15, 3, 6 };

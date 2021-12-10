@@ -4,11 +4,22 @@
 # - 'fuchsia-trailing-return': This check is at odds with the 'modernize-use-trailing-return-type' check
 # - 'llvm-header-guard': I like the concept of this check, but it vacillates between requiring full and relative paths
 # - 'llvmlibc-restrict-system-libc-headers': There's no need to restrict system headers
-Checks:         '*,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers'
-WarningsAsErrors: ''
-HeaderFilterRegex: ''
+Checks:         '*,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-altera-unroll-loops,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-altera-struct-pack-align'
+#Checks:           '-*,readability-identifier-naming'
+#WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
 FormatStyle:     file
 CheckOptions:
+  - key:             readability-identifier-naming.AbstractClassCase
+    value:           'lower_case'
+  - key:             readability-identifier-naming.ClassCase
+    value:           'lower_case'
+  - key:             readability-identifier-naming.ClassPrefix
+    value:           ''
+  - key:             readability-identifier-naming.StructCase
+    value:           'lower_case'
+  - key:             readability-identifier-naming.StructPrefix
+    value:           ''
   - key:             readability-redundant-access-specifiers.CheckFirstDeclaration
     value:           '1'
 ...

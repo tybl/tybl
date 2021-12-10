@@ -11,7 +11,7 @@ TEST_CASE("fixed_point_t") {
    CHECK(fp.significand() == 101234);
 }
 
-TEST_CASE("fixed_point_t::operator+=()") {
+TEST_CASE("fixed_point_t::operator+=()") { // NOLINT
    tybl::math::fixed_point_t<std::ratio<1, 10000>> a(1.2345);
    tybl::math::fixed_point_t<std::ratio<1, 10000>> b(5.4321);
    CHECK(a.whole_number() == 1);

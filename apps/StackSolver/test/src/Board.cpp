@@ -13,7 +13,7 @@ TEST_CASE("Board"){
     "12300\n"
   );
   Board b(input);
-  Edge e(0,3);
+  Edge e{0,3};
   CHECK(!b.is_valid(e));
   auto steps = b.generate_steps();
   CHECK(steps.size() == 0UL);

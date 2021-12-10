@@ -6,6 +6,7 @@
 namespace tybl::coord {
 
 auto ned_t::to_ecef(ecef_t const& ref_pos) const -> ecef_t {
+  static_cast<void>(this);
   return ref_pos;
 }
 

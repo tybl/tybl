@@ -5,7 +5,7 @@
 # TODO: Does it make sense not to enable linters on release builds?
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#find_program(CLANG_TIDY_EXE clang-tidy)
+find_program(CLANG_TIDY_EXE clang-tidy)
 if(CLANG_TIDY_EXE)
   message(STATUS "Found clang-tidy")
   #set_target_properties(compiler_settings PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-p=${CMAKE_BINARY_DIR}")

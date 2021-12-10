@@ -47,7 +47,7 @@ TEST_CASE("tybl::math::basic_unsigned_integer::performance::for_loop") {
              << "us." << std::endl;
 }
 
-TEST_CASE("tybl::math::basic_unsigned_integer comparisons") {
+TEST_CASE("tybl::math::basic_unsigned_integer comparisons") { // NOLINT
    using uint56_t = tybl::math::uint56;
    size_t a = 0;
    for (uint56_t i = 0UL; i < 1000UL; ++i) {
