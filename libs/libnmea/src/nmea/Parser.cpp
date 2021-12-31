@@ -194,7 +194,7 @@ void Parser::readSentence(std::string cmd) {
 
   onInfo(nmea, std::string("NMEA string: (\"") + cmd + "\")");
 
-  // Seperates the data now that everything is formatted
+  // Separates the data now that everything is formatted
   try {
     parseText(nmea, cmd);
   } catch (ParseError&) {

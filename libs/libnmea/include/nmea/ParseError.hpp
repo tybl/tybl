@@ -11,7 +11,7 @@ struct ParseError
   : public std::exception
 {
   std::string message;
-  Sentence nmea;
+//  Sentence nmea;
 public:
 
   ParseError(std::string msg);

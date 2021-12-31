@@ -5,7 +5,7 @@ namespace nmea {
 // TODO(tybl): Two string copies is unnecessary
 ParseError::ParseError(std::string msg) : message(msg) {}
 
-ParseError::ParseError(std::string msg, Sentence n) : message(msg), nmea(n) {}
+ParseError::ParseError(std::string msg, Sentence n) : message(msg)/*, nmea(n)*/ {}
 
 ParseError::~ParseError() = default;
 

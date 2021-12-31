@@ -5,10 +5,70 @@
 
 #include <cstdint>
 #include <functional>
+#include <numeric>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 
 namespace nmea {
+
+class GpggaSentence {
+  std::string m_utc;
+  std::string m_lat;
+  std::string m_lat_dir;
+  std::string m_lon;
+  std::string m_lon_dir;
+  std::string m_quality;
+  std::string m_num_satellites;
+  std::string m_horizontal_dilution;
+  std::string m_altitude;
+  std::string m_altitude_units;
+  std::string m_undulation;
+  std::string m_undulation_units;
+  std::string m_age;
+  std::string m_station_id;
+  std::string m_checksum;
+public:
+  uint8_t m_calc_checksum;
+}; // class GpgaaSentence
+
+class SentenceParser {
+  std::unordered_map<std::string_view, std::function<void(Sentence)>> m_parsers;
+public:
+
+  void read(std::string sentence) {
+    std::string_view sv = sentence;
+    GpggaSentence sen10ce;
+    auto checksum_pos = sv.find_last_of('*');
+    bool has_checksum = checksum_pos != std::string_view::npos;
+    if (has_checksum) {
+      sen10ce.m_calc_checksum = calculate_checksum(sv.substr(0,checksum_pos));
+    }
+  }
+
+private:
+  static uint8_t calculate_checksum(std::string_view sv) {
+    return std::accumulate(sv.begin(), sv.end(), 0, [](char a, char b) -> bool { return a ^ b; });
+  }
+}; // class Sentence Parser
+
+// Takes a stream of bytes and breaks them into NMEA sentences
+class StreamParser {
+  SentenceParser m_sentence_parser;
+  std::string m_buffer;
+public:
+
+  void read(char b) {
+    m_buffer.push_back(b);
+    if ('\n' == m_buffer.back()) {
+      m_sentence_parser.read(std::move(m_buffer));
+      m_buffer.clear();
+    } else if (82 < m_buffer.size()) {
+      m_buffer.clear();
+    }
+  }
+
+}; // class Parser2
 
 class Parser {
   std::unordered_map<std::string, std::function<void(Sentence)>> eventTable;
