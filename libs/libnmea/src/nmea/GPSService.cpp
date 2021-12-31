@@ -2,8 +2,6 @@
 
 #include "gps/Satellite.hpp"
 #include "nmea/ParseError.hpp"
-#include "nmea/NumberConversion.hpp"
-#include "nmea/NumberConversionError.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -14,7 +12,7 @@ namespace nmea {
 // Takes the NMEA lat/long format (dddmm.mmmm, [N/S,E/W]) and converts to degrees N,E only
 static double convertLatLongToDeg(std::string llstr, std::string dir) {
 
-  double pd = parseDouble(llstr);
+  double pd = std::stod(llstr);
   double deg = trunc(pd / 100);   //get ddd from dddmm.mmmm
   double mins = pd - deg * 100;
 
@@ -126,7 +124,7 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
     }
 
     // TIMESTAMP
-    this->fix.timestamp.setTime(parseDouble(nmea.parameters[0]));
+    this->fix.timestamp.setTime(std::stod(nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -147,7 +145,7 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
 
     // FIX QUALITY
     bool lockupdate = false;
-    this->fix.quality = (uint8_t)parseInt(nmea.parameters[5]);
+    fix.quality = static_cast<uint8_t>(std::stoul(nmea.parameters[5]));
     if (this->fix.quality == 0) {
       lockupdate = this->fix.set_lock(false);
     } else if (this->fix.quality == 1) {
@@ -156,14 +154,14 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
 
 
     // TRACKING SATELLITES
-    this->fix.tracking_satellites = (int32_t)parseInt(nmea.parameters[6]);
+    fix.tracking_satellites = std::stoi(nmea.parameters[6]);
     if (this->fix.visible_satellites < this->fix.tracking_satellites) {
       this->fix.visible_satellites = this->fix.tracking_satellites;    // the visible count is in another sentence.
     }
 
     // ALTITUDE
     if (!nmea.parameters[8].empty()) {
-      this->fix.altitude = parseDouble(nmea.parameters[8]);
+      this->fix.altitude = std::stod(nmea.parameters[8]);
     } else {
       // leave old value
     }
@@ -173,8 +171,8 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
       this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
-  } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPGGA] :: " + ex.what(), nmea);
+  } catch (std::invalid_argument&) {
+    ParseError pe("[$GPGGA] Could not convert string to a number", nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPGGA] :: " + ex.message, nmea);
@@ -217,13 +215,12 @@ void GPSService::read_GPGSA(Sentence const& nmea) {
 
     // FIX TYPE
     bool lockupdate = false;
-    // TODO(tybl): I guess parameter 1 is fix type??
-    uint64_t fixtype = parseInt(nmea.parameters[1]);
-    this->fix.type = (int8_t)fixtype;
-    if (fixtype == 1) {
+    auto fix_type = std::stoul(nmea.parameters[1]);
+    fix.type = static_cast<uint8_t>(fix_type);
+    if (fix_type == 1) {
       std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
       lockupdate = this->fix.set_lock(false);
-    } else if (fixtype == 3) {
+    } else if (fix_type == 3) {
       std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
       lockupdate = this->fix.set_lock(true);
     } else {
@@ -231,17 +228,17 @@ void GPSService::read_GPGSA(Sentence const& nmea) {
     }
 
     // DILUTION OF PRECISION  -- PDOP
-    double dop = parseDouble(nmea.parameters[14]);
+    double dop = std::stod(nmea.parameters[14]);
     this->fix.dilution = dop;
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
 
     // HORIZONTAL DILUTION OF PRECISION -- HDOP
-    double hdop = parseDouble(nmea.parameters[15]);
+    double hdop = std::stod(nmea.parameters[15]);
     this->fix.horizontal_dilution = hdop;
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
 
     // VERTICAL DILUTION OF PRECISION -- VDOP
-    double vdop = parseDouble(nmea.parameters[16]);
+    double vdop = std::stod(nmea.parameters[16]);
     this->fix.vertical_dilution = vdop;
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
 
@@ -251,9 +248,9 @@ void GPSService::read_GPGSA(Sentence const& nmea) {
       this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
-  } catch (NumberConversionError& ex) {
+  } catch (std::invalid_argument&) {
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
-    ParseError pe("GPS Number Bad Format [$GPGSA] :: " + ex.what(), nmea);
+    ParseError pe("[$GPGSA] Could not convert string to number", nmea);
     throw pe;
   } catch (ParseError& ex) {
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
@@ -292,43 +289,40 @@ void GPSService::read_GPGSV(Sentence const& nmea) {
       throw ParseError("Checksum is invalid!");
     }
 
-    // can't do this check because the length varies depending on satallites...
+    // can't do this check because the length varies depending on satellites...
     //if(nmea.parameters.size() < 18) {
     //  throw ParseError("GPS data is missing parameters.");
     //}
 
     // VISIBLE SATELLITES
-    this->fix.visible_satellites = (int32_t)parseInt(nmea.parameters[2]);
+    fix.visible_satellites = std::stoi(nmea.parameters[2]);
     if (this->fix.tracking_satellites == 0) {
       this->fix.visible_satellites = 0;      // if no satellites are tracking, then none are visible!
     }                        // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
 
-    uint32_t totalPages = (uint32_t)parseInt(nmea.parameters[0]);
-    uint32_t currentPage = (uint32_t)parseInt(nmea.parameters[1]);
+    uint32_t total_pages = static_cast<uint32_t>(std::stoul(nmea.parameters[0]));
 
     //if this is the first page, then reset the almanac
-    if (currentPage == 1) {
+    if (1 == std::stoul(nmea.parameters[1])) { // current page
       this->fix.almanac.clear();
-      //cout << "CLEARING ALMANAC" << endl;
     }
 
-    this->fix.almanac.m_total_pages = totalPages;
+    this->fix.almanac.m_total_pages = total_pages;
     this->fix.almanac.m_visible_size = this->fix.visible_satellites;
 
-    int entriesInPage = (nmea.parameters.size() - 3) >> 2;  //first 3 are not satellite info
+    auto entriesInPage = (nmea.parameters.size() - 3) >> 2;  //first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
     gps::Satellite sat;
-    for (int i = 0; i < entriesInPage; i++) {
-      int prop = 3 + i * 4;
+    for (unsigned long i = 0; i < entriesInPage; i++) {
+      auto prop = 3 + i * 4;
 
       // PRN, ELEVATION, AZIMUTH, SNR
-      sat.prn = (uint32_t)parseInt(nmea.parameters[prop]);
-      sat.elevation = (uint32_t)parseInt(nmea.parameters[prop + 1]);
-      sat.azimuth = (uint32_t)parseInt(nmea.parameters[prop + 2]);
-      sat.snr = (uint32_t)parseInt(nmea.parameters[prop + 3]);
+      sat.prn = static_cast<uint32_t>(std::stoul(nmea.parameters[prop]));
+      sat.elevation = static_cast<uint32_t>(std::stoul(nmea.parameters[prop + 1]));
+      sat.azimuth = static_cast<uint32_t>(std::stoul(nmea.parameters[prop + 2]));
+      sat.snr = static_cast<uint32_t>(std::stoul(nmea.parameters[prop + 3]));
 
-      //cout << "ADDING SATELLITE ::" << sat.to_string() << endl;
-      this->fix.almanac.update_satellite(sat);
+      fix.almanac.update_satellite(sat);
     }
 
     this->fix.almanac.m_processed_pages++;
@@ -341,8 +335,8 @@ void GPSService::read_GPGSV(Sentence const& nmea) {
     //cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " << this->fix.almanac.m_total_pages << endl;
     this->onUpdate();
 
-  } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPGSV] :: " + ex.what(), nmea);
+  } catch (std::invalid_argument&) {
+    ParseError pe("[$GPGSV] Could not convert string to number", nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, nmea);
@@ -381,7 +375,7 @@ void GPSService::read_GPRMC(Sentence const& nmea) {
     }
 
     // TIMESTAMP
-    this->fix.timestamp.setTime(parseDouble(nmea.parameters[0]));
+    this->fix.timestamp.setTime(std::stod(nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -415,17 +409,17 @@ void GPSService::read_GPRMC(Sentence const& nmea) {
           this->fix.set_lock(false);    //not A or V, so must be wrong... no lock
     }
 
-    this->fix.speed = convertKnotsToKilometersPerHour(parseDouble(nmea.parameters[6]));    // received as knots, convert to km/h
-    this->fix.travel_angle = parseDouble(nmea.parameters[7]);
-    this->fix.timestamp.setDate((int32_t)parseInt(nmea.parameters[8]));
+    this->fix.speed = convertKnotsToKilometersPerHour(std::stod(nmea.parameters[6]));    // received as knots, convert to km/h
+    this->fix.travel_angle = std::stod(nmea.parameters[7]);
+    fix.timestamp.setDate(std::stoi(nmea.parameters[8]));
 
     //calling handlers
     if (lockupdate) {
       this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
-  } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPRMC] :: " + ex.what(), nmea);
+  } catch (std::invalid_argument&) {
+    ParseError pe("[$GPRMC] Could not convert string to number", nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, nmea);
@@ -458,11 +452,11 @@ void GPSService::read_GPVTG(Sentence const& nmea) {
 
     // SPEED
     // if empty, is converted to 0
-    this->fix.speed = parseDouble(nmea.parameters[6]);    //km/h
+    this->fix.speed = std::stod(nmea.parameters[6]);    //km/h
 
     this->onUpdate();
-  } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPVTG] :: " + ex.what(), nmea);
+  } catch (std::invalid_argument&) {
+    ParseError pe("[$GPVTG] Could not convert string to number", nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, nmea);

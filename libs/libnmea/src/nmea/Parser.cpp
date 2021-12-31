@@ -1,11 +1,11 @@
-#include "nmea/NumberConversion.hpp"
-#include "nmea/NumberConversionError.hpp"
+//#include "nmea/NumberConversionError.hpp"
 #include "nmea/ParseError.hpp"
 #include "nmea/Parser.hpp"
 #include "nmea/Sentence.hpp"
 
-#include <iostream>
 #include <cctype>
+#include <iostream>
+#include <sstream>
 
 #define NMEA_PARSER_MAX_BUFFER_SIZE 2000
 
@@ -370,9 +370,9 @@ void Parser::parseText(Sentence& nmea, std::string txt) {
         onInfo(nmea, std::string("Found checksum. (\"*") + nmea.checksum + "\")");
 
         try {
-          nmea.m_parsed_checksum = (uint8_t)parseInt(nmea.checksum, 16);
+          nmea.m_parsed_checksum = static_cast<uint8_t>(std::stoul(nmea.checksum, nullptr, 16));
           nmea.m_is_checksum_calculated = true;
-        } catch (NumberConversionError&) {
+        } catch (std::invalid_argument&) {
           onError(nmea, std::string("parseInt() error. Parsed checksum string was not readable as hex. (\"") +  nmea.checksum + "\")");
         }
 
