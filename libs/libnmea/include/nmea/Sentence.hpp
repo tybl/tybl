@@ -16,9 +16,9 @@ public:
   std::string name;      //name of the command
   std::vector<std::string> parameters;  //list of parameters from the command
   std::string checksum;
-  bool checksumIsCalculated;
-  uint8_t parsedChecksum;
-  uint8_t calculatedChecksum;
+  bool m_is_checksum_calculated;
+  uint8_t m_parsed_checksum;
+  uint8_t m_calculated_checksum;
 
   enum MessageID {    // These ID's are according to NMEA standard.
     Unknown = -1,
@@ -31,10 +31,13 @@ public:
     ZDA = 8
   };
 public:
+
   Sentence();
+
   virtual ~Sentence();
 
   bool checksumOK() const;
+
   bool valid() const;
 
 }; // class Sentence

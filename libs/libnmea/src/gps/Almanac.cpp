@@ -3,21 +3,20 @@
 namespace gps {
 
 Almanac::Almanac()
-  : lastPage(0)
-  , totalPages(0)
-  , processedPages(0)
+  : m_total_pages(0)
+  , m_processed_pages(0)
 {}
 
 void Almanac::clear() {
-  lastPage = 0;
-  totalPages = 0;
-  processedPages = 0;
-  visibleSize = 0;
+  m_total_pages = 0;
+  m_processed_pages = 0;
+  m_visible_size = 0;
   satellites.clear();
 }
 
-void Almanac::updateSatellite(gps::Satellite sat) {
-  if (satellites.size() > visibleSize)
+void Almanac::update_satellite(gps::Satellite sat) {
+  if (satellites.size() >
+      m_visible_size)
   {  //we missed the new almanac start page, start over.
     clear();
   }
@@ -25,15 +24,15 @@ void Almanac::updateSatellite(gps::Satellite sat) {
   satellites.push_back(sat);
 }
 
-double Almanac::percentComplete() {
-  if (totalPages == 0) {
+double Almanac::percent_complete() {
+  if (m_total_pages == 0) {
     return 0.0;
   }
 
-  return ((double)processedPages) / ((double)totalPages) * 100.0;
+  return static_cast<double>(m_processed_pages) / m_total_pages * 100.0;
 }
 
-double Almanac::averageSNR() {
+double Almanac::average_snr() {
 
   double avg = 0;
   double relevant = 0;
@@ -52,7 +51,7 @@ double Almanac::averageSNR() {
   return avg;
 }
 
-double Almanac::minSNR() {
+double Almanac::min_snr() {
   double min = 9999999;
   if (satellites.empty()) {
     return 0;
@@ -72,7 +71,7 @@ double Almanac::minSNR() {
   return min;
 }
 
-double Almanac::maxSNR() {
+double Almanac::max_snr() {
   double max = 0;
   for (const auto& satellite : satellites) {
     if (satellite.snr > 0) {

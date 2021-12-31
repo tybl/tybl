@@ -19,8 +19,8 @@ class Fix {
 
 private:
 
-  bool m_haslock;
-  bool setlock(bool b);    //returns true if lock status **changed***, false otherwise.
+  bool m_has_lock;
+  bool set_lock(bool b);    //returns true if lock status **changed***, false otherwise.
 
 public:
 
@@ -42,23 +42,23 @@ public:
             //    6 = estimated (dead reckoning) (2.3 feature)
 
   double dilution;          // Combination of Vertical & Horizontal
-  double horizontalDilution;      // Horizontal dilution of precision, initialized to 100, best =1, worst = >20
-  double verticalDilution;      // Vertical is less accurate
+  double horizontal_dilution;      // Horizontal dilution of precision, initialized to 100, best =1, worst = >20
+  double vertical_dilution;      // Vertical is less accurate
 
   double altitude;    // meters
   double latitude;    // degrees N
   double longitude;    // degrees E
   double speed;      // km/h
-  double travelAngle;    // degrees true north (0-360)
-  int32_t trackingSatellites;
-  int32_t visibleSatellites;
+  double travel_angle;    // degrees true north (0-360)
+  int32_t tracking_satellites;
+  int32_t visible_satellites;
 
   bool locked();
-  double horizontalAccuracy();
-  double verticalAccuracy();
-  bool hasEstimate();
+  double horizontal_accuracy();
+  double vertical_accuracy();
+  bool has_estimate();
 
-  std::chrono::seconds timeSinceLastUpdate();  // Returns seconds difference from last timestamp and right now.
+  std::chrono::seconds timeSinceLastUpdate();  // Return seconds difference from last timestamp and right now.
 
   std::string toString();
   operator std::string();

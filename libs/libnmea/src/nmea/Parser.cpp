@@ -1,12 +1,10 @@
+#include "nmea/NumberConversion.hpp"
+#include "nmea/NumberConversionError.hpp"
 #include "nmea/ParseError.hpp"
 #include "nmea/Parser.hpp"
 #include "nmea/Sentence.hpp"
-#include <nmea/Parser.hpp>
-#include <nmea/NumberParse.hpp>
 
-#include <sstream>
 #include <iostream>
-#include <algorithm>
 #include <cctype>
 
 #define NMEA_PARSER_MAX_BUFFER_SIZE 2000
@@ -282,7 +280,7 @@ void Parser::parseText(Sentence& nmea, std::string txt) {
   bool haschecksum = checkstri != std::string::npos;
   if (haschecksum) {
     // A checksum was passed in the message, so calculate what we expect to see
-    nmea.calculatedChecksum = calculateChecksum(txt.substr(0, checkstri));
+    nmea.m_calculated_checksum = calculateChecksum(txt.substr(0, checkstri));
   } else {
     // No checksum is only a warning because some devices allow sending data with no checksum.
     onWarning(nmea, "No checksum information provided. Could not find '*'.");
@@ -372,8 +370,8 @@ void Parser::parseText(Sentence& nmea, std::string txt) {
         onInfo(nmea, std::string("Found checksum. (\"*") + nmea.checksum + "\")");
 
         try {
-          nmea.parsedChecksum = (uint8_t)parseInt(nmea.checksum, 16);
-          nmea.checksumIsCalculated = true;
+          nmea.m_parsed_checksum = (uint8_t)parseInt(nmea.checksum, 16);
+          nmea.m_is_checksum_calculated = true;
         } catch (NumberConversionError&) {
           onError(nmea, std::string("parseInt() error. Parsed checksum string was not readable as hex. (\"") +  nmea.checksum + "\")");
         }

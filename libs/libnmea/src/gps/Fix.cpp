@@ -1,6 +1,6 @@
 #include "gps/Fix.hpp"
 
-#include "gps/Satellite.hpp"
+//#include "gps/Satellite.hpp"
 
 #include <cmath>
 #include <string>
@@ -10,22 +10,22 @@
 namespace gps {
 
 Fix::Fix()
-  : m_haslock(false)
+  : m_has_lock(false)
 {
   quality = 0;  // Searching...
   status = 'V';  // Void
   type = 1;    // 1=none, 2=2d, 3=3d
 
-  dilution = 0;    
-  horizontalDilution = 0;    // Horizontal - Best is 1, >20 is terrible, so 0 means uninitialized
-  verticalDilution = 0;  
+  dilution = 0;
+  horizontal_dilution = 0;    // Horizontal - Best is 1, >20 is terrible, so 0 means uninitialized
+  vertical_dilution = 0;
   latitude = 0;  
   longitude = 0;  
   speed = 0;
-  travelAngle = 0;
+  travel_angle = 0;
   altitude = 0;
-  trackingSatellites = 0;
-  visibleSatellites = 0;
+  tracking_satellites = 0;
+  visible_satellites = 0;
 }
 
 Fix::~Fix() {
@@ -49,32 +49,32 @@ std::chrono::seconds Fix::timeSinceLastUpdate(){
   return std::chrono::seconds((uint64_t)secs);
 }
 
-bool Fix::hasEstimate(){
+bool Fix::has_estimate(){
   return (latitude != 0 && longitude != 0) || (quality == 6);
 }
 
-bool Fix::setlock(bool locked){
-  if (m_haslock != locked){
-    m_haslock = locked;
+bool Fix::set_lock(bool locked){
+  if (m_has_lock != locked){
+    m_has_lock = locked;
     return true;
   }
   return false;
 }
 
 bool Fix::locked(){
-  return m_haslock;
+  return m_has_lock;
 }
 
 // Returns meters
-double Fix::horizontalAccuracy(){
+double Fix::horizontal_accuracy(){
   // horizontal 2drms 95% = 4.0  -- from GPS CHIP datasheets
-  return 4.0 * horizontalDilution;
+  return 4.0 * horizontal_dilution;
 }
 
 // Returns meters
-double Fix::verticalAccuracy(){
+double Fix::vertical_accuracy(){
   // Vertical 2drms 95% = 6.0  -- from GPS CHIP datasheets
-  return 6.0 * verticalDilution;
+  return 6.0 * vertical_dilution;
 }
 
 // Takes a degree travel heading (0-360') and returns the name
@@ -115,7 +115,7 @@ std::string Fix::travelAngleToCompassDirection(double deg, bool abbrev){
     return dirs[r];
   }
   
-};
+}
 
 std::string fixStatusToString(char status){
   switch (status){
@@ -167,8 +167,8 @@ std::string Fix::toString(){
   std::ios_base::fmtflags oldflags = ss.flags();
 
   ss << "========================== GPS FIX ================================" << std::endl
-    << " Status: \t\t" << ((m_haslock) ? "LOCK!" : "SEARCHING...") << std::endl
-    << " Satellites: \t\t" << trackingSatellites << " (tracking) of " << visibleSatellites << " (visible)" << std::endl
+    << " Status: \t\t" << ((m_has_lock) ? "LOCK!" : "SEARCHING...") << std::endl
+    << " Satellites: \t\t" << tracking_satellites << " (tracking) of " << visible_satellites << " (visible)" << std::endl
     << " < Fix Details >" << std::endl
     << "   Age:                " << timeSinceLastUpdate().count() << " s" << std::endl
     << "   Timestamp:          " << timestamp.toString() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
@@ -179,20 +179,21 @@ std::string Fix::toString(){
 
   ss.flags(oldflags);  //reset
 
-  ss << "   DOP (P,H,V):        " << dilution << ",   " << horizontalDilution << ",   " << verticalDilution << std::endl
-    << "   Accuracy(H,V):      " << horizontalAccuracy() << " m,   " << verticalAccuracy() << " m" << std::endl;
+  ss << "   DOP (P,H,V):        " << dilution << ",   " << horizontal_dilution
+     << ",   " << vertical_dilution << std::endl
+    << "   Accuracy(H,V):      " << horizontal_accuracy() << " m,   " << vertical_accuracy() << " m" << std::endl;
 
   ss << "   Altitude:           " << altitude << " m" << std::endl
     << "   Speed:              " << speed << " km/h" << std::endl
-    << "   Travel Dir:         " << travelAngle << " deg  [" << travelAngleToCompassDirection(travelAngle) << "]" << std::endl
-    << "   SNR:                avg: " << almanac.averageSNR() << " dB   [min: " << almanac.minSNR() << " dB,  max:" << almanac.maxSNR() << " dB]" << std::endl;
+    << "   Travel Dir:         " << travel_angle << " deg  [" << travelAngleToCompassDirection(travel_angle) << "]" << std::endl
+    << "   SNR:                avg: " << almanac.average_snr() << " dB   [min: " << almanac.min_snr() << " dB,  max:" << almanac.max_snr() << " dB]" << std::endl;
 
-  ss << " < Almanac (" << almanac.percentComplete() << "%) >" << std::endl;
+  ss << " < Almanac (" << almanac.percent_complete() << "%) >" << std::endl;
   if (almanac.satellites.empty()){
     ss << " > No satellite info in almanac." << std::endl;
   }
   for (size_t i = 0; i < almanac.satellites.size(); i++){
-    ss << "   [" << std::setw(2) << std::setfill(' ') <<  (i + 1) << "]   " << almanac.satellites[i].toString() << std::endl;
+    ss << "   [" << std::setw(2) << std::setfill(' ') <<  (i + 1) << "]   " << almanac.satellites[i].to_string() << std::endl;
   }
 
   return ss.str();

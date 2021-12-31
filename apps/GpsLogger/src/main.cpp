@@ -15,11 +15,11 @@ int main(int argc, char* argv[]) {
     std::cout << "Fix  Sats  Sig\t\tSpeed    Dir  Lat       , Lon           Accuracy" << std::endl;
     // Handle any changes to the GPS Fix... This is called whenever it's updated.
     gps.onUpdate += [&gps](){
-      std::cout << (gps.fix.locked() ? "[*] " : "[ ] ") << std::setw(2) << std::setfill(' ') << gps.fix.trackingSatellites << "/" << std::setw(2) << std::setfill(' ') << gps.fix.visibleSatellites << " ";
-      std::cout << std::fixed << std::setprecision(2) << std::setw(5) << std::setfill(' ') << gps.fix.almanac.averageSNR() << " dB   ";
-      std::cout << std::fixed << std::setprecision(2) << std::setw(6) << std::setfill(' ') << gps.fix.speed << " km/h [" << gps::Fix::travelAngleToCompassDirection(gps.fix.travelAngle, true) << "]  ";
+      std::cout << (gps.fix.locked() ? "[*] " : "[ ] ") << std::setw(2) << std::setfill(' ') << gps.fix.tracking_satellites << "/" << std::setw(2) << std::setfill(' ') << gps.fix.visible_satellites << " ";
+      std::cout << std::fixed << std::setprecision(2) << std::setw(5) << std::setfill(' ') << gps.fix.almanac.average_snr() << " dB   ";
+      std::cout << std::fixed << std::setprecision(2) << std::setw(6) << std::setfill(' ') << gps.fix.speed << " km/h [" << gps::Fix::travelAngleToCompassDirection(gps.fix.travel_angle, true) << "]  ";
       std::cout << std::fixed << std::setprecision(6) << gps.fix.latitude << " " "N, " << gps.fix.longitude << " " "E" << "  ";
-      std::cout << "+/- " << std::setprecision(1) << gps.fix.horizontalAccuracy() << "m  ";
+      std::cout << "+/- " << std::setprecision(1) << gps.fix.horizontal_accuracy() << "m  ";
       std::cout << std::endl;
     };
 

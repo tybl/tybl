@@ -18,7 +18,7 @@ CheckOptions:
   #- key:             readability-identifier-naming.AbstractClassIgnoredRegexp
   #- key:             readability-identifier-naming.AbstractClassHungarianPrefix
   - key:             readability-identifier-naming.ClassCase
-    value:           'lower_case'
+    value:           'CamelCase'
   #- key:             readability-identifier-naming.ClassPrefix
   #- key:             readability-identifier-naming.ClassSuffix
   #- key:             readability-identifier-naming.ClassIgnoredRegexp
@@ -231,7 +231,7 @@ CheckOptions:
   #- key:             readability-identifier-naming.StaticVariableIgnoredRegexp
   #- key:             readability-identifier-naming.StaticVariableHungarianPrefix
   - key:             readability-identifier-naming.StructCase
-    value:           'lower_case'
+    value:           'CamelCase'
   #- key:             readability-identifier-naming.StructPrefix
   #- key:             readability-identifier-naming.StructSuffix
   #- key:             readability-identifier-naming.StructIgnoredRegexp

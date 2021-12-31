@@ -1,5 +1,7 @@
 #include "nmea/NumberConversion.hpp"
 
+#include "nmea/NumberConversionError.hpp"
+
 #include <cstdlib>
 
 namespace nmea {

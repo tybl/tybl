@@ -12,7 +12,7 @@ Satellite::Satellite()
   , azimuth(0)
 {}
 
-std::string Satellite::toString() {
+std::string Satellite::to_string() {
   std::stringstream ss;
 
   ss << "[PRN: " << std::setw(3) << std::setfill(' ') << prn << " "
@@ -25,7 +25,7 @@ std::string Satellite::toString() {
 }
 
 Satellite::operator std::string() {
-  return toString();
+  return to_string();
 }
 
 } // namespace gps

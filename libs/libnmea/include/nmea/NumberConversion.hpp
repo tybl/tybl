@@ -8,21 +8,6 @@
 
 namespace nmea {
 
-class NumberConversionError : public std::exception {
-public:
-  std::string message;
-  NumberConversionError(std::string msg)
-    : message(msg)
-  {};
-
-  virtual ~NumberConversionError()
-  {};
-
-  std::string what(){
-    return message;
-  }
-};
-
 double parseDouble(std::string s);
 int64_t parseInt(std::string s, int radix = 10);
 

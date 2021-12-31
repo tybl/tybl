@@ -51,7 +51,7 @@ time_t Timestamp::getTime() {
   t.tm_mday = day;
   t.tm_hour = hour;
   t.tm_min = min;
-  t.tm_sec = (int)sec;
+  t.tm_sec = static_cast<int>(sec);
   return mktime(&t);
 }
 

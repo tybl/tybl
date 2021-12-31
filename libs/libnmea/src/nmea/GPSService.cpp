@@ -2,7 +2,8 @@
 
 #include "gps/Satellite.hpp"
 #include "nmea/ParseError.hpp"
-#include "nmea/NumberParse.hpp"
+#include "nmea/NumberConversion.hpp"
+#include "nmea/NumberConversionError.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -148,16 +149,16 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
     bool lockupdate = false;
     this->fix.quality = (uint8_t)parseInt(nmea.parameters[5]);
     if (this->fix.quality == 0) {
-      lockupdate = this->fix.setlock(false);
+      lockupdate = this->fix.set_lock(false);
     } else if (this->fix.quality == 1) {
-      lockupdate = this->fix.setlock(true);
+      lockupdate = this->fix.set_lock(true);
     } else {}
 
 
     // TRACKING SATELLITES
-    this->fix.trackingSatellites = (int32_t)parseInt(nmea.parameters[6]);
-    if (this->fix.visibleSatellites < this->fix.trackingSatellites) {
-      this->fix.visibleSatellites = this->fix.trackingSatellites;    // the visible count is in another sentence.
+    this->fix.tracking_satellites = (int32_t)parseInt(nmea.parameters[6]);
+    if (this->fix.visible_satellites < this->fix.tracking_satellites) {
+      this->fix.visible_satellites = this->fix.tracking_satellites;    // the visible count is in another sentence.
     }
 
     // ALTITUDE
@@ -169,11 +170,11 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
 
     //calling handlers
     if (lockupdate) {
-      this->onLockStateChanged(this->fix.m_haslock);
+      this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
   } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPGGA] :: " + ex.message, nmea);
+    ParseError pe("GPS Number Bad Format [$GPGGA] :: " + ex.what(), nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPGGA] :: " + ex.message, nmea);
@@ -221,10 +222,10 @@ void GPSService::read_GPGSA(Sentence const& nmea) {
     this->fix.type = (int8_t)fixtype;
     if (fixtype == 1) {
       std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
-      lockupdate = this->fix.setlock(false);
+      lockupdate = this->fix.set_lock(false);
     } else if (fixtype == 3) {
       std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
-      lockupdate = this->fix.setlock(true);
+      lockupdate = this->fix.set_lock(true);
     } else {
       std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
     }
@@ -236,23 +237,23 @@ void GPSService::read_GPGSA(Sentence const& nmea) {
 
     // HORIZONTAL DILUTION OF PRECISION -- HDOP
     double hdop = parseDouble(nmea.parameters[15]);
-    this->fix.horizontalDilution = hdop;
+    this->fix.horizontal_dilution = hdop;
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
 
     // VERTICAL DILUTION OF PRECISION -- VDOP
     double vdop = parseDouble(nmea.parameters[16]);
-    this->fix.verticalDilution = vdop;
+    this->fix.vertical_dilution = vdop;
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl; //
 
     //calling handlers
     if (lockupdate) {
       std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
-      this->onLockStateChanged(this->fix.m_haslock);
+      this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
   } catch (NumberConversionError& ex) {
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
-    ParseError pe("GPS Number Bad Format [$GPGSA] :: " + ex.message, nmea);
+    ParseError pe("GPS Number Bad Format [$GPGSA] :: " + ex.what(), nmea);
     throw pe;
   } catch (ParseError& ex) {
     std::cerr << "GPSService::read_GPGSA(Sentence const&): " << __LINE__ << std::endl;
@@ -297,9 +298,9 @@ void GPSService::read_GPGSV(Sentence const& nmea) {
     //}
 
     // VISIBLE SATELLITES
-    this->fix.visibleSatellites = (int32_t)parseInt(nmea.parameters[2]);
-    if (this->fix.trackingSatellites == 0) {
-      this->fix.visibleSatellites = 0;      // if no satellites are tracking, then none are visible!
+    this->fix.visible_satellites = (int32_t)parseInt(nmea.parameters[2]);
+    if (this->fix.tracking_satellites == 0) {
+      this->fix.visible_satellites = 0;      // if no satellites are tracking, then none are visible!
     }                        // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
 
     uint32_t totalPages = (uint32_t)parseInt(nmea.parameters[0]);
@@ -311,9 +312,8 @@ void GPSService::read_GPGSV(Sentence const& nmea) {
       //cout << "CLEARING ALMANAC" << endl;
     }
 
-    this->fix.almanac.lastPage = currentPage;
-    this->fix.almanac.totalPages = totalPages;
-    this->fix.almanac.visibleSize = this->fix.visibleSatellites;
+    this->fix.almanac.m_total_pages = totalPages;
+    this->fix.almanac.m_visible_size = this->fix.visible_satellites;
 
     int entriesInPage = (nmea.parameters.size() - 3) >> 2;  //first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
@@ -327,22 +327,22 @@ void GPSService::read_GPGSV(Sentence const& nmea) {
       sat.azimuth = (uint32_t)parseInt(nmea.parameters[prop + 2]);
       sat.snr = (uint32_t)parseInt(nmea.parameters[prop + 3]);
 
-      //cout << "ADDING SATELLITE ::" << sat.toString() << endl;
-      this->fix.almanac.updateSatellite(sat);
+      //cout << "ADDING SATELLITE ::" << sat.to_string() << endl;
+      this->fix.almanac.update_satellite(sat);
     }
 
-    this->fix.almanac.processedPages++;
+    this->fix.almanac.m_processed_pages++;
 
     // 
-    if (this->fix.visibleSatellites == 0) {
+    if (this->fix.visible_satellites == 0) {
       this->fix.almanac.clear();
     }
 
-    //cout << "ALMANAC FINISHED page " << this->fix.almanac.processedPages << " of " << this->fix.almanac.totalPages << endl;
+    //cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " << this->fix.almanac.m_total_pages << endl;
     this->onUpdate();
 
   } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPGSV] :: " + ex.message, nmea);
+    ParseError pe("GPS Number Bad Format [$GPGSV] :: " + ex.what(), nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, nmea);
@@ -407,24 +407,25 @@ void GPSService::read_GPRMC(Sentence const& nmea) {
     }
     this->fix.status = status;
     if (status == 'V') {
-      lockupdate = this->fix.setlock(false);
+      lockupdate = this->fix.set_lock(false);
     } else if (status == 'A') {
-      lockupdate = this->fix.setlock(true);
+      lockupdate = this->fix.set_lock(true);
     } else {
-      lockupdate = this->fix.setlock(false);    //not A or V, so must be wrong... no lock
+      lockupdate =
+          this->fix.set_lock(false);    //not A or V, so must be wrong... no lock
     }
 
     this->fix.speed = convertKnotsToKilometersPerHour(parseDouble(nmea.parameters[6]));    // received as knots, convert to km/h
-    this->fix.travelAngle = parseDouble(nmea.parameters[7]);
+    this->fix.travel_angle = parseDouble(nmea.parameters[7]);
     this->fix.timestamp.setDate((int32_t)parseInt(nmea.parameters[8]));
 
     //calling handlers
     if (lockupdate) {
-      this->onLockStateChanged(this->fix.m_haslock);
+      this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
   } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPRMC] :: " + ex.message, nmea);
+    ParseError pe("GPS Number Bad Format [$GPRMC] :: " + ex.what(), nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, nmea);
@@ -461,7 +462,7 @@ void GPSService::read_GPVTG(Sentence const& nmea) {
 
     this->onUpdate();
   } catch (NumberConversionError& ex) {
-    ParseError pe("GPS Number Bad Format [$GPVTG] :: " + ex.message, nmea);
+    ParseError pe("GPS Number Bad Format [$GPVTG] :: " + ex.what(), nmea);
     throw pe;
   } catch (ParseError& ex) {
     ParseError pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, nmea);
