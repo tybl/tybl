@@ -32,5 +32,4 @@ target_sources(nmea
     include/nmea/Sentence.hpp
 )
 
-# TODO(tybl): Create tests
-#add_subdirectory(test)
+add_subdirectory(test)
