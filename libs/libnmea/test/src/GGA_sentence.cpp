@@ -41,7 +41,15 @@ std::unique_ptr<Sentence> parse_gga(std::istream& in) {
   if (!std::getline(in,value,',')) {
     throw std::runtime_error("Error: Failed to get NMEA GGA UTC time");
   }
-  std::cerr << __LINE__ << ": UTC Time: " << value;
+  std::cerr << __LINE__ << ": UTC Time: " << value << std::endl;
+  if (!std::getline(in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA latitude value");
+  }
+  std::cerr << __LINE__ << ": Latitude: " << value << std::endl;
+  if (!std::getline(in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA N/S Indicator");
+  }
+  std::cerr << __LINE__ << ": N/S Indicator: " << value << std::endl;
   while (std::getline(in,value,',')) {
     std::cerr << __LINE__ << ": " << value << std::endl;
   }
