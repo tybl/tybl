@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Show the final fix information
-    std::cout << gps.fix.toString() << std::endl;
+    std::cout << gps.fix.to_string() << std::endl;
   }
   std::cin.ignore();
 }

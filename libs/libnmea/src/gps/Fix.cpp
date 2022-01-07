@@ -33,7 +33,7 @@ Fix::~Fix() {
 }
 
 // Returns the duration since the Host has received information
-std::chrono::seconds Fix::timeSinceLastUpdate(){
+std::chrono::seconds Fix::time_since_last_update(){
   time_t now = time(NULL);
   struct tm stamp = { 0 };
 
@@ -162,7 +162,7 @@ std::string fixQualityToString(uint8_t quality){
   }
 }
 
-std::string Fix::toString(){
+std::string Fix::to_string(){
   std::stringstream ss;
   std::ios_base::fmtflags oldflags = ss.flags();
 
@@ -170,8 +170,8 @@ std::string Fix::toString(){
     << " Status: \t\t" << ((m_has_lock) ? "LOCK!" : "SEARCHING...") << std::endl
     << " Satellites: \t\t" << tracking_satellites << " (tracking) of " << visible_satellites << " (visible)" << std::endl
     << " < Fix Details >" << std::endl
-    << "   Age:                " << timeSinceLastUpdate().count() << " s" << std::endl
-    << "   Timestamp:          " << timestamp.toString() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
+    << "   Age:                " << time_since_last_update().count() << " s" << std::endl
+    << "   Timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
     << "   Raw Status:         " << status      << "  (" << fixStatusToString(status) << ")" << std::endl
     << "   Type:               " << (int)type    << "  (" << fixTypeToString(type) << ")" << std::endl
     << "   Quality:            " << (int)quality  << "  (" << fixQualityToString(quality) << ")" << std::endl
@@ -200,7 +200,7 @@ std::string Fix::toString(){
 }
 
 Fix::operator std::string(){
-  return toString();
+  return to_string();
 }
 
 } // namespace gps

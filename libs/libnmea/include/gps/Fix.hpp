@@ -58,9 +58,9 @@ public:
   double vertical_accuracy();
   bool has_estimate();
 
-  std::chrono::seconds timeSinceLastUpdate();  // Return seconds difference from last timestamp and right now.
+  std::chrono::seconds time_since_last_update();  // Return seconds difference from last timestamp and right now.
 
-  std::string toString();
+  std::string to_string();
   operator std::string();
 
   static std::string travelAngleToCompassDirection(double deg, bool abbrev = false);

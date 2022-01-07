@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <memory>
-#include <ranges>
+//#include <ranges>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -53,10 +53,11 @@ std::unique_ptr<Sentence> parse_nmea(std::istream& in) {
   if (std::getline(in, value, ',')) {
     if ("$GPGGA" == value) { return parse_gga(in); }
   }
+  return nullptr;
 }
 
 
-std::unique_ptr<Sentence> parse_gga(std::string_view input) {
+std::unique_ptr<Sentence> parse_gga(std::string_view /*input*/) {
 #if 0
   constexpr std::string_view delim{","};
   for (const auto word : std::views::split_view(input, delim))

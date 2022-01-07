@@ -19,7 +19,7 @@ Timestamp::Timestamp() {
 }
 
 // indexed from 1!
-std::string Timestamp::monthName(uint32_t index) {
+std::string Timestamp::month_name(uint32_t index) {
   if (index < 1 || index > 12) {
     std::stringstream ss;
     ss << "[month:" << index << "]";
@@ -78,9 +78,9 @@ void Timestamp::setDate(int32_t raw_date) {
   }
 }
 
-std::string Timestamp::toString() {
+std::string Timestamp::to_string() {
   std::stringstream ss;
-  ss << hour << "h " << min << "m " << sec << "s" << "  " << monthName(month) << " " << day << " " << year;
+  ss << hour << "h " << min << "m " << sec << "s" << "  " << month_name(month) << " " << day << " " << year;
   return ss.str();
 }
 

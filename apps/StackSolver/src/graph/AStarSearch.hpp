@@ -28,7 +28,7 @@ public:
     m_work_queue.push_back(res.first);
   }
 
-  Iter Search() {
+  Iter search() {
     while (!m_work_queue.empty()) {
       auto curr = m_work_queue.back();
       m_work_queue.pop_back();

@@ -6,7 +6,7 @@
 namespace gps {
 
 class Timestamp {
-  std::string monthName(uint32_t index);
+  std::string month_name(uint32_t index);
 public:
   Timestamp();
 
@@ -32,7 +32,7 @@ public:
   // ddmmyy
   void setDate(int32_t raw_date);
 
-  std::string toString();
+  std::string to_string();
 }; // class Timestamp
 
 } // namespace gps
