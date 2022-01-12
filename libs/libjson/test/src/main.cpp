@@ -148,11 +148,11 @@ struct Token {
                break;
             case TokenType::STRING:
                // TODO(tblyons): Calculate string length
-               result = std::cregex_iterator(in.begin(), in.end(), str_re)->length();
+               result = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), str_re)->length());
                break;
             case TokenType::NUMBER:
                // TODO(tblyons): Calculate number length
-               result = std::cregex_iterator(in.begin(), in.end(), num_re)->length();
+               result = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), num_re)->length());
                break;
             case TokenType::OBJECT_OPEN:
             case TokenType::OBJECT_CLOSE:
@@ -221,9 +221,9 @@ static std::vector<Token> lex(std::string_view in) {
             break;
          case '"': {
             // String
-            auto rei = std::cregex_iterator(in.begin(), in.end(), str_re);
-            result.emplace_back(in.substr(0, rei->length()));
-            in.remove_prefix(rei->length());
+            auto len = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), str_re)->length());
+            result.emplace_back(in.substr(0, len));
+            in.remove_prefix(len);
             break;
          }
          case '-':
@@ -238,9 +238,9 @@ static std::vector<Token> lex(std::string_view in) {
          case '8':
          case '9': {
             // Number
-            auto rei = std::cregex_iterator(in.begin(), in.end(), num_re);
-            result.emplace_back(in.substr(0, rei->length()));
-            in.remove_prefix(rei->length());
+            auto len = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), num_re)->length());
+            result.emplace_back(in.substr(0, len));
+            in.remove_prefix(len);
             break;
          }
          case '[':
@@ -325,8 +325,9 @@ static std::string_view parse_number(std::string_view& in) {
    if (!rei->ready() || rei->empty() || rei->position() != 0) {
       throw std::runtime_error("Error: Expected JSON Number");
    }
-   std::string_view result(in.data(), rei->length());
-   in.remove_prefix(rei->length());
+   auto len = static_cast<size_t>(rei->length());
+   std::string_view result(in.data(), len);
+   in.remove_prefix(len);
    printf("#");
    return result;
 } // parse_number(std::string_view&)

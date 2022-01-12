@@ -124,7 +124,7 @@ void GPSService::read_GPGGA(Sentence const& nmea) {
     }
 
     // TIMESTAMP
-    this->fix.timestamp.setTime(std::stod(nmea.parameters[0]));
+    this->fix.timestamp.set_time(std::stod(nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -375,7 +375,7 @@ void GPSService::read_GPRMC(Sentence const& nmea) {
     }
 
     // TIMESTAMP
-    this->fix.timestamp.setTime(std::stod(nmea.parameters[0]));
+    this->fix.timestamp.set_time(std::stod(nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -411,7 +411,7 @@ void GPSService::read_GPRMC(Sentence const& nmea) {
 
     this->fix.speed = convertKnotsToKilometersPerHour(std::stod(nmea.parameters[6]));    // received as knots, convert to km/h
     this->fix.travel_angle = std::stod(nmea.parameters[7]);
-    fix.timestamp.setDate(std::stoi(nmea.parameters[8]));
+    fix.timestamp.set_date(std::stoi(nmea.parameters[8]));
 
     //calling handlers
     if (lockupdate) {
