@@ -37,7 +37,7 @@ public:
     parity = 0;
   }
 
-  std::string toString() override;
+  std::string to_string() override;
 
 }; // struct SerialConfiguration
 

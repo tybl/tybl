@@ -37,7 +37,7 @@ namespace nmea {
 //   int rate;
 //   int checksumEnable;
 // Creates a valid NMEA $PSRF103 command sentence.
-std::string QueryRate::toString(){
+std::string QueryRate::to_string(){
   std::stringstream ss;
 
   ss << std::setfill('0') << std::setw(2) << messageID << ","
@@ -47,7 +47,7 @@ std::string QueryRate::toString(){
   // TODO(tybl): Does `message` need to persist if it is just passed as a copy?
   std::string message = ss.str();
 
-  return Command::addChecksum(message);
+  return Command::add_checksum(message);
 }
 
 } // namespace nmea

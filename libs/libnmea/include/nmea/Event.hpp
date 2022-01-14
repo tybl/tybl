@@ -25,13 +25,13 @@ private:
   std::list<EventHandler<void(Args...)>> handlers;
 
   //Functions
-  void _copy(const Event& ref){
+  void copy(const Event& ref){
     if (&ref != this){
       handlers = ref.handlers;
     }
   };
 
-  bool removeHandler(ListIterator handlerIter)  {
+  bool remove_handler(ListIterator handlerIter)  {
     if (handlerIter == handlers.end()){
       return false;
     }
@@ -58,7 +58,7 @@ public:
   {}
 
   Event(const Event& ref)   {
-    _copy(ref);
+    copy(ref);
   }
 
   void call(Args... args)  {
@@ -93,8 +93,8 @@ public:
     return wrapper;
   }
 
-  bool removeHandler(EventHandler<void(Args...)>& handler)  {
-    bool sts = removeHandler(handler._iterator);
+  bool remove_handler(EventHandler<void(Args...)>& handler)  {
+    bool sts = remove_handler(handler._iterator);
     handler._iterator = handlers.end();
     return sts;
   };
@@ -110,11 +110,11 @@ public:
   void operator ()(Args... args) { return call(args...); };
   EventHandler<void(Args...)> operator +=(EventHandler<void(Args...)> handler)  { return registerHandler(handler); };
   EventHandler<void(Args...)> operator +=(std::function<void(Args...)> handler)  { return registerHandler(handler); };
-  bool operator -=(EventHandler<void(Args...)>& handler)              { return removeHandler(handler); };
-  bool operator -=(uint64_t handlerID) { return removeHandler(handlerID); };
+  bool operator -=(EventHandler<void(Args...)>& handler)              { return remove_handler(handler); };
+  bool operator -=(uint64_t handlerID) { return remove_handler(handlerID); };
 
   EventHandler<void(Args...)>& operator =(const EventHandler<void(Args...)>& ref){
-    _copy(ref);
+    copy(ref);
     return *this;
   };
 

@@ -19,13 +19,13 @@ namespace nmea {
      Checksum  *0C
      <CR> <LF> End of message termination
     */
-std::string SerialConfiguration::toString() {
+std::string SerialConfiguration::to_string() {
   std::stringstream ss;
 
   ss << "1," << baud << "," << databits << "," << stopbits << "," << parity;
   std::string message = ss.str();
 
-  return Command::addChecksum(message);
+  return Command::add_checksum(message);
 }
 
 } // namespace nmea

@@ -35,18 +35,18 @@ Fix::~Fix() {
 // Returns the duration since the Host has received information
 std::chrono::seconds Fix::time_since_last_update(){
   time_t now = time(NULL);
-  struct tm stamp = { 0 };
+  std::tm stamp{};
 
   stamp.tm_hour = timestamp.hour;
   stamp.tm_min = timestamp.min;
-  stamp.tm_sec = (int)timestamp.sec;
+  stamp.tm_sec = static_cast<int>(timestamp.sec);
   stamp.tm_year = timestamp.year-1900;
   stamp.tm_mon = timestamp.month-1;
   stamp.tm_mday = timestamp.day;
 
   time_t then = mktime(&stamp);
-  uint64_t secs = (uint64_t)difftime(now,then);
-  return std::chrono::seconds((uint64_t)secs);
+  auto secs = static_cast<uint64_t>(difftime(now,then));
+  return std::chrono::seconds(secs);
 }
 
 bool Fix::has_estimate(){
@@ -78,10 +78,10 @@ double Fix::vertical_accuracy(){
 }
 
 // Takes a degree travel heading (0-360') and returns the name
-std::string Fix::travelAngleToCompassDirection(double deg, bool abbrev){
+std::string Fix::ordinal_direction(double deg, bool abbrev){
 
   //normalize, just in case
-  int32_t c = (int32_t)round(deg / 360.0 * 8.0);
+  auto c = static_cast<int32_t>(round(deg / 360.0 * 8.0));
   int32_t r = c % 8;
   if (r < 0){
     r = 8 + r;
@@ -117,7 +117,7 @@ std::string Fix::travelAngleToCompassDirection(double deg, bool abbrev){
   
 }
 
-std::string fixStatusToString(char status){
+std::string fix_status_to_string(char status){
   switch (status){
   case 'A':
     return "Active";
@@ -128,7 +128,7 @@ std::string fixStatusToString(char status){
   }
 }
 
-std::string fixTypeToString(uint8_t type){
+std::string fix_type_to_string(uint8_t type){
   switch (type){
   case 1:
     return "None";
@@ -141,7 +141,7 @@ std::string fixTypeToString(uint8_t type){
   }
 }
 
-std::string fixQualityToString(uint8_t quality){
+std::string fix_quality_to_string(uint8_t quality){
   switch (quality){
   case 0:
     return "Invalid";
@@ -172,9 +172,9 @@ std::string Fix::to_string(){
     << " < Fix Details >" << std::endl
     << "   Age:                " << time_since_last_update().count() << " s" << std::endl
     << "   Timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
-    << "   Raw Status:         " << status      << "  (" << fixStatusToString(status) << ")" << std::endl
-    << "   Type:               " << (int)type    << "  (" << fixTypeToString(type) << ")" << std::endl
-    << "   Quality:            " << (int)quality  << "  (" << fixQualityToString(quality) << ")" << std::endl
+    << "   Raw Status:         " << status      << "  (" << fix_status_to_string(status) << ")" << std::endl
+    << "   Type:               " << static_cast<int>(type)    << "  (" << fix_type_to_string(type) << ")" << std::endl
+    << "   Quality:            " << static_cast<int>(quality)  << "  (" << fix_quality_to_string(quality) << ")" << std::endl
     << "   Lat/Lon (N,E):      " << std::setprecision(6) << std::fixed << latitude << "' N, " << longitude << "' E" <<  std::endl;
 
   ss.flags(oldflags);  //reset
@@ -185,7 +185,7 @@ std::string Fix::to_string(){
 
   ss << "   Altitude:           " << altitude << " m" << std::endl
     << "   Speed:              " << speed << " km/h" << std::endl
-    << "   Travel Dir:         " << travel_angle << " deg  [" << travelAngleToCompassDirection(travel_angle) << "]" << std::endl
+    << "   Travel Dir:         " << travel_angle << " deg  [" << ordinal_direction(travel_angle) << "]" << std::endl
     << "   SNR:                avg: " << almanac.average_snr() << " dB   [min: " << almanac.min_snr() << " dB,  max:" << almanac.max_snr() << " dB]" << std::endl;
 
   ss << " < Almanac (" << almanac.percent_complete() << "%) >" << std::endl;

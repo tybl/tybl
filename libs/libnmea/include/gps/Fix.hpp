@@ -63,7 +63,7 @@ public:
   std::string to_string();
   operator std::string();
 
-  static std::string travelAngleToCompassDirection(double deg, bool abbrev = false);
+  static std::string ordinal_direction(double deg, bool abbrev = false);
 }; // class Fix
 
 } // namespace nmea

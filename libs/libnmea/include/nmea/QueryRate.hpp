@@ -55,7 +55,7 @@ public:
     checksumEnable = 1;
   };
 
-  std::string toString() override;
+  std::string to_string() override;
 
 }; // struct QueryRate
 

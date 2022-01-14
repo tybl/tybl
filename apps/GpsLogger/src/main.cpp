@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     gps.onUpdate += [&gps](){
       std::cout << (gps.fix.locked() ? "[*] " : "[ ] ") << std::setw(2) << std::setfill(' ') << gps.fix.tracking_satellites << "/" << std::setw(2) << std::setfill(' ') << gps.fix.visible_satellites << " ";
       std::cout << std::fixed << std::setprecision(2) << std::setw(5) << std::setfill(' ') << gps.fix.almanac.average_snr() << " dB   ";
-      std::cout << std::fixed << std::setprecision(2) << std::setw(6) << std::setfill(' ') << gps.fix.speed << " km/h [" << gps::Fix::travelAngleToCompassDirection(gps.fix.travel_angle, true) << "]  ";
+      std::cout << std::fixed << std::setprecision(2) << std::setw(6) << std::setfill(' ') << gps.fix.speed << " km/h [" << gps::Fix::ordinal_direction(gps.fix.travel_angle, true) << "]  ";
       std::cout << std::fixed << std::setprecision(6) << gps.fix.latitude << " " "N, " << gps.fix.longitude << " " "E" << "  ";
       std::cout << "+/- " << std::setprecision(1) << gps.fix.horizontal_accuracy() << "m  ";
       std::cout << std::endl;

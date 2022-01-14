@@ -22,9 +22,9 @@ public:
 
   virtual ~Command();
 
-  virtual std::string toString();
+  virtual std::string to_string();
 
-  std::string addChecksum(std::string s);
+  std::string add_checksum(std::string s);
 
 }; // struct Command
 
