@@ -69,7 +69,7 @@ public:
     }
   }
 
-  EventHandler<void(Args...)> registerHandler(EventHandler<void(Args...)> handler)  {
+  EventHandler<void(Args...)> register_handler(EventHandler<void(Args...)> handler)  {
     bool found = false;
     for (auto h = handlers.begin(); h != handlers.end(); h++)
     {
@@ -86,7 +86,7 @@ public:
     return handler;
   }
 
-  EventHandler<void(Args...)> registerHandler(std::function<void(Args...)> handler)  {
+  EventHandler<void(Args...)> register_handler(std::function<void(Args...)> handler)  {
     EventHandler<void(Args...)> wrapper(handler);
     ListIterator itr = handlers.insert(handlers.end(), wrapper);
     wrapper._iterator = itr;
@@ -108,8 +108,8 @@ public:
   };
 
   void operator ()(Args... args) { return call(args...); };
-  EventHandler<void(Args...)> operator +=(EventHandler<void(Args...)> handler)  { return registerHandler(handler); };
-  EventHandler<void(Args...)> operator +=(std::function<void(Args...)> handler)  { return registerHandler(handler); };
+  EventHandler<void(Args...)> operator +=(EventHandler<void(Args...)> handler)  { return register_handler(handler); };
+  EventHandler<void(Args...)> operator +=(std::function<void(Args...)> handler)  { return register_handler(handler); };
   bool operator -=(EventHandler<void(Args...)>& handler)              { return remove_handler(handler); };
   bool operator -=(uint64_t handlerID) { return remove_handler(handlerID); };
 

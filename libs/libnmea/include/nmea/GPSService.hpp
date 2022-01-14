@@ -11,12 +11,12 @@
 namespace nmea {
 
 class GPSService {
-  void read_PSRF150(Sentence const& nmea);
-  void read_GPGGA  (Sentence const& nmea);
-  void read_GPGSA  (Sentence const& nmea);
-  void read_GPGSV  (Sentence const& nmea);
-  void read_GPRMC  (Sentence const& nmea);
-  void read_GPVTG  (Sentence const& nmea);
+  void read_psrf150(Sentence const& nmea);
+  void read_gpgga  (Sentence const& nmea);
+  void read_gpgsa  (Sentence const& nmea);
+  void read_gpgsv  (Sentence const& nmea);
+  void read_gprmc  (Sentence const& nmea);
+  void read_gpvtg  (Sentence const& nmea);
 public:
 
   gps::Fix fix;
@@ -29,7 +29,7 @@ public:
 
   Event<void()> onUpdate; // user assignable handler, called whenever fix changes
 
-  void attachToParser(Parser& parser); // will attach to this parser's nmea sentence events
+  void attach_to_parser(Parser& parser); // will attach to this parser's nmea sentence events
 
 }; // class GPSService
 

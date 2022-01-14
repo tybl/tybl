@@ -24,7 +24,7 @@ private:
   std::function<void(Args...)> handler;
 
   // Functions
-  void _copy(const EventHandler& ref){
+  void copy(const EventHandler& ref){
     if (&ref != this){
       _iterator = ref._iterator;
       handler = ref.handler;
@@ -47,13 +47,13 @@ public:
   {}
 
   EventHandler(const EventHandler& ref){
-    _copy(ref);
+    copy(ref);
   }
 
   virtual ~EventHandler(){};
 
   EventHandler& operator=(const EventHandler& ref){
-    _copy(ref);
+    copy(ref);
     return *this;
   }
 
@@ -69,13 +69,13 @@ public:
     return ID != ref.ID;
   }
 
-  uint64_t getID(){
+  uint64_t get_id(){
     return ID;
   }
 
   // Returns function pointer to the underlying function
   // or null if it's not a function but implements operator()
-  CFunctionPointer* getFunctionPointer(){
+  CFunctionPointer* get_function_pointer(){
     CFunctionPointer* ptr = handler.template target<CFunctionPointer>();
     return ptr;
   }

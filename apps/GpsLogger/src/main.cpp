@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     std::ifstream file(argv[1]);
     while (std::getline(file, line)) {
       try {
-        parser.readLine(line);
+        parser.read_line(line);
       } catch (nmea::ParseError& e) { // TODO(tybl): Can/should this be const&?
         std::cout << e.message << std::endl;
         // You can keep feeding data to the gps service...

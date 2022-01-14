@@ -15,7 +15,7 @@ bool Sentence::valid() const {
   return isvalid;
 }
 
-bool Sentence::checksumOK() const {
+bool Sentence::is_checksum_ok() const {
   return (m_is_checksum_calculated) && (m_parsed_checksum == m_calculated_checksum);
 }
 

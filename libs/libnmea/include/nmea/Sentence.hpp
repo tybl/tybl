@@ -36,7 +36,7 @@ public:
 
   virtual ~Sentence();
 
-  bool checksumOK() const;
+  bool is_checksum_ok() const;
 
   bool valid() const;
 

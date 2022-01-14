@@ -13,7 +13,7 @@ class Command {
   std::string m_message;
   std::string m_name;
   // TODO(tybl): Should the checksum be an unsigned char?
-  char m_checksum;
+  uint8_t m_checksum;
 public:
 
   Command();
