@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef GOON_DISPATCHER_HPP
-#define GOON_DISPATCHER_HPP
+#ifndef TYBL_GOON_DISPATCHER_HPP
+#define TYBL_GOON_DISPATCHER_HPP
 
 #include <SDL2/SDL.h>
 #include <functional>
@@ -20,4 +20,4 @@ private:
    std::vector<std::function<void(SDL_WindowEvent)>> mWindowListeners;
    bool mKeepRunning;
 };
-#endif // GOON_DISPATCHER_HPP
+#endif // TYBL_GOON_DISPATCHER_HPP

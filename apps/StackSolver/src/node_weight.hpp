@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef NODEWEIGHT_HPP
-#define NODEWEIGHT_HPP
+#ifndef TYBL_STACKSOLVER_NODEWEIGHT_HPP
+#define TYBL_STACKSOLVER_NODEWEIGHT_HPP
 
 #include "i_node.hpp"
 
@@ -15,4 +15,4 @@ struct node_weight {
 
 }; // struct node_weight
 
-#endif // NODEWEIGHT_HPP
+#endif // TYBL_STACKSOLVER_NODEWEIGHT_HPP

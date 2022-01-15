@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_GPSSERVICE_HPP
+#define TYBL_NMEA_GPSSERVICE_HPP
 
 #include "gps/fix.hpp"
 #include "nmea/Parser.hpp"
@@ -35,3 +37,5 @@ public:
 }; // class GPSService
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_GPSSERVICE_HPP

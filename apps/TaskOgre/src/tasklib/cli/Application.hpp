@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_TASKOGRE_TASKLIB_CLI_APPLICATION_HPP
+#define TYBL_TASKOGRE_TASKLIB_CLI_APPLICATION_HPP
 
 #include "Command.hpp"
 
@@ -36,3 +38,5 @@ public:
 }; // class Application
 
 } // namespace ogre
+
+#endif // TYBL_TASKOGRE_TASKLIB_CLI_APPLICATION_HPP

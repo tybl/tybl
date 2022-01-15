@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef EXECUTOR_HPP
-#define EXECUTOR_HPP
+#ifndef TYBL_STACKSOLVER_EXECUTOR_HPP
+#define TYBL_STACKSOLVER_EXECUTOR_HPP
 
 #include "i_node.hpp"
 #include "node_weight.hpp"
@@ -21,4 +21,4 @@ public:
 
 }; // struct executor
 
-#endif // EXECUTOR_HPP
+#endif // TYBL_STACKSOLVER_EXECUTOR_HPP

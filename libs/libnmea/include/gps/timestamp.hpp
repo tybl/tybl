@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_GPS_TIMESTAMP_HPP
+#define TYBL_NMEA_GPS_TIMESTAMP_HPP
 
 #include <cstdint>
 #include <string>
@@ -37,3 +39,5 @@ public:
 }; // class timestamp
 
 } // namespace gps
+
+#endif // TYBL_NMEA_GPS_TIMESTAMP_HPP

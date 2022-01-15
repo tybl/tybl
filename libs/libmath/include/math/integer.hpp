@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TBL_INTEGER_HPP
-#define TBL_INTEGER_HPP
+#ifndef TYBL_MATH_INTEGER_HPP
+#define TYBL_MATH_INTEGER_HPP
 
 #include <array>
 #include <functional> // std::equal, std::lexicographical_compare
@@ -224,4 +224,4 @@ static_assert(sizeof(tybl::math::uint128) == 16, "uint128_t is not 128bits long"
 static_assert(sizeof(tybl::math::uint256) == 32, "uint256_t is not 256bits long");
 static_assert(sizeof(tybl::math::uint512) == 64, "uint512_t is not 512bits long");
 
-#endif // TBL_INTEGER_HPP
+#endif // TYBL_MATH_INTEGER_HPP

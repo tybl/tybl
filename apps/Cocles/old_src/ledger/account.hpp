@@ -10,4 +10,5 @@ namespace ledger {
       std::string name;
    }; // struct account_t
 } // namespace ledger
+
 #endif // COCLES_LEDGER_ACCOUNT_HPP

@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef INODE_HPP
-#define INODE_HPP
+#ifndef TYBL_STACKSOLVER_INODE_HPP
+#define TYBL_STACKSOLVER_INODE_HPP
 
 #include "edge.hpp"
 
@@ -19,4 +19,4 @@ struct i_node {
   virtual size_t num_found() const = 0;
 }; // struct i_node
 
-#endif // INODE_HPP
+#endif // TYBL_STACKSOLVER_INODE_HPP

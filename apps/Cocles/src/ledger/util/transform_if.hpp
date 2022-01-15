@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef COCLES_LEDGER_UTIL_TRANSFORM_IF_HPP
-#define COCLES_LEDGER_UTIL_TRANSFORM_IF_HPP
+#ifndef TYBL_COCLES_LEDGER_UTIL_TRANSFORMIF_HPP
+#define TYBL_COCLES_LEDGER_UTIL_TRANSFORMIF_HPP
 
 template<class InputIt, class OutputIt, class UnaryPredicate, class UnaryOperation>
 OutputIt transform_if(InputIt first, InputIt last, OutputIt d_first, UnaryPredicate pred, UnaryOperation unary_op) {
@@ -26,4 +26,4 @@ OutputIt transform_if(Range source, OutputIt d_first, UnaryPredicate pred, Unary
    }
    return d_first;
 }
-#endif // COCLES_LEDGER_UTIL_TRANSFORM_IF_HPP
+#endif // TYBL_COCLES_LEDGER_UTIL_TRANSFORMIF_HPP

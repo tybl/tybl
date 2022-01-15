@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_COORD_RAE_HPP
+#define TYBL_COORD_RAE_HPP
 
 namespace tybl::coord {
 
@@ -24,3 +26,5 @@ public:
 }; // class rae_t
 
 } // namespace tybl::coord
+
+#endif TYBL_COORD_RAE_HPP

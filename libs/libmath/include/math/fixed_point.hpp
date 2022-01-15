@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef MATH_FIXEDPOINT_HPP
-#define MATH_FIXEDPOINT_HPP
+#ifndef TYBL_MATH_FIXEDPOINT_HPP
+#define TYBL_MATH_FIXEDPOINT_HPP
 
 #include "math/pow10.hpp"
 
@@ -76,4 +76,4 @@ std::ostream& operator<<(std::ostream& out, const fixed_point_t<RATIO>& fp) {
 
 } // namespace tybl::math
 
-#endif // MATH_FIXEDPOINT_HPP
+#endif // TYBL_MATH_FIXEDPOINT_HPP

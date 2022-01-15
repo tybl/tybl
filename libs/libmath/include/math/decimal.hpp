@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TBL_MATH_DECIMAL_HPP
-#define TBL_MATH_DECIMAL_HPP
+#ifndef TYBL_MATH_DECIMAL_HPP
+#define TYBL_MATH_DECIMAL_HPP
 
 namespace tybl::math {
 
@@ -44,4 +44,4 @@ private:
 
 } // namespace tybl::math
 
-#endif // TBL_MATH_DECIMAL_HPP
+#endif // TYBL_MATH_DECIMAL_HPP

@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_QUERYRATE_HPP
+#define TYBL_NMEA_QUERYRATE_HPP
 
 #include "nmea/command.hpp"
 
@@ -58,3 +60,5 @@ public:
 }; // struct query_rate
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_QUERYRATE_HPP

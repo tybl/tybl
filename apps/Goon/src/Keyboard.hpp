@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef GOON_KEYBOARD_HPP
-#define GOON_KEYBOARD_HPP
+#ifndef TYBL_GOON_KEYBOARD_HPP
+#define TYBL_GOON_KEYBOARD_HPP
 
 #include <SDL2/SDL.h>
 #include <cstdio>
@@ -147,4 +147,4 @@ public:
       std::fflush(stdout);
    }
 };
-#endif // GOON_KEYBOARD_HPP
+#endif // TYBL_GOON_KEYBOARD_HPP

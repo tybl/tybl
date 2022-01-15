@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_TASKOGRE_TASKLIB_CLI_COMMAND_HPP
+#define TYBL_TASKOGRE_TASKLIB_CLI_COMMAND_HPP
 
 #include "vodka/string_view/basic_string_view.hpp"
 
@@ -123,3 +125,5 @@ private:
 }; // class Command
 
 } // namespace ogre
+
+#endif // TYBL_TASKOGRE_TASKLIB_CLI_COMMAND_HPP

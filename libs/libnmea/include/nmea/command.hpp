@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_COMMAND_HPP
+#define TYBL_NMEA_COMMAND_HPP
 
 #include "nmea/Parser.hpp"
 
@@ -29,3 +31,5 @@ public:
 }; // struct command
 
 } // namespace nmea
+
+#endif TYBL_NMEA_COMMAND_HPP

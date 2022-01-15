@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_COORD_LLA_HPP
+#define TYBL_COORD_LLA_HPP
 
 namespace tybl::coord {
 
@@ -22,3 +24,5 @@ public:
 }; // class lla_c
 
 } // namespace tybl::coord
+
+#endif // TYBL_COORD_LLA_HPP

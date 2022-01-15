@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_GPS_ALMANAC_HPP
+#define TYBL_NMEA_GPS_ALMANAC_HPP
 
 #include "gps/satellite.hpp"
 
@@ -33,3 +35,5 @@ public:
 }; // class almanac
 
 } // namespace gps
+
+#endif // TYBL_NMEA_GPS_ALMANAC_HPP

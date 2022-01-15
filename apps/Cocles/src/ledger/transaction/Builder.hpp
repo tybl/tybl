@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef COCLES_LEDGER_TRANSACTION_BUILDER_HPP
-#define COCLES_LEDGER_TRANSACTION_BUILDER_HPP
+#ifndef TYBL_COCLES_LEDGER_TRANSACTION_BUILDER_HPP
+#define TYBL_COCLES_LEDGER_TRANSACTION_BUILDER_HPP
 
 #include "ledger/Transaction.hpp"
 
@@ -39,4 +39,4 @@ private:
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_TRANSACTION_BUILDER_HPP
+#endif // TYBL_COCLES_LEDGER_TRANSACTION_BUILDER_HPP

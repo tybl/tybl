@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_GPS_FIX_HPP
+#define TYBL_NMEA_GPS_FIX_HPP
 
 #include "gps/almanac.hpp"
 #include "gps/satellite.hpp"
@@ -67,3 +69,5 @@ public:
 }; // class fix
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_GPS_FIX_HPP

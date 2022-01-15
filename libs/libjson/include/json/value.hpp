@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef VODKA_JSON_VALUE_HPP
-#define VODKA_JSON_VALUE_HPP
+#ifndef TYBL_JSON_VALUE_HPP
+#define TYBL_JSON_VALUE_HPP
 
 #include <map>
 #include <string_view>
@@ -20,4 +20,4 @@ struct value
 
 } // namespace vodka::json
 
-#endif // VODKA_JSON_VALUE_HPP
+#endif // TYBL_JSON_VALUE_HPP

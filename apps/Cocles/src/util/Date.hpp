@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef COCLES_UTIL_DATE_HPP
-#define COCLES_UTIL_DATE_HPP
+#ifndef TYBL_COCLES_UTIL_DATE_HPP
+#define TYBL_COCLES_UTIL_DATE_HPP
 
 #include <boost/date_time/gregorian/gregorian.hpp>
 
@@ -11,4 +11,4 @@ using Date = boost::gregorian::date;
 
 } // namespace util
 
-#endif // COCLES_UTIL_DATE_HPP
+#endif // TYBL_COCLES_UTIL_DATE_HPP

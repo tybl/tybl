@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_EVENTHANDLER_HPP
+#define TYBL_NMEA_EVENTHANDLER_HPP
 
 #include <cstdint>
 #include <functional>
@@ -87,3 +89,5 @@ template<typename... Args>
 uint64_t EventHandler<void(Args...)>::LastID = 0;
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_EVENTHANDLER_HPP

@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_PARSER_HPP
+#define TYBL_NMEA_PARSER_HPP
 
 #include "nmea/Event.hpp"
 #include "nmea/sentence.hpp"
@@ -51,3 +53,5 @@ public:
 }; // class Parser
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_PARSER_HPP

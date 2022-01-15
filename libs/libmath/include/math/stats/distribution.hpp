@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_MATH_STATS_DISTRIBUTION_HPP
+#define TYBL_MATH_STATS_DISTRIBUTION_HPP
 
 // TODO(tybl): This file is superceded by libstats
 
@@ -55,3 +57,5 @@ public:
 }; // class distribution
 
 } // namespace tybl::math::stats
+
+#endif TYBL_MATH_STATS_DISTRIBUTION_HPP

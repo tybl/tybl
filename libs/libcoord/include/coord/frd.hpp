@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_COORD_FRD_HPP
+#define TYBL_COORD_FRD_HPP
 
 #include "lynel/quaternion.hpp"
 #include "lynel/basic_matrix.hpp"
@@ -31,3 +33,5 @@ public:
 }; // class frd_t
 
 } // namespace tybl::coord
+
+#endif // TYBL_COORD_FRD_HPP

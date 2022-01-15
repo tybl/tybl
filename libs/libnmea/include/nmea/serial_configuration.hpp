@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_SERIALCONFIGURATION_HPP
+#define TYBL_NMEA_SERIALCONFIGURATION_HPP
 
 #include "nmea/command.hpp"
 
@@ -40,3 +42,5 @@ public:
 }; // struct serial_configuration
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_SERIALCONFIGURATION_HPP

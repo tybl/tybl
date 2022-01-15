@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_GOON_WIDGET_HPP
+#define TYBL_GOON_WIDGET_HPP
 #include <SDL2/SDL.h>
 
 struct Widget {
@@ -23,4 +25,6 @@ private:
    int mWindowWidth;
    int mWindowHeight;
    SDL_Texture *mTexture;
-};
+}; // struct Widget
+
+#endif // TYBL_GOON_WIDGET_HPP
