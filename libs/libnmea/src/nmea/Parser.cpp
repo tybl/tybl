@@ -223,8 +223,8 @@ void Parser::read_sentence(std::string p_cmd) {
   }
 
   // Call the "any sentence" event handler, even if invalid checksum, for possible logging elsewhere.
-  on_info(nmea, "Calling generic onSentence().");
-  onSentence(nmea);
+  on_info(nmea, "Calling generic on_sentence().");
+  on_sentence(nmea);
 
   // Call event m_handlers based on map entries
   std::function<void(const sentence&)> handler = m_event_table[nmea.name];

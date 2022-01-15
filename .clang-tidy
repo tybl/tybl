@@ -15,12 +15,14 @@ CheckOptions:
     value:           'lower_case'
   - key:             readability-identifier-naming.ClassCase
     value:           'lower_case'
+  - key:             readability-identifier-naming.MemberCase
+    value:           'lower_case'
   - key:             readability-identifier-naming.ParameterCase
     value:           'lower_case'
   - key:             readability-identifier-naming.ParameterPrefix
     value:           'p_'
-  - key:             readability-identifier-naming.PrivateMemberCase
-    value:           'lower_case'
+  #- key:             readability-identifier-naming.PrivateMemberCase
+  #  value:           'lower_case'
   - key:             readability-identifier-naming.PrivateMemberPrefix
     value:           'm_'
   #- key:             readability-identifier-naming.AbstractClassCase
@@ -165,8 +167,6 @@ CheckOptions:
   #- key:             readability-identifier-naming.MacroDefinitionPrefix
   #- key:             readability-identifier-naming.MacroDefinitionSuffix
   #- key:             readability-identifier-naming.MacroDefinitionIgnoredRegexp
-  #- key:             readability-identifier-naming.MemberCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.MemberPrefix
   #- key:             readability-identifier-naming.MemberSuffix
   #- key:             readability-identifier-naming.MemberIgnoredRegexp

@@ -22,8 +22,8 @@ public:
   int32_t year;
 
   // Values collected directly from the GPS
-  double rawTime;
-  int32_t rawDate;
+  double raw_time;
+  int32_t raw_date;
 
   time_t get_time();
 

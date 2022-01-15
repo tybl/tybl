@@ -16,8 +16,8 @@ timestamp::timestamp() {
   day = 1;
   year = 1970;
 
-  rawTime = 0;
-  rawDate = 0;
+  raw_time = 0;
+  raw_date = 0;
 }
 
 // indexed from 1!
@@ -58,7 +58,7 @@ time_t timestamp::get_time() {
 }
 
 void timestamp::set_time(double p_raw_ts) {
-  rawTime = p_raw_ts;
+  raw_time = p_raw_ts;
 
   hour = static_cast<int32_t>(p_raw_ts / 10000.0);
   min = static_cast<int32_t>((p_raw_ts - hour * 10000) / 100.0);
@@ -67,9 +67,9 @@ void timestamp::set_time(double p_raw_ts) {
 
 //ddmmyy
 void timestamp::set_date(int32_t p_raw_date) {
-  rawDate = p_raw_date;
+  raw_date = p_raw_date;
   // If uninitialized, use posix time.
-  if(rawDate == 0) {
+  if(raw_date == 0) {
     month = 1;
     day = 1;
     year = 1970;

@@ -41,18 +41,18 @@ struct query_rate : public command {
     QUERY = 1
   };
 
-  sentence::MessageID messageID;
+  sentence::MessageID message_id;
   QueryRateMode mode;
   int rate;
-  int checksumEnable;
+  int checksum_enable;
 public:
   query_rate()
     : command("PSRF103")
   {
-    messageID = sentence::Unknown;
+    message_id = sentence::Unknown;
     mode = QueryRateMode::SETRATE;
     rate = 0;
-    checksumEnable = 1;
+    checksum_enable = 1;
   };
 
   std::string to_string() override;

@@ -28,9 +28,9 @@ public:
 
   virtual ~GPSService();
 
-  Event<void(bool)> onLockStateChanged; // user assignable handler, called whenever lock changes
+  Event<void(bool)> on_lock_state_changed; // user assignable handler, called whenever lock changes
 
-  Event<void()> onUpdate; // user assignable handler, called whenever fix changes
+  Event<void()> on_update; // user assignable handler, called whenever fix changes
 
   void attach_to_parser(Parser& p_parser); // will attach to this parser's nmea sentence events
 

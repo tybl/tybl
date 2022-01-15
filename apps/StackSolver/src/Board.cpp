@@ -122,8 +122,8 @@ auto Board::operator<(Board const& p_o) const -> bool {
 }
 
 void Board::apply(edge const& p_e) {
-  m_contents.at(p_e.StackTo).push_back(m_contents.at(p_e.StackFrom).back());
-  m_contents.at(p_e.StackFrom).pop_back();
+  m_contents.at(p_e.stack_to).push_back(m_contents.at(p_e.stack_from).back());
+  m_contents.at(p_e.stack_from).pop_back();
   m_priority = calc_priority();
 }
 
@@ -144,12 +144,12 @@ auto Board::count_suffix_matching(std::string const& p_s, char p_c) -> size_t {
 }
 
 auto Board::is_valid(edge const& p_e) const -> bool {
-  if (p_e.StackFrom == p_e.StackTo) { return false; }
-  if (m_contents.at(p_e.StackFrom).empty()) { return false; }
-  if (is_full(m_contents.at(p_e.StackTo))) { return false; }
-  if (is_full_and_homogeneous(m_contents[p_e.StackFrom])) { return false; }
-  if (m_contents.at(p_e.StackTo).empty()) { return true; }
-  return m_contents[p_e.StackTo].back() == m_contents[p_e.StackFrom].back();
+  if (p_e.stack_from == p_e.stack_to) { return false; }
+  if (m_contents.at(p_e.stack_from).empty()) { return false; }
+  if (is_full(m_contents.at(p_e.stack_to))) { return false; }
+  if (is_full_and_homogeneous(m_contents[p_e.stack_from])) { return false; }
+  if (m_contents.at(p_e.stack_to).empty()) { return true; }
+  return m_contents[p_e.stack_to].back() == m_contents[p_e.stack_from].back();
 }
 
 auto Board::is_homogeneous(std::string const& p_s) -> bool {

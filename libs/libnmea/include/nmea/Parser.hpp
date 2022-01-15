@@ -34,7 +34,7 @@ public:
 
   bool log;
 
-  Event<void(const sentence&)> onSentence;        // called every time parser receives any NMEA sentence
+  Event<void(const sentence&)> on_sentence;        // called every time parser receives any NMEA sentence
   void set_sentence_handler(std::string p_cmd_key, std::function<void(const sentence&)> p_handler);  //one handler called for any named sentence where name is the "cmdKey"
   std::string get_list_of_sentence_handlers();                          // show a list of message names that currently have m_handlers.
 

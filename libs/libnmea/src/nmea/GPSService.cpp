@@ -169,9 +169,9 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
 
     //calling m_handlers
     if (lockupdate) {
-      this->onLockStateChanged(this->fix.m_has_lock);
+      this->on_lock_state_changed(this->fix.m_has_lock);
     }
-    this->onUpdate();
+    this->on_update();
   } catch (std::invalid_argument&) {
     parse_error pe("[$GPGGA] Could not convert string to a number", p_nmea);
     throw pe;
@@ -246,9 +246,9 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
     //calling m_handlers
     if (lockupdate) {
       std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-      this->onLockStateChanged(this->fix.m_has_lock);
+      this->on_lock_state_changed(this->fix.m_has_lock);
     }
-    this->onUpdate();
+    this->on_update();
   } catch (std::invalid_argument&) {
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
     parse_error pe("[$GPGSA] Could not convert string to number", p_nmea);
@@ -334,7 +334,7 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
     }
 
     //cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " << this->fix.almanac.m_total_pages << endl;
-    this->onUpdate();
+    this->on_update();
 
   } catch (std::invalid_argument&) {
     parse_error pe("[$GPGSV] Could not convert string to number", p_nmea);
@@ -416,9 +416,9 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
 
     //calling m_handlers
     if (lockupdate) {
-      this->onLockStateChanged(this->fix.m_has_lock);
+      this->on_lock_state_changed(this->fix.m_has_lock);
     }
-    this->onUpdate();
+    this->on_update();
   } catch (std::invalid_argument&) {
     parse_error pe("[$GPRMC] Could not convert string to number", p_nmea);
     throw pe;
@@ -455,7 +455,7 @@ void GPSService::read_gpvtg(sentence const& p_nmea) {
     // if empty, is converted to 0
     this->fix.speed = std::stod(p_nmea.parameters[6]);    //km/h
 
-    this->onUpdate();
+    this->on_update();
   } catch (std::invalid_argument&) {
     parse_error pe("[$GPVTG] Could not convert string to number", p_nmea);
     throw pe;

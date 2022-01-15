@@ -172,7 +172,7 @@ std::string fix::to_string(){
     << " Satellites: \t\t" << tracking_satellites << " (tracking) of " << visible_satellites << " (visible)" << std::endl
     << " < fix Details >" << std::endl
     << "   Age:                " << time_since_last_update().count() << " s" << std::endl
-    << "   timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
+    << "   timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.raw_time << " time, " << timestamp.raw_date << " date)" << std::endl
     << "   Raw Status:         " << status      << "  (" << fix_status_to_string(status) << ")" << std::endl
     << "   Type:               " << static_cast<int>(type)    << "  (" << fix_type_to_string(type) << ")" << std::endl
     << "   Quality:            " << static_cast<int>(quality)  << "  (" << fix_quality_to_string(quality) << ")" << std::endl

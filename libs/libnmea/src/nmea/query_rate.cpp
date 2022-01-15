@@ -33,18 +33,18 @@ namespace nmea {
       9 Not defined
    */
 // Data Members:
-//   int messageID;
+//   int message_id;
 //   int mode;
 //   int rate;
-//   int checksumEnable;
+//   int checksum_enable;
 // Creates a valid NMEA $PSRF103 command sentence.
 std::string query_rate::to_string(){
   std::stringstream ss;
 
-  ss << std::setfill('0') << std::setw(2) << messageID << ","
+  ss << std::setfill('0') << std::setw(2) << message_id << ","
      << std::setfill('0') << std::setw(2) << mode << ","
      << std::setfill('0') << std::setw(2) << rate << ","
-     << std::setfill('0') << std::setw(2) << checksumEnable;
+     << std::setfill('0') << std::setw(2) << checksum_enable;
   // TODO(tybl): Does `message` need to persist if it is just passed as a copy?
   std::string message = ss.str();
 

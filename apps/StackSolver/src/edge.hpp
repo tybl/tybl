@@ -6,8 +6,8 @@
 #include <cstdint>
 
 struct edge {
-  uint8_t StackFrom;
-  uint8_t StackTo;
+  uint8_t stack_from;
+  uint8_t stack_to;
 }; // struct edge
 
 #endif // TYBL_STACKSOLVER_EDGE_HPP
