@@ -12,31 +12,29 @@
 
 namespace nmea {
 
-struct Sentence {
+struct sentence {
 
-  virtual ~Sentence() = default;
+  virtual ~sentence() = default;
 
   virtual void parse(std::string const&) = 0;
 
-}; // class Sentence
+}; // class sentence
 
-class GGASentence
-  : public Sentence
-{
+class gga_sentence : public sentence {
 public:
 
-  virtual ~GGASentence() = default;
+  virtual ~gga_sentence() = default;
 
-  void parse(std::string const& sentence) override {
-    auto comma1 = sentence.find(',');
-    auto comma2 = sentence.find(',',comma1);
-    auto comma3 = sentence.find(',',comma2);
+  void parse(std::string const& s) override {
+    auto comma1 = s.find(',');
+    auto comma2 = s.find(',',comma1);
+    auto comma3 = s.find(',',comma2);
     std::cout << comma1 << ',' << comma2 << ',' << comma3 << std::endl;
   }
 
-}; // class GGASentence
+}; // class gga_sentence
 
-std::unique_ptr<Sentence> parse_gga(std::istream& in) {
+std::unique_ptr<sentence> parse_gga(std::istream& in) {
   std::string value;
   if (!std::getline(in,value,',')) {
     throw std::runtime_error("Error: Failed to get NMEA GGA UTC time");
@@ -56,7 +54,7 @@ std::unique_ptr<Sentence> parse_gga(std::istream& in) {
   return nullptr;
 }
 
-std::unique_ptr<Sentence> parse_nmea(std::istream& in) {
+std::unique_ptr<sentence> parse_nmea(std::istream& in) {
   std::string value;
   if (std::getline(in, value, ',')) {
     if ("$GPGGA" == value) { return parse_gga(in); }
@@ -65,7 +63,7 @@ std::unique_ptr<Sentence> parse_nmea(std::istream& in) {
 }
 
 
-std::unique_ptr<Sentence> parse_gga(std::string_view /*input*/) {
+std::unique_ptr<sentence> parse_gga(std::string_view /*input*/) {
 #if 0
   constexpr std::string_view delim{","};
   for (const auto word : std::views::split_view(input, delim))
@@ -77,7 +75,7 @@ std::unique_ptr<Sentence> parse_gga(std::string_view /*input*/) {
   return nullptr;
 }
 
-std::unique_ptr<Sentence> parse(std::string_view input) {
+std::unique_ptr<sentence> parse(std::string_view input) {
   if (input.empty()) { std::cerr << __LINE__ << std::endl; return nullptr; }
   if (input.starts_with("$GPGGA,") || input.starts_with("$GLGGA")) { return parse_gga(input.substr(7)); }
   if (input.starts_with("$GPGSA,") || input.starts_with("$GLGSA")) { std::cerr << __LINE__ << std::endl; return nullptr; }
@@ -90,7 +88,7 @@ std::unique_ptr<Sentence> parse(std::string_view input) {
 
 } // namespace nmea
 
-TEST_CASE("NMEA GGA Sentence 1") {
+TEST_CASE("NMEA GGA sentence 1") {
   CHECK(nullptr == nmea::parse(""));
   CHECK(nullptr == nmea::parse("GPGGA,00.5"));
   CHECK(nullptr == nmea::parse("$CDACK"));

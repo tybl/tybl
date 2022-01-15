@@ -20,7 +20,7 @@ target_compile_options(stacksolvelib PUBLIC -Wall -Wextra -Wpedantic)
 target_include_directories(stacksolvelib PUBLIC src)
 target_sources(stacksolvelib
   PRIVATE
-    src/Executor.cpp
+        src/executor.cpp
     src/Board.cpp
 )
 

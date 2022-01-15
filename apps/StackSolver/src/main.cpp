@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#include "graph/AStarSearch.hpp"
-#include "Executor.hpp"
-#include "stacksolve/StackState.hpp"
+#include "graph/a_star_search.hpp"
+#include "executor.hpp"
+#include "stacksolve/stack_state.hpp"
 
 #include <chrono>
 #include <iomanip>
@@ -10,9 +10,9 @@
 auto main(int argc, char const* argv[]) -> int {
   if (2 == argc) {
     std::ifstream input(argv[1]);
-    Executor e(input);
-    tybl::stacksolve::StackState start_node(tybl::vodka::dynarray2D<char>(5,9));
-    tybl::graph::AStarSearch<tybl::stacksolve::StackState> astar(start_node);
+    executor e(input);
+    tybl::stacksolve::stack_state start_node(tybl::vodka::dynarray_2d<char>(5,9));
+    tybl::graph::a_star_search<tybl::stacksolve::stack_state> astar(start_node);
     auto start = std::chrono::high_resolution_clock::now();
     auto const* solution = e.solve();
     auto end = std::chrono::high_resolution_clock::now();

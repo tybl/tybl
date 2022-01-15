@@ -1,7 +1,7 @@
 #pragma once
 
 #include "nmea/Event.hpp"
-#include "nmea/Sentence.hpp"
+#include "nmea/sentence.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -13,16 +13,16 @@
 namespace nmea {
 
 class Parser {
-  std::unordered_map<std::string, std::function<void(Sentence)>> eventTable;
+  std::unordered_map<std::string, std::function<void(sentence)>> eventTable;
   std::string m_buffer;
   uint32_t maxbuffersize; // limit the max size if no newline ever comes... Prevents huge m_buffer string internally
   bool m_fillingbuffer;
 
-  void parse_text(Sentence& nmea, std::string s);    //fills the given NMEA sentence with the results of parsing the string.
+  void parse_text(sentence& nmea, std::string s);    //fills the given NMEA sentence with the results of parsing the string.
 
-  void on_info(Sentence& n, std::string s);
-  void on_warn(Sentence& n, std::string s);
-  void on_err(Sentence& n, std::string s);
+  void on_info(sentence& n, std::string s);
+  void on_warn(sentence& n, std::string s);
+  void on_err(sentence& n, std::string s);
 public:
 
   Parser();
@@ -31,8 +31,8 @@ public:
 
   bool log;
 
-  Event<void(const Sentence&)> onSentence;        // called every time parser receives any NMEA sentence
-  void set_sentence_handler(std::string cmdKey, std::function<void(const Sentence&)> handler);  //one handler called for any named sentence where name is the "cmdKey"
+  Event<void(const sentence&)> onSentence;        // called every time parser receives any NMEA sentence
+  void set_sentence_handler(std::string cmdKey, std::function<void(const sentence&)> handler);  //one handler called for any named sentence where name is the "cmdKey"
   std::string get_list_of_sentence_handlers();                          // show a list of message names that currently have handlers.
 
   // Byte streaming functions

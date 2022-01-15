@@ -1,18 +1,18 @@
-#include "gps/Satellite.hpp"
+#include "gps/satellite.hpp"
 
 #include <iomanip>
 #include <sstream>
 
 namespace gps {
 
-Satellite::Satellite()
+satellite::satellite()
   : snr(0)
   , prn(0)
   , elevation(0)
   , azimuth(0)
 {}
 
-std::string Satellite::to_string() {
+std::string satellite::to_string() {
   std::stringstream ss;
 
   ss << "[PRN: " << std::setw(3) << std::setfill(' ') << prn << " "
@@ -24,7 +24,7 @@ std::string Satellite::to_string() {
   return ss.str();
 }
 
-Satellite::operator std::string() {
+satellite::operator std::string() {
   return to_string();
 }
 

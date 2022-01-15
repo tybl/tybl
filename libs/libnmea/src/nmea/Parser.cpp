@@ -1,7 +1,7 @@
 //#include "nmea/NumberConversionError.hpp"
-#include "nmea/ParseError.hpp"
+#include "nmea/parse_error.hpp"
 #include "nmea/Parser.hpp"
-#include "nmea/Sentence.hpp"
+#include "nmea/sentence.hpp"
 
 #include <cctype>
 #include <iostream>
@@ -62,7 +62,7 @@ Parser::Parser()
 
 Parser::~Parser() = default;
 
-void Parser::set_sentence_handler(std::string cmdKey, std::function<void(const Sentence&)> handler) {
+void Parser::set_sentence_handler(std::string cmdKey, std::function<void(const sentence&)> handler) {
   eventTable.erase(cmdKey);
   eventTable.insert({ cmdKey, handler });
 }
@@ -143,20 +143,20 @@ void Parser::read_line(std::string cmd) {
 }
 
 // Loggers
-void Parser::on_info(Sentence& /*nmea*/, std::string txt) {
+void Parser::on_info(sentence& /*nmea*/, std::string txt) {
   if (log) {
     std::cout << "[Info]    " << txt << std::endl;
   }
 }
 
-void Parser::on_warn(Sentence& /*nmea*/, std::string txt) {
+void Parser::on_warn(sentence& /*nmea*/, std::string txt) {
   if (log) {
     std::cout << "[Warning] " << txt << std::endl;
   }
 }
 
-void Parser::on_err(Sentence& /*nmea*/, std::string txt) {
-  throw ParseError("[ERROR] " + txt);
+void Parser::on_err(sentence& /*nmea*/, std::string txt) {
+  throw parse_error("[ERROR] " + txt);
 }
 
 // takes a complete NMEA string and gets the data bits from it,
@@ -164,7 +164,7 @@ void Parser::on_err(Sentence& /*nmea*/, std::string txt) {
 void Parser::read_sentence(std::string cmd) {
   std::cerr << "Parser::read_sentence(std::string): " << __LINE__ << std::endl;
 
-  Sentence nmea;
+  sentence nmea;
 
   on_info(nmea, "Processing NEW string...");
 
@@ -199,7 +199,7 @@ void Parser::read_sentence(std::string cmd) {
   // Separates the data now that everything is formatted
   try {
     parse_text(nmea, cmd);
-  } catch (ParseError&) {
+  } catch (parse_error&) {
     throw;
   } catch (std::exception& e) {
     std::string s = " >> NMEA Parser Internal Error: Indexing error?... ";
@@ -226,7 +226,7 @@ void Parser::read_sentence(std::string cmd) {
   onSentence(nmea);
 
   // Call event handlers based on map entries
-  std::function<void(const Sentence&)> handler = eventTable[nmea.name];
+  std::function<void(const sentence&)> handler = eventTable[nmea.name];
   if (handler) {
     on_info(nmea, std::string("Calling specific handler for sentence named \"") + nmea.name + "\"");
     handler(nmea);
@@ -254,7 +254,7 @@ uint8_t Parser::calc_checksum(std::string s) {
   return checksum;
 }
 
-void Parser::parse_text(Sentence& nmea, std::string txt) {
+void Parser::parse_text(sentence& nmea, std::string txt) {
 
   if (txt.empty()) {
     nmea.isvalid = false;

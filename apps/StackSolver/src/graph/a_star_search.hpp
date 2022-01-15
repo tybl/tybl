@@ -9,21 +9,21 @@
 namespace tybl::graph {
 
 template <typename Node>
-struct AStarSearch {
+struct a_star_search {
   using Iter = typename std::set<Node>::iterator;
   std::set<Node>    m_found;
   std::vector<Iter> m_work_queue;
 public:
 
-  struct NodeWeight {
+  struct node_weight {
     bool operator () (Iter const& lhs, Iter const& rhs) {
       auto lp = lhs->priority();
       auto rp = rhs->priority();
       return (lp < rp) || (lp == rp && lhs->distance() > rhs->distance());
     }
-  }; // struct NodeWeight
+  }; // struct node_weight
 
-  AStarSearch(Node start) {
+  a_star_search(Node start) {
     auto res = m_found.insert(start);
     m_work_queue.push_back(res.first);
   }
@@ -42,8 +42,8 @@ public:
           m_work_queue.push_back(res.first);
         }
       }
-      std::make_heap(m_work_queue.begin(), m_work_queue.end(), NodeWeight());
-      std::pop_heap(m_work_queue.begin(), m_work_queue.end(), NodeWeight());
+      std::make_heap(m_work_queue.begin(), m_work_queue.end(), node_weight());
+      std::pop_heap(m_work_queue.begin(), m_work_queue.end(), node_weight());
     }
     return m_found.end();
   }
@@ -52,7 +52,7 @@ public:
     return m_found;
   }
 
-}; // struct AStarSearch
+}; // struct a_star_search
 
 } // namespace tybl::graph
 

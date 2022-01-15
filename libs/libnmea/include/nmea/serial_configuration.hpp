@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nmea/Command.hpp"
+#include "nmea/command.hpp"
 
 namespace nmea {
 
@@ -19,17 +19,14 @@ Parity    0       0=None, 1=Odd, 2=Even
 Checksum  *0C
 <CR> <LF> End of message termination
 */
-struct SerialConfiguration
-  : public Command
-{
+struct serial_configuration : public command {
   int32_t baud;       //4800, 9600, 19200, 38400
   int32_t databits;  //7, 8 Databits
   int32_t stopbits;  //0, 1 Stopbits
   int32_t parity;    //0=none, 1=odd, 2=even Parity
 public:
-
-  SerialConfiguration()
-    : Command("PSRF100")
+  serial_configuration()
+    : command("PSRF100")
   {
     baud = 4800;
     databits = 8;
@@ -39,6 +36,6 @@ public:
 
   std::string to_string() override;
 
-}; // struct SerialConfiguration
+}; // struct serial_configuration
 
 } // namespace nmea

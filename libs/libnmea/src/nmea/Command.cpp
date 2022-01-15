@@ -1,19 +1,19 @@
-#include "nmea/Command.hpp"
+#include "nmea/command.hpp"
 
 #include <iomanip>
 #include <sstream>
 
 namespace nmea {
 
-Command::Command() = default;
+command::command() = default;
 
-Command::Command(std::string name) : m_name(name) {}
+command::command(std::string name) : m_name(name) {}
 
-Command::~Command() = default;
+command::~command() = default;
 
-std::string Command::to_string() { return add_checksum(m_message); }
+std::string command::to_string() { return add_checksum(m_message); }
 
-std::string Command::add_checksum(std::string s) {
+std::string command::add_checksum(std::string s) {
   std::stringstream zz;
   zz << m_name << "," << s;
   m_checksum = Parser::calc_checksum(zz.str());

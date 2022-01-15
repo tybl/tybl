@@ -10,7 +10,7 @@
 
 Board::Board(std::istream& input)
   : m_priority(0)
-  , m_stats(std::make_shared<SharedStats>())
+  , m_stats(std::make_shared<shared_stats>())
   , m_id(0)
   , m_parent(nullptr)
   , m_distance(0)
@@ -32,7 +32,7 @@ Board::Board(std::istream& input)
   m_stats->m_boards.insert(*this);
 }
 
-Board::Board(Board const& o, Edge const& e)
+Board::Board(Board const& o, edge const& e)
   : m_contents(o.m_contents)
   , m_priority(0)
   , m_stats(o.m_stats)
@@ -52,11 +52,11 @@ auto Board::is_solved() const -> bool {
   });
 }
 
-auto Board::generate_steps() const -> std::vector<Edge> {
-  std::vector<Edge> result;
+auto Board::generate_steps() const -> std::vector<edge> {
+  std::vector<edge> result;
   for (uint8_t i = 0; i < static_cast<uint8_t>(m_contents.size()); ++i) {
     for (uint8_t j = 0; j < static_cast<uint8_t>(m_contents.size()); ++j) {
-      Edge e{i,j};
+      edge e{i,j};
       if (is_valid(e)) {
         result.push_back(e);
       }
@@ -66,7 +66,7 @@ auto Board::generate_steps() const -> std::vector<Edge> {
   return result;
 }
 
-auto Board::operator+(Edge const& e) const -> INode const* {
+auto Board::operator+(edge const& e) const -> i_node const* {
   auto result = m_stats->m_boards.emplace(*this, e);
   Board const& b = *result.first;
   if (result.second) {
@@ -121,7 +121,7 @@ auto Board::operator<(Board const& o) const -> bool {
   return m_contents < o.m_contents;
 }
 
-void Board::apply(Edge const& e) {
+void Board::apply(edge const& e) {
   m_contents.at(e.StackTo).push_back(m_contents.at(e.StackFrom).back());
   m_contents.at(e.StackFrom).pop_back();
   m_priority = calc_priority();
@@ -143,7 +143,7 @@ auto Board::count_suffix_matching(std::string const& s, char c) -> size_t {
   return std::distance(s.rbegin(), i);
 }
 
-auto Board::is_valid(Edge const& e) const -> bool {
+auto Board::is_valid(edge const& e) const -> bool {
   if (e.StackFrom == e.StackTo) { return false; }
   if (m_contents.at(e.StackFrom).empty()) { return false; }
   if (is_full(m_contents.at(e.StackTo))) { return false; }

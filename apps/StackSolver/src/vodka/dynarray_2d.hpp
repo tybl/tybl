@@ -10,7 +10,7 @@
 namespace tybl::vodka {
 
 template <typename T>
-struct dynarray2D {
+struct dynarray_2d {
 
   // types:
   using value_type = T;
@@ -25,22 +25,21 @@ private:
   size_type m_rows;
   size_type m_cols;
 public:
-
-  dynarray2D(size_t r, size_t c)
+  dynarray_2d(size_t r, size_t c)
     : m_data((0 < c && 0 < r) ? (std::make_unique<value_type[]>(c*r)) : nullptr)
     , m_rows(r)
     , m_cols(c)
   {
   }
 
-  dynarray2D(dynarray2D&& o)
+  dynarray_2d(dynarray_2d&& o)
     : m_data(std::move(o.m_data))
     , m_rows(o.m_rows)
     , m_cols(o.m_cols)
   {
   }
 
-  dynarray2D(dynarray2D const& o)
+  dynarray_2d(dynarray_2d const& o)
     : m_data(o.m_data ? std::make_unique<value_type[]>(o.m_cols*o.m_rows) : nullptr)
     , m_rows(o.m_rows)
     , m_cols(o.m_cols)
@@ -48,7 +47,7 @@ public:
     memcpy(m_data.get(), o.m_data.get(), m_cols*m_rows);
   }
 
-  ~dynarray2D() = default;
+  ~dynarray_2d() = default;
 
   const_reference operator()(size_t r, size_t c) const {
     return m_data[m_cols*r + c];
@@ -58,7 +57,7 @@ public:
     return m_data[m_cols*r + c];
   }
 
-  bool operator<(dynarray2D const& o) const {
+  bool operator<(dynarray_2d const& o) const {
     const_pointer first1 = m_data.get();
     const_pointer first2 = o.m_data.get();
     const_pointer last1 = first1 + m_cols * m_rows;
@@ -78,7 +77,7 @@ public:
     return std::span<const value_type>(m_data.get() + m_cols*r, m_cols);
   }
 
-}; // struct dynarray2D
+}; // struct dynarray_2d
 
 } // namespace tybl::vodka
 

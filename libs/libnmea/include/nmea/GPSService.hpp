@@ -1,6 +1,6 @@
 #pragma once
 
-#include "gps/Fix.hpp"
+#include "gps/fix.hpp"
 #include "nmea/Parser.hpp"
 #include "nmea/Event.hpp"
 
@@ -11,15 +11,15 @@
 namespace nmea {
 
 class GPSService {
-  void read_psrf150(Sentence const& nmea);
-  void read_gpgga  (Sentence const& nmea);
-  void read_gpgsa  (Sentence const& nmea);
-  void read_gpgsv  (Sentence const& nmea);
-  void read_gprmc  (Sentence const& nmea);
-  void read_gpvtg  (Sentence const& nmea);
+  void read_psrf150(sentence const& nmea);
+  void read_gpgga  (sentence const& nmea);
+  void read_gpgsa  (sentence const& nmea);
+  void read_gpgsv  (sentence const& nmea);
+  void read_gprmc  (sentence const& nmea);
+  void read_gpvtg  (sentence const& nmea);
 public:
 
-  gps::Fix fix;
+  gps::fix fix;
 
   GPSService(Parser& parser);
 

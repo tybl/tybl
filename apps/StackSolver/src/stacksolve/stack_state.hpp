@@ -3,18 +3,17 @@
 #ifndef TYBL_STACKSOLVER_STACKSTATE_HPP
 #define TYBL_STACKSOLVER_STACKSTATE_HPP
 
-#include "vodka/dynarray2D.hpp"
+#include "vodka/dynarray_2d.hpp"
 
 #include <vector>
 
 namespace tybl::stacksolve {
 
-class StackState {
-  vodka::dynarray2D<char> m_contents;
-  StackState const* m_parent;
+class stack_state {
+  vodka::dynarray_2d<char> m_contents;
+  stack_state const* m_parent;
 public:
-
-  StackState(vodka::dynarray2D<char>&& contents)
+  stack_state(vodka::dynarray_2d<char>&& contents)
     : m_contents(std::move(contents))
     , m_parent(nullptr)
   {
@@ -28,7 +27,7 @@ public:
     return distance_from_start() + distance_to_goal();
   }
 
-  auto operator<(StackState const& o) const -> bool {
+  auto operator<(stack_state const& o) const -> bool {
     return m_contents < o.m_contents;
   }
 
@@ -49,9 +48,9 @@ public:
     return true;
   }
 
-  auto get_adjacent() const -> std::vector<StackState> {
+  auto get_adjacent() const -> std::vector<stack_state> {
     // TODO
-    return std::vector<StackState>();
+    return std::vector<stack_state>();
   }
 
   bool is_empty(size_t row) const {
@@ -73,7 +72,7 @@ public:
     return result;
   }
 
-}; // class StackState
+}; // class stack_state
 
 } // namespace tybl::stacksolve
 

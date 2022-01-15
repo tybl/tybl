@@ -1,6 +1,6 @@
-#include "gps/Fix.hpp"
+#include "gps/fix.hpp"
 
-//#include "gps/Satellite.hpp"
+//#include "gps/satellite.hpp"
 
 #include <cmath>
 #include <string>
@@ -9,7 +9,7 @@
 
 namespace gps {
 
-Fix::Fix()
+fix::fix()
   : m_has_lock(false)
 {
   quality = 0;  // Searching...
@@ -28,12 +28,12 @@ Fix::Fix()
   visible_satellites = 0;
 }
 
-Fix::~Fix() {
+fix::~fix() {
   // TODO Auto-generated destructor stub
 }
 
 // Returns the duration since the Host has received information
-std::chrono::seconds Fix::time_since_last_update(){
+std::chrono::seconds fix::time_since_last_update(){
   time_t now = time(NULL);
   std::tm stamp{};
 
@@ -49,11 +49,11 @@ std::chrono::seconds Fix::time_since_last_update(){
   return std::chrono::seconds(secs);
 }
 
-bool Fix::has_estimate(){
+bool fix::has_estimate(){
   return (latitude != 0 && longitude != 0) || (quality == 6);
 }
 
-bool Fix::set_lock(bool locked){
+bool fix::set_lock(bool locked){
   if (m_has_lock != locked){
     m_has_lock = locked;
     return true;
@@ -61,24 +61,24 @@ bool Fix::set_lock(bool locked){
   return false;
 }
 
-bool Fix::locked(){
+bool fix::locked(){
   return m_has_lock;
 }
 
 // Returns meters
-double Fix::horizontal_accuracy(){
+double fix::horizontal_accuracy(){
   // horizontal 2drms 95% = 4.0  -- from GPS CHIP datasheets
   return 4.0 * horizontal_dilution;
 }
 
 // Returns meters
-double Fix::vertical_accuracy(){
+double fix::vertical_accuracy(){
   // Vertical 2drms 95% = 6.0  -- from GPS CHIP datasheets
   return 6.0 * vertical_dilution;
 }
 
 // Takes a degree travel heading (0-360') and returns the name
-std::string Fix::ordinal_direction(double deg, bool abbrev){
+std::string fix::ordinal_direction(double deg, bool abbrev){
 
   //normalize, just in case
   auto c = static_cast<int32_t>(round(deg / 360.0 * 8.0));
@@ -162,16 +162,16 @@ std::string fix_quality_to_string(uint8_t quality){
   }
 }
 
-std::string Fix::to_string(){
+std::string fix::to_string(){
   std::stringstream ss;
   std::ios_base::fmtflags oldflags = ss.flags();
 
   ss << "========================== GPS FIX ================================" << std::endl
     << " Status: \t\t" << ((m_has_lock) ? "LOCK!" : "SEARCHING...") << std::endl
     << " Satellites: \t\t" << tracking_satellites << " (tracking) of " << visible_satellites << " (visible)" << std::endl
-    << " < Fix Details >" << std::endl
+    << " < fix Details >" << std::endl
     << "   Age:                " << time_since_last_update().count() << " s" << std::endl
-    << "   Timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
+    << "   timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.rawTime << " time, " << timestamp.rawDate << " date)" << std::endl
     << "   Raw Status:         " << status      << "  (" << fix_status_to_string(status) << ")" << std::endl
     << "   Type:               " << static_cast<int>(type)    << "  (" << fix_type_to_string(type) << ")" << std::endl
     << "   Quality:            " << static_cast<int>(quality)  << "  (" << fix_quality_to_string(quality) << ")" << std::endl
@@ -188,7 +188,7 @@ std::string Fix::to_string(){
     << "   Travel Dir:         " << travel_angle << " deg  [" << ordinal_direction(travel_angle) << "]" << std::endl
     << "   SNR:                avg: " << almanac.average_snr() << " dB   [min: " << almanac.min_snr() << " dB,  max:" << almanac.max_snr() << " dB]" << std::endl;
 
-  ss << " < Almanac (" << almanac.percent_complete() << "%) >" << std::endl;
+  ss << " < almanac (" << almanac.percent_complete() << "%) >" << std::endl;
   if (almanac.satellites.empty()){
     ss << " > No satellite info in almanac." << std::endl;
   }
@@ -199,7 +199,7 @@ std::string Fix::to_string(){
   return ss.str();
 }
 
-Fix::operator std::string(){
+fix::operator std::string(){
   return to_string();
 }
 

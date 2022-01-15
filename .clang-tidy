@@ -11,14 +11,16 @@ Checks:           '-*,readability-identifier-naming'
 HeaderFilterRegex: '\.hpp'
 FormatStyle:     file
 CheckOptions:
+  - key:             readability-identifier-naming.FunctionCase
+    value:           'lower_case'
+  - key:             readability-identifier-naming.ClassCase
+    value:           'lower_case'
   #- key:             readability-identifier-naming.AbstractClassCase
   #  value:           'lower_case'
   #- key:             readability-identifier-naming.AbstractClassPrefix
   #- key:             readability-identifier-naming.AbstractClassSuffix
   #- key:             readability-identifier-naming.AbstractClassIgnoredRegexp
   #- key:             readability-identifier-naming.AbstractClassHungarianPrefix
-  #- key:             readability-identifier-naming.ClassCase
-  #  value:           'CamelCase'
   #- key:             readability-identifier-naming.ClassPrefix
   #- key:             readability-identifier-naming.ClassSuffix
   #- key:             readability-identifier-naming.ClassIgnoredRegexp
@@ -94,8 +96,6 @@ CheckOptions:
   #- key:             readability-identifier-naming.EnumConstantSuffix
   #- key:             readability-identifier-naming.EnumConstantIgnoredRegexp
   #- key:             readability-identifier-naming.EnumConstantHungarianPrefix
-  - key:             readability-identifier-naming.FunctionCase
-    value:           'lower_case'
   #- key:             readability-identifier-naming.FunctionPrefix
   #- key:             readability-identifier-naming.FunctionSuffix
   #- key:             readability-identifier-naming.FunctionIgnoredRegexp

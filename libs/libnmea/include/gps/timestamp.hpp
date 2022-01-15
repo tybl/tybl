@@ -5,10 +5,10 @@
 
 namespace gps {
 
-class Timestamp {
+class timestamp {
   std::string month_name(int32_t index);
 public:
-  Timestamp();
+  timestamp();
 
   int32_t hour;
   int32_t min;
@@ -33,6 +33,6 @@ public:
   void set_date(int32_t raw_date);
 
   std::string to_string();
-}; // class Timestamp
+}; // class timestamp
 
 } // namespace gps

@@ -1,4 +1,4 @@
-#include "nmea/QueryRate.hpp"
+#include "nmea/query_rate.hpp"
 
 #include <iomanip>
 #include <sstream>
@@ -19,7 +19,7 @@ namespace nmea {
    */
   /*
    * Table 2-10 Messages
-      Value Description
+      value Description
       0 GGA
       1 GLL
       2 GSA
@@ -37,7 +37,7 @@ namespace nmea {
 //   int rate;
 //   int checksumEnable;
 // Creates a valid NMEA $PSRF103 command sentence.
-std::string QueryRate::to_string(){
+std::string query_rate::to_string(){
   std::stringstream ss;
 
   ss << std::setfill('0') << std::setw(2) << messageID << ","
@@ -47,7 +47,7 @@ std::string QueryRate::to_string(){
   // TODO(tybl): Does `message` need to persist if it is just passed as a copy?
   std::string message = ss.str();
 
-  return Command::add_checksum(message);
+  return command::add_checksum(message);
 }
 
 } // namespace nmea

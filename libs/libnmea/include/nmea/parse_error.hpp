@@ -1,28 +1,26 @@
 #pragma once
 
-#include "Sentence.hpp"
+#include "sentence.hpp"
 
 #include <exception>
 #include <string>
 
 namespace nmea {
 
-struct ParseError
-  : public std::exception
+struct parse_error : public std::exception
 {
   std::string message;
-//  Sentence nmea;
+//  sentence nmea;
 public:
+  parse_error(std::string msg);
 
-  ParseError(std::string msg);
+  parse_error(std::string msg, sentence n);
 
-  ParseError(std::string msg, Sentence n);
-
-  virtual ~ParseError();
+  virtual ~parse_error();
 
   // TODO(tybl): Should this `override` std::exception::what()?
   std::string what();
 
-}; // struct ParseError
+}; // struct parse_error
 
 } // namespace nmea

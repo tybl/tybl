@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nmea/Command.hpp"
+#include "nmea/command.hpp"
 
 namespace nmea {
 
@@ -18,7 +18,7 @@ Checksum  *25
 */
 /*
 * Table 2-10 Messages
-Value Description
+value Description
 0 GGA
 1 GLL
 2 GSA
@@ -30,9 +30,7 @@ Value Description
 8 ZDA (if 1PPS output is supported)
 9 Not defined
 */
-struct QueryRate
-  : public Command
-{
+struct query_rate : public command {
   // data fields that will be stringed.
 
   enum QueryRateMode {
@@ -40,16 +38,15 @@ struct QueryRate
     QUERY = 1
   };
 
-  Sentence::MessageID messageID;
+  sentence::MessageID messageID;
   QueryRateMode mode;
   int rate;
   int checksumEnable;
 public:
-
-  QueryRate()
-    : Command("PSRF103")
+  query_rate()
+    : command("PSRF103")
   {
-    messageID = Sentence::Unknown;
+    messageID = sentence::Unknown;
     mode = QueryRateMode::SETRATE;
     rate = 0;
     checksumEnable = 1;
@@ -57,6 +54,6 @@ public:
 
   std::string to_string() override;
 
-}; // struct QueryRate
+}; // struct query_rate
 
 } // namespace nmea

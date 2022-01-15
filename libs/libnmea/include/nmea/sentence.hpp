@@ -7,7 +7,7 @@ namespace nmea {
 
 class Parser;
 
-class Sentence {
+class sentence {
   friend Parser;
 private:
   bool isvalid;
@@ -31,15 +31,14 @@ public:
     ZDA = 8
   };
 public:
+  sentence();
 
-  Sentence();
-
-  virtual ~Sentence();
+  virtual ~sentence();
 
   bool is_checksum_ok() const;
 
   bool valid() const;
 
-}; // class Sentence
+}; // class sentence
 
 } // namespace nmea

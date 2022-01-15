@@ -1,18 +1,18 @@
 // License: The Unlicense (https://unlicense.org)
-#include "Executor.hpp"
+#include "executor.hpp"
 
 #include "Board.hpp"
 
 #include <cassert>
 #include <iostream>
 
-Executor::Executor(std::ifstream& file)
+executor::executor(std::ifstream& file)
   : m_root(std::make_unique<const Board>(file))
 {
   m_nodes.push_back(m_root.get());
 }
 
-auto Executor::solve() -> INode const* {
+auto executor::solve() -> i_node const* {
   while(!m_nodes.empty()) {
     auto const* node = m_nodes.back();
     m_nodes.pop_back();
@@ -26,8 +26,8 @@ auto Executor::solve() -> INode const* {
         m_nodes.push_back(n);
       }
     }
-    std::make_heap(m_nodes.begin(), m_nodes.end(), NodeWeight());
-    std::pop_heap(m_nodes.begin(), m_nodes.end(), NodeWeight());
+    std::make_heap(m_nodes.begin(), m_nodes.end(), node_weight());
+    std::pop_heap(m_nodes.begin(), m_nodes.end(), node_weight());
   } // while (!empty)
   return nullptr;
 }

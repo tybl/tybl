@@ -8,28 +8,28 @@ target_include_directories(nmea PUBLIC include)
 target_link_libraries(nmea PUBLIC compiler_settings)
 target_sources(nmea
   PRIVATE
-    src/gps/Almanac.cpp
-    src/gps/Satellite.cpp
-    src/gps/Timestamp.cpp
-    src/gps/Fix.cpp
+        src/gps/almanac.cpp
+        src/gps/satellite.cpp
+        src/gps/timestamp.cpp
+        src/gps/fix.cpp
     src/nmea/Command.cpp
     src/nmea/GPSService.cpp
-    src/nmea/ParseError.cpp
+        src/nmea/parse_error.cpp
     src/nmea/Parser.cpp
-    src/nmea/QueryRate.cpp
-    src/nmea/Sentence.cpp
-    src/nmea/SerialConfiguration.cpp
+        src/nmea/query_rate.cpp
+        src/nmea/sentence.cpp
+        src/nmea/serial_configuration.cpp
   PUBLIC
-    include/gps/Almanac.hpp
-    include/gps/Satellite.hpp
-    include/gps/Timestamp.hpp
-    include/gps/Fix.hpp
+        include/gps/almanac.hpp
+        include/gps/satellite.hpp
+        include/gps/timestamp.hpp
+        include/gps/fix.hpp
     include/nmea/Event.hpp
     include/nmea/EventHandler.hpp
     include/nmea/nmea.hpp
-    include/nmea/ParseError.hpp
+        include/nmea/parse_error.hpp
     include/nmea/Parser.hpp
-    include/nmea/Sentence.hpp
+        include/nmea/sentence.hpp
 )
 
 add_subdirectory(test)

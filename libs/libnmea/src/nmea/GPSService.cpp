@@ -1,7 +1,7 @@
 #include "nmea/GPSService.hpp"
 
-#include "gps/Satellite.hpp"
-#include "nmea/ParseError.hpp"
+#include "gps/satellite.hpp"
+#include "nmea/parse_error.hpp"
 
 #include <iostream>
 #include <cmath>
@@ -55,48 +55,48 @@ void GPSService::attach_to_parser(Parser& _parser) {
   $GPZDA    - 1pps timing message
   $PSRF150  - gps module "ok to send"
   */
-  _parser.set_sentence_handler("PSRF150", [this](const Sentence& nmea) {
+  _parser.set_sentence_handler("PSRF150", [this](const sentence& nmea) {
     this->read_psrf150(nmea);
   });
-  _parser.set_sentence_handler("GPGGA", [this](const Sentence& nmea) {
+  _parser.set_sentence_handler("GPGGA", [this](const sentence& nmea) {
     this->read_gpgga(nmea);
   });
-  _parser.set_sentence_handler("GPGSA", [this](const Sentence& nmea) {
+  _parser.set_sentence_handler("GPGSA", [this](const sentence& nmea) {
     this->read_gpgsa(nmea);
   });
-  _parser.set_sentence_handler("GPGSV", [this](const Sentence& nmea) {
+  _parser.set_sentence_handler("GPGSV", [this](const sentence& nmea) {
     this->read_gpgsv(nmea);
   });
-  _parser.set_sentence_handler("GPRMC", [this](const Sentence& nmea) {
+  _parser.set_sentence_handler("GPRMC", [this](const sentence& nmea) {
     this->read_gprmc(nmea);
   });
-  _parser.set_sentence_handler("GPVTG", [this](const Sentence& nmea) {
+  _parser.set_sentence_handler("GPVTG", [this](const sentence& nmea) {
     this->read_gpvtg(nmea);
   });
 
 }
 
-void GPSService::read_psrf150(Sentence const& /*nmea*/) {
-  std::cerr << "GPSService::read_psrf150(Sentence const&)\n";
+void GPSService::read_psrf150(sentence const& /*nmea*/) {
+  std::cerr << "GPSService::read_psrf150(sentence const&)\n";
   // nothing right now...
   // Called with checksum 3E (valid) for GPS turning ON
   // Called with checksum 3F (invalid) for GPS turning OFF
 }
 
-void GPSService::read_gpgga(Sentence const& nmea) {
-  std::cerr << "GPSService::read_gpgga(Sentence const&)\n";
+void GPSService::read_gpgga(sentence const& nmea) {
+  std::cerr << "GPSService::read_gpgga(sentence const&)\n";
   /* -- EXAMPLE --
   $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47
 
   $GPGGA,205630.945,3346.1070,N,08423.6687,W,0,03,,30.8,M,-30.8,M,,0000*73    // ATLANTA!!!!
 
   Where:
-  GGA          Global Positioning System Fix Data
+  GGA          Global Positioning System fix Data
   index:
-  [0] 123519       Fix taken at 12:35:19 UTC
+  [0] 123519       fix taken at 12:35:19 UTC
   [1-2] 4807.038,N   Latitude 48 deg 07.038' N
   [3-4] 1131.000,E  Longitude 11 deg 31.000' E
-  [5] 1            Fix quality: 0 = invalid
+  [5] 1            fix quality: 0 = invalid
   1 = GPS fix (SPS)
   2 = DGPS fix
   3 = PPS fix
@@ -116,11 +116,11 @@ void GPSService::read_gpgga(Sentence const& nmea) {
   */
   try {
     if (!nmea.is_checksum_ok()) {
-      throw ParseError("Invalid checksum");
+      throw parse_error("Invalid checksum");
     }
 
     if (nmea.parameters.size() < 14) {
-      throw ParseError("GPS data is missing parameters.");
+      throw parse_error("GPS data is missing parameters.");
     }
 
     // TIMESTAMP
@@ -172,23 +172,23 @@ void GPSService::read_gpgga(Sentence const& nmea) {
     }
     this->onUpdate();
   } catch (std::invalid_argument&) {
-    ParseError pe("[$GPGGA] Could not convert string to a number", nmea);
+    parse_error pe("[$GPGGA] Could not convert string to a number", nmea);
     throw pe;
-  } catch (ParseError& ex) {
-    ParseError pe("GPS Data Bad Format [$GPGGA] :: " + ex.message, nmea);
+  } catch (parse_error& ex) {
+    parse_error pe("GPS Data Bad Format [$GPGGA] :: " + ex.message, nmea);
     throw pe;
   }
 }
 
-void GPSService::read_gpgsa(Sentence const& nmea) {
-  std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+void GPSService::read_gpgsa(sentence const& nmea) {
+  std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
   /*  -- EXAMPLE --
   $GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39
 
   $GPGSA,A,3,18,21,22,14,27,19,,,,,,,4.4,2.7,3.4*32
 
   Where:
-  GSA      Satellite status
+  GSA      satellite status
   [0] A        Auto selection of 2D or 3D fix (M = manual)
   [1] 3        3D fix - values include: 1 = no fix
   2 = 2D fix
@@ -201,16 +201,16 @@ void GPSService::read_gpgsa(Sentence const& nmea) {
   */
 
   try {
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
     if (!nmea.is_checksum_ok()) {
-      std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
-      throw ParseError("Checksum is invalid!");
+      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
+      throw parse_error("Checksum is invalid!");
     }
 
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
     if (nmea.parameters.size() < 17) {
-      std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
-      throw ParseError("GPS data is missing parameters.");
+      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
+      throw parse_error("GPS data is missing parameters.");
     }
 
     // FIX TYPE
@@ -218,50 +218,50 @@ void GPSService::read_gpgsa(Sentence const& nmea) {
     auto fix_type = std::stoul(nmea.parameters[1]);
     fix.type = static_cast<uint8_t>(fix_type);
     if (fix_type == 1) {
-      std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
       lockupdate = this->fix.set_lock(false);
     } else if (fix_type == 3) {
-      std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
+      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
       lockupdate = this->fix.set_lock(true);
     } else {
-      std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
+      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
     }
 
     // DILUTION OF PRECISION  -- PDOP
     double dop = std::stod(nmea.parameters[14]);
     this->fix.dilution = dop;
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 
     // HORIZONTAL DILUTION OF PRECISION -- HDOP
     double hdop = std::stod(nmea.parameters[15]);
     this->fix.horizontal_dilution = hdop;
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 
     // VERTICAL DILUTION OF PRECISION -- VDOP
     double vdop = std::stod(nmea.parameters[16]);
     this->fix.vertical_dilution = vdop;
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 
     //calling handlers
     if (lockupdate) {
-      std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
+      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
       this->onLockStateChanged(this->fix.m_has_lock);
     }
     this->onUpdate();
   } catch (std::invalid_argument&) {
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
-    ParseError pe("[$GPGSA] Could not convert string to number", nmea);
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
+    parse_error pe("[$GPGSA] Could not convert string to number", nmea);
     throw pe;
-  } catch (ParseError& ex) {
-    std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl;
-    ParseError pe("GPS Data Bad Format [$GPGSA] :: " + ex.message, nmea);
+  } catch (parse_error& ex) {
+    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
+    parse_error pe("GPS Data Bad Format [$GPGSA] :: " + ex.message, nmea);
     throw pe;
   }
-  std::cerr << "GPSService::read_gpgsa(Sentence const&): " << __LINE__ << std::endl; //
+  std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 }
 
-void GPSService::read_gpgsv(Sentence const& nmea) {
-  std::cerr << "GPSService::read_gpgsv(Sentence const&)\n";
+void GPSService::read_gpgsv(sentence const& nmea) {
+  std::cerr << "GPSService::read_gpgsv(sentence const&)\n";
   /*  -- EXAMPLE --
   $GPGSV,2,1,08,01,40,083,46,02,17,308,41,12,07,344,39,14,22,228,45*75
 
@@ -276,7 +276,7 @@ void GPSService::read_gpgsv(Sentence const& nmea) {
   [1] 1            sentence 1 of 2
   [2] 08           Number of satellites in view
 
-  [3] 01           Satellite PRN number
+  [3] 01           satellite PRN number
   [4] 40           Elevation, degrees
   [5] 083          Azimuth, degrees
   [6] 46           SNR - higher is better
@@ -286,12 +286,12 @@ void GPSService::read_gpgsv(Sentence const& nmea) {
 
   try {
     if (!nmea.is_checksum_ok()) {
-      throw ParseError("Checksum is invalid!");
+      throw parse_error("Checksum is invalid!");
     }
 
     // can't do this check because the length varies depending on satellites...
     //if(nmea.parameters.size() < 18) {
-    //  throw ParseError("GPS data is missing parameters.");
+    //  throw parse_error("GPS data is missing parameters.");
     //}
 
     // VISIBLE SATELLITES
@@ -312,7 +312,7 @@ void GPSService::read_gpgsv(Sentence const& nmea) {
 
     auto entriesInPage = (nmea.parameters.size() - 3) >> 2;  //first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
-    gps::Satellite sat;
+    gps::satellite sat;
     for (unsigned long i = 0; i < entriesInPage; i++) {
       auto prop = 3 + i * 4;
 
@@ -336,16 +336,16 @@ void GPSService::read_gpgsv(Sentence const& nmea) {
     this->onUpdate();
 
   } catch (std::invalid_argument&) {
-    ParseError pe("[$GPGSV] Could not convert string to number", nmea);
+    parse_error pe("[$GPGSV] Could not convert string to number", nmea);
     throw pe;
-  } catch (ParseError& ex) {
-    ParseError pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, nmea);
+  } catch (parse_error& ex) {
+    parse_error pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, nmea);
     throw pe;
   }
 }
 
-void GPSService::read_gprmc(Sentence const& nmea) {
-  std::cerr << "GPSService::read_gprmc(Sentence const&)\n";
+void GPSService::read_gprmc(sentence const& nmea) {
+  std::cerr << "GPSService::read_gprmc(sentence const&)\n";
   /*  -- EXAMPLE ---
   $GPRMC,123519,A,4807.038,N,01131.000,E,022.4,084.4,230394,003.1,W*6A
   $GPRMC,235957.025,V,,,,,,,070810,,,N*4B
@@ -353,7 +353,7 @@ void GPSService::read_gprmc(Sentence const& nmea) {
 
   Where:
   RMC          Recommended Minimum sentence C
-  [0] 123519       Fix taken at 12:35:19 UTC
+  [0] 123519       fix taken at 12:35:19 UTC
   [1] A            Status A=active or V=Void.
   [2-3] 4807.038,N   Latitude 48 deg 07.038' N
   [4-5] 01131.000,E  Longitude 11 deg 31.000' E
@@ -367,11 +367,11 @@ void GPSService::read_gprmc(Sentence const& nmea) {
 
   try {
     if (!nmea.is_checksum_ok()) {
-      throw ParseError("Checksum is invalid!");
+      throw parse_error("Checksum is invalid!");
     }
 
     if (nmea.parameters.size() < 11) {
-      throw ParseError("GPS data is missing parameters.");
+      throw parse_error("GPS data is missing parameters.");
     }
 
     // TIMESTAMP
@@ -419,16 +419,16 @@ void GPSService::read_gprmc(Sentence const& nmea) {
     }
     this->onUpdate();
   } catch (std::invalid_argument&) {
-    ParseError pe("[$GPRMC] Could not convert string to number", nmea);
+    parse_error pe("[$GPRMC] Could not convert string to number", nmea);
     throw pe;
-  } catch (ParseError& ex) {
-    ParseError pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, nmea);
+  } catch (parse_error& ex) {
+    parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, nmea);
     throw pe;
   }
 }
 
-void GPSService::read_gpvtg(Sentence const& nmea) {
-  std::cerr << "GPSService::read_gpvtg(Sentence const&)\n";
+void GPSService::read_gpvtg(sentence const& nmea) {
+  std::cerr << "GPSService::read_gpvtg(sentence const&)\n";
   /*
   $GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48
 
@@ -443,11 +443,11 @@ void GPSService::read_gpvtg(Sentence const& nmea) {
 
   try {
     if (!nmea.is_checksum_ok()) {
-      throw ParseError("Checksum is invalid!");
+      throw parse_error("Checksum is invalid!");
     }
 
     if (nmea.parameters.size() < 8) {
-      throw ParseError("GPS data is missing parameters.");
+      throw parse_error("GPS data is missing parameters.");
     }
 
     // SPEED
@@ -456,10 +456,10 @@ void GPSService::read_gpvtg(Sentence const& nmea) {
 
     this->onUpdate();
   } catch (std::invalid_argument&) {
-    ParseError pe("[$GPVTG] Could not convert string to number", nmea);
+    parse_error pe("[$GPVTG] Could not convert string to number", nmea);
     throw pe;
-  } catch (ParseError& ex) {
-    ParseError pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, nmea);
+  } catch (parse_error& ex) {
+    parse_error pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, nmea);
     throw pe;
   }
 }

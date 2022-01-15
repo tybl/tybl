@@ -2,16 +2,16 @@
 #ifndef NODEWEIGHT_HPP
 #define NODEWEIGHT_HPP
 
-#include "INode.hpp"
+#include "i_node.hpp"
 
-struct NodeWeight {
+struct node_weight {
 
-  bool operator () (INode const* lhs, INode const* rhs) {
+  bool operator () (i_node const* lhs, i_node const* rhs) {
     auto lp = lhs->priority();
     auto rp = rhs->priority();
     return (lp < rp) || (lp == rp && lhs->distance() > rhs->distance());
   }
 
-}; // struct NodeWeight
+}; // struct node_weight
 
 #endif // NODEWEIGHT_HPP

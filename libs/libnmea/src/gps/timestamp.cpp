@@ -1,4 +1,4 @@
-#include "gps/Timestamp.hpp"
+#include "gps/timestamp.hpp"
 
 #include <cmath> // trunc
 #include <ctime>
@@ -6,7 +6,7 @@
 
 namespace gps {
 
-Timestamp::Timestamp() {
+timestamp::timestamp() {
   hour = 0;
   min = 0;
   sec = 0;
@@ -20,7 +20,7 @@ Timestamp::Timestamp() {
 }
 
 // indexed from 1!
-std::string Timestamp::month_name(int32_t index) {
+std::string timestamp::month_name(int32_t index) {
   if (index < 1 || index > 12) {
     std::stringstream ss;
     ss << "[month:" << index << "]";
@@ -45,7 +45,7 @@ std::string Timestamp::month_name(int32_t index) {
 }
 
 // Returns seconds since Jan 1, 1970. Classic Epoch time.
-time_t Timestamp::get_time() {
+time_t timestamp::get_time() {
   std::tm t{};
   t.tm_year = year - 1900;  // This is year-1900, so 112 = 2012
   t.tm_mon = month;      // month from 0:Jan
@@ -56,7 +56,7 @@ time_t Timestamp::get_time() {
   return mktime(&t);
 }
 
-void Timestamp::set_time(double raw_ts) {
+void timestamp::set_time(double raw_ts) {
   rawTime = raw_ts;
 
   hour = static_cast<int32_t>(raw_ts / 10000.0);
@@ -65,7 +65,7 @@ void Timestamp::set_time(double raw_ts) {
 }
 
 //ddmmyy
-void Timestamp::set_date(int32_t raw_date) {
+void timestamp::set_date(int32_t raw_date) {
   rawDate = raw_date;
   // If uninitialized, use posix time.
   if(rawDate == 0) {
@@ -79,7 +79,7 @@ void Timestamp::set_date(int32_t raw_date) {
   }
 }
 
-std::string Timestamp::to_string() {
+std::string timestamp::to_string() {
   std::stringstream ss;
   ss << hour << "h " << min << "m " << sec << "s" << "  " << month_name(month) << " " << day << " " << year;
   return ss.str();

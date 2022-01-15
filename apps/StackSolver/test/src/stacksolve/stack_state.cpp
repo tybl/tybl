@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "stacksolve/StackState.hpp"
+#include "stacksolve/stack_state.hpp"
 #include "Board.hpp"
 
 #include <doctest/doctest.h>
@@ -14,7 +14,7 @@ TEST_CASE("Board"){
     "12300\n"
   );
   Board b(input);
-  Edge e{0,3};
+  edge e{0,3};
   CHECK(!b.is_valid(e));
   auto steps = b.generate_steps();
   CHECK(steps.size() == 0UL);

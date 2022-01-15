@@ -9,7 +9,7 @@ target_include_directories(json INTERFACE include)
 target_link_libraries(json PUBLIC compiler_settings)
 target_sources(json
   PUBLIC
-    include/json/Value.hpp
+    include/json/value.hpp
 )
 ]]
 

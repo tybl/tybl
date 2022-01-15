@@ -4,9 +4,9 @@
 
 #include <cstdint>
 
-struct Edge {
+struct edge {
   uint8_t StackFrom;
   uint8_t StackTo;
-}; // struct Edge
+}; // struct edge
 
 #endif // EDGE_HPP

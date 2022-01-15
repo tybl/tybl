@@ -6,7 +6,7 @@
 
 namespace nmea {
 
-class Command {
+class command {
   // TODO(tybl): This struct doesn't contain the functionality to maintain
   // the invariants inherent to it. That makes it difficult to know how to
   // properly build it.
@@ -15,17 +15,16 @@ class Command {
   // TODO(tybl): Should the checksum be an unsigned char?
   uint8_t m_checksum;
 public:
+  command();
 
-  Command();
+  command(std::string name);
 
-  Command(std::string name);
-
-  virtual ~Command();
+  virtual ~command();
 
   virtual std::string to_string();
 
   std::string add_checksum(std::string s);
 
-}; // struct Command
+}; // struct command
 
 } // namespace nmea

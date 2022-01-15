@@ -1,8 +1,8 @@
 #pragma once
 
-#include "gps/Almanac.hpp"
-#include "gps/Satellite.hpp"
-#include "gps/Timestamp.hpp"
+#include "gps/almanac.hpp"
+#include "gps/satellite.hpp"
+#include "gps/timestamp.hpp"
 
 #include <chrono>
 #include <cstdint>
@@ -14,7 +14,7 @@ namespace nmea {
 
 namespace gps {
 
-class Fix {
+class fix {
   friend nmea::GPSService;
 
 private:
@@ -23,12 +23,11 @@ private:
   bool set_lock(bool b);    //returns true if lock status **changed***, false otherwise.
 
 public:
+  fix();
+  virtual ~fix();
 
-  Fix();
-  virtual ~Fix();
-
-  gps::Almanac almanac;
-  gps::Timestamp timestamp;
+  gps::almanac almanac;
+  gps::timestamp timestamp;
 
   char status;    // Status: A=active, V=void (not locked)
   uint8_t type;    // Type: 1=none, 2=2d, 3=3d
@@ -64,6 +63,6 @@ public:
   operator std::string();
 
   static std::string ordinal_direction(double deg, bool abbrev = false);
-}; // class Fix
+}; // class fix
 
 } // namespace nmea
