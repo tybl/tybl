@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include "json/value.hpp"
 //#include "vodka/util/parse_error.hpp"   // for parse_error
 

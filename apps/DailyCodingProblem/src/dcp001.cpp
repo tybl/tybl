@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 /* Problem 001:
  * Given a list of numbers and a number k, return whether any two numbers from
  * the list add up to k. For example, given [10, 15, 3, 7] and k of 17, return

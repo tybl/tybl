@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #pragma once
 
 #include <cstdint>

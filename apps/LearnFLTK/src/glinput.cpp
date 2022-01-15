@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include <stdlib.h>             /* Standard Lib    ISOC  */
 #include <stdio.h>              /* I/O lib         ISOC  */
 

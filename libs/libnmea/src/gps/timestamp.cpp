@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include "gps/timestamp.hpp"
 
 #include <cmath> // trunc

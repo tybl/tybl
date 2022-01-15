@@ -1,4 +1,4 @@
-// Library: The Unlicense (https://unlicense.org)
+// License: The Unlicense (https://unlicense.org)
 #pragma once
 #ifndef TYBL_VODKA_SPAN_SPAN_HPP
 #define TYBL_VODKA_SPAN_SPAN_HPP

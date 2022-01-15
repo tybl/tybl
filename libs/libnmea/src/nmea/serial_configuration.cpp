@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include "nmea/serial_configuration.hpp"
 
 #include <sstream>
