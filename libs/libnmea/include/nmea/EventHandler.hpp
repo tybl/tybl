@@ -20,8 +20,8 @@ private:
   static uint64_t LastID;
 
   // Properties
-  uint64_t ID;
   std::function<void(Args...)> handler;
+  uint64_t ID;
 
   // Functions
   void copy(const EventHandler& ref){

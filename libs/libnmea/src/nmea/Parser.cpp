@@ -42,6 +42,7 @@ static void squish(std::string& str) {
   }
 }
 
+#if 0
 // remove side whitespace
 static void trim(std::string& str) {
   std::stringstream trimmer;
@@ -49,6 +50,7 @@ static void trim(std::string& str) {
   str.clear();
   trimmer >> str;
 }
+#endif
 
 // --------- NMEA PARSER --------------
 
@@ -86,34 +88,34 @@ std::string Parser::get_list_of_sentence_handlers() {
   return s;
 }
 
-void Parser::read_byte(uint8_t b) {
-  std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << " - " << static_cast<uint32_t>(b) << (std::isgraph(b) ? static_cast<char>(b) : '\0') << std::endl;
+void Parser::read_byte(char b) {
+  std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << " - " << static_cast<uint32_t>(b) << (std::isgraph(b) ? b : '\0') << std::endl;
   uint8_t start_byte = '$';
 
   if (m_fillingbuffer) {
     std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
     if (b == '\n') {
     std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      buffer.push_back(b);
+      m_buffer.push_back(b);
       try {
-        read_sentence(buffer);
-        buffer.clear();
+        read_sentence(m_buffer);
+        m_buffer.clear();
         m_fillingbuffer = false;
       } catch (std::exception&) {
         std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-        // If anything happens, let it pass through, but reset the buffer first.
-        buffer.clear();
+        // If anything happens, let it pass through, but reset the m_buffer first.
+        m_buffer.clear();
         m_fillingbuffer = false;
         throw;
       }
     } else {
       std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      if (buffer.size() < maxbuffersize) {
+      if (m_buffer.size() < maxbuffersize) {
         std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-        buffer.push_back(b);
+        m_buffer.push_back(b);
       } else {
         std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-        buffer.clear();      // clear the host buffer so it won't overflow.
+        m_buffer.clear();      // clear the host m_buffer so it won't overflow.
         m_fillingbuffer = false;
       }
     }
@@ -122,12 +124,12 @@ void Parser::read_byte(uint8_t b) {
     if (b == start_byte) {      // only start filling when we see the start byte.
       std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
       m_fillingbuffer = true;
-      buffer.push_back(b);
+      m_buffer.push_back(b);
     }
   }
 }
 
-void Parser::read_buffer(uint8_t* b, uint32_t size) {
+void Parser::read_buffer(char* b, uint32_t size) {
   for (uint32_t i = 0; i < size; ++i) {
     read_byte(b[i]);
   }
@@ -141,19 +143,19 @@ void Parser::read_line(std::string cmd) {
 }
 
 // Loggers
-void Parser::on_info(Sentence& nmea, std::string txt) {
+void Parser::on_info(Sentence& /*nmea*/, std::string txt) {
   if (log) {
     std::cout << "[Info]    " << txt << std::endl;
   }
 }
 
-void Parser::on_warn(Sentence& nmea, std::string txt) {
+void Parser::on_warn(Sentence& /*nmea*/, std::string txt) {
   if (log) {
     std::cout << "[Warning] " << txt << std::endl;
   }
 }
 
-void Parser::on_err(Sentence& nmea, std::string txt) {
+void Parser::on_err(Sentence& /*nmea*/, std::string txt) {
   throw ParseError("[ERROR] " + txt);
 }
 
@@ -239,7 +241,7 @@ void Parser::read_sentence(std::string cmd) {
 uint8_t Parser::calc_checksum(std::string s) {
   uint8_t checksum = 0;
   for (const char i : s) {
-    checksum = checksum ^ i;
+    checksum = static_cast<uint8_t>(checksum ^ i);
   }
 
   // will display the calculated checksum in hex
