@@ -7,8 +7,8 @@
 
 namespace tybl::math {
 
-inline constexpr int64_t pow10(uint32_t exponent) {
-   return (exponent == 0) ? 1 : (10 * pow10(exponent - 1));
+inline constexpr int64_t pow10(uint32_t p_exponent) {
+   return (p_exponent == 0) ? 1 : (10 * pow10(p_exponent - 1));
 }
 
 } // namespace tybl::math

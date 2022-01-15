@@ -13,8 +13,8 @@ class stack_state {
   vodka::dynarray_2d<char> m_contents;
   stack_state const* m_parent;
 public:
-  stack_state(vodka::dynarray_2d<char>&& contents)
-    : m_contents(std::move(contents))
+  stack_state(vodka::dynarray_2d<char>&& p_contents)
+    : m_contents(std::move(p_contents))
     , m_parent(nullptr)
   {
   }
@@ -27,8 +27,8 @@ public:
     return distance_from_start() + distance_to_goal();
   }
 
-  auto operator<(stack_state const& o) const -> bool {
-    return m_contents < o.m_contents;
+  auto operator<(stack_state const& p_o) const -> bool {
+    return m_contents < p_o.m_contents;
   }
 
   auto distance_to_goal() const -> size_t {
@@ -53,21 +53,21 @@ public:
     return std::vector<stack_state>();
   }
 
-  bool is_empty(size_t row) const {
-    return '0' == m_contents(row,0);
+  bool is_empty(size_t p_row) const {
+    return '0' == m_contents(p_row,0);
   }
 
-  bool is_full_and_homogeneous(std::span<const char> row) const {
-    for (auto const c : row) {
-      if (row.front() != c) { return false; }
+  bool is_full_and_homogeneous(std::span<const char> p_row) const {
+    for (auto const c : p_row) {
+      if (p_row.front() != c) { return false; }
     }
     return true;
   }
 
-  size_t num_to_move(std::span<const char> row) const {
+  size_t num_to_move(std::span<const char> p_row) const {
     size_t result = 0;
-    for (auto c : row) {
-      result += static_cast<size_t>(row.front() != c);
+    for (auto c : p_row) {
+      result += static_cast<size_t>(p_row.front() != c);
     }
     return result;
   }

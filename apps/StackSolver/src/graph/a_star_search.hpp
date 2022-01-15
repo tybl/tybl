@@ -16,15 +16,15 @@ struct a_star_search {
 public:
 
   struct node_weight {
-    bool operator () (Iter const& lhs, Iter const& rhs) {
-      auto lp = lhs->priority();
-      auto rp = rhs->priority();
-      return (lp < rp) || (lp == rp && lhs->distance() > rhs->distance());
+    bool operator () (Iter const& p_lhs, Iter const& p_rhs) {
+      auto lp = p_lhs->priority();
+      auto rp = p_rhs->priority();
+      return (lp < rp) || (lp == rp && p_lhs->distance() > p_rhs->distance());
     }
   }; // struct node_weight
 
-  a_star_search(Node start) {
-    auto res = m_found.insert(start);
+  a_star_search(Node p_start) {
+    auto res = m_found.insert(p_start);
     m_work_queue.push_back(res.first);
   }
 

@@ -21,7 +21,7 @@ private:
   uint32_t m_total_pages;
   uint32_t m_processed_pages;
   void clear();      //will remove all information from the satellites
-  void update_satellite(gps::satellite sat);
+  void update_satellite(gps::satellite p_sat);
 public:
   almanac();
 

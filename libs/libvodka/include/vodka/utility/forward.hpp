@@ -10,15 +10,15 @@ namespace tybl::vodka {
 
 template <typename T>
 constexpr auto
-forward(remove_reference_t<T>& obj) noexcept -> T&& {
-  return static_cast<T&&>(obj);
+forward(remove_reference_t<T>& p_obj) noexcept -> T&& {
+  return static_cast<T&&>(p_obj);
 }
 
 template <typename T>
 constexpr auto
-forward(remove_reference_t<T>&& obj) noexcept -> T&& {
+forward(remove_reference_t<T>&& p_obj) noexcept -> T&& {
   static_assert(!is_lvalue_reference_v<T>, "Cannot forward an rvalue as an lvalue");
-  return static_cast<T&&>(obj);
+  return static_cast<T&&>(p_obj);
 }
 
 } // namespace tybl::vodka

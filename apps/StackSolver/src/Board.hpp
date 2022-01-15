@@ -28,9 +28,9 @@ struct Board
   mutable size_t m_distance;
 public:
 
-  Board(std::istream& input);
+  Board(std::istream& p_input);
 
-  Board(Board const& o, edge const& e);
+  Board(Board const& p_o, edge const& p_e);
 
   ~Board() override;
 
@@ -38,7 +38,7 @@ public:
 
   auto generate_steps() const -> std::vector<edge> override;
 
-  auto operator + (edge const& e) const -> i_node const* override;
+  auto operator + (edge const& p_e) const -> i_node const* override;
 
   void print() const override;
 
@@ -48,19 +48,19 @@ public:
 
   auto distance() const -> size_t override;
 
-  auto operator<(Board const& o) const -> bool;
+  auto operator<(Board const& p_o) const -> bool;
 
   auto num_found() const -> size_t override;
 
 public:
 
-  void apply(edge const& e);
-  static auto count_suffix_matching(std::string const& s, char c) -> size_t;
+  void apply(edge const& p_e);
+  static auto count_suffix_matching(std::string const& p_s, char p_c) -> size_t;
   size_t calc_priority() const;
-  bool is_full(std::string const& s) const;
-  bool is_full_and_homogeneous(std::string const& s) const;
-  static auto is_homogeneous(std::string const& s) -> bool;
-  bool is_valid(edge const& e) const;
+  bool is_full(std::string const& p_s) const;
+  bool is_full_and_homogeneous(std::string const& p_s) const;
+  static auto is_homogeneous(std::string const& p_s) -> bool;
+  bool is_valid(edge const& p_e) const;
 
 };
 

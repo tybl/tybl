@@ -6,8 +6,8 @@
 #include <cassert>
 #include <iostream>
 
-executor::executor(std::ifstream& file)
-  : m_root(std::make_unique<const Board>(file))
+executor::executor(std::ifstream& p_file)
+  : m_root(std::make_unique<const Board>(p_file))
 {
   m_nodes.push_back(m_root.get());
 }

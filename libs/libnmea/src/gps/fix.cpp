@@ -54,9 +54,9 @@ bool fix::has_estimate(){
   return (latitude != 0 && longitude != 0) || (quality == 6);
 }
 
-bool fix::set_lock(bool locked){
-  if (m_has_lock != locked){
-    m_has_lock = locked;
+bool fix::set_lock(bool p_locked){
+  if (m_has_lock != p_locked){
+    m_has_lock = p_locked;
     return true;
   }
   return false;
@@ -79,16 +79,16 @@ double fix::vertical_accuracy(){
 }
 
 // Takes a degree travel heading (0-360') and returns the name
-std::string fix::ordinal_direction(double deg, bool abbrev){
+std::string fix::ordinal_direction(double p_deg, bool p_abbrev){
 
   //normalize, just in case
-  auto c = static_cast<int32_t>(round(deg / 360.0 * 8.0));
+  auto c = static_cast<int32_t>(round(p_deg / 360.0 * 8.0));
   int32_t r = c % 8;
   if (r < 0){
     r = 8 + r;
   }
 
-  if (abbrev){
+  if (p_abbrev){
     std::string dirs[] = {
       "N",
       "NE",
@@ -118,8 +118,8 @@ std::string fix::ordinal_direction(double deg, bool abbrev){
   
 }
 
-std::string fix_status_to_string(char status){
-  switch (status){
+std::string fix_status_to_string(char p_status){
+  switch (p_status){
   case 'A':
     return "Active";
   case 'V':
@@ -129,8 +129,8 @@ std::string fix_status_to_string(char status){
   }
 }
 
-std::string fix_type_to_string(uint8_t type){
-  switch (type){
+std::string fix_type_to_string(uint8_t p_type){
+  switch (p_type){
   case 1:
     return "None";
   case 2:
@@ -142,8 +142,8 @@ std::string fix_type_to_string(uint8_t type){
   }
 }
 
-std::string fix_quality_to_string(uint8_t quality){
-  switch (quality){
+std::string fix_quality_to_string(uint8_t p_quality){
+  switch (p_quality){
   case 0:
     return "Invalid";
   case 1:

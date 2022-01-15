@@ -16,27 +16,27 @@ static const std::regex
           std::regex_constants::ECMAScript | std::regex_constants::optimize);
 
 template <class TYPE, TYPE low, TYPE high>
-bool is_in_range(TYPE c) {
+bool is_in_range(TYPE p_c) {
    static_assert(low <= high);
-   return ((low <= c) && (c <= high));
+   return ((low <= p_c) && (p_c <= high));
 }
 
-inline bool is_digit(char c) {
-   return is_in_range<char, '0', '9'>(c);
+inline bool is_digit(char p_c) {
+   return is_in_range<char, '0', '9'>(p_c);
 }
 
-inline bool is_onenine(char c) {
-   return is_in_range<char, '1', '9'>(c);
+inline bool is_onenine(char p_c) {
+   return is_in_range<char, '1', '9'>(p_c);
 }
 
-inline bool is_hex(char c) {
-   return is_digit(c)
-       || is_in_range<char, 'A', 'F'>(c)
-       || is_in_range<char, 'a', 'f'>(c);
+inline bool is_hex(char p_c) {
+   return is_digit(p_c)
+       || is_in_range<char, 'A', 'F'>(p_c)
+       || is_in_range<char, 'a', 'f'>(p_c);
 }
 
-inline bool is_whitespace(char c) {
-   return (('\x09' == c) || ('\x0A' == c) || ('\x0D' == c) || ('\x20' == c));
+inline bool is_whitespace(char p_c) {
+   return (('\x09' == p_c) || ('\x0A' == p_c) || ('\x0D' == p_c) || ('\x20' == p_c));
 }
 
 enum class TokenType {
@@ -70,7 +70,7 @@ struct token {
 
    std::string_view value() const { return m_value; }
 
-   token(std::string_view sv) : m_value(sv) { }
+   token(std::string_view p_sv) : m_value(p_sv) { }
 
    // Intent: Determine the token type of the input.
    // Caveats:
@@ -85,14 +85,14 @@ struct token {
    // Decisions:
    //    * Empty input:
    //    * Leading whitespace:
-   static TokenType calculate_type(std::string_view in) {
-      assert(!in.empty());
+   static TokenType calculate_type(std::string_view p_in) {
+      assert(!p_in.empty());
       TokenType result = TokenType::UNKNOWN;
       // TODO(tblyons): Can we guarantee this function will never be called with
       //                an empty input? If so, we can remove this redundant call
       //                to in.empty().
-      if (!in.empty()) {
-         switch (in.front()) {
+      if (!p_in.empty()) {
+         switch (p_in.front()) {
             case '"': result = TokenType::STRING; break;
             case '-':
             case '0':
@@ -134,12 +134,12 @@ struct token {
    // Decisions:
    //    * Empty input:
    //    * Invalid token:
-   static size_t length(std::string_view in) {
+   static size_t length(std::string_view p_in) {
       size_t result = 1;
-      if (in.empty()) {
+      if (p_in.empty()) {
          return 0;
       } else {
-         switch (calculate_type(in)) {
+         switch (calculate_type(p_in)) {
             case TokenType::NIL:
             case TokenType::TRUE:
                result = 4;
@@ -149,11 +149,11 @@ struct token {
                break;
             case TokenType::STRING:
                // TODO(tblyons): Calculate string length
-               result = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), str_re)->length());
+               result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), str_re)->length());
                break;
             case TokenType::NUMBER:
                // TODO(tblyons): Calculate number length
-               result = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), num_re)->length());
+               result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), num_re)->length());
                break;
             case TokenType::OBJECT_OPEN:
             case TokenType::OBJECT_CLOSE:
@@ -173,7 +173,7 @@ private:
 
 struct token_iterator {
 
-  token_iterator(std::string_view in) : m_value(in) {}
+  token_iterator(std::string_view p_in) : m_value(p_in) {}
 
   token_iterator operator++() {
     m_value.remove_prefix(token::length(m_value));
@@ -209,22 +209,22 @@ private:
 };
 #endif
 
-static std::vector<token> lex(std::string_view in) {
+static std::vector<token> lex(std::string_view p_in) {
    std::vector<token> result;
-   while (!in.empty()) {
-      switch (in.front()) {
+   while (!p_in.empty()) {
+      switch (p_in.front()) {
          case '\x09':
          case '\x0A':
          case '\x0D':
          case '\x20':
             // Whitespace
-            in.remove_prefix(1);
+            p_in.remove_prefix(1);
             break;
          case '"': {
             // String
-            auto len = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), str_re)->length());
-            result.emplace_back(in.substr(0, len));
-            in.remove_prefix(len);
+            auto len = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), str_re)->length());
+            result.emplace_back(p_in.substr(0, len));
+            p_in.remove_prefix(len);
             break;
          }
          case '-':
@@ -239,134 +239,134 @@ static std::vector<token> lex(std::string_view in) {
          case '8':
          case '9': {
             // Number
-            auto len = static_cast<size_t>(std::cregex_iterator(in.begin(), in.end(), num_re)->length());
-            result.emplace_back(in.substr(0, len));
-            in.remove_prefix(len);
+            auto len = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), num_re)->length());
+            result.emplace_back(p_in.substr(0, len));
+            p_in.remove_prefix(len);
             break;
          }
          case '[':
-            result.emplace_back(in.substr(0, 1));
-            in.remove_prefix(1);
+            result.emplace_back(p_in.substr(0, 1));
+            p_in.remove_prefix(1);
             break;
          case ']':
-            result.emplace_back(in.substr(0, 1));
-            in.remove_prefix(1);
+            result.emplace_back(p_in.substr(0, 1));
+            p_in.remove_prefix(1);
             break;
          case 'f':
-            result.emplace_back(in.substr(0, 5));
-            in.remove_prefix(5);
+            result.emplace_back(p_in.substr(0, 5));
+            p_in.remove_prefix(5);
             break;
          case 'n':
-            result.emplace_back(in.substr(0, 4));
-            in.remove_prefix(4);
+            result.emplace_back(p_in.substr(0, 4));
+            p_in.remove_prefix(4);
             break;
          case 't':
-            result.emplace_back(in.substr(0, 4));
-            in.remove_prefix(4);
+            result.emplace_back(p_in.substr(0, 4));
+            p_in.remove_prefix(4);
             break;
          case '{':
-            result.emplace_back(in.substr(0, 1));
-            in.remove_prefix(1);
+            result.emplace_back(p_in.substr(0, 1));
+            p_in.remove_prefix(1);
             break;
          case '}':
-            result.emplace_back(in.substr(0, 1));
-            in.remove_prefix(1);
+            result.emplace_back(p_in.substr(0, 1));
+            p_in.remove_prefix(1);
             break;
          case ',':
-            result.emplace_back(in.substr(0, 1));
-            in.remove_prefix(1);
+            result.emplace_back(p_in.substr(0, 1));
+            p_in.remove_prefix(1);
             break;
          case ':':
-            result.emplace_back(in.substr(0, 1));
-            in.remove_prefix(1);
+            result.emplace_back(p_in.substr(0, 1));
+            p_in.remove_prefix(1);
             break;
          default:
-            printf("not sure what to do with: '%c'\n", in.front());
+            printf("not sure what to do with: '%c'\n", p_in.front());
             throw std::runtime_error("Error: Encountered unexpected character while lexing JSON");
       }
    }
    return result;
 }
 
-vodka::json::value parse_element(std::string_view& in);
-vodka::json::value parse_value(std::string_view& in);
+vodka::json::value parse_element(std::string_view& p_in);
+vodka::json::value parse_value(std::string_view& p_in);
 
 static constexpr char FALSE[] = "false";
 static constexpr char NIL[] = "null";
 static constexpr char TRUE[] = "true";
 
 template<char CHAR>
-bool parse_character(std::string_view& in) {
-   bool result = (!in.empty() && CHAR == in.front());
-   in.remove_prefix(static_cast<std::string_view::size_type>(result));
+bool parse_character(std::string_view& p_in) {
+   bool result = (!p_in.empty() && CHAR == p_in.front());
+   p_in.remove_prefix(static_cast<std::string_view::size_type>(result));
    return result;
 } // parse_character(std::string_view&)
 
-static void parse_whitespace(std::string_view& in) {
+static void parse_whitespace(std::string_view& p_in) {
    static constexpr std::string_view WHITESPACE_CHARS("\x09\x0A\x0D\x20");
-   auto pos = in.find_first_not_of(WHITESPACE_CHARS);
-   in.remove_prefix((in.npos != pos)? pos : 0); // consume whitespace
+   auto pos = p_in.find_first_not_of(WHITESPACE_CHARS);
+   p_in.remove_prefix((p_in.npos != pos)? pos : 0); // consume whitespace
 } // parse_whitespace(std::string_view&)
 
 template <const char* LITERAL>
-std::string_view parse_literal(std::string_view& in) {
+std::string_view parse_literal(std::string_view& p_in) {
    static constexpr std::string_view prefix = LITERAL;
-   auto result = in.substr(0, prefix.length());
+   auto result = p_in.substr(0, prefix.length());
    if (prefix != result) {
       throw std::runtime_error("Error: Expected to find JSON literal '{}'");
    }
-   in.remove_prefix(prefix.length());
+   p_in.remove_prefix(prefix.length());
    printf(LITERAL);
    return result;
 } // parse_literal(std::string_view&)
 
-static std::string_view parse_number(std::string_view& in) {
+static std::string_view parse_number(std::string_view& p_in) {
    static std::regex re("^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
-   auto rei = std::cregex_iterator(in.begin(), in.end(), re);
+   auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
    if (!rei->ready() || rei->empty() || rei->position() != 0) {
       throw std::runtime_error("Error: Expected JSON Number");
    }
    auto len = static_cast<size_t>(rei->length());
-   std::string_view result(in.data(), len);
-   in.remove_prefix(len);
+   std::string_view result(p_in.data(), len);
+   p_in.remove_prefix(len);
    printf("#");
    return result;
 } // parse_number(std::string_view&)
 
-static std::string_view parse_string(std::string_view& in) {
-   if (!parse_character<'"'>(in)) {
+static std::string_view parse_string(std::string_view& p_in) {
+   if (!parse_character<'"'>(p_in)) {
       throw std::runtime_error("Error: JSON String not found");
    }
    size_t i = 0;
-   for (; (i < in.size()) && ('"' != in[i]); ++i) {
-      if (is_in_range<char, 0x0, 0x19>(in[i])) {
+   for (; (i < p_in.size()) && ('"' != p_in[i]); ++i) {
+      if (is_in_range<char, 0x0, 0x19>(p_in[i])) {
          throw std::runtime_error("Error: String includes unescaped character in the range 0000 . 0019");
       }
-      if ('\\' == in[i]) {
-         if (i + 1 >= in.size()) {
+      if ('\\' == p_in[i]) {
+         if (i + 1 >= p_in.size()) {
             throw std::runtime_error("Error: Not enough hexadecimal characters after escape");
          }
          ++i;
-         if (('"'  != in[i])
-          && ('\\' != in[i])
-          && ('/'  != in[i])
-          && ('b'  != in[i])
-          && ('f'  != in[i])
-          && ('n'  != in[i])
-          && ('r'  != in[i])
-          && ('t'  != in[i])
-          && ('u'  != in[i]))
+         if (('"'  != p_in[i])
+          && ('\\' != p_in[i])
+          && ('/'  != p_in[i])
+          && ('b'  != p_in[i])
+          && ('f'  != p_in[i])
+          && ('n'  != p_in[i])
+          && ('r'  != p_in[i])
+          && ('t'  != p_in[i])
+          && ('u'  != p_in[i]))
          {
             throw std::runtime_error("Error: Unexpected escaped character");
          }
-         if ('u' == in[i]) {
-            if (i + 4 >= in.size()) {
+         if ('u' == p_in[i]) {
+            if (i + 4 >= p_in.size()) {
                throw std::runtime_error("Error: Not enough hexadecimal characters in escaped 'u'");
             }
-            if (!is_hex(in[i + 1])
-             || !is_hex(in[i + 2])
-             || !is_hex(in[i + 3])
-             || !is_hex(in[i + 4]))
+            if (!is_hex(p_in[i + 1])
+             || !is_hex(p_in[i + 2])
+             || !is_hex(p_in[i + 3])
+             || !is_hex(p_in[i + 4]))
             {
                throw std::runtime_error("Error: Non-hexadecimal characters in escaped 'u'");
             }
@@ -374,32 +374,32 @@ static std::string_view parse_string(std::string_view& in) {
          }
       }
    }
-   if (in.size() == i) {
+   if (p_in.size() == i) {
       throw std::runtime_error("Error: JSON input ended before string was closed");
    }
-   auto result = in.substr(0, i);
-   in.remove_prefix(i + 1);
+   auto result = p_in.substr(0, i);
+   p_in.remove_prefix(i + 1);
    printf("\"");
    return result;
 } // parse_string(std::string_view&)
 
 // Recursive
-static std::vector<vodka::json::value> parse_array(std::string_view& in) {
-   if (!parse_character<'['>(in)) {
+static std::vector<vodka::json::value> parse_array(std::string_view& p_in) {
+   if (!parse_character<'['>(p_in)) {
       throw std::runtime_error("Error: JSON Array not found");
    }
    printf("[");
    std::vector<vodka::json::value> result;
-   parse_whitespace(in);
-   if (!in.empty() && ']' != in.front()) {
-      result.push_back(parse_value(in));
-      parse_whitespace(in);
-      while (parse_character<','>(in)) {
+   parse_whitespace(p_in);
+   if (!p_in.empty() && ']' != p_in.front()) {
+      result.push_back(parse_value(p_in));
+      parse_whitespace(p_in);
+      while (parse_character<','>(p_in)) {
          printf(",");
-         result.push_back(parse_element(in));
+         result.push_back(parse_element(p_in));
       }
    }
-   if (!parse_character<']'>(in)) {
+   if (!parse_character<']'>(p_in)) {
       throw std::runtime_error("Error: Encountered unexpected character while parsing JSON Array");
    }
    printf("]");
@@ -407,34 +407,34 @@ static std::vector<vodka::json::value> parse_array(std::string_view& in) {
 } // parse_array(std::string_view&)
 
 // Recursive
-static std::map<std::string_view, vodka::json::value> parse_object(std::string_view& in) {
-   if (!parse_character<'{'>(in)) {
+static std::map<std::string_view, vodka::json::value> parse_object(std::string_view& p_in) {
+   if (!parse_character<'{'>(p_in)) {
       throw std::runtime_error("Error: JSON Object not found");
    }
    printf("{");
    std::map<std::string_view, vodka::json::value> result;
-   parse_whitespace(in);
-   if (!in.empty() && '}' != in.front()) {
-      std::string_view key = parse_string(in);
-      parse_whitespace(in);
-      if (!parse_character<':'>(in)) {
+   parse_whitespace(p_in);
+   if (!p_in.empty() && '}' != p_in.front()) {
+      std::string_view key = parse_string(p_in);
+      parse_whitespace(p_in);
+      if (!parse_character<':'>(p_in)) {
          throw std::runtime_error("Error: Missing ':' within JSON Object1");
       }
       printf(":");
-      result[key] = parse_element(in);
-      while (parse_character<','>(in)) {
+      result[key] = parse_element(p_in);
+      while (parse_character<','>(p_in)) {
          printf(",");
-         parse_whitespace(in);
-         key = parse_string(in);
-         parse_whitespace(in);
-         if (!parse_character<':'>(in)) {
+         parse_whitespace(p_in);
+         key = parse_string(p_in);
+         parse_whitespace(p_in);
+         if (!parse_character<':'>(p_in)) {
             throw std::runtime_error("Error: Missing ':' within JSON Object2");
          }
          printf(":");
-         result[key] = parse_element(in);
+         result[key] = parse_element(p_in);
       }
    }
-   if (!parse_character<'}'>(in)) {
+   if (!parse_character<'}'>(p_in)) {
       throw std::runtime_error("Error: Encountered unexpected character while parsing JSON Object");
    }
    printf("}");
@@ -442,13 +442,13 @@ static std::map<std::string_view, vodka::json::value> parse_object(std::string_v
 } // parse_object(std::string_view&)
 
 // Recursive
-vodka::json::value parse_value(std::string_view& in) {
+vodka::json::value parse_value(std::string_view& p_in) {
    vodka::json::value result;
-   if (in.empty()) {
+   if (p_in.empty()) {
       throw std::runtime_error("Error: Expected JSON value before end of input");
    }
-   switch (in.front()) {
-      case '"': result = parse_string(in); break;
+   switch (p_in.front()) {
+      case '"': result = parse_string(p_in); break;
       case '-':
       case '0':
       case '1':
@@ -459,12 +459,12 @@ vodka::json::value parse_value(std::string_view& in) {
       case '6':
       case '7':
       case '8':
-      case '9': result = parse_number(in); break;
-      case '[': result = parse_array(in); break;
-      case 'f': result = parse_literal<FALSE>(in); break;
-      case 'n': result = parse_literal<NIL>(in); break;
-      case 't': result = parse_literal<TRUE>(in); break;
-      case '{': result = parse_object(in); break;
+      case '9': result = parse_number(p_in); break;
+      case '[': result = parse_array(p_in); break;
+      case 'f': result = parse_literal<FALSE>(p_in); break;
+      case 'n': result = parse_literal<NIL>(p_in); break;
+      case 't': result = parse_literal<TRUE>(p_in); break;
+      case '{': result = parse_object(p_in); break;
       default:
          throw std::runtime_error("Error: Encountered unexpected character while parsing JSON value");
    }
@@ -472,15 +472,15 @@ vodka::json::value parse_value(std::string_view& in) {
 } // parse_value(std::string_view&)
 
 // Recursive
-vodka::json::value parse_element(std::string_view& in) {
-   parse_whitespace(in);
-   auto result = parse_value(in);
-   parse_whitespace(in);
+vodka::json::value parse_element(std::string_view& p_in) {
+   parse_whitespace(p_in);
+   auto result = parse_value(p_in);
+   parse_whitespace(p_in);
    return result;
 } // parse_element(std::string_view&)
 
-static vodka::json::value parse_json(std::string_view& in) {
-   return parse_element(in);
+static vodka::json::value parse_json(std::string_view& p_in) {
+   return parse_element(p_in);
 } // parse_json(std::string_view&)
 
 // I think an interesting way to parse json would be to programmatically
@@ -493,16 +493,16 @@ static vodka::json::value parse_json(std::string_view& in) {
 // It could also retain the input stream... But then it cannot utilize string_views.
 
 struct document {
-  document operator()(std::string_view key) {
-      static_cast<void>(key);
+  document operator()(std::string_view p_key) {
+      static_cast<void>(p_key);
       return *this;
    }
-   document operator[](size_t index) {
-      static_cast<void>(index);
+   document operator[](size_t p_index) {
+      static_cast<void>(p_index);
       return *this;
    }
-   document operator/(std::string_view key) {
-      static_cast<void>(key);
+   document operator/(std::string_view p_key) {
+      static_cast<void>(p_key);
       return *this;
    }
    int as_int() const {

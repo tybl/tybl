@@ -9,7 +9,7 @@
 namespace gps {
 
 class timestamp {
-  std::string month_name(int32_t index);
+  std::string month_name(int32_t p_index);
 public:
   timestamp();
 
@@ -29,11 +29,11 @@ public:
 
   // Set directly from the NMEA time stamp
   // hhmmss.sss
-  void set_time(double raw_ts);
+  void set_time(double p_raw_ts);
 
   // Set directly from the NMEA date stamp
   // ddmmyy
-  void set_date(int32_t raw_date);
+  void set_date(int32_t p_raw_date);
 
   std::string to_string();
 }; // class timestamp

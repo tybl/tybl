@@ -19,13 +19,13 @@ class distribution {
   Type m_minimum          { std::numeric_limits<Type>::max() };
 public:
 
-  constexpr auto operator+=(Type x) -> distribution& {
+  constexpr auto operator+=(Type p_x) -> distribution& {
     m_count += 1;
-    double delta = static_cast<double>(x) - m_mean;
+    double delta = static_cast<double>(p_x) - m_mean;
     m_mean += delta / static_cast<double>(m_count);
-    m_sum_of_squares += delta * (static_cast<double>(x) - m_mean);
-    m_maximum = std::max(x, m_maximum);
-    m_minimum = std::min(x, m_minimum);
+    m_sum_of_squares += delta * (static_cast<double>(p_x) - m_mean);
+    m_maximum = std::max(p_x, m_maximum);
+    m_minimum = std::min(p_x, m_minimum);
     return *this;
   }
 

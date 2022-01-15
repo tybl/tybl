@@ -23,7 +23,7 @@ class fix {
 private:
 
   bool m_has_lock;
-  bool set_lock(bool b);    //returns true if lock status **changed***, false otherwise.
+  bool set_lock(bool p_b);    //returns true if lock status **changed***, false otherwise.
 
 public:
   fix();
@@ -65,7 +65,7 @@ public:
   std::string to_string();
   operator std::string();
 
-  static std::string ordinal_direction(double deg, bool abbrev = false);
+  static std::string ordinal_direction(double p_deg, bool p_abbrev = false);
 }; // class fix
 
 } // namespace nmea

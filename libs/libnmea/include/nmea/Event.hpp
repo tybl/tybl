@@ -28,18 +28,18 @@ private:
   std::list<EventHandler<void(Args...)>> m_handlers;
 
   //Functions
-  void copy(const Event& ref){
-    if (&ref != this){
-      m_handlers = ref.m_handlers;
+  void copy(const Event& p_ref){
+    if (&p_ref != this){
+      m_handlers = p_ref.m_handlers;
     }
   };
 
-  bool remove_handler(ListIterator handlerIter)  {
-    if (handlerIter == m_handlers.end()){
+  bool remove_handler(ListIterator p_handler_i)  {
+    if (p_handler_i == m_handlers.end()){
       return false;
     }
 
-    m_handlers.erase(handlerIter);
+    m_handlers.erase(p_handler_i);
     return true;
   };
 
@@ -60,45 +60,45 @@ public:
   virtual ~Event() 
   {}
 
-  Event(const Event& ref)   {
-    copy(ref);
+  Event(const Event& p_ref)   {
+    copy(p_ref);
   }
 
-  void call(Args... args)  {
+  void call(Args... p_args)  {
     if (!enabled) { return; }
     for (auto h = m_handlers.begin(); h != m_handlers.end(); h++)
     {
-      (*h)(args...);
+      (*h)(p_args...);
     }
   }
 
-  EventHandler<void(Args...)> register_handler(EventHandler<void(Args...)> handler)  {
+  EventHandler<void(Args...)> register_handler(EventHandler<void(Args...)> p_handler)  {
     bool found = false;
     for (auto h = m_handlers.begin(); h != m_handlers.end(); h++)
     {
-      if ((*h) == handler)  {
+      if ((*h) == p_handler)  {
         found = true;
         break;
       }
     }
     if (!found)
     {
-      ListIterator itr = m_handlers.insert(m_handlers.end(), handler);
-      handler.m_iterator = itr;
+      ListIterator itr = m_handlers.insert(m_handlers.end(), p_handler);
+      p_handler.m_iterator = itr;
     }
-    return handler;
+    return p_handler;
   }
 
-  EventHandler<void(Args...)> register_handler(std::function<void(Args...)> handler)  {
-    EventHandler<void(Args...)> wrapper(handler);
+  EventHandler<void(Args...)> register_handler(std::function<void(Args...)> p_handler)  {
+    EventHandler<void(Args...)> wrapper(p_handler);
     ListIterator itr = m_handlers.insert(m_handlers.end(), wrapper);
     wrapper.m_iterator = itr;
     return wrapper;
   }
 
-  bool remove_handler(EventHandler<void(Args...)>& handler)  {
-    bool sts = remove_handler(handler.m_iterator);
-    handler.m_iterator = m_handlers.end();
+  bool remove_handler(EventHandler<void(Args...)>& p_handler)  {
+    bool sts = remove_handler(p_handler.m_iterator);
+    p_handler.m_iterator = m_handlers.end();
     return sts;
   };
 
@@ -110,14 +110,14 @@ public:
     m_handlers.clear();
   };
 
-  void operator ()(Args... args) { return call(args...); };
-  EventHandler<void(Args...)> operator +=(EventHandler<void(Args...)> handler)  { return register_handler(handler); };
-  EventHandler<void(Args...)> operator +=(std::function<void(Args...)> handler)  { return register_handler(handler); };
-  bool operator -=(EventHandler<void(Args...)>& handler)              { return remove_handler(handler); };
-  bool operator -=(uint64_t handlerID) { return remove_handler(handlerID); };
+  void operator ()(Args... p_args) { return call(p_args...); };
+  EventHandler<void(Args...)> operator +=(EventHandler<void(Args...)> p_handler)  { return register_handler(p_handler); };
+  EventHandler<void(Args...)> operator +=(std::function<void(Args...)> p_handler)  { return register_handler(p_handler); };
+  bool operator -=(EventHandler<void(Args...)>& p_handler)              { return remove_handler(p_handler); };
+  bool operator -=(uint64_t p_handler_id) { return remove_handler(p_handler_id); };
 
-  EventHandler<void(Args...)>& operator =(const EventHandler<void(Args...)>& ref){
-    copy(ref);
+  EventHandler<void(Args...)>& operator =(const EventHandler<void(Args...)>& p_ref){
+    copy(p_ref);
     return *this;
   };
 

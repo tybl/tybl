@@ -13,8 +13,8 @@ template <typename T = void>
 struct less {
 
   [[nodiscard]] constexpr auto
-  operator()(T const& lhs, T const& rhs) const -> bool {
-    return lhs < rhs;
+  operator()(T const& p_lhs, T const& p_rhs) const -> bool {
+    return p_lhs < p_rhs;
   }
 
 };
@@ -26,11 +26,11 @@ struct less<void> {
 
   template <typename TypeL, typename TypeR>
   [[nodiscard]] constexpr auto
-  operator()(TypeL&& lhs, TypeR&& rhs) const
-    noexcept(noexcept(forward<TypeL>(lhs) < forward<TypeR>(rhs)))
-    ->       decltype(forward<TypeL>(lhs) < forward<TypeR>(rhs))
+  operator()(TypeL&& p_lhs, TypeR&& p_rhs) const
+    noexcept(noexcept(forward<TypeL>(p_lhs) < forward<TypeR>(p_rhs)))
+    ->       decltype(forward<TypeL>(p_lhs) < forward<TypeR>(p_rhs))
   {
-    return            forward<TypeL>(lhs) < forward<TypeR>(rhs);
+    return            forward<TypeL>(p_lhs) < forward<TypeR>(p_rhs);
   }
 
 };

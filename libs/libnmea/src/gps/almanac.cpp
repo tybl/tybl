@@ -15,14 +15,14 @@ void almanac::clear() {
   satellites.clear();
 }
 
-void almanac::update_satellite(gps::satellite sat) {
+void almanac::update_satellite(gps::satellite p_sat) {
   if (satellites.size() >
       m_visible_size)
   {  //we missed the new almanac start page, start over.
     clear();
   }
 
-  satellites.push_back(sat);
+  satellites.push_back(p_sat);
 }
 
 double almanac::percent_complete() {

@@ -25,39 +25,39 @@ public:
 
   virtual ~gga_sentence() = default;
 
-  void parse(std::string const& s) override {
-    auto comma1 = s.find(',');
-    auto comma2 = s.find(',',comma1);
-    auto comma3 = s.find(',',comma2);
+  void parse(std::string const& p_s) override {
+    auto comma1 = p_s.find(',');
+    auto comma2 = p_s.find(',',comma1);
+    auto comma3 = p_s.find(',',comma2);
     std::cout << comma1 << ',' << comma2 << ',' << comma3 << std::endl;
   }
 
 }; // class gga_sentence
 
-std::unique_ptr<sentence> parse_gga(std::istream& in) {
+std::unique_ptr<sentence> parse_gga(std::istream& p_in) {
   std::string value;
-  if (!std::getline(in,value,',')) {
+  if (!std::getline(p_in,value,',')) {
     throw std::runtime_error("Error: Failed to get NMEA GGA UTC time");
   }
   std::cerr << __LINE__ << ": UTC Time: " << value << std::endl;
-  if (!std::getline(in,value,',')) {
+  if (!std::getline(p_in,value,',')) {
     throw std::runtime_error("Error: Failed to get NMEA GGA latitude value");
   }
   std::cerr << __LINE__ << ": Latitude: " << value << std::endl;
-  if (!std::getline(in,value,',')) {
+  if (!std::getline(p_in,value,',')) {
     throw std::runtime_error("Error: Failed to get NMEA GGA N/S Indicator");
   }
   std::cerr << __LINE__ << ": N/S Indicator: " << value << std::endl;
-  while (std::getline(in,value,',')) {
+  while (std::getline(p_in,value,',')) {
     std::cerr << __LINE__ << ": " << value << std::endl;
   }
   return nullptr;
 }
 
-std::unique_ptr<sentence> parse_nmea(std::istream& in) {
+std::unique_ptr<sentence> parse_nmea(std::istream& p_in) {
   std::string value;
-  if (std::getline(in, value, ',')) {
-    if ("$GPGGA" == value) { return parse_gga(in); }
+  if (std::getline(p_in, value, ',')) {
+    if ("$GPGGA" == value) { return parse_gga(p_in); }
   }
   return nullptr;
 }
@@ -75,13 +75,13 @@ std::unique_ptr<sentence> parse_gga(std::string_view /*input*/) {
   return nullptr;
 }
 
-std::unique_ptr<sentence> parse(std::string_view input) {
-  if (input.empty()) { std::cerr << __LINE__ << std::endl; return nullptr; }
-  if (input.starts_with("$GPGGA,") || input.starts_with("$GLGGA")) { return parse_gga(input.substr(7)); }
-  if (input.starts_with("$GPGSA,") || input.starts_with("$GLGSA")) { std::cerr << __LINE__ << std::endl; return nullptr; }
-  if (input.starts_with("$GPGSV,") || input.starts_with("$GLGSV")) { std::cerr << __LINE__ << std::endl; return nullptr; }
-  if (input.starts_with("$GPRMC,") || input.starts_with("$GLRMC")) { std::cerr << __LINE__ << std::endl; return nullptr; }
-  if (input.starts_with("$GPVTG,") || input.starts_with("$GLVTG")) { std::cerr << __LINE__ << std::endl; return nullptr; }
+std::unique_ptr<sentence> parse(std::string_view p_input) {
+  if (p_input.empty()) { std::cerr << __LINE__ << std::endl; return nullptr; }
+  if (p_input.starts_with("$GPGGA,") || p_input.starts_with("$GLGGA")) { return parse_gga(p_input.substr(7)); }
+  if (p_input.starts_with("$GPGSA,") || p_input.starts_with("$GLGSA")) { std::cerr << __LINE__ << std::endl; return nullptr; }
+  if (p_input.starts_with("$GPGSV,") || p_input.starts_with("$GLGSV")) { std::cerr << __LINE__ << std::endl; return nullptr; }
+  if (p_input.starts_with("$GPRMC,") || p_input.starts_with("$GLRMC")) { std::cerr << __LINE__ << std::endl; return nullptr; }
+  if (p_input.starts_with("$GPVTG,") || p_input.starts_with("$GLVTG")) { std::cerr << __LINE__ << std::endl; return nullptr; }
   std::cerr << __LINE__ << std::endl;
   return nullptr;
 }

@@ -15,7 +15,7 @@ struct executor {
   std::vector<i_node const*> m_nodes;
   std::unique_ptr<const i_node> m_root;
 public:
-  executor(std::ifstream& file);
+  executor(std::ifstream& p_file);
 
   i_node const* solve();
 

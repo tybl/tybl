@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-Board::Board(std::istream& input)
+Board::Board(std::istream& p_input)
   : m_priority(0)
   , m_stats(std::make_shared<shared_stats>())
   , m_id(0)
@@ -16,9 +16,9 @@ Board::Board(std::istream& input)
   , m_distance(0)
 {
   std::string line;
-  std::getline(input, line);
+  std::getline(p_input, line);
   m_contents.resize(line.size());
-  while (input.good()) {
+  while (p_input.good()) {
     assert(line.size() == m_contents.size());
     m_stats->m_max_stack_height += 1;
     for (size_t i = 0; i < line.size(); ++i) {
@@ -26,29 +26,29 @@ Board::Board(std::istream& input)
         m_contents[i].insert(m_contents[i].begin(), line[i]);
       }
     }
-    std::getline(input, line);
+    std::getline(p_input, line);
   }
   m_priority = calc_priority();
   m_stats->m_boards.insert(*this);
 }
 
-Board::Board(Board const& o, edge const& e)
-  : m_contents(o.m_contents)
+Board::Board(Board const& p_o, edge const& p_e)
+  : m_contents(p_o.m_contents)
   , m_priority(0)
-  , m_stats(o.m_stats)
+  , m_stats(p_o.m_stats)
   , m_id(m_stats->m_boards.size())
-  , m_parent(&o)
-  , m_distance(o.m_distance + 1)
+  , m_parent(&p_o)
+  , m_distance(p_o.m_distance + 1)
 {
-  apply(e);
+  apply(p_e);
 }
 
 
 Board::~Board() = default;
 
 auto Board::is_solved() const -> bool {
-  return std::ranges::all_of(m_contents, [this](std::string const& s) {
-    return s.empty() || is_full_and_homogeneous(s);
+  return std::ranges::all_of(m_contents, [this](std::string const& p_s) {
+    return p_s.empty() || is_full_and_homogeneous(p_s);
   });
 }
 
@@ -66,8 +66,8 @@ auto Board::generate_steps() const -> std::vector<edge> {
   return result;
 }
 
-auto Board::operator+(edge const& e) const -> i_node const* {
-  auto result = m_stats->m_boards.emplace(*this, e);
+auto Board::operator+(edge const& p_e) const -> i_node const* {
+  auto result = m_stats->m_boards.emplace(*this, p_e);
   Board const& b = *result.first;
   if (result.second) {
     return &b;
@@ -117,13 +117,13 @@ auto Board::distance() const -> size_t {
   return m_distance;
 }
 
-auto Board::operator<(Board const& o) const -> bool {
-  return m_contents < o.m_contents;
+auto Board::operator<(Board const& p_o) const -> bool {
+  return m_contents < p_o.m_contents;
 }
 
-void Board::apply(edge const& e) {
-  m_contents.at(e.StackTo).push_back(m_contents.at(e.StackFrom).back());
-  m_contents.at(e.StackFrom).pop_back();
+void Board::apply(edge const& p_e) {
+  m_contents.at(p_e.StackTo).push_back(m_contents.at(p_e.StackFrom).back());
+  m_contents.at(p_e.StackFrom).pop_back();
   m_priority = calc_priority();
 }
 
@@ -137,29 +137,29 @@ auto Board::calc_priority() const -> size_t {
   return result;
 }
 
-auto Board::count_suffix_matching(std::string const& s, char c) -> size_t {
-  auto i = s.rbegin();
-  while (i != s.rend() && *i == c) { ++i; }
-  return std::distance(s.rbegin(), i);
+auto Board::count_suffix_matching(std::string const& p_s, char p_c) -> size_t {
+  auto i = p_s.rbegin();
+  while (i != p_s.rend() && *i == p_c) { ++i; }
+  return std::distance(p_s.rbegin(), i);
 }
 
-auto Board::is_valid(edge const& e) const -> bool {
-  if (e.StackFrom == e.StackTo) { return false; }
-  if (m_contents.at(e.StackFrom).empty()) { return false; }
-  if (is_full(m_contents.at(e.StackTo))) { return false; }
-  if (is_full_and_homogeneous(m_contents[e.StackFrom])) { return false; }
-  if (m_contents.at(e.StackTo).empty()) { return true; }
-  return m_contents[e.StackTo].back() == m_contents[e.StackFrom].back();
+auto Board::is_valid(edge const& p_e) const -> bool {
+  if (p_e.StackFrom == p_e.StackTo) { return false; }
+  if (m_contents.at(p_e.StackFrom).empty()) { return false; }
+  if (is_full(m_contents.at(p_e.StackTo))) { return false; }
+  if (is_full_and_homogeneous(m_contents[p_e.StackFrom])) { return false; }
+  if (m_contents.at(p_e.StackTo).empty()) { return true; }
+  return m_contents[p_e.StackTo].back() == m_contents[p_e.StackFrom].back();
 }
 
-auto Board::is_homogeneous(std::string const& s) -> bool {
-  return std::all_of(s.begin(), s.end(), [&](char c){ return s.front() == c; });
+auto Board::is_homogeneous(std::string const& p_s) -> bool {
+  return std::all_of(p_s.begin(), p_s.end(), [&](char p_c){ return p_s.front() == p_c; });
 }
 
-auto Board::is_full(std::string const& s) const -> bool {
-  return s.size() == m_stats->m_max_stack_height;
+auto Board::is_full(std::string const& p_s) const -> bool {
+  return p_s.size() == m_stats->m_max_stack_height;
 }
 
-auto Board::is_full_and_homogeneous(std::string const& s) const -> bool {
-  return is_full(s) && is_homogeneous(s);
+auto Board::is_full_and_homogeneous(std::string const& p_s) const -> bool {
+  return is_full(p_s) && is_homogeneous(p_s);
 }

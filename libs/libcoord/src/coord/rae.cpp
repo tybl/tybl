@@ -7,10 +7,10 @@
 
 namespace tybl::coord {
 
-rae_t::rae_t(double r, double a, double e)
-  : m_range(r)
-  , m_azimuth(a)
-  , m_elevation(e)
+rae_t::rae_t(double p_r, double p_a, double p_e)
+  : m_range(p_r)
+  , m_azimuth(p_a)
+  , m_elevation(p_e)
   { }
 
 auto rae_t::to_frd() const -> frd_t {

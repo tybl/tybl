@@ -25,43 +25,43 @@ private:
   size_type m_rows;
   size_type m_cols;
 public:
-  dynarray_2d(size_t r, size_t c)
-    : m_data((0 < c && 0 < r) ? (std::make_unique<value_type[]>(c*r)) : nullptr)
-    , m_rows(r)
-    , m_cols(c)
+  dynarray_2d(size_t p_r, size_t p_c)
+    : m_data((0 < p_c && 0 < p_r) ? (std::make_unique<value_type[]>(p_c*p_r)) : nullptr)
+    , m_rows(p_r)
+    , m_cols(p_c)
   {
   }
 
-  dynarray_2d(dynarray_2d&& o)
-    : m_data(std::move(o.m_data))
-    , m_rows(o.m_rows)
-    , m_cols(o.m_cols)
+  dynarray_2d(dynarray_2d&& p_o)
+    : m_data(std::move(p_o.m_data))
+    , m_rows(p_o.m_rows)
+    , m_cols(p_o.m_cols)
   {
   }
 
-  dynarray_2d(dynarray_2d const& o)
-    : m_data(o.m_data ? std::make_unique<value_type[]>(o.m_cols*o.m_rows) : nullptr)
-    , m_rows(o.m_rows)
-    , m_cols(o.m_cols)
+  dynarray_2d(dynarray_2d const& p_o)
+    : m_data(p_o.m_data ? std::make_unique<value_type[]>(p_o.m_cols*p_o.m_rows) : nullptr)
+    , m_rows(p_o.m_rows)
+    , m_cols(p_o.m_cols)
   {
-    memcpy(m_data.get(), o.m_data.get(), m_cols*m_rows);
+    memcpy(m_data.get(), p_o.m_data.get(), m_cols*m_rows);
   }
 
   ~dynarray_2d() = default;
 
-  const_reference operator()(size_t r, size_t c) const {
-    return m_data[m_cols*r + c];
+  const_reference operator()(size_t p_r, size_t p_c) const {
+    return m_data[m_cols*p_r + p_c];
   }
 
-  reference operator()(size_t r, size_t c) {
-    return m_data[m_cols*r + c];
+  reference operator()(size_t p_r, size_t p_c) {
+    return m_data[m_cols*p_r + p_c];
   }
 
-  bool operator<(dynarray_2d const& o) const {
+  bool operator<(dynarray_2d const& p_o) const {
     const_pointer first1 = m_data.get();
-    const_pointer first2 = o.m_data.get();
+    const_pointer first2 = p_o.m_data.get();
     const_pointer last1 = first1 + m_cols * m_rows;
-    const_pointer last2 = first2 + o.m_cols * o.m_rows;
+    const_pointer last2 = first2 + p_o.m_cols * p_o.m_rows;
     for (;(first1 != last1) && (first2 != last2); ++first1, ++first2) {
       if (*first1 < *first2) return true;
       if (*first2 < *first1) return false;
@@ -73,8 +73,8 @@ public:
 
   size_type rows() const { return m_rows; }
 
-  std::span<const value_type> row(size_t r) const {
-    return std::span<const value_type>(m_data.get() + m_cols*r, m_cols);
+  std::span<const value_type> row(size_t p_r) const {
+    return std::span<const value_type>(m_data.get() + m_cols*p_r, m_cols);
   }
 
 }; // struct dynarray_2d

@@ -21,10 +21,10 @@ timestamp::timestamp() {
 }
 
 // indexed from 1!
-std::string timestamp::month_name(int32_t index) {
-  if (index < 1 || index > 12) {
+std::string timestamp::month_name(int32_t p_index) {
+  if (p_index < 1 || p_index > 12) {
     std::stringstream ss;
-    ss << "[month:" << index << "]";
+    ss << "[month:" << p_index << "]";
     return ss.str();
   }
 
@@ -42,7 +42,7 @@ std::string timestamp::month_name(int32_t index) {
     "November",
     "December"
   };
-  return names[index - 1];
+  return names[p_index - 1];
 }
 
 // Returns seconds since Jan 1, 1970. Classic Epoch time.
@@ -57,26 +57,26 @@ time_t timestamp::get_time() {
   return mktime(&t);
 }
 
-void timestamp::set_time(double raw_ts) {
-  rawTime = raw_ts;
+void timestamp::set_time(double p_raw_ts) {
+  rawTime = p_raw_ts;
 
-  hour = static_cast<int32_t>(raw_ts / 10000.0);
-  min = static_cast<int32_t>((raw_ts - hour * 10000) / 100.0);
-  sec = raw_ts - min * 100 - hour * 10000;
+  hour = static_cast<int32_t>(p_raw_ts / 10000.0);
+  min = static_cast<int32_t>((p_raw_ts - hour * 10000) / 100.0);
+  sec = p_raw_ts - min * 100 - hour * 10000;
 }
 
 //ddmmyy
-void timestamp::set_date(int32_t raw_date) {
-  rawDate = raw_date;
+void timestamp::set_date(int32_t p_raw_date) {
+  rawDate = p_raw_date;
   // If uninitialized, use posix time.
   if(rawDate == 0) {
     month = 1;
     day = 1;
     year = 1970;
   } else {
-    day = static_cast<int32_t>(raw_date / 10000.0);
-    month = static_cast<int32_t>((raw_date - 10000 * day) / 100.0);
-    year = raw_date - 10000 * day - 100 * month + 2000;
+    day = static_cast<int32_t>(p_raw_date / 10000.0);
+    month = static_cast<int32_t>((p_raw_date - 10000 * day) / 100.0);
+    year = p_raw_date - 10000 * day - 100 * month + 2000;
   }
 }
 

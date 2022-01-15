@@ -11,7 +11,7 @@ struct i_node {
   virtual ~i_node() = default;
   virtual auto is_solved() const -> bool = 0;
   virtual std::vector<edge> generate_steps() const = 0;
-  virtual i_node const* operator + (edge const& e) const = 0;
+  virtual i_node const* operator + (edge const& p_e) const = 0;
   virtual void print() const = 0;
   virtual void print_steps() const = 0;
   virtual size_t priority() const = 0;

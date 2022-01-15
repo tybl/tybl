@@ -27,14 +27,14 @@
 #include <vector>
 
 template <typename Type, typename Iter>
-auto dcp001(Type k, Iter beg, Iter end) -> bool {
+auto dcp001(Type p_k, Iter p_beg, Iter p_end) -> bool {
   std::vector<Type> values;
-  while (beg != end) {
-    if (std::binary_search(values.begin(), values.end(), k - *beg)) {
+  while (p_beg != p_end) {
+    if (std::binary_search(values.begin(), values.end(), p_k - *p_beg)) {
       return true;
     }
-    values.insert(std::upper_bound(values.begin(), values.end(), *beg), *beg);
-    ++beg;
+    values.insert(std::upper_bound(values.begin(), values.end(), *p_beg), *p_beg);
+    ++p_beg;
   }
   return false;
 }

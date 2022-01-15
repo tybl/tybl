@@ -15,9 +15,9 @@ struct parse_error : public std::exception
   std::string message;
 //  sentence nmea;
 public:
-  parse_error(std::string msg);
+  parse_error(std::string p_msg);
 
-  parse_error(std::string msg, sentence n);
+  parse_error(std::string p_msg, sentence p_n);
 
   virtual ~parse_error();
 

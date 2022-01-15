@@ -27,11 +27,11 @@ private:
   uint64_t m_id;
 
   // Functions
-  void copy(const EventHandler& ref){
-    if (&ref != this){
-      m_iterator = ref.m_iterator;
-      m_handler = ref.m_handler;
-      m_id = ref.m_id;
+  void copy(const EventHandler& p_ref){
+    if (&p_ref != this){
+      m_iterator = p_ref.m_iterator;
+      m_handler = p_ref.m_handler;
+      m_id = p_ref.m_id;
     }
   }
 
@@ -46,29 +46,29 @@ public:
   // (none)
 
   // Functions
-  EventHandler(std::function<void(Args...)> h) : m_iterator(), m_handler(h), m_id(++LastID)
+  EventHandler(std::function<void(Args...)> p_h) : m_iterator(), m_handler(p_h), m_id(++LastID)
   {}
 
-  EventHandler(const EventHandler& ref){
-    copy(ref);
+  EventHandler(const EventHandler& p_ref){
+    copy(p_ref);
   }
 
   virtual ~EventHandler(){};
 
-  EventHandler& operator=(const EventHandler& ref){
-    copy(ref);
+  EventHandler& operator=(const EventHandler& p_ref){
+    copy(p_ref);
     return *this;
   }
 
-  void operator() (Args... args){ m_handler(args...);
+  void operator() (Args... p_args){ m_handler(p_args...);
   }
 
-  bool operator==(const EventHandler& ref){
-    return m_id == ref.m_id;
+  bool operator==(const EventHandler& p_ref){
+    return m_id == p_ref.m_id;
   }
 
-  bool operator!=(const EventHandler& ref){
-    return m_id != ref.m_id;
+  bool operator!=(const EventHandler& p_ref){
+    return m_id != p_ref.m_id;
   }
 
   uint64_t get_id(){

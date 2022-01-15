@@ -8,15 +8,15 @@ namespace nmea {
 
 command::command() = default;
 
-command::command(std::string name) : m_name(name) {}
+command::command(std::string p_name) : m_name(p_name) {}
 
 command::~command() = default;
 
 std::string command::to_string() { return add_checksum(m_message); }
 
-std::string command::add_checksum(std::string s) {
+std::string command::add_checksum(std::string p_s) {
   std::stringstream zz;
-  zz << m_name << "," << s;
+  zz << m_name << "," << p_s;
   m_checksum = Parser::calc_checksum(zz.str());
 
   std::stringstream ss;

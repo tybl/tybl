@@ -32,62 +32,62 @@ struct basic_unsigned_integer {
    static constexpr TYPE limb_mask = std::numeric_limits<TYPE>::max();
 
    basic_unsigned_integer() = default;
-   basic_unsigned_integer(intmax_t seed) = delete;
-   basic_unsigned_integer(uintmax_t seed)
+   basic_unsigned_integer(intmax_t p_seed) = delete;
+   basic_unsigned_integer(uintmax_t p_seed)
       : mantissa{}
    {
-      for (size_t i = 0; i < size && 0 != seed; ++i) {
-         mantissa[i] = seed & limb_mask;
-         seed >>= binary_digits;
+      for (size_t i = 0; i < size && 0 != p_seed; ++i) {
+         mantissa[i] = p_seed & limb_mask;
+         p_seed >>= binary_digits;
       }
    }
-   basic_unsigned_integer(const std::string& seed)
+   basic_unsigned_integer(const std::string& p_seed)
       : mantissa{}
    {
-      for (auto character : seed) {
+      for (auto character : p_seed) {
          if (!isdigit(character)) { break; }
          operator*=(10).operator+=(static_cast<TYPE>(character - '0'));
       }
    }
-   basic_unsigned_integer(const basic_unsigned_integer& other) {
-      std::copy(other.mantissa.begin(), other.mantissa.end(), mantissa.begin());
+   basic_unsigned_integer(const basic_unsigned_integer& p_other) {
+      std::copy(p_other.mantissa.begin(), p_other.mantissa.end(), mantissa.begin());
    }
-   basic_unsigned_integer& operator=(basic_unsigned_integer other) {
-      std::swap(mantissa, other.mantissa);
+   basic_unsigned_integer& operator=(basic_unsigned_integer p_other) {
+      std::swap(mantissa, p_other.mantissa);
       return *this;
    }
-   basic_unsigned_integer& operator+=(TYPE other) {
-      larger_uint carry = other;
+   basic_unsigned_integer& operator+=(TYPE p_other) {
+      larger_uint carry = p_other;
       for (size_t i = 0; i < size && 0 != carry; ++i) {
          carry = add_at_index(i, carry);
       }
       if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
       return *this;
    }
-   basic_unsigned_integer& operator+=(const basic_unsigned_integer& other) {
+   basic_unsigned_integer& operator+=(const basic_unsigned_integer& p_other) {
       larger_uint carry = 0;
       for (size_t i = 0; i < size; ++i) {
-         carry = add_at_index(i, static_cast<larger_uint>(carry + other.mantissa[i]));
+         carry = add_at_index(i, static_cast<larger_uint>(carry + p_other.mantissa[i]));
       }
       if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
       return *this;
    }
-   basic_unsigned_integer& operator-=(const basic_unsigned_integer& other) {
+   basic_unsigned_integer& operator-=(const basic_unsigned_integer& p_other) {
       TYPE carry = 0;
       for (size_t i = 0; i < size; ++i) {
          TYPE temp = mantissa[i];
          bool underflow = (temp < carry);
          temp = static_cast<TYPE>(temp - carry);
-         underflow |= (temp < other.mantissa[i]);
-         mantissa[i] = static_cast<TYPE>(temp - other.mantissa[i]);
+         underflow |= (temp < p_other.mantissa[i]);
+         mantissa[i] = static_cast<TYPE>(temp - p_other.mantissa[i]);
          carry = static_cast<TYPE>(underflow);
       }
       return *this;
    }
-   basic_unsigned_integer& operator*=(TYPE other) {
+   basic_unsigned_integer& operator*=(TYPE p_other) {
       larger_uint carry = 0;
       for (size_t i = 0; i < size; ++i) {
-         larger_uint overflow = multiply_at_index(i, other);
+         larger_uint overflow = multiply_at_index(i, p_other);
          if (0 != carry) {
             overflow = static_cast<larger_uint>(overflow + add_at_index(i, carry));
          }
@@ -96,11 +96,11 @@ struct basic_unsigned_integer {
       if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
       return *this;
    }
-   basic_unsigned_integer& operator*=(const basic_unsigned_integer& other) {
+   basic_unsigned_integer& operator*=(const basic_unsigned_integer& p_other) {
       larger_uint carry = 0;
       for (size_t i = 0; i < size; ++i) {
          for (size_t j = 0; j < size && (i + j) < size; ++j) {
-            carry += multiply_at_index(i, other.mantissa[j]);
+            carry += multiply_at_index(i, p_other.mantissa[j]);
             carry = add_at_index(i, carry);
          }
       }
@@ -125,9 +125,9 @@ struct basic_unsigned_integer {
       throw std::bad_function_call();
       return *this;
    }
-   basic_unsigned_integer& operator<<=(size_t places) {
-      const size_t whole_shifts = places / binary_digits;
-      const size_t limb_shift = places % binary_digits;
+   basic_unsigned_integer& operator<<=(size_t p_places) {
+      const size_t whole_shifts = p_places / binary_digits;
+      const size_t limb_shift = p_places % binary_digits;
       const size_t overflow_shift = binary_digits - limb_shift;
       if (size <= whole_shifts) {
          std::fill(mantissa.begin(), mantissa.end(), 0);
@@ -147,40 +147,40 @@ struct basic_unsigned_integer {
       }
       return *this;
    }
-   bool operator==(const basic_unsigned_integer& other) const {
-      return std::equal(mantissa.begin(), mantissa.end(), other.mantissa.begin());
+   bool operator==(const basic_unsigned_integer& p_other) const {
+      return std::equal(mantissa.begin(), mantissa.end(), p_other.mantissa.begin());
    }
-   bool operator!=(const basic_unsigned_integer& other) const {
-      return !operator==(other);
+   bool operator!=(const basic_unsigned_integer& p_other) const {
+      return !operator==(p_other);
    }
-   bool operator<=(const basic_unsigned_integer& other) const {
-      return !operator>(other);
+   bool operator<=(const basic_unsigned_integer& p_other) const {
+      return !operator>(p_other);
    }
-   bool operator>=(const basic_unsigned_integer& other) const {
-      return !operator<(other);
+   bool operator>=(const basic_unsigned_integer& p_other) const {
+      return !operator<(p_other);
    }
-   bool operator<(const basic_unsigned_integer& other) const {
+   bool operator<(const basic_unsigned_integer& p_other) const {
       return std::lexicographical_compare(mantissa.crbegin(),
                                           mantissa.crend(),
-                                          other.mantissa.crbegin(),
-                                          other.mantissa.crend());
+                                          p_other.mantissa.crbegin(),
+                                          p_other.mantissa.crend());
    }
-   bool operator>(const basic_unsigned_integer& other) const {
+   bool operator>(const basic_unsigned_integer& p_other) const {
       return std::lexicographical_compare(mantissa.crbegin(),
                                           mantissa.crend(),
-                                          other.mantissa.crbegin(),
-                                          other.mantissa.crend(),
+                                          p_other.mantissa.crbegin(),
+                                          p_other.mantissa.crend(),
                                           std::greater<TYPE>());
    }
 private:
-   TYPE multiply_at_index(size_t index, larger_uint value) {
-      larger_uint result = static_cast<larger_uint>(value * mantissa[index]);
-      mantissa[index] = static_cast<TYPE>(result & limb_mask);
+   TYPE multiply_at_index(size_t p_index, larger_uint p_value) {
+      larger_uint result = static_cast<larger_uint>(p_value * mantissa[p_index]);
+      mantissa[p_index] = static_cast<TYPE>(result & limb_mask);
       return static_cast<TYPE>(result >> binary_digits);
    }
-   TYPE add_at_index(size_t index, larger_uint value) {
-      larger_uint result = static_cast<larger_uint>(value + mantissa[index]);
-      mantissa[index] = static_cast<TYPE>(result & limb_mask);
+   TYPE add_at_index(size_t p_index, larger_uint p_value) {
+      larger_uint result = static_cast<larger_uint>(p_value + mantissa[p_index]);
+      mantissa[p_index] = static_cast<TYPE>(result & limb_mask);
       return static_cast<TYPE>(result >> binary_digits);
    }
 public:
@@ -188,12 +188,12 @@ public:
 };
 
 template <typename TYPE, size_t size>
-std::ostream& operator<<(std::ostream& out, const basic_unsigned_integer<TYPE, size>& value) {
-   out << std::hex;
-   for (auto limb : value.mantissa) {
-      out << static_cast<uint64_t>(limb) << " ";
+std::ostream& operator<<(std::ostream& p_out, const basic_unsigned_integer<TYPE, size>& p_value) {
+   p_out << std::hex;
+   for (auto limb : p_value.mantissa) {
+      p_out << static_cast<uint64_t>(limb) << " ";
    }
-   return out;
+   return p_out;
 }
 
 using uint24 = tybl::math::basic_unsigned_integer<uint8_t, 3>;

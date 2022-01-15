@@ -19,16 +19,16 @@ struct fixed_point_t {
    constexpr fixed_point_t()
       : m_value() {}
 
-   explicit constexpr fixed_point_t(double value)
-      : m_value(static_cast<int64_t>(value * ratio::den) / ratio::num) {}
+   explicit constexpr fixed_point_t(double p_value)
+      : m_value(static_cast<int64_t>(p_value * ratio::den) / ratio::num) {}
 
-   constexpr fixed_point_t& operator+=(const fixed_point_t& other) {
-      m_value += other.m_value;
+   constexpr fixed_point_t& operator+=(const fixed_point_t& p_other) {
+      m_value += p_other.m_value;
       return *this;
    }
 
-   constexpr fixed_point_t& operator-=(const fixed_point_t& other) {
-      m_value -= other.m_value;
+   constexpr fixed_point_t& operator-=(const fixed_point_t& p_other) {
+      m_value -= p_other.m_value;
       return *this;
    }
 
@@ -46,9 +46,9 @@ struct fixed_point_t {
 
    struct rational_t {
 
-      constexpr rational_t(int64_t numerator, uint64_t denominator)
-         : m_numerator(numerator)
-         , m_denominator(denominator) {}
+      constexpr rational_t(int64_t p_numerator, uint64_t p_denominator)
+         : m_numerator(p_numerator)
+         , m_denominator(p_denominator) {}
 
       int64_t m_numerator;
       uint64_t m_denominator;
@@ -63,14 +63,14 @@ private:
 }; // struct fixed_point_t
 
 template <typename RATIO>
-std::ostream& operator<<(std::ostream& out, const fixed_point_t<RATIO>& fp) {
+std::ostream& operator<<(std::ostream& p_out, const fixed_point_t<RATIO>& p_fp) {
    if /*constexpr*/ (RATIO::den == 1) {
-      return out << fp.whole_number();
+      return p_out << p_fp.whole_number();
    } else if /*constexpr*/ ((RATIO::den % 10) == 0) {
       // TODO(tybl): Set width of fractional component
-      return out << fp.whole_number() << '.' << fp.fraction().m_numerator;
+      return p_out << p_fp.whole_number() << '.' << p_fp.fraction().m_numerator;
    } else {
-      return out << fp.whole_number() << ' ' << fp.fraction().m_numerator << '/' << fp.fraction().m_denominator;
+      return p_out << p_fp.whole_number() << ' ' << p_fp.fraction().m_numerator << '/' << p_fp.fraction().m_denominator;
    }
 }
 

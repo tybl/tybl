@@ -5,9 +5,9 @@
 
 namespace tybl::coord {
 
-auto enu_t::to_ecef(ecef_t const& ref_pos) const -> ecef_t {
+auto enu_t::to_ecef(ecef_t const& p_ref_pos) const -> ecef_t {
   static_cast<void>(this);
-  return ref_pos;
+  return p_ref_pos;
 }
 
 auto enu_t::x() const -> double {

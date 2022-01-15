@@ -61,17 +61,17 @@ public:
   basic_string_view& operator=(basic_string_view const&) noexcept = default;
 
   constexpr inline
-  basic_string_view(_CharT const* s, size_type __len) noexcept
-    : m_data(s)
-    , m_size(__len)
+  basic_string_view(_CharT const* p_s, size_type p_len) noexcept
+    : m_data(p_s)
+    , m_size(p_len)
   {
-    assert(__len == 0 || s != nullptr);
+    assert(p_len == 0 || p_s != nullptr);
   }
 
   constexpr inline
-  basic_string_view(_CharT const* s)
-    : m_data(s)
-    , m_size(traits_type::length(s)) { }
+  basic_string_view(_CharT const* p_s)
+    : m_data(p_s)
+    , m_size(traits_type::length(p_s)) { }
 
   // [string.view.iterators], iterators
   [[nodiscard]] constexpr inline auto begin()  const noexcept -> const_iterator { return cbegin(); }
@@ -108,15 +108,15 @@ public:
 
   // [string.view.access], element access
   [[nodiscard]] constexpr inline auto
-  operator[](size_type __pos) const noexcept -> const_reference {
-    return /*_LIBCPP_ASSERT(__pos < size(), "string_view[] index out of bounds"),*/ m_data[__pos];
+  operator[](size_type p_pos) const noexcept -> const_reference {
+    return /*_LIBCPP_ASSERT(__pos < size(), "string_view[] index out of bounds"),*/ m_data[p_pos];
   }
 
   [[nodiscard]] constexpr inline auto
-  at(size_type __pos) const -> const_reference {
-    return (__pos >= size())
+  at(size_type p_pos) const -> const_reference {
+    return (p_pos >= size())
       ? (throw std::out_of_range("string_view::at"), m_data[0])
-      : m_data[__pos];
+      : m_data[p_pos];
   }
 
   [[nodiscard]] constexpr inline auto
@@ -134,77 +134,77 @@ public:
 
   // [string.view.modifiers], modifiers:
   constexpr inline
-  void remove_prefix(size_type __n) noexcept {
+  void remove_prefix(size_type p_n) noexcept {
     /*_LIBCPP_ASSERT(__n <= size(), "remove_prefix() can't remove more than size()");*/
-    m_data += __n;
-    m_size -= __n;
+    m_data += p_n;
+    m_size -= p_n;
   }
 
   constexpr inline
-  void remove_suffix(size_type __n) noexcept {
+  void remove_suffix(size_type p_n) noexcept {
     /*_LIBCPP_ASSERT(__n <= size(), "remove_suffix() can't remove more than size()");*/
-    m_size -= __n;
+    m_size -= p_n;
   }
 
   constexpr inline
-  void swap(basic_string_view& o) noexcept {
+  void swap(basic_string_view& p_o) noexcept {
     const value_type *__p = m_data;
-    m_data = o.m_data;
-    o.m_data = __p;
+    m_data = p_o.m_data;
+    p_o.m_data = __p;
 
     size_type __sz = m_size;
-    m_size = o.m_size;
-    o.m_size = __sz;
+    m_size = p_o.m_size;
+    p_o.m_size = __sz;
   }
 
   inline
-  size_type copy(_CharT* str, size_type __n, size_type __pos = 0) const {
-    if (__pos > size()) throw std::out_of_range("string_view::copy");
-    size_type __rlen = min(__n, size() - __pos);
-    _Traits::copy(str, data() + __pos, __rlen);
+  size_type copy(_CharT* p_str, size_type p_n, size_type p_pos = 0) const {
+    if (p_pos > size()) throw std::out_of_range("string_view::copy");
+    size_type __rlen = min(p_n, size() - p_pos);
+    _Traits::copy(p_str, data() + p_pos, __rlen);
     return __rlen;
   }
 
   constexpr inline
-  basic_string_view substr(size_type __pos = 0, size_type __n = npos) const {
-    return __pos > size()
+  basic_string_view substr(size_type p_pos = 0, size_type p_n = npos) const {
+    return p_pos > size()
       ? (throw std::out_of_range("string_view::substr"), basic_string_view())
-      : basic_string_view(data() + __pos, min(__n, size() - __pos));
+      : basic_string_view(data() + p_pos, min(p_n, size() - p_pos));
   }
 
-  constexpr int compare(basic_string_view __sv) const noexcept {
-    size_type __rlen = min( size(), __sv.size());
-    int __retval = _Traits::compare(data(), __sv.data(), __rlen);
+  constexpr int compare(basic_string_view p_sv) const noexcept {
+    size_type __rlen = min( size(), p_sv.size());
+    int __retval = _Traits::compare(data(), p_sv.data(), __rlen);
     if ( __retval == 0 ) // first __rlen chars matched
-      __retval = size() == __sv.size() ? 0 : ( size() < __sv.size() ? -1 : 1 );
+      __retval = size() == p_sv.size() ? 0 : ( size() < p_sv.size() ? -1 : 1 );
     return __retval;
   }
 
   constexpr inline
-  int compare(size_type __pos1, size_type __n1, basic_string_view __sv) const {
-    return substr(__pos1, __n1).compare(__sv);
+  int compare(size_type p_pos, size_type p_n, basic_string_view p_sv) const {
+    return substr(p_pos, p_n).compare(p_sv);
   }
 
   constexpr inline
-  int compare(                       size_type __pos1, size_type __n1,
-              basic_string_view __sv, size_type __pos2, size_type __n2) const
+  int compare(                       size_type p_pos1, size_type p_n1,
+              basic_string_view p_sv, size_type p_pos2, size_type p_n2) const
   {
-    return substr(__pos1, __n1).compare(__sv.substr(__pos2, __n2));
+    return substr(p_pos1, p_n1).compare(p_sv.substr(p_pos2, p_n2));
   }
 
   constexpr inline
-  int compare(const _CharT* str) const noexcept {
-    return compare(basic_string_view(str));
+  int compare(const _CharT* p_str) const noexcept {
+    return compare(basic_string_view(p_str));
   }
 
   constexpr inline
-  int compare(size_type __pos1, size_type __n1, const _CharT* str) const {
-    return substr(__pos1, __n1).compare(basic_string_view(str));
+  int compare(size_type p_pos, size_type p_n, const _CharT* p_str) const {
+    return substr(p_pos, p_n).compare(basic_string_view(p_str));
   }
 
   constexpr inline
-  int compare(size_type __pos1, size_type __n1, const _CharT* str, size_type __n2) const {
-    return substr(__pos1, __n1).compare(basic_string_view(str, __n2));
+  int compare(size_type p_pos, size_type p_n1, const _CharT* p_str, size_type p_n2) const {
+    return substr(p_pos, p_n1).compare(basic_string_view(p_str, p_n2));
   }
 
 #if 0
@@ -415,160 +415,160 @@ public:
 // operator ==
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator==(basic_string_view<_CharT, _Traits> __lhs,
-                basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator==(basic_string_view<_CharT, _Traits> p_lhs,
+                basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    if ( __lhs.size() != __rhs.size()) return false;
-    return __lhs.compare(__rhs) == 0;
+    if ( p_lhs.size() != p_rhs.size()) return false;
+    return p_lhs.compare(p_rhs) == 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator==(basic_string_view<_CharT, _Traits> __lhs,
-                std::common_type_t<basic_string_view<_CharT, _Traits>> __rhs) noexcept
+bool operator==(basic_string_view<_CharT, _Traits> p_lhs,
+                std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-    if ( __lhs.size() != __rhs.size()) return false;
-    return __lhs.compare(__rhs) == 0;
+    if ( p_lhs.size() != p_rhs.size()) return false;
+    return p_lhs.compare(p_rhs) == 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator==(std::common_type_t<basic_string_view<_CharT, _Traits>> __lhs,
-                basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator==(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
+                basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    if ( __lhs.size() != __rhs.size()) return false;
-    return __lhs.compare(__rhs) == 0;
+    if ( p_lhs.size() != p_rhs.size()) return false;
+    return p_lhs.compare(p_rhs) == 0;
 }
 
 
 // operator !=
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator!=(basic_string_view<_CharT, _Traits> __lhs, basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator!=(basic_string_view<_CharT, _Traits> p_lhs, basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    if ( __lhs.size() != __rhs.size())
+    if ( p_lhs.size() != p_rhs.size())
         return true;
-    return __lhs.compare(__rhs) != 0;
+    return p_lhs.compare(p_rhs) != 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator!=(basic_string_view<_CharT, _Traits> __lhs,
-                std::common_type_t<basic_string_view<_CharT, _Traits>> __rhs) noexcept
+bool operator!=(basic_string_view<_CharT, _Traits> p_lhs,
+                std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-    if ( __lhs.size() != __rhs.size())
+    if ( p_lhs.size() != p_rhs.size())
         return true;
-    return __lhs.compare(__rhs) != 0;
+    return p_lhs.compare(p_rhs) != 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator!=(std::common_type_t<basic_string_view<_CharT, _Traits>> __lhs,
-                basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator!=(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
+                basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  if ( __lhs.size() != __rhs.size())
+  if ( p_lhs.size() != p_rhs.size())
     return true;
-  return __lhs.compare(__rhs) != 0;
+  return p_lhs.compare(p_rhs) != 0;
 }
 
 
 // operator <
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator<(basic_string_view<_CharT, _Traits> __lhs, basic_string_view<_CharT, _Traits> __rhs) noexcept {
-  return __lhs.compare(__rhs) < 0;
+bool operator<(basic_string_view<_CharT, _Traits> p_lhs, basic_string_view<_CharT, _Traits> p_rhs) noexcept {
+  return p_lhs.compare(p_rhs) < 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator<(basic_string_view<_CharT, _Traits> __lhs,
-                std::common_type_t<basic_string_view<_CharT, _Traits>> __rhs) noexcept
+bool operator<(basic_string_view<_CharT, _Traits> p_lhs,
+                std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) < 0;
+  return p_lhs.compare(p_rhs) < 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator<(std::common_type_t<basic_string_view<_CharT, _Traits>> __lhs,
-                basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator<(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
+                basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) < 0;
+  return p_lhs.compare(p_rhs) < 0;
 }
 
 
 // operator >
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator> (basic_string_view<_CharT, _Traits> __lhs, basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator> (basic_string_view<_CharT, _Traits> p_lhs, basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) > 0;
+  return p_lhs.compare(p_rhs) > 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator>(basic_string_view<_CharT, _Traits> __lhs,
-               std::common_type_t<basic_string_view<_CharT, _Traits>> __rhs) noexcept
+bool operator>(basic_string_view<_CharT, _Traits> p_lhs,
+               std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) > 0;
+  return p_lhs.compare(p_rhs) > 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator>(std::common_type_t<basic_string_view<_CharT, _Traits>> __lhs,
-               basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator>(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
+               basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) > 0;
+  return p_lhs.compare(p_rhs) > 0;
 }
 
 
 // operator <=
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator<=(basic_string_view<_CharT, _Traits> __lhs, basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator<=(basic_string_view<_CharT, _Traits> p_lhs, basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) <= 0;
+  return p_lhs.compare(p_rhs) <= 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator<=(basic_string_view<_CharT, _Traits> __lhs,
-                std::common_type_t<basic_string_view<_CharT, _Traits>> __rhs) noexcept
+bool operator<=(basic_string_view<_CharT, _Traits> p_lhs,
+                std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) <= 0;
+  return p_lhs.compare(p_rhs) <= 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator<=(std::common_type_t<basic_string_view<_CharT, _Traits>> __lhs,
-                basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator<=(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
+                basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) <= 0;
+  return p_lhs.compare(p_rhs) <= 0;
 }
 
 
 // operator >=
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator>=(basic_string_view<_CharT, _Traits> __lhs, basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator>=(basic_string_view<_CharT, _Traits> p_lhs, basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) >= 0;
+  return p_lhs.compare(p_rhs) >= 0;
 }
 
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator>=(basic_string_view<_CharT, _Traits> __lhs,
-                std::common_type_t<basic_string_view<_CharT, _Traits>> __rhs) noexcept
+bool operator>=(basic_string_view<_CharT, _Traits> p_lhs,
+                std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-  return __lhs.compare(__rhs) >= 0;
+  return p_lhs.compare(p_rhs) >= 0;
 }
 
 template<class _CharT, class _Traits>
 constexpr inline
-bool operator>=(std::common_type_t<basic_string_view<_CharT, _Traits>> __lhs,
-                basic_string_view<_CharT, _Traits> __rhs) noexcept
+bool operator>=(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
+                basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    return __lhs.compare(__rhs) >= 0;
+    return p_lhs.compare(p_rhs) >= 0;
 }
 
 #if 0
@@ -603,28 +603,28 @@ inline namespace literals {
   inline namespace string_view_literals {
 
     inline constexpr
-    basic_string_view<char> operator "" _sv(const char *str, size_t __len) noexcept {
-      return basic_string_view<char>(str, __len);
+    basic_string_view<char> operator "" _sv(const char *p_str, size_t p_len) noexcept {
+      return basic_string_view<char>(p_str, p_len);
     }
 
     inline constexpr
-    basic_string_view<wchar_t> operator "" _sv(const wchar_t *str, size_t __len) noexcept {
-      return basic_string_view<wchar_t>(str, __len);
+    basic_string_view<wchar_t> operator "" _sv(const wchar_t *p_str, size_t p_len) noexcept {
+      return basic_string_view<wchar_t>(p_str, p_len);
     }
 
     inline constexpr
-    basic_string_view<char8_t> operator "" _sv(const char8_t *str, size_t __len) noexcept {
-      return basic_string_view<char8_t>(str, __len);
+    basic_string_view<char8_t> operator "" _sv(const char8_t *p_str, size_t p_len) noexcept {
+      return basic_string_view<char8_t>(p_str, p_len);
     }
 
     inline constexpr
-    basic_string_view<char16_t> operator "" _sv(const char16_t *str, size_t __len) noexcept {
-      return basic_string_view<char16_t>(str, __len);
+    basic_string_view<char16_t> operator "" _sv(const char16_t *p_str, size_t p_len) noexcept {
+      return basic_string_view<char16_t>(p_str, p_len);
     }
 
     inline constexpr
-    basic_string_view<char32_t> operator "" _sv(const char32_t *str, size_t __len) noexcept {
-      return basic_string_view<char32_t>(str, __len);
+    basic_string_view<char32_t> operator "" _sv(const char32_t *p_str, size_t p_len) noexcept {
+      return basic_string_view<char32_t>(p_str, p_len);
     }
 
   } // inline namespace string_view_literals

@@ -12,14 +12,14 @@ namespace tybl::vodka {
 
 template<typename T, typename Compare> 
 [[nodiscard]] constexpr auto
-max(T const& lhs, T const& rhs, Compare comp) -> T const& {
-  return comp(lhs, rhs) ? rhs : lhs;
+max(T const& p_lhs, T const& p_rhs, Compare p_comp) -> T const& {
+  return p_comp(p_lhs, p_rhs) ? p_rhs : p_lhs;
 }
 
 template <typename T>
 [[nodiscard]] constexpr auto
-max(T const& lhs, T const& rhs) -> T const& {
-  return max(lhs, rhs, less());
+max(T const& p_lhs, T const& p_rhs) -> T const& {
+  return max(p_lhs, p_rhs, less());
 }
 
 } // namespace tybl::vodka
