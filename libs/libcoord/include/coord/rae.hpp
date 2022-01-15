@@ -27,4 +27,4 @@ public:
 
 } // namespace tybl::coord
 
-#endif TYBL_COORD_RAE_HPP
+#endif // TYBL_COORD_RAE_HPP

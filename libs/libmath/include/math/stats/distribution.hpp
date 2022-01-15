@@ -58,4 +58,4 @@ public:
 
 } // namespace tybl::math::stats
 
-#endif TYBL_MATH_STATS_DISTRIBUTION_HPP
+#endif // TYBL_MATH_STATS_DISTRIBUTION_HPP

@@ -32,4 +32,4 @@ public:
 
 } // namespace nmea
 
-#endif TYBL_NMEA_COMMAND_HPP
+#endif // TYBL_NMEA_COMMAND_HPP
