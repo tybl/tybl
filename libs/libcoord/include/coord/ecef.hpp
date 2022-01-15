@@ -10,7 +10,7 @@ namespace tybl::coord {
 class lla_t;
 
 class ecef_t {
-  lynel::cvec3<double> ecef;
+  lynel::cvec3<double> m_ecef;
 public:
 
   explicit ecef_t(lynel::cvec3<double> pos);

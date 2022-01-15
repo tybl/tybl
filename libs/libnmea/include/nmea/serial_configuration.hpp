@@ -12,7 +12,7 @@ namespace nmea {
 
 Table 2-4 Set Serial Port Data Format
 Name    Example    Unit Description
-Message ID  $PSRF100  PSRF100 protocol header
+Message m_id  $PSRF100  PSRF100 protocol header
 Protocol  0       0=SiRF binary, 1=NMEA
 Baud     9600     1200, 2400, 4800, 9600, 19200, 38400, 57600, and 115200
 DataBits  8       8,71

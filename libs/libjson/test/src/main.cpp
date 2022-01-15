@@ -66,11 +66,11 @@ enum class TokenType {
 //    * Must be valid token (i.e. string...) TODO(tblyons): Not sure about this
 struct token {
 
-   TokenType type() const { return calculate_type(mValue); }
+   TokenType type() const { return calculate_type(m_value); }
 
-   std::string_view value() const { return mValue; }
+   std::string_view value() const { return m_value; }
 
-   token(std::string_view sv) : mValue(sv) { }
+   token(std::string_view sv) : m_value(sv) { }
 
    // Intent: Determine the token type of the input.
    // Caveats:
@@ -168,28 +168,28 @@ struct token {
       return result;
    }
 private:
-   std::string_view mValue;
+   std::string_view m_value;
 };
 
 struct token_iterator {
 
-  token_iterator(std::string_view in) : mValue(in) {}
+  token_iterator(std::string_view in) : m_value(in) {}
 
   token_iterator operator++() {
-      mValue.remove_prefix(token::length(mValue));
-      while (!mValue.empty() && is_whitespace(mValue.front()))
+    m_value.remove_prefix(token::length(m_value));
+      while (!m_value.empty() && is_whitespace(m_value.front()))
       {
-         mValue.remove_prefix(1);
+        m_value.remove_prefix(1);
       }
       return *this;
    }
 
    token operator*() {
-      return token(mValue);
+      return token(m_value);
    }
 
 private:
-   std::string_view mValue;
+   std::string_view m_value;
 };
 
 #if 0
@@ -205,7 +205,7 @@ struct Json {
    iterator begin() { return iterator(); }
    iterator end() { return iterator(); }
 private:
-   std::string mValue;
+   std::string m_value;
 };
 #endif
 

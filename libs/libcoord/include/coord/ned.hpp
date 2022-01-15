@@ -10,7 +10,7 @@ namespace tybl::coord {
 class ecef_t;
 
 class ned_t {
-  lynel::cvec3<double> ned;
+  lynel::cvec3<double> m_ned;
 public:
 
   auto to_ecef(ecef_t const& ref_pos) const -> ecef_t;

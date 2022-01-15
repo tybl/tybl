@@ -8,9 +8,9 @@ namespace tybl::coord {
 class ecef_t;
 
 class lla_t {
-  double mLatitude;
-  double mLongitude;
-  double mAltitude;
+  double m_latitude;
+  double m_longitude;
+  double m_altitude;
 public:
 
   auto to_ecef() const -> ecef_t;

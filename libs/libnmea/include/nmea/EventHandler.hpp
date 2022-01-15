@@ -17,21 +17,21 @@ class EventHandler<void(Args...)>
   friend Event<void(Args...)>;
 private:
   // Typenames
-  typename Event<void(Args...)>::ListIterator _iterator;
+  typename Event<void(Args...)>::ListIterator m_iterator;
 
   // Static members
   static uint64_t LastID;
 
   // Properties
-  std::function<void(Args...)> handler;
-  uint64_t ID;
+  std::function<void(Args...)> m_handler;
+  uint64_t m_id;
 
   // Functions
   void copy(const EventHandler& ref){
     if (&ref != this){
-      _iterator = ref._iterator;
-      handler = ref.handler;
-      ID = ref.ID;
+      m_iterator = ref.m_iterator;
+      m_handler = ref.m_handler;
+      m_id = ref.m_id;
     }
   }
 
@@ -46,7 +46,7 @@ public:
   // (none)
 
   // Functions
-  EventHandler(std::function<void(Args...)> h) : _iterator(), handler(h), ID(++LastID)
+  EventHandler(std::function<void(Args...)> h) : m_iterator(), m_handler(h), m_id(++LastID)
   {}
 
   EventHandler(const EventHandler& ref){
@@ -60,26 +60,25 @@ public:
     return *this;
   }
 
-  void operator() (Args... args){
-    handler(args...);
+  void operator() (Args... args){ m_handler(args...);
   }
 
   bool operator==(const EventHandler& ref){
-    return ID == ref.ID;
+    return m_id == ref.m_id;
   }
 
   bool operator!=(const EventHandler& ref){
-    return ID != ref.ID;
+    return m_id != ref.m_id;
   }
 
   uint64_t get_id(){
-    return ID;
+    return m_id;
   }
 
   // Returns function pointer to the underlying function
   // or null if it's not a function but implements operator()
   CFunctionPointer* get_function_pointer(){
-    CFunctionPointer* ptr = handler.template target<CFunctionPointer>();
+    CFunctionPointer* ptr = m_handler.template target<CFunctionPointer>();
     return ptr;
   }
 

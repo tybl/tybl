@@ -25,21 +25,21 @@ private:
   // (none)
 
   // Properties
-  std::list<EventHandler<void(Args...)>> handlers;
+  std::list<EventHandler<void(Args...)>> m_handlers;
 
   //Functions
   void copy(const Event& ref){
     if (&ref != this){
-      handlers = ref.handlers;
+      m_handlers = ref.m_handlers;
     }
   };
 
   bool remove_handler(ListIterator handlerIter)  {
-    if (handlerIter == handlers.end()){
+    if (handlerIter == m_handlers.end()){
       return false;
     }
 
-    handlers.erase(handlerIter);
+    m_handlers.erase(handlerIter);
     return true;
   };
 
@@ -66,7 +66,7 @@ public:
 
   void call(Args... args)  {
     if (!enabled) { return; }
-    for (auto h = handlers.begin(); h != handlers.end(); h++)
+    for (auto h = m_handlers.begin(); h != m_handlers.end(); h++)
     {
       (*h)(args...);
     }
@@ -74,7 +74,7 @@ public:
 
   EventHandler<void(Args...)> register_handler(EventHandler<void(Args...)> handler)  {
     bool found = false;
-    for (auto h = handlers.begin(); h != handlers.end(); h++)
+    for (auto h = m_handlers.begin(); h != m_handlers.end(); h++)
     {
       if ((*h) == handler)  {
         found = true;
@@ -83,31 +83,31 @@ public:
     }
     if (!found)
     {
-      ListIterator itr = handlers.insert(handlers.end(), handler);
-      handler._iterator = itr;
+      ListIterator itr = m_handlers.insert(m_handlers.end(), handler);
+      handler.m_iterator = itr;
     }
     return handler;
   }
 
   EventHandler<void(Args...)> register_handler(std::function<void(Args...)> handler)  {
     EventHandler<void(Args...)> wrapper(handler);
-    ListIterator itr = handlers.insert(handlers.end(), wrapper);
-    wrapper._iterator = itr;
+    ListIterator itr = m_handlers.insert(m_handlers.end(), wrapper);
+    wrapper.m_iterator = itr;
     return wrapper;
   }
 
   bool remove_handler(EventHandler<void(Args...)>& handler)  {
-    bool sts = remove_handler(handler._iterator);
-    handler._iterator = handlers.end();
+    bool sts = remove_handler(handler.m_iterator);
+    handler.m_iterator = m_handlers.end();
     return sts;
   };
 
   void clear(){
-    for (auto h = handlers.begin(); h != handlers.end(); h++)
+    for (auto h = m_handlers.begin(); h != m_handlers.end(); h++)
     {
-      (*h)._iterator = handlers.end();
+      (*h).m_iterator = m_handlers.end();
     }
-    handlers.clear();
+    m_handlers.clear();
   };
 
   void operator ()(Args... args) { return call(args...); };

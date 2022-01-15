@@ -11,27 +11,27 @@ auto ned_t::to_ecef(ecef_t const& ref_pos) const -> ecef_t {
 }
 
 auto ned_t::x() const -> double {
-  return ned.x;
+  return m_ned.x;
 }
 
 auto ned_t::y() const -> double {
-  return ned.y;
+  return m_ned.y;
 }
 
 auto ned_t::z() const -> double {
-  return ned.z;
+  return m_ned.z;
 }
 
 auto ned_t::n() const -> double {
-  return ned.x;
+  return m_ned.x;
 }
 
 auto ned_t::e() const -> double {
-  return ned.y;
+  return m_ned.y;
 }
 
 auto ned_t::d() const -> double {
-  return ned.z;
+  return m_ned.z;
 }
 
 } // namespace tybl::coord

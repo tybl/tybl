@@ -11,7 +11,7 @@ namespace tybl::coord {
 class ecef_t;
 
 class frd_t {
-  lynel::cvec3<double> frd;
+  lynel::cvec3<double> m_frd;
 public:
 
   frd_t(double f, double r, double d);

@@ -50,7 +50,7 @@ void GPSService::attach_to_parser(Parser& _parser) {
   /* used sentences...
   $GPGGA    - time,position,fix data
   $GPGSA    - gps receiver operating mode, satellites used in position and DOP values
-  $GPGSV    - number of gps satellites in view, satellite ID, elevation,azimuth, and SNR
+  $GPGSV    - number of gps satellites in view, satellite m_id, elevation,azimuth, and SNR
   $GPRMC    - time,date, position,course, and speed data
   $GPVTG    - course and speed information relative to the ground
   $GPZDA    - 1pps timing message
@@ -112,7 +112,7 @@ void GPSService::read_gpgga(sentence const& nmea) {
   [10-11] 46.9,M       Height of geoid (mean sea level) above WGS84
   ellipsoid
   [12] (empty field) time in seconds since last DGPS update
-  [13] (empty field) DGPS station ID number
+  [13] (empty field) DGPS station m_id number
   [13]  *47          the checksum data, always begins with *
   */
   try {
@@ -167,7 +167,7 @@ void GPSService::read_gpgga(sentence const& nmea) {
       // leave old value
     }
 
-    //calling handlers
+    //calling m_handlers
     if (lockupdate) {
       this->onLockStateChanged(this->fix.m_has_lock);
     }
@@ -243,7 +243,7 @@ void GPSService::read_gpgsa(sentence const& nmea) {
     this->fix.vertical_dilution = vdop;
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 
-    //calling handlers
+    //calling m_handlers
     if (lockupdate) {
       std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
       this->onLockStateChanged(this->fix.m_has_lock);
@@ -414,7 +414,7 @@ void GPSService::read_gprmc(sentence const& nmea) {
     this->fix.travel_angle = std::stod(nmea.parameters[7]);
     fix.timestamp.set_date(std::stoi(nmea.parameters[8]));
 
-    //calling handlers
+    //calling m_handlers
     if (lockupdate) {
       this->onLockStateChanged(this->fix.m_has_lock);
     }

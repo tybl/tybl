@@ -8,9 +8,9 @@ namespace tybl::coord {
 class frd_t;
 
 class rae_t {
-  double mRange;
-  double mAzimuth;
-  double mElevation;
+  double m_range;
+  double m_azimuth;
+  double m_elevation;
 public:
 
   rae_t(double r, double a, double e);

@@ -14,15 +14,15 @@ auto lla_t::to_ecef() const -> ecef_t {
 }
 
 auto lla_t::latitude() const -> double {
-  return mLatitude;
+  return m_latitude;
 }
 
 auto lla_t::longitude() const -> double {
-  return mLongitude;
+  return m_longitude;
 }
 
 auto lla_t::altitude() const -> double {
-  return mAltitude;
+  return m_altitude;
 }
 
 } // namespace tybl::coord

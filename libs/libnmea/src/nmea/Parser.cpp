@@ -56,25 +56,25 @@ static void trim(std::string& str) {
 // --------- NMEA PARSER --------------
 
 Parser::Parser()
-  : maxbuffersize(NMEA_PARSER_MAX_BUFFER_SIZE)
-  , m_fillingbuffer(false)
+  : m_max_buffer_size(NMEA_PARSER_MAX_BUFFER_SIZE)
+  , m_filling_buffer(false)
   , log(false)
 { }
 
 Parser::~Parser() = default;
 
 void Parser::set_sentence_handler(std::string cmdKey, std::function<void(const sentence&)> handler) {
-  eventTable.erase(cmdKey);
-  eventTable.insert({ cmdKey, handler });
+  m_event_table.erase(cmdKey);
+  m_event_table.insert({ cmdKey, handler });
 }
 
 std::string Parser::get_list_of_sentence_handlers() {
-  if (eventTable.empty()) {
+  if (m_event_table.empty()) {
     return ""; // TODO(tybl): empty c-string vs std::string constructor
   }
 
   std::ostringstream ss;
-  for (auto const& table : eventTable) {
+  for (auto const& table : m_event_table) {
     ss << table.first;
 
     if (!table.second) {
@@ -93,7 +93,7 @@ void Parser::read_byte(char b) {
   std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << " - " << static_cast<uint32_t>(b) << (std::isgraph(b) ? b : '\0') << std::endl;
   uint8_t start_byte = '$';
 
-  if (m_fillingbuffer) {
+  if (m_filling_buffer) {
     std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
     if (b == '\n') {
     std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
@@ -101,30 +101,30 @@ void Parser::read_byte(char b) {
       try {
         read_sentence(m_buffer);
         m_buffer.clear();
-        m_fillingbuffer = false;
+        m_filling_buffer = false;
       } catch (std::exception&) {
         std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
         // If anything happens, let it pass through, but reset the m_buffer first.
         m_buffer.clear();
-        m_fillingbuffer = false;
+        m_filling_buffer = false;
         throw;
       }
     } else {
       std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      if (m_buffer.size() < maxbuffersize) {
+      if (m_buffer.size() < m_max_buffer_size) {
         std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
         m_buffer.push_back(b);
       } else {
         std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
         m_buffer.clear();      // clear the host m_buffer so it won't overflow.
-        m_fillingbuffer = false;
+        m_filling_buffer = false;
       }
     }
   } else {
     std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
     if (b == start_byte) {      // only start filling when we see the start byte.
       std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      m_fillingbuffer = true;
+      m_filling_buffer = true;
       m_buffer.push_back(b);
     }
   }
@@ -161,7 +161,7 @@ void Parser::on_err(sentence& /*nmea*/, std::string txt) {
 }
 
 // takes a complete NMEA string and gets the data bits from it,
-// calls the corresponding handler in eventTable, based on the 5 letter sentence code
+// calls the corresponding handler in m_event_table, based on the 5 letter sentence code
 void Parser::read_sentence(std::string cmd) {
   std::cerr << "Parser::read_sentence(std::string): " << __LINE__ << std::endl;
 
@@ -226,8 +226,8 @@ void Parser::read_sentence(std::string cmd) {
   on_info(nmea, "Calling generic onSentence().");
   onSentence(nmea);
 
-  // Call event handlers based on map entries
-  std::function<void(const sentence&)> handler = eventTable[nmea.name];
+  // Call event m_handlers based on map entries
+  std::function<void(const sentence&)> handler = m_event_table[nmea.name];
   if (handler) {
     on_info(nmea, std::string("Calling specific handler for sentence named \"") + nmea.name + "\"");
     handler(nmea);
@@ -258,11 +258,11 @@ uint8_t Parser::calc_checksum(std::string s) {
 void Parser::parse_text(sentence& nmea, std::string txt) {
 
   if (txt.empty()) {
-    nmea.isvalid = false;
+    nmea.m_is_valid = false;
     return;
   }
 
-  nmea.isvalid = false;  // assume it's invalid first
+  nmea.m_is_valid = false;  // assume it's invalid first
   nmea.text = txt;    // save the received text of the sentence
 
   // Looking for index of last '$'
@@ -294,35 +294,35 @@ void Parser::parse_text(sentence& nmea, std::string txt) {
   if (comma == std::string::npos) {    //comma not found, but there is a name...
     if (!txt.empty()) {  // the received data must just be the name
       if (has_non_alpha_num(txt)) {
-        nmea.isvalid = false;
+        nmea.m_is_valid = false;
         return;
       }
       nmea.name = txt;
-      nmea.isvalid = true;
+      nmea.m_is_valid = true;
       return;
     } else {  //it is a '$' with no information
-      nmea.isvalid = false;
+      nmea.m_is_valid = false;
       return;
     }
   }
 
   //"$," case - no name
   if (comma == 0) {
-    nmea.isvalid = false;
+    nmea.m_is_valid = false;
     return;
   }
 
   //name should not include first comma
   nmea.name = txt.substr(0, comma);
   if ( has_non_alpha_num(nmea.name) ) {
-    nmea.isvalid = false;
+    nmea.m_is_valid = false;
     return;
   }
 
   //comma is the last character/only comma
   if (comma + 1 == txt.size()) {
     nmea.parameters.push_back("");
-    nmea.isvalid = true;
+    nmea.m_is_valid = true;
     return;
   }
 
@@ -343,7 +343,7 @@ void Parser::parse_text(sentence& nmea, std::string txt) {
 
     // supposed to have checksum but there is a comma at the end... invalid
     if (haschecksum) {
-      nmea.isvalid = false;
+      nmea.m_is_valid = false;
       return;
     }
 
@@ -388,7 +388,7 @@ void Parser::parse_text(sentence& nmea, std::string txt) {
 
   for (size_t i = 0; i < nmea.parameters.size(); i++) {
     if (!valid_param_chars(nmea.parameters[i])) {
-      nmea.isvalid = false;
+      nmea.m_is_valid = false;
       std::stringstream ss;
       ss << "Invalid character (non-alpha-num) in parameter " << i << " (from 0): \"" << nmea.parameters[i] << "\"";
       on_err(nmea, ss.str() );
@@ -397,7 +397,7 @@ void Parser::parse_text(sentence& nmea, std::string txt) {
   }
 
 
-  nmea.isvalid = true;
+  nmea.m_is_valid = true;
 
   return;
 

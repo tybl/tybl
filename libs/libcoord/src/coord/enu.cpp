@@ -11,27 +11,27 @@ auto enu_t::to_ecef(ecef_t const& ref_pos) const -> ecef_t {
 }
 
 auto enu_t::x() const -> double {
-  return enu.x;
+  return m_enu.x;
 }
 
 auto enu_t::y() const -> double {
-  return enu.y;
+  return m_enu.y;
 }
 
 auto enu_t::z() const -> double {
-  return enu.z;
+  return m_enu.z;
 }
 
 auto enu_t::e() const -> double {
-  return enu.x;
+  return m_enu.x;
 }
 
 auto enu_t::n() const -> double {
-  return enu.y;
+  return m_enu.y;
 }
 
 auto enu_t::u() const -> double {
-  return enu.z;
+  return m_enu.z;
 }
 
 } // namespace tybl::coord

@@ -9,10 +9,10 @@
 namespace tybl::coord {
 
 ecef_t::ecef_t(lynel::cvec3<double> pos)
-  : ecef(vodka::move(pos)) { }
+  : m_ecef(vodka::move(pos)) { }
 
 ecef_t::operator lynel::cvec3<double>() const {
-  return ecef;
+  return m_ecef;
 }
 
 auto ecef_t::to_lla() const -> lla_t {
@@ -22,15 +22,15 @@ auto ecef_t::to_lla() const -> lla_t {
 }
 
 auto ecef_t::x() const -> double {
-  return ecef.x;
+  return m_ecef.x;
 }
 
 auto ecef_t::y() const -> double {
-  return ecef.y;
+  return m_ecef.y;
 }
 
 auto ecef_t::z() const -> double {
-  return ecef.z;
+  return m_ecef.z;
 }
 
 } // namespace tybl::coord

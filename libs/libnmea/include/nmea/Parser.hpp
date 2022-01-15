@@ -16,10 +16,10 @@
 namespace nmea {
 
 class Parser {
-  std::unordered_map<std::string, std::function<void(sentence)>> eventTable;
+  std::unordered_map<std::string, std::function<void(sentence)>> m_event_table;
   std::string m_buffer;
-  uint32_t maxbuffersize; // limit the max size if no newline ever comes... Prevents huge m_buffer string internally
-  bool m_fillingbuffer;
+  uint32_t m_max_buffer_size; // limit the max size if no newline ever comes... Prevents huge m_buffer string internally
+  bool m_filling_buffer;
 
   void parse_text(sentence& nmea, std::string s);    //fills the given NMEA sentence with the results of parsing the string.
 
@@ -36,7 +36,7 @@ public:
 
   Event<void(const sentence&)> onSentence;        // called every time parser receives any NMEA sentence
   void set_sentence_handler(std::string cmdKey, std::function<void(const sentence&)> handler);  //one handler called for any named sentence where name is the "cmdKey"
-  std::string get_list_of_sentence_handlers();                          // show a list of message names that currently have handlers.
+  std::string get_list_of_sentence_handlers();                          // show a list of message names that currently have m_handlers.
 
   // Byte streaming functions
   void read_byte(char b);

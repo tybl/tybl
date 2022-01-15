@@ -11,7 +11,7 @@ namespace nmea {
 /*
 * Table 2-9 Query/Rate Control Data Format
 Name    Example    Unit Description
-Message ID  $PSRF103  PSRF103 protocol header
+Message m_id  $PSRF103  PSRF103 protocol header
 Msg      00       See Table 2-10
 Mode    01       0=SetRate, 1=Query
 Rate    00       sec Output—off=0, max=255

@@ -4,7 +4,7 @@
 namespace nmea {
 
 sentence::sentence()
-  : isvalid(false)
+  : m_is_valid(false)
   , m_is_checksum_calculated(false)
   , m_parsed_checksum(0)
   , m_calculated_checksum(0)
@@ -13,7 +13,7 @@ sentence::sentence()
 sentence::~sentence() = default;
 
 bool sentence::valid() const {
-  return isvalid;
+  return m_is_valid;
 }
 
 bool sentence::is_checksum_ok() const {

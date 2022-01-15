@@ -13,7 +13,7 @@ class Parser;
 class sentence {
   friend Parser;
 private:
-  bool isvalid;
+  bool m_is_valid;
 public:
   std::string text;      //whole plaintext of the received command
   std::string name;      //name of the command
@@ -23,7 +23,7 @@ public:
   uint8_t m_parsed_checksum;
   uint8_t m_calculated_checksum;
 
-  enum MessageID {    // These ID's are according to NMEA standard.
+  enum MessageID {    // These m_id's are according to NMEA standard.
     Unknown = -1,
     GGA = 0,
     GLL = 1,

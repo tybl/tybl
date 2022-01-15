@@ -8,29 +8,29 @@
 namespace tybl::coord {
 
 rae_t::rae_t(double r, double a, double e)
-  : mRange(r)
-  , mAzimuth(a)
-  , mElevation(e)
+  : m_range(r)
+  , m_azimuth(a)
+  , m_elevation(e)
   { }
 
 auto rae_t::to_frd() const -> frd_t {
-  const auto hyp = std::cos(mElevation) * mRange;
-  const auto f = std::sin(mAzimuth) * hyp;
-  const auto r = std::cos(mAzimuth) * hyp;
-  const auto d = std::sin(mElevation) * mRange;
+  const auto hyp = std::cos(m_elevation) * m_range;
+  const auto f = std::sin(m_azimuth) * hyp;
+  const auto r = std::cos(m_azimuth) * hyp;
+  const auto d = std::sin(m_elevation) * m_range;
   return { f, r, d };
 }
 
 auto rae_t::range() const -> double {
-  return mRange;
+  return m_range;
 }
 
 auto rae_t::azimuth() const -> double {
-  return mAzimuth;
+  return m_azimuth;
 }
 
 auto rae_t::elevation() const -> double {
-  return mElevation;
+  return m_elevation;
 }
 
 } // namespace tybl::coord
