@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
 if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "10.1")
 

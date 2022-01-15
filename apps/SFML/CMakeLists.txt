@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.14)
+################################################################################
+# License: The Unlicense (https://unlicense.org)
+################################################################################
 
 find_package(SFML COMPONENTS graphics QUIET)
 

@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13)
 
 add_executable(libnmea_t)
 target_link_libraries(libnmea_t PRIVATE compiler_settings nmea test_base)

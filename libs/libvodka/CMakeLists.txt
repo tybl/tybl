@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.14) # relative path target_sources()
 
 add_library(vodka INTERFACE)
 target_include_directories(vodka INTERFACE include)

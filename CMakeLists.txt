@@ -13,12 +13,6 @@ include(FetchContent)
 include(utils/cmake/CompilerSettings.cmake)
 include(utils/cmake/Linters.cmake)
 
-# Use doctest as unit test framework
-FetchContent_Declare(doctest
-  GIT_REPOSITORY https://github.com/onqtam/doctest.git
-  GIT_TAG        "2.4.6")
-FetchContent_MakeAvailable(doctest)
-
 add_subdirectory(utils/doctest)
 add_subdirectory(libs)
 add_subdirectory(apps)

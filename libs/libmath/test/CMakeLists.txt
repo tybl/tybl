@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13)
 
 add_executable(libmath_t)
 target_link_libraries(libmath_t PRIVATE compiler_settings math test_base)

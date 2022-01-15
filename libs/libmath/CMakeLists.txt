@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
 add_library(math INTERFACE)
 target_include_directories(math INTERFACE include)

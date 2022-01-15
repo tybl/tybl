@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
 find_package(Eigen3 3.3 QUIET NO_MODULE)
 

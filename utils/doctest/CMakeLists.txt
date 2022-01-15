@@ -1,7 +1,11 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13)
+
+FetchContent_Declare(doctest
+  GIT_REPOSITORY https://github.com/onqtam/doctest.git
+  GIT_TAG        "2.4.6")
+FetchContent_MakeAvailable(doctest)
 
 add_library(test_base)
 target_link_libraries(test_base PUBLIC doctest::doctest)

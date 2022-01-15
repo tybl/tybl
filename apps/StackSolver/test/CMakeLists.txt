@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13)
 
 add_executable(stacksolver_t)
 target_link_libraries(stacksolver_t PRIVATE compiler_settings test_base stacksolvelib)

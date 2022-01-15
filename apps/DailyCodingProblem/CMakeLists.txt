@@ -1,7 +1,6 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.13) # relative path target_sources()
 
 add_executable(dcp001)
 target_compile_features(dcp001 PRIVATE cxx_std_20)
