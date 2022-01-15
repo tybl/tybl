@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef SENSORAGGREGATOR_COLLECT_SERVER_HPP
 #define SENSORAGGREGATOR_COLLECT_SERVER_HPP
 

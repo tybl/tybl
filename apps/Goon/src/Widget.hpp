@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #include <SDL2/SDL.h>
 
 struct Widget {

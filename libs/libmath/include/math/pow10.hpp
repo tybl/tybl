@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef MATH_POW10_HPP
 #define MATH_POW10_HPP
 

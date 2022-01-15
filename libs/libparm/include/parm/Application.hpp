@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef PARM_APPLICATION_HPP
 #define PARM_APPLICATION_HPP
 

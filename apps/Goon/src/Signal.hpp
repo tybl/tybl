@@ -1,5 +1,6 @@
 // CC0 Public Domain: http://creativecommons.org/publicdomain/zero/1.0/
 // Pulled from https://testbit.eu/~timj/blogstuff/simplesignal.cc
+#pragma once
 #ifndef SIMPLE_SIGNALS_CPP
 #define SIMPLE_SIGNALS_CPP
 

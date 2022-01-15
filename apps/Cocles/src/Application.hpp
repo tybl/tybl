@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef COCLES_APPLICATION_HPP
 #define COCLES_APPLICATION_HPP
 

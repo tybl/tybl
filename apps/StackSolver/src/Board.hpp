@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef BOARD_HPP
 #define BOARD_HPP
 

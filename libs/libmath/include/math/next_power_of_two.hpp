@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef TBL_MATH_NEXTPOWEROFTWO_HPP
 #define TBL_MATH_NEXTPOWEROFTWO_HPP
 

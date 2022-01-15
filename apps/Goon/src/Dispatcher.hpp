@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef GOON_DISPATCHER_HPP
 #define GOON_DISPATCHER_HPP
 

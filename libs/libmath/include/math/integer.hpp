@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef TBL_INTEGER_HPP
 #define TBL_INTEGER_HPP
 

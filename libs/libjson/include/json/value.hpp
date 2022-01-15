@@ -15,7 +15,7 @@
 * OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 * PERFORMANCE OF THIS SOFTWARE.
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+#pragma once
 #ifndef VODKA_JSON_VALUE_HPP
 #define VODKA_JSON_VALUE_HPP
 

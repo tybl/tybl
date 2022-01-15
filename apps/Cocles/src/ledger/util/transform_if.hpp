@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef COCLES_LEDGER_UTIL_TRANSFORM_IF_HPP
 #define COCLES_LEDGER_UTIL_TRANSFORM_IF_HPP
 

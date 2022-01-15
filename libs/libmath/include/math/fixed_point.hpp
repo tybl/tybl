@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef MATH_FIXEDPOINT_HPP
 #define MATH_FIXEDPOINT_HPP
 

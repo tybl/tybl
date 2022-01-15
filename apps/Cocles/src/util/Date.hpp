@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef COCLES_UTIL_DATE_HPP
 #define COCLES_UTIL_DATE_HPP
 
