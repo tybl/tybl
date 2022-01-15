@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_STATS_DISTRIBUTION_HPP
+#define TYBL_STATS_DISTRIBUTION_HPP
 
 // TODO(tybl): Replace Eigen with liblynel
 #include <Eigen/Dense>
@@ -102,3 +104,5 @@ public:
 }; // class dist
 
 } // namespace tybl::stats
+
+#endif // TYBL_STATS_DISTRIBUTION_HPP

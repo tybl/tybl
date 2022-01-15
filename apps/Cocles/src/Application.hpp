@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_APPLICATION_HPP
-#define COCLES_APPLICATION_HPP
+#pragma once
+#ifndef TYBL_COCLES_APPLICATION_HPP
+#define TYBL_COCLES_APPLICATION_HPP
 
 #include <atomic>
 #include <string>
@@ -24,4 +25,4 @@ private:
    static std::atomic<bool> mInstanceExists;
 }; // class Application
 
-#endif // COCLES_APPLICATION_HPP
+#endif // TYBL_COCLES_APPLICATION_HPP

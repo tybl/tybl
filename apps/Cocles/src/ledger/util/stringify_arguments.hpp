@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_UTIL_STRINGIFY_ARGUMENTS_HPP
-#define COCLES_LEDGER_UTIL_STRINGIFY_ARGUMENTS_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_UTIL_STRINGIFYARGUMENTS_HPP
+#define TYBL_COCLES_LEDGER_UTIL_STRINGIFYARGUMENTS_HPP
 
 #include <string>
 #include <vector>
@@ -15,4 +16,4 @@ std::vector<std::string> stringify_arguments(int argc, const char* argv[]);
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_UTIL_STRINGIFY_ARGUMENTS_HPP
+#endif // TYBL_COCLES_LEDGER_UTIL_STRINGIFYARGUMENTS_HPP

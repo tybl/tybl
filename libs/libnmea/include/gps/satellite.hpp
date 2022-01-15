@@ -1,4 +1,7 @@
+// License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_GPS_SATELLITE_HPP
+#define TYBL_NMEA_GPS_SATELLITE_HPP
 
 #include <cstdint>
 #include <string>
@@ -21,3 +24,5 @@ public:
 }; // struct satellite
 
 } // namespace gps
+
+#endif // TYBL_NMEA_GPS_SATELLITE_HPP

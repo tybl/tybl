@@ -1,4 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
+#pragma once
 #ifndef TYBL_LIBPIM_TASK_HPP
 #define TYBL_LIBPIM_TASK_HPP
 

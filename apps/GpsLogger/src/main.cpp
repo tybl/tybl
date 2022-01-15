@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include "nmea/nmea.hpp"
 
 #include <fstream>

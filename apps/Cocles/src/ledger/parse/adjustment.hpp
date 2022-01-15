@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_PARSE_ADJUSTMENT_HPP
-#define COCLES_LEDGER_PARSE_ADJUSTMENT_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_PARSE_ADJUSTMENT_HPP
+#define TYBL_COCLES_LEDGER_PARSE_ADJUSTMENT_HPP
 
 #include "util/Money.hpp"
 
@@ -19,4 +20,4 @@ private:
    util::Money m_amount;
 }; // struct adjustment_t
 
-#endif // COCLES_LEDGER_PARSE_ADJUSTMENT_HPP
+#endif // TYBL_COCLES_LEDGER_PARSE_ADJUSTMENT_HPP

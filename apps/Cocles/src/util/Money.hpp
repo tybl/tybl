@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_UTIL_MONEY_HPP
-#define COCLES_UTIL_MONEY_HPP
+#pragma once
+#ifndef TYBL_COCLES_UTIL_MONEY_HPP
+#define TYBL_COCLES_UTIL_MONEY_HPP
 
 ///////////////////////////////////////////////////////////////////////////////
 // Defines class to represent money
@@ -61,4 +62,4 @@ std::istream& operator>>(std::istream& s, Money& m);
 
 } // namespace util
 
-#endif // COCLES_UTIL_MONEY_HPP
+#endif // TYBL_COCLES_UTIL_MONEY_HPP

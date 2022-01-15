@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_COORD_ENU_HPP
+#define TYBL_COORD_ENU_HPP
 
 #include "lynel/basic_matrix.hpp"
 
@@ -28,3 +30,5 @@ public:
 }; // class enu_t
 
 } // namespace tybl::coord
+
+#endif // TYBL_COORD_ENU_HPP

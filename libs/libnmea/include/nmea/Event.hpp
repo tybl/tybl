@@ -1,4 +1,7 @@
+// License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_EVENT_HPP
+#define TYBL_NMEA_EVENT_HPP
 
 #include "nmea/EventHandler.hpp"
 
@@ -121,3 +124,5 @@ public:
 }; // class Event
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_EVENT_HPP

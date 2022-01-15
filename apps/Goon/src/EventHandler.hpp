@@ -1,7 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef GOON_EVENTHANDLER_HPP
-#define GOON_EVENTHANDLER_HPP
+#pragma once
+#ifndef TYBL_GOON_EVENTHANDLER_HPP
+#define TYBL_GOON_EVENTHANDLER_HPP
 
 void SetUpEvents(void);
 
-#endif // GOON_EVENTHANDLER_HPP
+#endif // TYBL_GOON_EVENTHANDLER_HPP

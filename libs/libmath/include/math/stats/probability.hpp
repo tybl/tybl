@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_MATH_STATS_PROBABILITY_HPP
+#define TYBL_MATH_STATS_PROBABILITY_HPP
 
 namespace vodka::math::stats {
 
@@ -25,3 +27,5 @@ public:
 }; // class probability
 
 } // namespace vodka::math::stats
+
+#endif TYBL_MATH_STATS_PROBABILITY_HPP

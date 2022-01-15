@@ -1,4 +1,7 @@
+// License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_SENTENCE_HPP
+#define TYBL_NMEA_SENTENCE_HPP
 
 #include <string>
 #include <vector>
@@ -42,3 +45,5 @@ public:
 }; // class sentence
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_SENTENCE_HPP

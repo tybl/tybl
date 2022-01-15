@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_LEDGER_HPP
-#define COCLES_LEDGER_LEDGER_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_LEDGER_HPP
+#define TYBL_COCLES_LEDGER_LEDGER_HPP
 
 #include <memory>
 #include <string>
@@ -37,4 +38,4 @@ std::istream& operator>>(std::istream& s, Ledger& l);
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_LEDGER_HPP
+#endif // TYBL_COCLES_LEDGER_LEDGER_HPP

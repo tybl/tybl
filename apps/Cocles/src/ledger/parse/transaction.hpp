@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_PARSE_TRANSACTION_HPP
-#define COCLES_LEDGER_PARSE_TRANSACTION_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_PARSE_TRANSACTION_HPP
+#define TYBL_COCLES_LEDGER_PARSE_TRANSACTION_HPP
 
 #include "adjustment.hpp"
 
@@ -45,4 +46,4 @@ ledger::parse::Transaction Parse(std::string const& input) {
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_PARSE_TRANSACTION_HPP
+#endif // TYBL_COCLES_LEDGER_PARSE_TRANSACTION_HPP

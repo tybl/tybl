@@ -1,4 +1,7 @@
+// License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_NMEA_PARSEERROR_HPP
+#define TYBL_NMEA_PARSEERROR_HPP
 
 #include "sentence.hpp"
 
@@ -24,3 +27,5 @@ public:
 }; // struct parse_error
 
 } // namespace nmea
+
+#endif // TYBL_NMEA_PARSEERROR_HPP

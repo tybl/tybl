@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef SENSORAGGREGATOR_COLLECT_SERVER_HPP
-#define SENSORAGGREGATOR_COLLECT_SERVER_HPP
+#pragma once
+#ifndef TYBL_SENSORAGGREGATOR_COLLECT_SERVER_HPP
+#define TYBL_SENSORAGGREGATOR_COLLECT_SERVER_HPP
 
 #include <boost/asio.hpp>
 
@@ -19,4 +20,4 @@ public:
 
 }; // class server
 
-#endif // SENSORAGGREGATOR_COLLECT_SERVER_HPP
+#endif // TYBL_SENSORAGGREGATOR_COLLECT_SERVER_HPP

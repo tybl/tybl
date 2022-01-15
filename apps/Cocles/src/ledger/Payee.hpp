@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_PAYEE_HPP
-#define COCLES_LEDGER_PAYEE_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_PAYEE_HPP
+#define TYBL_COCLES_LEDGER_PAYEE_HPP
 
 #include <memory>
 #include <string>
@@ -25,4 +26,4 @@ private:
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_PAYEE_HPP
+#endif // TYBL_COCLES_LEDGER_PAYEE_HPP

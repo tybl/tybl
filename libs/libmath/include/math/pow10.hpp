@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef MATH_POW10_HPP
-#define MATH_POW10_HPP
+#pragma once
+#ifndef TYBL_MATH_POW10_HPP
+#define TYBL_MATH_POW10_HPP
 
 #include <cstdint>
 
@@ -12,4 +13,4 @@ inline constexpr int64_t pow10(uint32_t exponent) {
 
 } // namespace tybl::math
 
-#endif // MATH_POW10_HPP
+#endif // TYBL_MATH_POW10_HPP

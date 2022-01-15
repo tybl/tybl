@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_EXTENDED_ADJUSTMENT_HPP
-#define COCLES_LEDGER_EXTENDED_ADJUSTMENT_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_EXTENDEDADJUSTMENT_HPP
+#define TYBL_COCLES_LEDGER_EXTENDEDADJUSTMENT_HPP
 
 #include "Account.hpp"
 #include "Payee.hpp"
@@ -30,4 +31,4 @@ private:
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_EXTENDED_ADJUSTMENT_HPP
+#endif // TYBL_COCLES_LEDGER_EXTENDEDADJUSTMENT_HPP

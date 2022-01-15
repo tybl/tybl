@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_TASKOGRE_TASKLIB_UTIL_UUID_HPP
+#define TYBL_TASKOGRE_TASKLIB_UTIL_UUID_HPP
 
 #include <compare>
 #include <string>
@@ -33,3 +35,5 @@ private:
 }; // struct Uuid
 
 } // namespace vodka::util
+
+#endif // TYBL_TASKOGRE_TASKLIB_UTIL_UUID_HPP

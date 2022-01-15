@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef GOON_WINDOW_HPP
-#define GOON_WINDOW_HPP
+#pragma once
+#ifndef TYBL_GOON_WINDOW_HPP
+#define TYBL_GOON_WINDOW_HPP
 
 #include <SDL2/SDL.h>
 
@@ -26,4 +27,4 @@ public:
       return SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
    }
 };
-#endif // GOON_WINDOW_HPP
+#endif // TYBL_GOON_WINDOW_HPP

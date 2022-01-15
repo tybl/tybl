@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef TBL_MATH_NEXTPOWEROFTWO_HPP
-#define TBL_MATH_NEXTPOWEROFTWO_HPP
+#pragma once
+#ifndef TYBL_MATH_NEXTPOWEROFTWO_HPP
+#define TYBL_MATH_NEXTPOWEROFTWO_HPP
 
 #include <cstddef>
 #include <limits>
@@ -24,4 +25,4 @@ bool next_power_of_two<bool>(bool /*number*/);
 
 } // namespace tybl::math
 
-#endif // TBL_MATH_NEXTPOWEROFTWO_HPP
+#endif // TYBL_MATH_NEXTPOWEROFTWO_HPP

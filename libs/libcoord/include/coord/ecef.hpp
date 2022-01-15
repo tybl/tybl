@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_COORD_ECEF_HPP
+#define TYBL_COORD_ECEF_HPP
 
 #include "lynel/basic_matrix.hpp"
 
@@ -26,3 +28,5 @@ public:
 }; // class ecef_t
 
 } // namespace tybl::coord
+
+#endif // TYBL_COORD_ECEF_HPP

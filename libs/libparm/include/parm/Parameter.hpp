@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef PARM_PARAMETER_HPP
-#define PARM_PARAMETER_HPP
+#pragma once
+#ifndef TYBL_PARM_PARAMETER_HPP
+#define TYBL_PARM_PARAMETER_HPP
 
 #include <numeric>
 #include <string>
@@ -37,4 +38,4 @@ private:
 
 } // namespace parm
 
-#endif // PARM_PARAMETER_HPP
+#endif // TYBL_PARM_PARAMETER_HPP

@@ -8,6 +8,7 @@
 // - Sum up amounts from each adjustment for a specific account
 // - Convert to a string for display
 ///////////////////////////////////////////////////////////////////////////////
+#pragma once
 #ifndef COCLES_LEDGER_MONEY_HPP
 #define COCLES_LEDGER_MONEY_HPP
 

@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 #include <SFML/Graphics.hpp>
 
 #include <chrono>

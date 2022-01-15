@@ -1,3 +1,4 @@
+// License: The Unlicense (https://unlicense.org)
 //#include "nmea/NumberConversionError.hpp"
 #include "nmea/parse_error.hpp"
 #include "nmea/Parser.hpp"

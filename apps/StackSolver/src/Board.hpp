@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef BOARD_HPP
-#define BOARD_HPP
+#pragma once
+#ifndef TYBL_STACKSOLVER_BOARD_HPP
+#define TYBL_STACKSOLVER_BOARD_HPP
 
 #include "edge.hpp"
 #include "i_node.hpp"
@@ -63,4 +64,4 @@ public:
 
 };
 
-#endif // BOARD_HPP
+#endif // TYBL_STACKSOLVER_BOARD_HPP
