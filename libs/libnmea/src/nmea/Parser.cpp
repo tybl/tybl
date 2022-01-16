@@ -271,9 +271,8 @@ void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
   if (dollar == std::string::npos) {
     // No dollar sign... INVALID!
     return;
-  } else {
-    startbyte = dollar;
   }
+  startbyte = dollar;
 
   // Get rid of data up to last'$'
   p_txt = p_txt.substr(startbyte + 1);
@@ -300,10 +299,10 @@ void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
       p_nmea.name = p_txt;
       p_nmea.m_is_valid = true;
       return;
-    } else {  //it is a '$' with no information
-      p_nmea.m_is_valid = false;
-      return;
     }
+    //it is a '$' with no information
+    p_nmea.m_is_valid = false;
+    return;
   }
 
   //"$," case - no name

@@ -66,12 +66,12 @@ template <typename RATIO>
 std::ostream& operator<<(std::ostream& p_out, const fixed_point_t<RATIO>& p_fp) {
    if /*constexpr*/ (RATIO::den == 1) {
       return p_out << p_fp.whole_number();
-   } else if /*constexpr*/ ((RATIO::den % 10) == 0) {
+   }
+   if /*constexpr*/ ((RATIO::den % 10) == 0) {
       // TODO(tybl): Set width of fractional component
       return p_out << p_fp.whole_number() << '.' << p_fp.fraction().m_numerator;
-   } else {
-      return p_out << p_fp.whole_number() << ' ' << p_fp.fraction().m_numerator << '/' << p_fp.fraction().m_denominator;
    }
+   return p_out << p_fp.whole_number() << ' ' << p_fp.fraction().m_numerator << '/' << p_fp.fraction().m_denominator;
 }
 
 } // namespace tybl::math

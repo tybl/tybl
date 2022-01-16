@@ -101,21 +101,19 @@ std::string fix::ordinal_direction(double p_deg, bool p_abbrev){
       "N"
     };
     return dirs[r];
-  } else {
-    std::string dirs[] = {
-      "North",
-      "North East",
-      "East",
-      "South East",
-      "South",
-      "South West",
-      "West",
-      "North West",
-      "North"
-    };
-    return dirs[r];
   }
-  
+  std::string dirs[] = {
+    "North",
+    "North East",
+    "East",
+    "South East",
+    "South",
+    "South West",
+    "West",
+    "North West",
+    "North"
+  };
+  return dirs[r];
 }
 
 std::string fix_status_to_string(char p_status){

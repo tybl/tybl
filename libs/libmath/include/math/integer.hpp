@@ -132,7 +132,8 @@ struct basic_unsigned_integer {
       if (size <= whole_shifts) {
          std::fill(mantissa.begin(), mantissa.end(), 0);
          return *this;
-      } else if (0 < whole_shifts/* < size*/) {
+      }
+      if (0 < whole_shifts/* < size*/) {
          std::copy(mantissa.crbegin() + static_cast<std::ptrdiff_t>(whole_shifts), mantissa.crend(), mantissa.rbegin());
          std::fill(mantissa.begin(), mantissa.begin() + static_cast<std::ptrdiff_t>(whole_shifts), 0);
       }

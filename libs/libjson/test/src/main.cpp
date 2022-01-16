@@ -138,32 +138,31 @@ struct token {
       size_t result = 1;
       if (p_in.empty()) {
          return 0;
-      } else {
-         switch (calculate_type(p_in)) {
-            case TokenType::NIL:
-            case TokenType::TRUE:
-               result = 4;
-               break;
-            case TokenType::FALSE:
-               result = 5;
-               break;
-            case TokenType::STRING:
-               // TODO(tblyons): Calculate string length
-               result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), str_re)->length());
-               break;
-            case TokenType::NUMBER:
-               // TODO(tblyons): Calculate number length
-               result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), num_re)->length());
-               break;
-            case TokenType::OBJECT_OPEN:
-            case TokenType::OBJECT_CLOSE:
-            case TokenType::ARRAY_OPEN:
-            case TokenType::ARRAY_CLOSE:
-            case TokenType::SEPARATOR:
-            case TokenType::DELIMITER:
-            case TokenType::UNKNOWN:
-            default: break; // default value of 1 is correct
-         }
+      }
+      switch (calculate_type(p_in)) {
+         case TokenType::NIL:
+         case TokenType::TRUE:
+            result = 4;
+            break;
+         case TokenType::FALSE:
+            result = 5;
+            break;
+         case TokenType::STRING:
+            // TODO(tblyons): Calculate string length
+            result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), str_re)->length());
+            break;
+         case TokenType::NUMBER:
+            // TODO(tblyons): Calculate number length
+            result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), num_re)->length());
+            break;
+         case TokenType::OBJECT_OPEN:
+         case TokenType::OBJECT_CLOSE:
+         case TokenType::ARRAY_OPEN:
+         case TokenType::ARRAY_CLOSE:
+         case TokenType::SEPARATOR:
+         case TokenType::DELIMITER:
+         case TokenType::UNKNOWN:
+         default: break; // default value of 1 is correct
       }
       return result;
    }
