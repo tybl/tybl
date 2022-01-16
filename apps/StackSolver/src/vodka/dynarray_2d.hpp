@@ -63,8 +63,8 @@ public:
     const_pointer last1_p = first1_p + m_cols * m_rows;
     const_pointer last2_p = first2_p + p_o.m_cols * p_o.m_rows;
     for (;(first1_p != last1_p) && (first2_p != last2_p); ++first1_p, ++first2_p) {
-      if (*first1_p < *first2_p) return true;
-      if (*first2_p < *first1_p) return false;
+      if (*first1_p < *first2_p) { return true; }
+      if (*first2_p < *first1_p) { return false; }
     }
     return (first1_p == last1_p) && (first2_p != last2_p);
   }

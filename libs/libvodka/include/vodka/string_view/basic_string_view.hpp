@@ -159,7 +159,7 @@ public:
 
   inline
   size_type copy(_CharT* p_str, size_type p_n, size_type p_pos = 0) const {
-    if (p_pos > size()) throw std::out_of_range("string_view::copy");
+    if (p_pos > size()) { throw std::out_of_range("string_view::copy"); }
     size_type __rlen = min(p_n, size() - p_pos);
     _Traits::copy(p_str, data() + p_pos, __rlen);
     return __rlen;
@@ -175,8 +175,9 @@ public:
   constexpr int compare(basic_string_view p_sv) const noexcept {
     size_type __rlen = min( size(), p_sv.size());
     int __retval = _Traits::compare(data(), p_sv.data(), __rlen);
-    if ( __retval == 0 ) // first __rlen chars matched
-      __retval = size() == p_sv.size() ? 0 : ( size() < p_sv.size() ? -1 : 1 );
+    if ( __retval == 0 ) { // first __rlen chars matched
+      __retval = size() == p_sv.size() ? 0 : (size() < p_sv.size() ? -1 : 1);
+    }
     return __retval;
   }
 
@@ -418,7 +419,7 @@ constexpr inline
 bool operator==(basic_string_view<_CharT, _Traits> p_lhs,
                 basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    if ( p_lhs.size() != p_rhs.size()) return false;
+    if ( p_lhs.size() != p_rhs.size()) { return false; }
     return p_lhs.compare(p_rhs) == 0;
 }
 
@@ -427,7 +428,7 @@ constexpr inline
 bool operator==(basic_string_view<_CharT, _Traits> p_lhs,
                 std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-    if ( p_lhs.size() != p_rhs.size()) return false;
+    if ( p_lhs.size() != p_rhs.size()) { return false; }
     return p_lhs.compare(p_rhs) == 0;
 }
 
@@ -436,7 +437,7 @@ constexpr inline
 bool operator==(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
                 basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    if ( p_lhs.size() != p_rhs.size()) return false;
+    if ( p_lhs.size() != p_rhs.size()) { return false; }
     return p_lhs.compare(p_rhs) == 0;
 }
 
@@ -446,8 +447,7 @@ template<class _CharT, class _Traits>
 constexpr inline
 bool operator!=(basic_string_view<_CharT, _Traits> p_lhs, basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-    if ( p_lhs.size() != p_rhs.size())
-        return true;
+    if ( p_lhs.size() != p_rhs.size()) { return true; }
     return p_lhs.compare(p_rhs) != 0;
 }
 
@@ -456,8 +456,7 @@ constexpr inline
 bool operator!=(basic_string_view<_CharT, _Traits> p_lhs,
                 std::common_type_t<basic_string_view<_CharT, _Traits>> p_rhs) noexcept
 {
-    if ( p_lhs.size() != p_rhs.size())
-        return true;
+    if ( p_lhs.size() != p_rhs.size()) { return true; }
     return p_lhs.compare(p_rhs) != 0;
 }
 
@@ -466,8 +465,7 @@ constexpr inline
 bool operator!=(std::common_type_t<basic_string_view<_CharT, _Traits>> p_lhs,
                 basic_string_view<_CharT, _Traits> p_rhs) noexcept
 {
-  if ( p_lhs.size() != p_rhs.size())
-    return true;
+  if ( p_lhs.size() != p_rhs.size()) { return true; }
   return p_lhs.compare(p_rhs) != 0;
 }
 

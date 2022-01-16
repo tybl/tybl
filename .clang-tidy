@@ -5,7 +5,7 @@
 # - 'llvm-header-guard': I like the concept of this check, but it vacillates between requiring full and relative paths
 # - 'llvmlibc-restrict-system-libc-headers': There's no need to restrict system headers
 #Checks:         '*,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-altera-unroll-loops,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-altera-struct-pack-align'
-Checks:           '-*,readability-identifier-naming'
+Checks:           '-*,readability-braces-around-statements,readability-identifier-naming'
 #WarningsAsErrors: ''
 #HeaderFilterRegex: '.*'
 HeaderFilterRegex: '\.hpp'

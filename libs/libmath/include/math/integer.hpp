@@ -61,7 +61,7 @@ struct basic_unsigned_integer {
       for (size_t i = 0; i < size && 0 != carry; ++i) {
          carry = add_at_index(i, carry);
       }
-      if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
+      if (0 != carry) { std::cerr << __LINE__ << ": carry: " << carry << std::endl; }
       return *this;
    }
    basic_unsigned_integer& operator+=(const basic_unsigned_integer& p_other) {
@@ -69,7 +69,7 @@ struct basic_unsigned_integer {
       for (size_t i = 0; i < size; ++i) {
          carry = add_at_index(i, static_cast<larger_uint>(carry + p_other.mantissa[i]));
       }
-      if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
+      if (0 != carry) { std::cerr << __LINE__ << ": carry: " << carry << std::endl; }
       return *this;
    }
    basic_unsigned_integer& operator-=(const basic_unsigned_integer& p_other) {
@@ -93,7 +93,7 @@ struct basic_unsigned_integer {
          }
          carry = overflow;
       }
-      if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
+      if (0 != carry) { std::cerr << __LINE__ << ": carry: " << carry << std::endl; }
       return *this;
    }
    basic_unsigned_integer& operator*=(const basic_unsigned_integer& p_other) {
@@ -104,7 +104,7 @@ struct basic_unsigned_integer {
             carry = add_at_index(i, carry);
          }
       }
-      if (0 != carry) std::cerr << __LINE__ << ": carry: " << carry << std::endl;
+      if (0 != carry) { std::cerr << __LINE__ << ": carry: " << carry << std::endl; }
       return *this;
    }
    basic_unsigned_integer& operator/=(const basic_unsigned_integer& /*other*/) {
