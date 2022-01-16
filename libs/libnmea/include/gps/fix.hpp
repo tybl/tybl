@@ -19,9 +19,6 @@ namespace gps {
 
 class fix {
   friend nmea::GPSService;
-
-private:
-
   bool m_has_lock;
   bool set_lock(bool p_b);    //returns true if lock status **changed***, false otherwise.
 

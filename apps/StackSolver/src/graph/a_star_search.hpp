@@ -13,7 +13,6 @@ struct a_star_search {
   using Iter = typename std::set<Node>::iterator;
   std::set<Node>    m_found;
   std::vector<Iter> m_work_queue;
-public:
 
   struct node_weight {
     bool operator () (Iter const& p_lhs, Iter const& p_rhs) {

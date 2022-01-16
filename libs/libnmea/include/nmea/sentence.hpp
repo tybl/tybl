@@ -12,7 +12,6 @@ class Parser;
 
 class sentence {
   friend Parser;
-private:
   bool m_is_valid;
 public:
   std::string text;      //whole plaintext of the received command
@@ -33,7 +32,6 @@ public:
     VTG = 5,    // notice missing 6,7
     ZDA = 8
   };
-public:
   sentence();
 
   virtual ~sentence();

@@ -19,14 +19,14 @@ struct shared_stats {
 }; // struct shared_stats
 
 struct Board
-  : public i_node {
+  : public i_node
+{
   std::vector<std::string> m_contents;
   size_t m_priority;
   std::shared_ptr<shared_stats> m_stats;
   size_t m_id;
   mutable Board const* m_parent;
   mutable size_t m_distance;
-public:
 
   Board(std::istream& p_input);
 
@@ -51,8 +51,6 @@ public:
   auto operator<(Board const& p_o) const -> bool;
 
   auto num_found() const -> size_t override;
-
-public:
 
   void apply(edge const& p_e);
   static auto count_suffix_matching(std::string const& p_s, char p_c) -> size_t;

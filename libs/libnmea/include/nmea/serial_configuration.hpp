@@ -27,7 +27,7 @@ struct serial_configuration : public command {
   int32_t databits;  //7, 8 Databits
   int32_t stopbits;  //0, 1 Stopbits
   int32_t parity;    //0=none, 1=odd, 2=even Parity
-public:
+
   serial_configuration()
     : command("PSRF100")
   {

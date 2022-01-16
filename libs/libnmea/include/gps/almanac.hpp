@@ -16,7 +16,6 @@ namespace gps {
 
 class almanac {
   friend nmea::GPSService;
-private:
   uint32_t m_visible_size;
   uint32_t m_total_pages;
   uint32_t m_processed_pages;

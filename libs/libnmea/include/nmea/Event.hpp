@@ -17,7 +17,6 @@ template <typename ... Args>
 class Event<void(Args...)>
 {
   friend EventHandler<void(Args...)>;
-private:
   // Typenames
   typedef typename std::list<EventHandler<void(Args...)>>::iterator ListIterator;
 
