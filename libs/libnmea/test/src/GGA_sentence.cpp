@@ -48,6 +48,30 @@ std::unique_ptr<sentence> parse_gga(std::istream& p_in) {
     throw std::runtime_error("Error: Failed to get NMEA GGA N/S Indicator");
   }
   std::cerr << __LINE__ << ": N/S Indicator: " << value << std::endl;
+  if (!std::getline(p_in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA Longitude");
+  }
+  std::cerr << __LINE__ << ": Longitude: " << value << std::endl;
+  if (!std::getline(p_in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA E/W Indicator");
+  }
+  std::cerr << __LINE__ << ": E/W Indicator: " << value << std::endl;
+  if (!std::getline(p_in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA Position Indicator");
+  }
+  std::cerr << __LINE__ << ": Position Indicator: " << value << std::endl;
+  if (!std::getline(p_in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA Satellites Used");
+  }
+  std::cerr << __LINE__ << ": Satellites Used: " << value << std::endl;
+  if (!std::getline(p_in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA Horizontal Dilution of Precision");
+  }
+  std::cerr << __LINE__ << ": Horizontal Dilution of Precision: " << value << std::endl;
+  if (!std::getline(p_in,value,',')) {
+    throw std::runtime_error("Error: Failed to get NMEA GGA MSL Altitude");
+  }
+  std::cerr << __LINE__ << ": MSL Altitude: " << value << std::endl;
   while (std::getline(p_in,value,',')) {
     std::cerr << __LINE__ << ": " << value << std::endl;
   }
