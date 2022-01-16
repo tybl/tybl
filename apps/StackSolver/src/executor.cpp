@@ -14,16 +14,16 @@ executor::executor(std::ifstream& p_file)
 
 auto executor::solve() -> i_node const* {
   while(!m_nodes.empty()) {
-    auto const* node = m_nodes.back();
+    auto const* node_p = m_nodes.back();
     m_nodes.pop_back();
-    if (node->is_solved()) {
-      return node;
+    if (node_p->is_solved()) {
+      return node_p;
     }
-    auto edges = node->generate_steps();
+    auto edges = node_p->generate_steps();
     for (auto edge : edges) {
-      auto const* n = *node + edge;
-      if (nullptr != n) {
-        m_nodes.push_back(n);
+      auto const* next_p = *node_p + edge;
+      if (nullptr != next_p) {
+        m_nodes.push_back(next_p);
       }
     }
     std::make_heap(m_nodes.begin(), m_nodes.end(), node_weight());

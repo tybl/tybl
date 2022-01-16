@@ -58,15 +58,15 @@ public:
   }
 
   bool operator<(dynarray_2d const& p_o) const {
-    const_pointer first1 = m_data.get();
-    const_pointer first2 = p_o.m_data.get();
-    const_pointer last1 = first1 + m_cols * m_rows;
-    const_pointer last2 = first2 + p_o.m_cols * p_o.m_rows;
-    for (;(first1 != last1) && (first2 != last2); ++first1, ++first2) {
-      if (*first1 < *first2) return true;
-      if (*first2 < *first1) return false;
+    const_pointer first1_p = m_data.get();
+    const_pointer first2_p = p_o.m_data.get();
+    const_pointer last1_p = first1_p + m_cols * m_rows;
+    const_pointer last2_p = first2_p + p_o.m_cols * p_o.m_rows;
+    for (;(first1_p != last1_p) && (first2_p != last2_p); ++first1_p, ++first2_p) {
+      if (*first1_p < *first2_p) return true;
+      if (*first2_p < *first1_p) return false;
     }
-    return (first1 == last1) && (first2 != last2);
+    return (first1_p == last1_p) && (first2_p != last2_p);
   }
 
   size_type cols() const { return m_cols; }
@@ -74,7 +74,7 @@ public:
   size_type rows() const { return m_rows; }
 
   std::span<const value_type> row(size_t p_r) const {
-    return std::span<const value_type>(m_data.get() + m_cols*p_r, m_cols);
+    return std::span<const value_type>(m_data.get() + (m_cols * p_r), m_cols);
   }
 
 }; // struct dynarray_2d

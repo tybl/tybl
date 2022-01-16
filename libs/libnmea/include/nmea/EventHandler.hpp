@@ -78,8 +78,9 @@ public:
   // Returns function pointer to the underlying function
   // or null if it's not a function but implements operator()
   CFunctionPointer* get_function_pointer(){
-    CFunctionPointer* ptr = m_handler.template target<CFunctionPointer>();
-    return ptr;
+    return m_handler.template target<CFunctionPointer>();
+    //CFunctionPointer* ptr = m_handler.template target<CFunctionPointer>();
+    //return ptr;
   }
 
 }; // class EventHandler

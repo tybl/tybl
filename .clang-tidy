@@ -11,10 +11,12 @@ Checks:           '-*,readability-identifier-naming'
 HeaderFilterRegex: '\.hpp'
 FormatStyle:     file
 CheckOptions:
-  - key:             readability-identifier-naming.FunctionCase
-    value:           'lower_case'
   - key:             readability-identifier-naming.ClassCase
     value:           'lower_case'
+  - key:             readability-identifier-naming.FunctionCase
+    value:           'lower_case'
+  - key:             readability-identifier-naming.LocalPointerSuffix
+    value:           '_p'
   - key:             readability-identifier-naming.MemberCase
     value:           'lower_case'
   - key:             readability-identifier-naming.ParameterCase
@@ -22,11 +24,9 @@ CheckOptions:
   - key:             readability-identifier-naming.ParameterPrefix
     value:           'p_'
   #- key:             readability-identifier-naming.PrivateMemberCase
-  #  value:           'lower_case'
   - key:             readability-identifier-naming.PrivateMemberPrefix
     value:           'm_'
   #- key:             readability-identifier-naming.AbstractClassCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.AbstractClassPrefix
   #- key:             readability-identifier-naming.AbstractClassSuffix
   #- key:             readability-identifier-naming.AbstractClassIgnoredRegexp
@@ -36,72 +36,57 @@ CheckOptions:
   #- key:             readability-identifier-naming.ClassIgnoredRegexp
   #- key:             readability-identifier-naming.ClassHungarianPrefix
   #- key:             readability-identifier-naming.ClassConstantCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.ClassConstantPrefix
-  #  value:           'S_'
   #- key:             readability-identifier-naming.ClassConstantSuffix
   #- key:             readability-identifier-naming.ClassConstantIgnoredRegexp
   #- key:             readability-identifier-naming.ClassConstantHungarianPrefix
   #- key:             readability-identifier-naming.ClassMemberCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.ClassMemberPrefix
-  #  value:           's_'
   #- key:             readability-identifier-naming.ClassMemberSuffix
   #- key:             readability-identifier-naming.ClassMemberIgnoredRegexp
   #- key:             readability-identifier-naming.ClassMemberHungarianPrefix
   #- key:             readability-identifier-naming.ClassMethodCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.ClassMethodPrefix
   #- key:             readability-identifier-naming.ClassMethodSuffix
   #- key:             readability-identifier-naming.ClassMethodIgnoredRegexp
   #- key:             readability-identifier-naming.ConstantCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.ConstantPrefix
   #- key:             readability-identifier-naming.ConstantSuffix
   #- key:             readability-identifier-naming.ConstantIgnoredRegexp
   #- key:             readability-identifier-naming.ConstantHungarianPrefix
   #- key:             readability-identifier-naming.ConstantMemberCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.ConstantMemberPrefix
   #- key:             readability-identifier-naming.ConstantMemberSuffix
   #- key:             readability-identifier-naming.ConstantMemberIgnoredRegexp
   #- key:             readability-identifier-naming.ConstantMemberHungarianPrefix
   #- key:             readability-identifier-naming.ConstantParameterCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.ConstantParameterPrefix
   #- key:             readability-identifier-naming.ConstantParameterSuffix
   #- key:             readability-identifier-naming.ConstantParameterIgnoredRegexp
   #- key:             readability-identifier-naming.ConstantParameterHungarianPrefix
   #- key:             readability-identifier-naming.ConstantPointerParameterCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.ConstantPointerParameterPrefix
   #- key:             readability-identifier-naming.ConstantPointerParameterSuffix
   #- key:             readability-identifier-naming.ConstantPointerParameterIgnoredRegexp
   #- key:             readability-identifier-naming.ConstantPointerParameterHungarianPrefix
   #- key:             readability-identifier-naming.ConstexprFunctionCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.ConstexprFunctionPrefix
   #- key:             readability-identifier-naming.ConstexprFunctionSuffix
   #- key:             readability-identifier-naming.ConstexprFunctionIgnoredRegexp
   #- key:             readability-identifier-naming.ConstexprMethodCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.ConstexprMethodPrefix
   #- key:             readability-identifier-naming.ConstexprMethodSuffix
   #- key:             readability-identifier-naming.ConstexprMethodIgnoredRegexp
   #- key:             readability-identifier-naming.ConstexprVariableCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.ConstexprVariablePrefix
   #- key:             readability-identifier-naming.ConstexprVariableSuffix
   #- key:             readability-identifier-naming.ConstexprVariableIgnoredRegexp
   #- key:             readability-identifier-naming.ConstexprVariableHungarianPrefix
   #- key:             readability-identifier-naming.EnumCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.EnumPrefix
   #- key:             readability-identifier-naming.EnumSuffix
-  #  value:           '_e'
   #- key:             readability-identifier-naming.EnumIgnoredRegexp
   #- key:             readability-identifier-naming.EnumConstantCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.EnumConstantPrefix
   #- key:             readability-identifier-naming.EnumConstantSuffix
   #- key:             readability-identifier-naming.EnumConstantIgnoredRegexp
@@ -120,7 +105,6 @@ CheckOptions:
   #- key:             readability-identifier-naming.GlobalConstantPointerIgnoredRegexp
   #- key:             readability-identifier-naming.GlobalConstantPointerHungarianPrefix
   #- key:             readability-identifier-naming.GlobalFunctionCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.GlobalFunctionPrefix
   #- key:             readability-identifier-naming.GlobalFunctionSuffix
   #- key:             readability-identifier-naming.GlobalFunctionIgnoredRegexp
@@ -135,14 +119,11 @@ CheckOptions:
   #- key:             readability-identifier-naming.GlobalVariableIgnoredRegexp
   #- key:             readability-identifier-naming.GlobalVariableHungarianPrefix
   #- key:             readability-identifier-naming.InlineNamespaceCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.InlineNamespacePrefix
   #- key:             readability-identifier-naming.InlineNamespaceSuffix
   #- key:             readability-identifier-naming.InlineNamespaceIgnoredRegexp
   #- key:             readability-identifier-naming.LocalConstantCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.LocalConstantPrefix
-  #  value:           'L_'
   #- key:             readability-identifier-naming.LocalConstantSuffix
   #- key:             readability-identifier-naming.LocalConstantIgnoredRegexp
   #- key:             readability-identifier-naming.LocalConstantHungarianPrefix
@@ -152,10 +133,7 @@ CheckOptions:
   #- key:             readability-identifier-naming.LocalConstantPointerIgnoredRegexp
   #- key:             readability-identifier-naming.LocalConstantPointerHungarianPrefix
   #- key:             readability-identifier-naming.LocalPointerCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.LocalPointerPrefix
-  #  value:           'p_'
-  #- key:             readability-identifier-naming.LocalPointerSuffix
   #- key:             readability-identifier-naming.LocalPointerIgnoredRegexp
   #- key:             readability-identifier-naming.LocalPointerHungarianPrefix
   #- key:             readability-identifier-naming.LocalVariableCase
@@ -172,12 +150,10 @@ CheckOptions:
   #- key:             readability-identifier-naming.MemberIgnoredRegexp
   #- key:             readability-identifier-naming.MemberHungarianPrefix
   #- key:             readability-identifier-naming.MethodCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.MethodPrefix
   #- key:             readability-identifier-naming.MethodSuffix
   #- key:             readability-identifier-naming.MethodIgnoredRegexp
   #- key:             readability-identifier-naming.NamespaceCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.NamespacePrefix
   #- key:             readability-identifier-naming.NamespaceSuffix
   #- key:             readability-identifier-naming.NamespaceIgnoredRegexp
@@ -223,7 +199,6 @@ CheckOptions:
   #- key:             readability-identifier-naming.ScopedEnumConstantSuffix
   #- key:             readability-identifier-naming.ScopedEnumConstantIgnoredRegexp
   #- key:             readability-identifier-naming.StaticConstantCase
-  #  value:           'UPPER_CASE'
   #- key:             readability-identifier-naming.StaticConstantPrefix
   #- key:             readability-identifier-naming.StaticConstantSuffix
   #- key:             readability-identifier-naming.StaticConstantIgnoredRegexp
@@ -234,7 +209,6 @@ CheckOptions:
   #- key:             readability-identifier-naming.StaticVariableIgnoredRegexp
   #- key:             readability-identifier-naming.StaticVariableHungarianPrefix
   #- key:             readability-identifier-naming.StructCase
-  #  value:           'CamelCase'
   #- key:             readability-identifier-naming.StructPrefix
   #- key:             readability-identifier-naming.StructSuffix
   #- key:             readability-identifier-naming.StructIgnoredRegexp
@@ -267,13 +241,11 @@ CheckOptions:
   #- key:             readability-identifier-naming.ValueTemplateParameterSuffix
   #- key:             readability-identifier-naming.ValueTemplateParameterIgnoredRegexp
   #- key:             readability-identifier-naming.VariableCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.VariablePrefix
   #- key:             readability-identifier-naming.VariableSuffix
   #- key:             readability-identifier-naming.VariableIgnoredRegexp
   #- key:             readability-identifier-naming.VariableHungarianPrefix
   #- key:             readability-identifier-naming.VirtualMethodCase
-  #  value:           'lower_case'
   #- key:             readability-identifier-naming.VirtualMethodPrefix
   #- key:             readability-identifier-naming.VirtualMethodSuffix
   #- key:             readability-identifier-naming.VirtualMethodIgnoredRegexp
