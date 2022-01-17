@@ -30,6 +30,5 @@ target_sources(stacksolve PRIVATE src/main.cpp)
 add_subdirectory(test)
 
 else()
-  message(STATUS "StackSolver requires std::range")
-  message(WARNING "Install gcc 10.1 or greater")
+  message("Note: Not building \"StackSolver\"; install gcc > v10.1 to enable")
 endif()

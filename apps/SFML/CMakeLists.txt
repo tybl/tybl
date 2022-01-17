@@ -11,6 +11,5 @@ if(SFML_FOUND)
   target_sources(sfml-app PRIVATE src/main.cpp)
 
 else()
-  message("Note: SFML not found; cannot build SFML.")
-  message("Install SFML if you want to build SFML.")
+  message("Note: Not building \"SFML\"; install SFML to enable")
 endif()

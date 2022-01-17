@@ -38,6 +38,5 @@ if(FLTK_FOUND)
   target_sources(glinput PRIVATE src/glinput.cpp)
   
 else()
-  message("Note: FLTK not found; cannot build LearnFLTK")
-  message("Install FLTK if you want to build LearnFLTK")
+  message("Note: Not building \"LearnFLTK\"; install FLTK to enable")
 endif()

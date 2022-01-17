@@ -2,7 +2,7 @@
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
 
-find_package(SFML 2.5 COMPONENTS graphics audio QUIET)
+find_package(SFML 2.5 COMPONENTS graphics QUIET)
 if(SFML_FOUND)
 
   add_executable(sfml_goon)
@@ -14,6 +14,7 @@ if(SFML_FOUND)
   )
 
 else()
+  message("Note: Not building \"SFML Goon\"; install SFML to enable")
 endif()
 
 find_package(SDL2 QUIET)
@@ -31,6 +32,5 @@ if(SDL2_FOUND)
   )
 
 else()
-  message(STATUS "Goon requires SDL2")
-  message(WARNING "Install SDL2")
+  message("Note: Not building \"SDL2 Goon\"; install SDL2 to enable")
 endif()
