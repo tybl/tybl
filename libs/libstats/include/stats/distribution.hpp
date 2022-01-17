@@ -21,13 +21,13 @@ class distribution {
 public:
 
   // TODO(tybl): Unintuitive use of operator+=, replace with regular function
-  constexpr auto operator+=(Type x) -> distribution& {
+  constexpr auto operator+=(Type p_x) -> distribution& {
     m_count += 1;
-    double delta = static_cast<double>(x) - m_mean;
+    double delta = static_cast<double>(p_x) - m_mean;
     m_mean += delta / static_cast<double>(m_count);
-    m_sum_of_squares += delta * (static_cast<double>(x) - m_mean);
-    m_maximum = std::max(x, m_maximum);
-    m_minimum = std::min(x, m_minimum);
+    m_sum_of_squares += delta * (static_cast<double>(p_x) - m_mean);
+    m_maximum = std::max(p_x, m_maximum);
+    m_minimum = std::min(p_x, m_minimum);
     return *this;
   }
 
@@ -85,11 +85,11 @@ class dist {
 
 public:
 
-  constexpr auto insert(Eigen::Matrix<double, N, 1> const& xs) -> void {
+  constexpr auto insert(Eigen::Matrix<double, N, 1> const& p_xs) -> void {
     m_count += 1;
-    vector_type deltas = xs - m_means;
+    vector_type deltas = p_xs - m_means;
     m_means += deltas / m_count;
-    matrix_type covar_deltas = (xs - m_means) * deltas.transpose() - m_covars;
+    matrix_type covar_deltas = (p_xs - m_means) * deltas.transpose() - m_covars;
     m_covars += covar_deltas / m_count;
   }
 
