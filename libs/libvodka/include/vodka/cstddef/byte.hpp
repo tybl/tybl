@@ -98,4 +98,4 @@ to_integer(byte b) noexcept -> _Integer {
 
 } // namespace tybl::vodka
 
-#define TYBL_VODKA_CSTDDEF_BYTE_HPP
+#endif // TYBL_VODKA_CSTDDEF_BYTE_HPP
