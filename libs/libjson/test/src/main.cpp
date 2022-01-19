@@ -168,8 +168,9 @@ struct token {
    }
 private:
    std::string_view m_value;
-};
+}; // struct token
 
+# if 0
 struct token_iterator {
 
   token_iterator(std::string_view p_in) : m_value(p_in) {}
@@ -189,9 +190,8 @@ struct token_iterator {
 
 private:
    std::string_view m_value;
-};
+}; // struct token_iterator
 
-#if 0
 struct Json {
    struct iterator {
       explicit iterator() {}
@@ -205,7 +205,7 @@ struct Json {
    iterator end() { return iterator(); }
 private:
    std::string m_value;
-};
+}; // struct Json
 #endif
 
 static std::vector<token> lex(std::string_view p_in) {
