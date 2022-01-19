@@ -1,11 +1,15 @@
 ---
 Language:                          Cpp
 BasedOnStyle:                      LLVM
+
+AllowShortCaseLabelsOnASingleLine: true
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations:   Yes
 BreakConstructorInitializers:      BeforeComma
 BreakInheritanceList:              BeforeComma
+ColumnLimit:                       120
 ConstructorInitializerIndentWidth: 2
+IndentCaseLabels:                  true
 PointerAlignment:                  Left
 SpacesInContainerLiterals:         false
 ...
