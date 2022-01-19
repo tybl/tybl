@@ -8,7 +8,7 @@
 #include <variant>
 #include <vector>
 
-namespace vodka::json {
+namespace tybl::json {
 
 struct value
   : public std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>>
@@ -18,6 +18,6 @@ struct value
    using Base::Base;
 };
 
-} // namespace vodka::json
+} // namespace tybl::json
 
 #endif // TYBL_JSON_VALUE_HPP
