@@ -10,8 +10,8 @@
 #include <string>
 
 struct Transaction {
-   std::string memo;
-   date::year_month_day date;
+  std::string memo;
+  date::year_month_day date;
 };
 
 using TransactionEntry = ledger::internal::EntryProxy<Transaction>;

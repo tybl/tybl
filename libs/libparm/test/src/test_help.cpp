@@ -16,16 +16,16 @@ TEST_CASE("test_help --help") {
 
   bool caught_exception = false;
   const std::string expected_help_msg =
-    "Usage: app [options]\n"
-    "\n"
-    "Optional arguments:\n"
-    "-h, --help     Print this message and exit\n"
-    "-v, --verbose  Enable verbose logging\n";
+      "Usage: app [options]\n"
+      "\n"
+      "Optional arguments:\n"
+      "-h, --help     Print this message and exit\n"
+      "-v, --verbose  Enable verbose logging\n";
   parm::Application app("app", "1.0.0");
 
   int argc = 2;
   SUBCASE("'-h' alone results in help message") {
-    const char* argv[] = { "app", "-h", nullptr };
+    const char* argv[] = {"app", "-h", nullptr};
     try {
       app.run(argc, argv);
     } catch (std::runtime_error& err) {
@@ -36,7 +36,7 @@ TEST_CASE("test_help --help") {
   } // SUBCASE
 
   SUBCASE("'--help' alone results in help message") {
-    const char* argv[] = { "app", "--help", nullptr };
+    const char* argv[] = {"app", "--help", nullptr};
     try {
       app.run(argc, argv);
     } catch (std::runtime_error& err) {

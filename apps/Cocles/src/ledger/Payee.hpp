@@ -10,18 +10,18 @@ namespace ledger {
 
 struct Payee {
 
-   Payee() = default;
+  Payee() = default;
 
-   explicit Payee(std::string name);
+  explicit Payee(std::string name);
 
-   [[nodiscard]] std::string const& name() const;
+  [[nodiscard]] std::string const& name() const;
 
-   [[nodiscard]] bool operator<(Payee const& other) const;
+  [[nodiscard]] bool operator<(Payee const& other) const;
 
-   [[nodiscard]] bool operator==(Payee const& other) const;
+  [[nodiscard]] bool operator==(Payee const& other) const;
 
 private:
-   std::string m_name;
+  std::string m_name;
 }; // struct Payee
 
 } // namespace ledger

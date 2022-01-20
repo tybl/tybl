@@ -10,15 +10,15 @@ namespace ledger {
 
 struct Adjustment {
 
-   Adjustment(Account account, util::Money amount);
+  Adjustment(Account account, util::Money amount);
 
-   [[nodiscard]] Account const& account() const;
+  [[nodiscard]] Account const& account() const;
 
-   [[nodiscard]] util::Money const& amount() const;
+  [[nodiscard]] util::Money const& amount() const;
 
 private:
-   Account     m_account;
-   util::Money m_amount;
+  Account m_account;
+  util::Money m_amount;
 }; // struct Adjustment
 
 } // namespace ledger

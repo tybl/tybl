@@ -4,8 +4,8 @@
 #define TYBL_NMEA_GPSSERVICE_HPP
 
 #include "gps/fix.hpp"
-#include "nmea/Parser.hpp"
 #include "nmea/Event.hpp"
+#include "nmea/Parser.hpp"
 
 #include <chrono>
 #include <functional>
@@ -15,13 +15,13 @@ namespace nmea {
 
 class GPSService {
   void read_psrf150(sentence const& p_nmea);
-  void read_gpgga  (sentence const& p_nmea);
-  void read_gpgsa  (sentence const& p_nmea);
-  void read_gpgsv  (sentence const& p_nmea);
-  void read_gprmc  (sentence const& p_nmea);
-  void read_gpvtg  (sentence const& p_nmea);
-public:
+  void read_gpgga(sentence const& p_nmea);
+  void read_gpgsa(sentence const& p_nmea);
+  void read_gpgsv(sentence const& p_nmea);
+  void read_gprmc(sentence const& p_nmea);
+  void read_gpvtg(sentence const& p_nmea);
 
+public:
   gps::fix fix;
 
   GPSService(Parser& p_parser);

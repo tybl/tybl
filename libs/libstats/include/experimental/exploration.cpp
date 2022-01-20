@@ -43,7 +43,7 @@ public:
 #endif
 
 auto main() -> int {
-  #if 0
+#if 0
   const std::array<std::valarray<double>, NUM_SAMPLES> input = {
     {{ 4.0, 2.0, 0.60 },
     { 4.2, 2.1, 0.59 },
@@ -74,12 +74,13 @@ auto main() -> int {
     }
     std::cout << " ]\n";
   }
-  #endif
+#endif
   for (int N = 1; N < 10; ++N) {
     for (int i = 0; i < N; ++i)
-      for (int j = 0; j < N; ++j) 
+      for (int j = 0; j < N; ++j)
         if (i <= j)
-          std::cout << "N: " << N << ", i: " << i << ", j: " << j << ", i * N - i + j = " << i * (N - i) + j << std::endl;
+          std::cout << "N: " << N << ", i: " << i << ", j: " << j << ", i * N - i + j = " << i * (N - i) + j
+                    << std::endl;
     std::cout << std::endl;
   }
 }
@@ -95,13 +96,13 @@ constexpr const size_t NUM_SAMPLES = 5;
 
 template <typename Type>
 class distribution {
-  std::size_t m_count     { 0UL };
-  double m_mean           { 0.0 };
-  double m_sum_of_squares { 0.0 };
-  Type m_maximum          { std::numeric_limits<Type>::lowest() };
-  Type m_minimum          { std::numeric_limits<Type>::max() };
-public:
+  std::size_t m_count{0UL};
+  double m_mean{0.0};
+  double m_sum_of_squares{0.0};
+  Type m_maximum{std::numeric_limits<Type>::lowest()};
+  Type m_minimum{std::numeric_limits<Type>::max()};
 
+public:
   constexpr auto operator+=(Type x) -> distribution& {
     m_count += 1;
     double delta = static_cast<double>(x) - m_mean;
@@ -112,25 +113,15 @@ public:
     return *this;
   }
 
-  [[nodiscard]] constexpr auto count() const -> std::size_t {
-    return m_count;
-  }
+  [[nodiscard]] constexpr auto count() const -> std::size_t { return m_count; }
 
-  [[nodiscard]] constexpr auto maximum() const -> Type {
-    return m_maximum;
-  }
+  [[nodiscard]] constexpr auto maximum() const -> Type { return m_maximum; }
 
-  [[nodiscard]] constexpr auto minimum() const -> Type {
-    return m_minimum;
-  }
+  [[nodiscard]] constexpr auto minimum() const -> Type { return m_minimum; }
 
-  [[nodiscard]] constexpr auto mean() const -> double {
-    return m_mean;
-  }
+  [[nodiscard]] constexpr auto mean() const -> double { return m_mean; }
 
-  [[nodiscard]] auto std_dev() const -> double {
-    return std::sqrt(variance());
-  }
+  [[nodiscard]] auto std_dev() const -> double { return std::sqrt(variance()); }
 
   [[nodiscard]] auto variance() const -> double {
     return (1 < m_count) ? (m_sum_of_squares / static_cast<double>(m_count - 1))
@@ -141,14 +132,14 @@ public:
 
 template <size_t N>
 class multivariate_distribution {
-  std::size_t m_count { 0UL };
-  std::array<double, N> m_means {};
-  std::array<std::array<double, N>, N> m_sums_of_squares {{}};
-public:
+  std::size_t m_count{0UL};
+  std::array<double, N> m_means{};
+  std::array<std::array<double, N>, N> m_sums_of_squares{{}};
 
-  auto operator+=(std::array<double,N> const& x) -> multivariate_distribution& {
+public:
+  auto operator+=(std::array<double, N> const& x) -> multivariate_distribution& {
     m_count += 1;
-    std::array<double, N> deltas {};
+    std::array<double, N> deltas{};
     for (size_t i = 0; i < N; ++i) {
       deltas.at(i) = x.at(i) - m_means.at(i);
       m_means.at(i) += deltas.at(i) / static_cast<double>(m_count);
@@ -161,12 +152,10 @@ public:
     return *this;
   }
 
-  [[nodiscard]] auto mean() const -> std::array<double,N> {
-    return m_means;
-  }
+  [[nodiscard]] auto mean() const -> std::array<double, N> { return m_means; }
 
-  [[nodiscard]] auto covariance() const -> std::array<std::array<double,N>, N> {
-    std::array<std::array<double,N>,N> result {};
+  [[nodiscard]] auto covariance() const -> std::array<std::array<double, N>, N> {
+    std::array<std::array<double, N>, N> result{};
     for (size_t i = 0; i < N; ++i) {
       for (size_t j = 0; j <= i; ++j) {
         result.at(j).at(i) += m_sums_of_squares.at(j).at(i) / static_cast<double>(m_count - 1);
@@ -177,15 +166,14 @@ public:
 
 }; // class multivariate_distribution
 
-
 auto main() -> int {
-  const std::array<std::array<double, NUM_VARS>, NUM_SAMPLES> input = { {
-    { 4.0, 2.0, 0.60 },
-    { 4.2, 2.1, 0.59 },
-    { 3.9, 2.0, 0.58 },
-    { 4.3, 2.1, 0.62 },
-    { 4.1, 2.2, 0.63 },
-  } };
+  const std::array<std::array<double, NUM_VARS>, NUM_SAMPLES> input = {{
+      {4.0, 2.0, 0.60},
+      {4.2, 2.1, 0.59},
+      {3.9, 2.0, 0.58},
+      {4.3, 2.1, 0.62},
+      {4.1, 2.2, 0.63},
+  }};
   std::array<distribution<double>, NUM_VARS> dists;
   for (auto const& r : input) {
     for (size_t i = 0; i < r.size(); ++i) {
@@ -193,7 +181,8 @@ auto main() -> int {
     }
   }
   for (auto const& d : dists) {
-    std::cout << "Mean: " << d.mean() << ", Variance: " << d.variance() << ", Max: " << d.maximum() << ", Min: " << d.minimum() << std::endl;
+    std::cout << "Mean: " << d.mean() << ", Variance: " << d.variance() << ", Max: " << d.maximum()
+              << ", Min: " << d.minimum() << std::endl;
   }
   std::array<std::array<double, NUM_VARS>, NUM_VARS> cov_m{};
   for (size_t i = 0; i < NUM_VARS; ++i) {

@@ -44,7 +44,9 @@ struct array {
     }
   }
 
-  constexpr void swap(array& p_a) noexcept(std::is_nothrow_swappable<value_type>::value) { std::swap_ranges(data(), data() + N, p_a.data()); }
+  constexpr void swap(array& p_a) noexcept(std::is_nothrow_swappable<value_type>::value) {
+    std::swap_ranges(data(), data() + N, p_a.data());
+  }
 
   // iterators:
   [[nodiscard]] constexpr auto begin() noexcept -> iterator { return iterator(data()); }

@@ -13,4 +13,3 @@ using bool_constant = integral_constant<bool, _Val>;
 } // namespace tybl::vodka
 
 #endif // TYBL_VODKA_TYPETRAITS_INTEGRALCONSTANT_HPP
-

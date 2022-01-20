@@ -9,15 +9,13 @@
 
 struct adjustment_t {
 
-   explicit adjustment_t(std::string input)
-      : m_value(std::move(input))
-   {
-   }
+  explicit adjustment_t(std::string input)
+    : m_value(std::move(input)) {}
 
 private:
-   std::string m_value;
-   std::string m_account;
-   util::Money m_amount;
+  std::string m_value;
+  std::string m_account;
+  util::Money m_amount;
 }; // struct adjustment_t
 
 #endif // TYBL_COCLES_LEDGER_PARSE_ADJUSTMENT_HPP

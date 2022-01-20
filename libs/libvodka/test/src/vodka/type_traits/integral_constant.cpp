@@ -3,10 +3,10 @@
 #include "vodka/type_traits/is_same.hpp"
 
 void integral_constant_test() {
-  using two_t  = tybl::vodka::integral_constant<int, 2>;
+  using two_t = tybl::vodka::integral_constant<int, 2>;
   using four_t = tybl::vodka::integral_constant<int, 4>;
 
-  static_assert(!tybl::vodka::is_same<two_t, four_t>::value, "two_t and four_t are not equal!"); 
+  static_assert(!tybl::vodka::is_same<two_t, four_t>::value, "two_t and four_t are not equal!");
 
   static_assert(two_t::value * 2 == four_t::value, "2*2 != 4");
 

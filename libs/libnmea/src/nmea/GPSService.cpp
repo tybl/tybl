@@ -4,8 +4,8 @@
 #include "gps/satellite.hpp"
 #include "nmea/parse_error.hpp"
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 namespace nmea {
 
@@ -14,7 +14,7 @@ namespace nmea {
 static double convert_lat_lon_to_deg(std::string p_llstr, std::string p_dir) {
 
   double pd = std::stod(p_llstr);
-  double deg = trunc(pd / 100);   //get ddd from dddmm.mmmm
+  double deg = trunc(pd / 100); // get ddd from dddmm.mmmm
   double mins = pd - deg * 100;
 
   deg = deg + mins / 60.0;
@@ -24,7 +24,7 @@ static double convert_lat_lon_to_deg(std::string p_llstr, std::string p_dir) {
     hdg = p_dir[0];
   }
 
-  //everything should be N/E, so flip S,W
+  // everything should be N/E, so flip S,W
   if (hdg == 'S' || hdg == 'W') {
     deg *= -1.0;
   }
@@ -32,14 +32,12 @@ static double convert_lat_lon_to_deg(std::string p_llstr, std::string p_dir) {
   return deg;
 }
 
-static double kts_to_kph(double p_knots) {
-  return p_knots * 1.852;
-}
+static double kts_to_kph(double p_knots) { return p_knots * 1.852; }
 
 // ------------- GPSSERVICE CLASS -------------
 
 GPSService::GPSService(Parser& p_parser) {
-  attach_to_parser(p_parser);    // attach to parser in the GPS object
+  attach_to_parser(p_parser); // attach to parser in the GPS object
 }
 
 GPSService::~GPSService() = default;
@@ -56,25 +54,12 @@ void GPSService::attach_to_parser(Parser& p_parser) {
   $GPZDA    - 1pps timing message
   $PSRF150  - gps module "ok to send"
   */
-  p_parser.set_sentence_handler("PSRF150", [this](const sentence& p_nmea) {
-    this->read_psrf150(p_nmea);
-  });
-  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) {
-    this->read_gpgga(p_nmea);
-  });
-  p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) {
-    this->read_gpgsa(p_nmea);
-  });
-  p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) {
-    this->read_gpgsv(p_nmea);
-  });
-  p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) {
-    this->read_gprmc(p_nmea);
-  });
-  p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) {
-    this->read_gpvtg(p_nmea);
-  });
-
+  p_parser.set_sentence_handler("PSRF150", [this](const sentence& p_nmea) { this->read_psrf150(p_nmea); });
+  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { this->read_gpgga(p_nmea); });
+  p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) { this->read_gpgsa(p_nmea); });
+  p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) { this->read_gpgsv(p_nmea); });
+  p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) { this->read_gprmc(p_nmea); });
+  p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { this->read_gpvtg(p_nmea); });
 }
 
 void GPSService::read_psrf150(sentence const& /*p_nmea*/) {
@@ -143,7 +128,6 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
       this->fix.longitude = convert_lat_lon_to_deg(sll, dir);
     }
 
-
     // FIX QUALITY
     bool lockupdate = false;
     fix.quality = static_cast<uint8_t>(std::stoul(p_nmea.parameters[5]));
@@ -151,13 +135,13 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
       lockupdate = this->fix.set_lock(false);
     } else if (this->fix.quality == 1) {
       lockupdate = this->fix.set_lock(true);
-    } else {}
-
+    } else {
+    }
 
     // TRACKING SATELLITES
     fix.tracking_satellites = std::stoi(p_nmea.parameters[6]);
     if (this->fix.visible_satellites < this->fix.tracking_satellites) {
-      this->fix.visible_satellites = this->fix.tracking_satellites;    // the visible count is in another sentence.
+      this->fix.visible_satellites = this->fix.tracking_satellites; // the visible count is in another sentence.
     }
 
     // ALTITUDE
@@ -167,7 +151,7 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
       // leave old value
     }
 
-    //calling m_handlers
+    // calling m_handlers
     if (lockupdate) {
       this->on_lock_state_changed(this->fix.m_has_lock);
     }
@@ -243,7 +227,7 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
     this->fix.vertical_dilution = vdop;
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 
-    //calling m_handlers
+    // calling m_handlers
     if (lockupdate) {
       std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
       this->on_lock_state_changed(this->fix.m_has_lock);
@@ -291,19 +275,19 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
     }
 
     // can't do this check because the length varies depending on satellites...
-    //if(nmea.parameters.size() < 18) {
+    // if(nmea.parameters.size() < 18) {
     //  throw parse_error("GPS data is missing parameters.");
     //}
 
     // VISIBLE SATELLITES
     fix.visible_satellites = std::stoi(p_nmea.parameters[2]);
     if (this->fix.tracking_satellites == 0) {
-      this->fix.visible_satellites = 0;      // if no satellites are tracking, then none are visible!
-    }                        // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
+      this->fix.visible_satellites = 0; // if no satellites are tracking, then none are visible!
+    }                                   // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
 
     uint32_t total_pages = static_cast<uint32_t>(std::stoul(p_nmea.parameters[0]));
 
-    //if this is the first page, then reset the almanac
+    // if this is the first page, then reset the almanac
     if (1 == std::stoul(p_nmea.parameters[1])) { // current page
       this->fix.almanac.clear();
     }
@@ -311,7 +295,7 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
     this->fix.almanac.m_total_pages = total_pages;
     this->fix.almanac.m_visible_size = static_cast<uint32_t>(this->fix.visible_satellites);
 
-    auto entriesInPage = (p_nmea.parameters.size() - 3) >> 2;  //first 3 are not satellite info
+    auto entriesInPage = (p_nmea.parameters.size() - 3) >> 2; // first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
     gps::satellite sat;
     for (unsigned long i = 0; i < entriesInPage; i++) {
@@ -328,12 +312,13 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
 
     this->fix.almanac.m_processed_pages++;
 
-    // 
+    //
     if (this->fix.visible_satellites == 0) {
       this->fix.almanac.clear();
     }
 
-    //cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " << this->fix.almanac.m_total_pages << endl;
+    // cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " <<
+    // this->fix.almanac.m_total_pages << endl;
     this->on_update();
 
   } catch (std::invalid_argument&) {
@@ -406,15 +391,14 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
     } else if (status == 'A') {
       lockupdate = this->fix.set_lock(true);
     } else {
-      lockupdate =
-          this->fix.set_lock(false);    //not A or V, so must be wrong... no lock
+      lockupdate = this->fix.set_lock(false); // not A or V, so must be wrong... no lock
     }
 
-    this->fix.speed = kts_to_kph(std::stod(p_nmea.parameters[6]));    // received as knots, convert to km/h
+    this->fix.speed = kts_to_kph(std::stod(p_nmea.parameters[6])); // received as knots, convert to km/h
     this->fix.travel_angle = std::stod(p_nmea.parameters[7]);
     fix.timestamp.set_date(std::stoi(p_nmea.parameters[8]));
 
-    //calling m_handlers
+    // calling m_handlers
     if (lockupdate) {
       this->on_lock_state_changed(this->fix.m_has_lock);
     }
@@ -453,7 +437,7 @@ void GPSService::read_gpvtg(sentence const& p_nmea) {
 
     // SPEED
     // if empty, is converted to 0
-    this->fix.speed = std::stod(p_nmea.parameters[6]);    //km/h
+    this->fix.speed = std::stod(p_nmea.parameters[6]); // km/h
 
     this->on_update();
   } catch (std::invalid_argument&) {

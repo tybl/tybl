@@ -10,6 +10,7 @@ namespace gps {
 
 class timestamp {
   std::string month_name(int32_t p_index);
+
 public:
   timestamp();
 

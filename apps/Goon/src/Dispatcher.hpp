@@ -8,16 +8,18 @@
 #include <vector>
 
 struct Dispatcher {
-   Dispatcher(void);
-   bool KeepRunning(void) const;
-   void ProcessEvents(void);
-   void AddKeyboardListener(std::function<void(SDL_Keycode)> func);
-   void AddWindowListener(std::function<void(SDL_WindowEvent)> func);
+  Dispatcher(void);
+  bool KeepRunning(void) const;
+  void ProcessEvents(void);
+  void AddKeyboardListener(std::function<void(SDL_Keycode)> func);
+  void AddWindowListener(std::function<void(SDL_WindowEvent)> func);
+
 private:
-   void OptOutEvents(void);
+  void OptOutEvents(void);
+
 private:
-   std::vector<std::function<void(SDL_Keycode)>> mKeyboardListeners;
-   std::vector<std::function<void(SDL_WindowEvent)>> mWindowListeners;
-   bool mKeepRunning;
+  std::vector<std::function<void(SDL_Keycode)>> mKeyboardListeners;
+  std::vector<std::function<void(SDL_WindowEvent)>> mWindowListeners;
+  bool mKeepRunning;
 };
 #endif // TYBL_GOON_DISPATCHER_HPP

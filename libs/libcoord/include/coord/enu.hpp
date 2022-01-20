@@ -11,8 +11,8 @@ class ecef_t;
 
 class enu_t {
   lynel::cvec3<double> m_enu;
-public:
 
+public:
   auto to_ecef(ecef_t const& p_ref_pos) const -> ecef_t;
 
   auto x() const -> double;

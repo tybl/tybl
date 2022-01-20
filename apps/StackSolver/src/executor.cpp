@@ -7,13 +7,12 @@
 #include <iostream>
 
 executor::executor(std::ifstream& p_file)
-  : m_root(std::make_unique<const Board>(p_file))
-{
+  : m_root(std::make_unique<const Board>(p_file)) {
   m_nodes.push_back(m_root.get());
 }
 
 auto executor::solve() -> i_node const* {
-  while(!m_nodes.empty()) {
+  while (!m_nodes.empty()) {
     auto const* node_p = m_nodes.back();
     m_nodes.pop_back();
     if (node_p->is_solved()) {

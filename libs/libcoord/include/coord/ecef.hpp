@@ -11,8 +11,8 @@ class lla_t;
 
 class ecef_t {
   lynel::cvec3<double> m_ecef;
-public:
 
+public:
   explicit ecef_t(lynel::cvec3<double> p_pos);
 
   operator lynel::cvec3<double>() const;

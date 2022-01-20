@@ -17,6 +17,7 @@ class command {
   std::string m_name;
   // TODO(tybl): Should the checksum be an unsigned char?
   uint8_t m_checksum;
+
 public:
   command();
 

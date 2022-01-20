@@ -13,15 +13,14 @@ typedef unsigned __int128 uint128_t;
 template <typename T>
 class vector_set {
   std::vector<T> m_data;
+
 public:
   vector_set() { m_data.reserve(226800); }
   size_t size() const { return m_data.size(); }
-  bool contains(T const& t) const {
-    return std::binary_search(m_data.begin(), m_data.end(), t);
-  }
+  bool contains(T const& t) const { return std::binary_search(m_data.begin(), m_data.end(), t); }
   void insert(T t) {
     auto i = std::upper_bound(m_data.begin(), m_data.end(), t);
-    m_data.insert(i,t);
+    m_data.insert(i, t);
     if (!std::is_sorted(m_data.begin(), m_data.end())) {
       std::cout << "Not sorted\n";
     }
@@ -39,20 +38,15 @@ public:
 class Node {
   std::vector<std::string> m_contents;
   size_t m_height;
+
 public:
+  size_t hex2uint(char c) const { return (c < 'A') ? c - '0' : c - 'A' + 0xA; }
 
-  size_t hex2uint(char c) const {
-    return (c < 'A') ? c - '0' : c - 'A' + 0xA;
-  }
-
-  char uint2hex(size_t i) const {
-    return (i < 9) ? '1' + i : 'A' + (i - 9);
-  }
+  char uint2hex(size_t i) const { return (i < 9) ? '1' + i : 'A' + (i - 9); }
 
   Node(size_t h, size_t n)
     : m_contents(n + 2)
-    , m_height(h)
-  {
+    , m_height(h) {
     for (size_t i = 0; i < n; ++i) {
       for (size_t j = 0; j < h; ++j) {
         m_contents.at(i).push_back(uint2hex(i));
@@ -62,16 +56,15 @@ public:
 
   Node(Node const& o)
     : m_contents(o.m_contents)
-    , m_height(o.m_height)
-  {}
+    , m_height(o.m_height) {}
 
   auto get_next(SET<Node>& found) const -> std::vector<Node> {
     std::vector<Node> result;
     for (uint8_t i = 0; i < static_cast<uint8_t>(m_contents.size()); ++i) {
       for (uint8_t j = 0; j < static_cast<uint8_t>(m_contents.size()); ++j) {
-        if (is_valid(i,j)) {
+        if (is_valid(i, j)) {
           Node newb(*this);
-          newb.apply(i,j);
+          newb.apply(i, j);
           if (!found.contains(newb)) {
             found.insert(newb);
             result.push_back(newb);
@@ -82,9 +75,7 @@ public:
     return result;
   }
 
-  auto operator<(Node const& o) const -> bool {
-    return m_contents < o.m_contents;
-  }
+  auto operator<(Node const& o) const -> bool { return m_contents < o.m_contents; }
 
   size_t encode() const {
     std::cerr << "Encoding " << m_contents.size() << " stacks of height " << m_height << "\n";
@@ -105,7 +96,8 @@ public:
       uint128_t prev = result;
       result *= m_height * colors.size();
       result += digit;
-      if (prev > result) std::cerr << "overflow\n";
+      if (prev > result)
+        std::cerr << "overflow\n";
     }
     return result;
   }
@@ -125,7 +117,6 @@ public:
   }
 
 private:
-
   void apply(uint8_t to, uint8_t from) {
     m_contents.at(to).push_back(m_contents.at(from).back());
     m_contents.at(from).pop_back();
@@ -138,15 +129,15 @@ private:
 
 size_t count_nodes(size_t height, size_t num_unique) {
   SET<Node> found(226800);
-  std::vector<Node> queue { Node(height, num_unique) };
+  std::vector<Node> queue{Node(height, num_unique)};
   found.insert(queue.back());
-  //queue.back().print();
-  //queue.back().encode();
+  // queue.back().print();
+  // queue.back().encode();
   do {
     Node curr = queue.back();
     queue.pop_back();
     auto next = curr.get_next(found);
-    //found.insert(next.begin(), next.end());
+    // found.insert(next.begin(), next.end());
     queue.insert(queue.end(), next.begin(), next.end());
   } while (queue.size());
   return found.size();
@@ -155,8 +146,8 @@ size_t count_nodes(size_t height, size_t num_unique) {
 auto main() -> int {
   for (size_t h = 1; h <= 3; ++h) {
     for (size_t n = 1; n <= 3; ++n) {
-      count_nodes(h,n);
-      std::cout << '(' << h << ',' << n << ") = " << count_nodes(h,n) << '\n';
+      count_nodes(h, n);
+      std::cout << '(' << h << ',' << n << ") = " << count_nodes(h, n) << '\n';
     }
   }
 }

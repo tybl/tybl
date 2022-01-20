@@ -21,8 +21,7 @@ struct matrix {
 
   Type m_array[Rows * Cols];
 
-  [[nodiscard]]
-  constexpr auto operator()(size_t p_i, size_t p_j) const -> const_reference {
+  [[nodiscard]] constexpr auto operator()(size_t p_i, size_t p_j) const -> const_reference {
     assert(p_i < Rows);
     assert(p_j < Cols);
     return m_array[p_i * Cols + p_j];
@@ -35,7 +34,9 @@ struct matrix {
   }
 
   auto operator*=(value_type p_s) -> matrix& {
-    for (auto& e : m_array) { e *= p_s; }
+    for (auto& e : m_array) {
+      e *= p_s;
+    }
     return *this;
   }
 
@@ -50,63 +51,61 @@ struct matrix {
 }; // class matrix
 
 template <typename Type, size_t Rows, size_t Cols>
-auto operator*(Type p_s, matrix<Type,Rows,Cols> const& p_m) -> matrix<Type,Rows,Cols>
-{
-  matrix<Type,Rows,Cols> result;
+auto operator*(Type p_s, matrix<Type, Rows, Cols> const& p_m) -> matrix<Type, Rows, Cols> {
+  matrix<Type, Rows, Cols> result;
   for (size_t r = 0; r < Rows; ++r) {
     for (size_t c = 0; c < Cols; ++c) {
-      result(r,c) = p_s * p_m(r,c);
+      result(r, c) = p_s * p_m(r, c);
     }
   }
   return result;
 }
 
 template <typename Type, size_t Rows, size_t Cols>
-auto add(matrix<Type,Rows,Cols> const& p_lhs, matrix<Type,Rows,Cols> const& p_rhs) -> matrix<Type,Rows,Cols>
-{
-  matrix<Type,Rows,Cols> result;
+auto add(matrix<Type, Rows, Cols> const& p_lhs, matrix<Type, Rows, Cols> const& p_rhs) -> matrix<Type, Rows, Cols> {
+  matrix<Type, Rows, Cols> result;
   for (size_t r = 0; r < Rows; ++r) {
     for (size_t c = 0; c < Cols; ++c) {
-      result(r,c) = p_lhs(r,c) + p_rhs(r,c);
+      result(r, c) = p_lhs(r, c) + p_rhs(r, c);
     }
   }
   return result;
 }
 
 template <typename Type, size_t Rows, size_t Cols>
-auto subtract(matrix<Type,Rows,Cols> const& p_lhs, matrix<Type,Rows,Cols> const& p_rhs) -> matrix<Type,Rows,Cols>
-{
-  matrix<Type,Rows,Cols> result;
+auto subtract(matrix<Type, Rows, Cols> const& p_lhs, matrix<Type, Rows, Cols> const& p_rhs)
+    -> matrix<Type, Rows, Cols> {
+  matrix<Type, Rows, Cols> result;
   for (size_t r = 0; r < Rows; ++r) {
     for (size_t c = 0; c < Cols; ++c) {
-      result(r,c) = p_lhs(r,c) - p_rhs(r,c);
+      result(r, c) = p_lhs(r, c) - p_rhs(r, c);
     }
   }
   return result;
 }
 
 template <typename Type, size_t Rows, size_t Middle, size_t Cols>
-auto multiply(matrix<Type,Rows,Middle> const& p_lhs, matrix<Type,Middle,Cols> const& p_rhs) -> matrix<Type,Rows,Cols>
-{
-  matrix<Type,Rows,Cols> result;
+auto multiply(matrix<Type, Rows, Middle> const& p_lhs, matrix<Type, Middle, Cols> const& p_rhs)
+    -> matrix<Type, Rows, Cols> {
+  matrix<Type, Rows, Cols> result;
   for (size_t r = 0; r < Rows; ++r) {
     for (size_t c = 0; c < Cols; ++c) {
       Type e = 0;
       for (size_t i = 0; i < Middle; ++i) {
-        e += p_lhs(r,i) * p_rhs(i,c);
+        e += p_lhs(r, i) * p_rhs(i, c);
       }
-      result(r,c) = e;
+      result(r, c) = e;
     }
   }
   return result;
 }
 
 template <typename Type, size_t Rows, size_t Cols>
-auto transpose(matrix<Type,Rows,Cols> const& p_m) -> matrix<Type,Cols,Rows> {
-  matrix<Type,Cols,Rows> result;
+auto transpose(matrix<Type, Rows, Cols> const& p_m) -> matrix<Type, Cols, Rows> {
+  matrix<Type, Cols, Rows> result;
   for (size_t i = 0; i < Rows; ++i) {
     for (size_t j = 0; j < Cols; ++j) {
-      result(j,i) = p_m(i,j);
+      result(j, i) = p_m(i, j);
     }
   }
   return result;

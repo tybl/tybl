@@ -33,15 +33,10 @@ value Description
 8 ZDA (if 1PPS output is supported)
 9 Not defined
 */
-struct query_rate
-  : public command
-{
+struct query_rate : public command {
   // data fields that will be stringed.
 
-  enum QueryRateMode {
-    SETRATE = 0,
-    QUERY = 1
-  };
+  enum QueryRateMode { SETRATE = 0, QUERY = 1 };
 
   sentence::MessageID message_id;
   QueryRateMode mode;
@@ -49,8 +44,7 @@ struct query_rate
   int checksum_enable;
 
   query_rate()
-    : command("PSRF103")
-  {
+    : command("PSRF103") {
     message_id = sentence::Unknown;
     mode = QueryRateMode::SETRATE;
     rate = 0;

@@ -18,9 +18,7 @@ struct shared_stats {
   size_t m_max_stack_height;
 }; // struct shared_stats
 
-struct Board
-  : public i_node
-{
+struct Board : public i_node {
   std::vector<std::string> m_contents;
   size_t m_priority;
   std::shared_ptr<shared_stats> m_stats;
@@ -38,7 +36,7 @@ struct Board
 
   auto generate_steps() const -> std::vector<edge> override;
 
-  auto operator + (edge const& p_e) const -> i_node const* override;
+  auto operator+(edge const& p_e) const -> i_node const* override;
 
   void print() const override;
 
@@ -59,7 +57,6 @@ struct Board
   bool is_full_and_homogeneous(std::string const& p_s) const;
   static auto is_homogeneous(std::string const& p_s) -> bool;
   bool is_valid(edge const& p_e) const;
-
 };
 
 #endif // TYBL_STACKSOLVER_BOARD_HPP

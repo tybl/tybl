@@ -10,20 +10,17 @@ namespace vodka::util {
 
 class uuid {
   std::string mValue;
-public:
 
+public:
   uuid();
 
   static auto Create() -> uuid;
 
-  [[nodiscard]] auto
-  operator<=>(uuid const&) const = default;
+  [[nodiscard]] auto operator<=>(uuid const&) const = default;
 
-  [[nodiscard]] auto
-  to_string() const -> std::string const&;
+  [[nodiscard]] auto to_string() const -> std::string const&;
 
 private:
-
   static constexpr const auto uuid_file = "/proc/sys/kernel/random/uuid";
 
   static constexpr const auto nil = "00000000-0000-0000-0000-000000000000";

@@ -11,8 +11,8 @@ class lla_t {
   double m_latitude;
   double m_longitude;
   double m_altitude;
-public:
 
+public:
   auto to_ecef() const -> ecef_t;
 
   auto latitude() const -> double;

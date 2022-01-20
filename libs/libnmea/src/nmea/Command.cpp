@@ -8,7 +8,8 @@ namespace nmea {
 
 command::command() = default;
 
-command::command(std::string p_name) : m_name(p_name) {}
+command::command(std::string p_name)
+  : m_name(p_name) {}
 
 command::~command() = default;
 
@@ -22,9 +23,10 @@ std::string command::add_checksum(std::string p_s) {
   std::stringstream ss;
   std::ios_base::fmtflags prev_flags = ss.flags();
 
-  ss << "$" << zz.str() << "*" << std::hex << std::uppercase << std::internal << std::setfill('0') << std::setw(2) << static_cast<int>(m_checksum) << "\r\n";
+  ss << "$" << zz.str() << "*" << std::hex << std::uppercase << std::internal << std::setfill('0') << std::setw(2)
+     << static_cast<int>(m_checksum) << "\r\n";
 
-  // TODO(tybl): Save and restoring flags indicates they affect more than 
+  // TODO(tybl): Save and restoring flags indicates they affect more than
   // just this temporary stringstream. Is that true?
   ss.flags(prev_flags);
   return ss.str();

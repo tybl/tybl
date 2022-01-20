@@ -9,8 +9,8 @@
 #include "TransactionEntry.hpp"
 
 struct Adjustment {
-   AccountEntry account;
-   TransactionEntry transaction;
+  AccountEntry account;
+  TransactionEntry transaction;
 };
 
 using AdjustmentEntry = ledger::internal::EntryProxy<Adjustment>;

@@ -2,4 +2,4 @@
 #include "vodka/span/span.hpp"
 
 // TODO(tybl): fix span class
-//template class span<int>;
+// template class span<int>;

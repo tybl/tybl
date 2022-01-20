@@ -18,41 +18,41 @@
 namespace util {
 
 struct Money {
-   using MoneyType = std::string;
+  using MoneyType = std::string;
 
-   Money();
+  Money();
 
-   explicit Money(MoneyType const& v);
+  explicit Money(MoneyType const& v);
 
-   explicit Money(int64_t v);
+  explicit Money(int64_t v);
 
-   // Comparison Operators
-   bool operator==(Money const& o) const;
-   bool operator!=(Money const& o) const;
-   bool operator<(Money const& o) const;
-   bool operator>(Money const& o) const;
-   bool operator<=(Money const& o) const;
-   bool operator>=(Money const& o) const;
+  // Comparison Operators
+  bool operator==(Money const& o) const;
+  bool operator!=(Money const& o) const;
+  bool operator<(Money const& o) const;
+  bool operator>(Money const& o) const;
+  bool operator<=(Money const& o) const;
+  bool operator>=(Money const& o) const;
 
-   // Arithmetic Operators
-   Money& operator+=(Money const& o);
-   Money& operator-=(Money const& o);
-   //Money& operator *= (Money const& o);
-   //Money& operator %= (Money const& o);
-   //Money& operator /= (Money const& o);
-   //Money& operator+=(int64_t o);
-   //Money& operator-=(int64_t o);
-   Money& operator*=(int64_t o);
-   Money& operator%=(int64_t o);
-   Money& operator/=(int64_t o);
+  // Arithmetic Operators
+  Money& operator+=(Money const& o);
+  Money& operator-=(Money const& o);
+  // Money& operator *= (Money const& o);
+  // Money& operator %= (Money const& o);
+  // Money& operator /= (Money const& o);
+  // Money& operator+=(int64_t o);
+  // Money& operator-=(int64_t o);
+  Money& operator*=(int64_t o);
+  Money& operator%=(int64_t o);
+  Money& operator/=(int64_t o);
 
-   [[nodiscard]] MoneyType get_money_type() const;
-   void set_money_type(MoneyType const& v);
+  [[nodiscard]] MoneyType get_money_type() const;
+  void set_money_type(MoneyType const& v);
 
-   friend void swap(Money& a, Money& b);
+  friend void swap(Money& a, Money& b);
 
 private:
-   int64_t m_value{0};
+  int64_t m_value{0};
 }; // struct Money
 
 Money operator+(Money a, Money const& b);

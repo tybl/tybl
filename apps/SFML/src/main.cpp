@@ -10,15 +10,10 @@ int main() {
 
   sf::RenderWindow window(sf::VideoMode(width, length), "SFML works!");
 
-  sf::Vector2f max(2859.0,7261.02);
-  std::vector<sf::Vertex> line = {
-    sf::Vertex(sf::Vector2f(0,0)),
-    sf::Vertex(max),
-    sf::Vertex(sf::Vector2f(0,max.y)),
-    sf::Vertex(sf::Vector2f(0,0)),
-    sf::Vertex(sf::Vector2f(max.x,0.0)),
-    sf::Vertex(max)
-  };
+  sf::Vector2f max(2859.0, 7261.02);
+  std::vector<sf::Vertex> line = {sf::Vertex(sf::Vector2f(0, 0)),       sf::Vertex(max),
+                                  sf::Vertex(sf::Vector2f(0, max.y)),   sf::Vertex(sf::Vector2f(0, 0)),
+                                  sf::Vertex(sf::Vector2f(max.x, 0.0)), sf::Vertex(max)};
 
   sf::View view(sf::Rect<float>(sf::Vector2f(-100.0, -100.0), sf::Vector2f(max.x + 200.0, max.y + 200.0)));
 
@@ -34,9 +29,7 @@ int main() {
     while (window.pollEvent(event)) {
 
       switch (event.type) {
-        case sf::Event::Closed:
-          window.close();
-          break;
+        case sf::Event::Closed: window.close(); break;
         case sf::Event::Resized:
         case sf::Event::LostFocus:
         case sf::Event::GainedFocus:
@@ -59,8 +52,7 @@ int main() {
         case sf::Event::TouchMoved:
         case sf::Event::TouchEnded:
         case sf::Event::SensorChanged:
-        default:
-          std::cerr << static_cast<int>(event.type) << "\n";
+        default: std::cerr << static_cast<int>(event.type) << "\n";
       }
       if (event.type == sf::Event::Closed) {
         window.close();
@@ -71,13 +63,14 @@ int main() {
     window.clear();
     window.setView(view);
     window.draw(line.data(), line.size(), sf::LineStrip);
-    
+
     window.display();
   } // while (window.isOpen())
 
   auto stop = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> delta = stop - start;
-  std::cout << "Open: " << open_count << ", Duration: " << delta.count() << ", FPS: " << open_count / delta.count() << std::endl;
+  std::cout << "Open: " << open_count << ", Duration: " << delta.count() << ", FPS: " << open_count / delta.count()
+            << std::endl;
 
   return 0;
 }

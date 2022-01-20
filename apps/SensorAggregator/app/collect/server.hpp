@@ -13,7 +13,6 @@ class server {
   std::array<char, 1024> m_data;
 
 public:
-
   server(boost::asio::io_service& io_service, uint16_t port);
 
   void do_receive();

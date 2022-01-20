@@ -9,10 +9,10 @@
 namespace gps {
 
 struct satellite {
-  double snr;      // 0-99 dB
-  uint32_t prn;    // id - 0-32
-  double elevation;  // 0-90 deg
-  double azimuth;    // 0-359 deg
+  double snr;       // 0-99 dB
+  uint32_t prn;     // id - 0-32
+  double elevation; // 0-90 deg
+  double azimuth;   // 0-359 deg
 
   satellite();
 

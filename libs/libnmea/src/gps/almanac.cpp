@@ -5,8 +5,7 @@ namespace gps {
 
 almanac::almanac()
   : m_total_pages(0)
-  , m_processed_pages(0)
-{}
+  , m_processed_pages(0) {}
 
 void almanac::clear() {
   m_total_pages = 0;
@@ -16,9 +15,7 @@ void almanac::clear() {
 }
 
 void almanac::update_satellite(gps::satellite p_sat) {
-  if (satellites.size() >
-      m_visible_size)
-  {  //we missed the new almanac start page, start over.
+  if (satellites.size() > m_visible_size) { // we missed the new almanac start page, start over.
     clear();
   }
 
@@ -37,13 +34,13 @@ double almanac::average_snr() {
 
   double avg = 0;
   double relevant = 0;
-  for (const auto& satellite : satellites){
+  for (const auto& satellite : satellites) {
     if (satellite.snr > 0) {
       relevant += 1.0;
     }
   }
 
-  for (const auto& satellite : satellites){
+  for (const auto& satellite : satellites) {
     if (satellite.snr > 0) {
       avg += satellite.snr / relevant;
     }

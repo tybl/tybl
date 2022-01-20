@@ -3,7 +3,8 @@
 
 namespace ledger {
 
-Account::Account(std::string name) : m_name(std::move(name)) { }
+Account::Account(std::string name)
+  : m_name(std::move(name)) {}
 
 std::string const& Account::name() const { return m_name; }
 

@@ -11,11 +11,11 @@ namespace tybl::graph {
 template <typename Node>
 struct a_star_search {
   using Iter = typename std::set<Node>::iterator;
-  std::set<Node>    m_found;
+  std::set<Node> m_found;
   std::vector<Iter> m_work_queue;
 
   struct node_weight {
-    bool operator () (Iter const& p_lhs, Iter const& p_rhs) {
+    bool operator()(Iter const& p_lhs, Iter const& p_rhs) {
       auto lp = p_lhs->priority();
       auto rp = p_rhs->priority();
       return (lp < rp) || (lp == rp && p_lhs->distance() > p_rhs->distance());
@@ -47,9 +47,7 @@ struct a_star_search {
     return m_found.end();
   }
 
-  std::set<Node> const& get_found_nodes() const {
-    return m_found;
-  }
+  std::set<Node> const& get_found_nodes() const { return m_found; }
 
 }; // struct a_star_search
 

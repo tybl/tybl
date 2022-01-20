@@ -10,11 +10,9 @@
 
 namespace nmea {
 
-struct parse_error
-  : public std::exception
-{
+struct parse_error : public std::exception {
   std::string message;
-//  sentence nmea;
+  //  sentence nmea;
   parse_error(std::string p_msg);
 
   parse_error(std::string p_msg, sentence p_n);

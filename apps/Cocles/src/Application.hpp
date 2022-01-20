@@ -9,20 +9,20 @@
 
 struct Application {
 
-   Application(std::vector<std::string> args, const char* envp[]);
+  Application(std::vector<std::string> args, const char* envp[]);
 
-   ~Application();
+  ~Application();
 
-   int run();
+  int run();
 
-   // Deleted functions
-   Application(Application const&) = delete;
-   Application(Application&&) = delete;
-   Application& operator=(Application) = delete;
-   Application& operator=(Application&&) = delete;
+  // Deleted functions
+  Application(Application const&) = delete;
+  Application(Application&&) = delete;
+  Application& operator=(Application) = delete;
+  Application& operator=(Application&&) = delete;
 
 private:
-   static std::atomic<bool> mInstanceExists;
+  static std::atomic<bool> mInstanceExists;
 }; // class Application
 
 #endif // TYBL_COCLES_APPLICATION_HPP

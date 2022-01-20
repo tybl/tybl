@@ -6,9 +6,8 @@ namespace ledger {
 // enum class AdjustmentStatus { UNKNOWN, PENDING, CLEARED, RECONCILED };
 
 Adjustment::Adjustment(Account account, util::Money amount)
-   : m_account(std::move(account))
-   , m_amount(amount)
-{ }
+  : m_account(std::move(account))
+  , m_amount(amount) {}
 
 Account const& Adjustment::account() const { return m_account; }
 

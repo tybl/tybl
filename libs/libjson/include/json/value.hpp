@@ -10,12 +10,10 @@
 
 namespace tybl::json {
 
-struct value
-  : public std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>>
-{
-   using Base = std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>>;
-   using Base::operator=;
-   using Base::Base;
+struct value : public std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>> {
+  using Base = std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>>;
+  using Base::operator=;
+  using Base::Base;
 };
 
 } // namespace tybl::json

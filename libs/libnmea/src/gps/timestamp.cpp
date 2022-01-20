@@ -28,28 +28,16 @@ std::string timestamp::month_name(int32_t p_index) {
     return ss.str();
   }
 
-  std::string names[] = {
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  };
+  std::string names[] = {"January", "February", "March",     "April",   "May",      "June",
+                         "July",    "August",   "September", "October", "November", "December"};
   return names[p_index - 1];
 }
 
 // Returns seconds since Jan 1, 1970. Classic Epoch time.
 time_t timestamp::get_time() {
   std::tm t{};
-  t.tm_year = year - 1900;  // This is year-1900, so 112 = 2012
-  t.tm_mon = month;      // month from 0:Jan
+  t.tm_year = year - 1900; // This is year-1900, so 112 = 2012
+  t.tm_mon = month;        // month from 0:Jan
   t.tm_mday = day;
   t.tm_hour = hour;
   t.tm_min = min;
@@ -65,11 +53,11 @@ void timestamp::set_time(double p_raw_ts) {
   sec = p_raw_ts - min * 100 - hour * 10000;
 }
 
-//ddmmyy
+// ddmmyy
 void timestamp::set_date(int32_t p_raw_date) {
   raw_date = p_raw_date;
   // If uninitialized, use posix time.
-  if(raw_date == 0) {
+  if (raw_date == 0) {
     month = 1;
     day = 1;
     year = 1970;
@@ -82,7 +70,8 @@ void timestamp::set_date(int32_t p_raw_date) {
 
 std::string timestamp::to_string() {
   std::stringstream ss;
-  ss << hour << "h " << min << "m " << sec << "s" << "  " << month_name(month) << " " << day << " " << year;
+  ss << hour << "h " << min << "m " << sec << "s"
+     << "  " << month_name(month) << " " << day << " " << year;
   return ss.str();
 }
 

@@ -14,26 +14,20 @@ namespace internal {
 template <typename TYPE>
 struct EntryProxy {
 
-   constexpr explicit EntryProxy(identifier_t<TYPE> id)
-      : m_id(std::move(id)) {}
+  constexpr explicit EntryProxy(identifier_t<TYPE> id)
+    : m_id(std::move(id)) {}
 
-   constexpr EntryProxy()
-      : m_id(0) {}
+  constexpr EntryProxy()
+    : m_id(0) {}
 
-   bool is_null() const {
-      return (0 == static_cast<size_t>(m_id));
-   }
+  bool is_null() const { return (0 == static_cast<size_t>(m_id)); }
 
-   identifier_t<TYPE> get_id() const {
-      return m_id;
-   }
+  identifier_t<TYPE> get_id() const { return m_id; }
 
-   bool operator==(const EntryProxy& other) const {
-      return (m_id == other.m_id);
-   }
+  bool operator==(const EntryProxy& other) const { return (m_id == other.m_id); }
 
 private:
-   identifier_t<TYPE> m_id;
+  identifier_t<TYPE> m_id;
 }; // struct EntryProxy
 
 } // namespace internal

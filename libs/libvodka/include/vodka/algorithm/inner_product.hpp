@@ -5,9 +5,9 @@
 
 namespace tybl::vodka {
 
-template<typename Iter1, typename Iter2, typename Type>
+template <typename Iter1, typename Iter2, typename Type>
 constexpr Type inner_product(Iter1 first1, Iter1 last1, Iter2 first2, Type init) {
-  for (;first1 != last1; ++first1, ++first2) {
+  for (; first1 != last1; ++first1, ++first2) {
     init = std::move(init) + *first1 * *first2;
   }
   return init;

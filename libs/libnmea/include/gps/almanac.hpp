@@ -9,7 +9,7 @@
 #include <vector>
 
 namespace nmea {
-  class GPSService;
+class GPSService;
 } // namespace nmea
 
 namespace gps {
@@ -19,12 +19,13 @@ class almanac {
   uint32_t m_visible_size;
   uint32_t m_total_pages;
   uint32_t m_processed_pages;
-  void clear();      //will remove all information from the satellites
+  void clear(); // will remove all information from the satellites
   void update_satellite(gps::satellite p_sat);
+
 public:
   almanac();
 
-  //mapped by prn
+  // mapped by prn
   std::vector<gps::satellite> satellites;
   double average_snr();
   double min_snr();

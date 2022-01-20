@@ -12,24 +12,17 @@ namespace tybl::stacksolve {
 class stack_state {
   vodka::dynarray_2d<char> m_contents;
   stack_state const* m_parent;
+
 public:
   stack_state(vodka::dynarray_2d<char>&& p_contents)
     : m_contents(std::move(p_contents))
-    , m_parent(nullptr)
-  {
-  }
+    , m_parent(nullptr) {}
 
-  auto distance_from_start() const -> size_t {
-    return (m_parent) ? (m_parent->distance_from_start() + 1) : 0;
-  }
+  auto distance_from_start() const -> size_t { return (m_parent) ? (m_parent->distance_from_start() + 1) : 0; }
 
-  auto priority() const -> size_t {
-    return distance_from_start() + distance_to_goal();
-  }
+  auto priority() const -> size_t { return distance_from_start() + distance_to_goal(); }
 
-  auto operator<(stack_state const& p_o) const -> bool {
-    return m_contents < p_o.m_contents;
-  }
+  auto operator<(stack_state const& p_o) const -> bool { return m_contents < p_o.m_contents; }
 
   auto distance_to_goal() const -> size_t {
     size_t result = 0;
@@ -53,13 +46,13 @@ public:
     return std::vector<stack_state>();
   }
 
-  bool is_empty(size_t p_row) const {
-    return '0' == m_contents(p_row,0);
-  }
+  bool is_empty(size_t p_row) const { return '0' == m_contents(p_row, 0); }
 
   bool is_full_and_homogeneous(std::span<const char> p_row) const {
     for (auto const c : p_row) {
-      if (p_row.front() != c) { return false; }
+      if (p_row.front() != c) {
+        return false;
+      }
     }
     return true;
   }

@@ -40,8 +40,8 @@ auto dcp001(Type p_k, Iter p_beg, Iter p_end) -> bool {
 }
 
 auto main() -> int {
-  std::vector<int> input = { 10, 15, 3, 7 };
+  std::vector<int> input = {10, 15, 3, 7};
   assert(dcp001(17, input.begin(), input.end()));
-  std::vector<int> test_input = { 10, 15, 3, 6 };
+  std::vector<int> test_input = {10, 15, 3, 6};
   assert(!dcp001(17, test_input.begin(), test_input.end()));
 }

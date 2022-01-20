@@ -13,16 +13,9 @@ struct integral_constant {
 
   static constexpr value_type value = V;
 
-  constexpr operator value_type() const noexcept {
-    return value;
-  }
+  constexpr operator value_type() const noexcept { return value; }
 
-  [[nodiscard]]
-  constexpr auto
-  operator()() const noexcept -> value_type {
-    return value;
-  }
-
+  [[nodiscard]] constexpr auto operator()() const noexcept -> value_type { return value; }
 };
 
 } // namespace tybl::vodka

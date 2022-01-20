@@ -1,9 +1,9 @@
 // License: The Unlicense (https://unlicense.org)
 #include <FL/Fl.H>
-#include <FL/Fl_Window.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Input.H>
+#include <FL/Fl_Window.H>
 
 const int window_height = 180;
 const int window_width = 290;
@@ -26,19 +26,16 @@ int inp_step = 0, dotted = 0;
 long double first_num = 0;
 
 char calc_op[2] = {0};
-Fl_Input *input;
+Fl_Input* input;
 
-
-void ac_b_click()
-{
+void ac_b_click() {
   input->value("0");
   inp_step = 0;
   dotted = 0;
   calc_op[0] = 0;
 }
 
-int eq_b_click()
-{
+int eq_b_click() {
   if (inp_step == 0) {
     return 0;
   }
@@ -61,8 +58,7 @@ int eq_b_click()
         result = first_num / second_num;
       }
       break;
-    default:
-      return 0;
+    default: return 0;
   }
   if (other_div == 0) {
     char bufer[128];
@@ -85,8 +81,7 @@ int eq_b_click()
   return 1;
 }
 
-int num_b_click(Fl_Button *button, void* = 0)
-{
+int num_b_click(Fl_Button* button, void* = 0) {
   if (inp_step == 0 || inp_step == 2 || strcmp(input->value(), "0") == 0) {
     input->value("");
     inp_step++;
@@ -99,8 +94,7 @@ int num_b_click(Fl_Button *button, void* = 0)
   return 1;
 }
 
-void do_b_click(Fl_Button *button, void* = 0)
-{
+void do_b_click(Fl_Button* button, void* = 0) {
   if (inp_step == 3) {
     eq_b_click();
   }
@@ -110,8 +104,7 @@ void do_b_click(Fl_Button *button, void* = 0)
   dotted = 0;
 }
 
-void dot_b_click(Fl_Button*, void* = 0)
-{
+void dot_b_click(Fl_Button*, void* = 0) {
   if (inp_step == 0 || inp_step == 2) {
     input->value("0.");
     dotted = 1;
@@ -127,10 +120,9 @@ void dot_b_click(Fl_Button*, void* = 0)
   }
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char** argv) {
   // Make the app window
-  Fl_Window *window = new Fl_Window(window_width, window_height);
+  Fl_Window* window = new Fl_Window(window_width, window_height);
   // Give the window a name.
   // TODO: Can't we create the window object and give it a name at the same time?
   window->label("Calculator");
@@ -139,12 +131,12 @@ int main(int argc, char **argv)
   int button_y = b_y;
 
   // Create button for the decimal place
-  Fl_Button *button_dot = new Fl_Button(button_x + b_num_width + b_padding, button_y, b_num_width, b_num_height, ".");
+  Fl_Button* button_dot = new Fl_Button(button_x + b_num_width + b_padding, button_y, b_num_width, b_num_height, ".");
   button_dot->callback((Fl_Callback*)dot_b_click);
   button_dot->box(FL_GTK_UP_BOX);
 
   // create digit button
-  Fl_Button *num_b[10];
+  Fl_Button* num_b[10];
   char labels[10][2] = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
   for (int i = 0, k = 0; i < 10; i++) {
     if (i > 1) {
@@ -162,7 +154,7 @@ int main(int argc, char **argv)
   }
 
   // create doing button
-  Fl_Button *do_b[4];
+  Fl_Button* do_b[4];
   button_x += b_padding + b_num_width;
   button_y = b_y;
   for (int i = 0; i < 4; i++) {
@@ -181,16 +173,15 @@ int main(int argc, char **argv)
   button_x += b_padding + b_num_width;
 
   button_y += b_num_height + b_padding;
-  Fl_Button *button_ac = new Fl_Button(button_x, button_y, b_eq_width, b_eq_height, "AC");
+  Fl_Button* button_ac = new Fl_Button(button_x, button_y, b_eq_width, b_eq_height, "AC");
   button_ac->callback((Fl_Callback*)ac_b_click);
   button_ac->box(FL_GTK_UP_BOX);
 
   // create eq button
   button_y += b_eq_height + b_padding;
-  Fl_Button *button_eq = new Fl_Button(button_x, button_y, b_eq_width, b_eq_height, "=");
+  Fl_Button* button_eq = new Fl_Button(button_x, button_y, b_eq_width, b_eq_height, "=");
   button_eq->callback((Fl_Callback*)eq_b_click);
   button_eq->box(FL_GTK_UP_BOX);
-
 
   // create input
   input = new Fl_Input(input_x, input_y, window_width - (input_x * 2), input_height);
@@ -198,7 +189,6 @@ int main(int argc, char **argv)
   input->textsize(18);
   input->readonly(1);
   input->value("0");
-
 
   window->end();
   window->show(argc, argv);

@@ -8,7 +8,9 @@ namespace tybl::vodka {
 template <typename Iter, typename Pred>
 constexpr Iter find_if_not(Iter first, Iter last, Pred p) {
   for (; first != last; ++first) {
-    if (!p(*first)) { return first; }
+    if (!p(*first)) {
+      return first;
+    }
   }
   return last;
 } // find_if_not()

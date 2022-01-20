@@ -13,16 +13,10 @@ auto lla_t::to_ecef() const -> ecef_t {
   throw std::runtime_error(__func__); // NOLINT`
 }
 
-auto lla_t::latitude() const -> double {
-  return m_latitude;
-}
+auto lla_t::latitude() const -> double { return m_latitude; }
 
-auto lla_t::longitude() const -> double {
-  return m_longitude;
-}
+auto lla_t::longitude() const -> double { return m_longitude; }
 
-auto lla_t::altitude() const -> double {
-  return m_altitude;
-}
+auto lla_t::altitude() const -> double { return m_altitude; }
 
 } // namespace tybl::coord

@@ -10,15 +10,15 @@
 #include <chrono>
 
 namespace ledger {
-   struct event_t {
-      std::chrono::system_clock::time_point timestamp;
-      enum { INSERT, MODIFY, REMOVE } event;
-      enum { ACCOUNT, ADJUSTMENT, TRANSACTION } type;
-      union {
-         account_t account;
-         adjustment_t adjustment;
-         transaction_t transaction;
-      };
-   };
-}
+struct event_t {
+  std::chrono::system_clock::time_point timestamp;
+  enum { INSERT, MODIFY, REMOVE } event;
+  enum { ACCOUNT, ADJUSTMENT, TRANSACTION } type;
+  union {
+    account_t account;
+    adjustment_t adjustment;
+    transaction_t transaction;
+  };
+};
+} // namespace ledger
 #endif // COCLES_LEDGER_EVENT_HPP

@@ -10,8 +10,8 @@
 #include <string>
 
 struct Account {
-   std::string name;
-   AccountTypeEntry type;
+  std::string name;
+  AccountTypeEntry type;
 };
 
 using AccountEntry = ledger::internal::EntryProxy<Account>;

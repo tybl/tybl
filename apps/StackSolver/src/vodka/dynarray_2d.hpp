@@ -4,7 +4,7 @@
 #define TYBL_VODKA_DYNARRAY2D_HPP
 
 #include <cstring> // memcpy
-#include <memory> // std::unique_ptr
+#include <memory>  // std::unique_ptr
 #include <span>
 
 namespace tybl::vodka {
@@ -24,47 +24,43 @@ private:
   std::unique_ptr<value_type[]> m_data;
   size_type m_rows;
   size_type m_cols;
+
 public:
   dynarray_2d(size_t p_r, size_t p_c)
-    : m_data((0 < p_c && 0 < p_r) ? (std::make_unique<value_type[]>(p_c*p_r)) : nullptr)
+    : m_data((0 < p_c && 0 < p_r) ? (std::make_unique<value_type[]>(p_c * p_r)) : nullptr)
     , m_rows(p_r)
-    , m_cols(p_c)
-  {
-  }
+    , m_cols(p_c) {}
 
   dynarray_2d(dynarray_2d&& p_o)
     : m_data(std::move(p_o.m_data))
     , m_rows(p_o.m_rows)
-    , m_cols(p_o.m_cols)
-  {
-  }
+    , m_cols(p_o.m_cols) {}
 
   dynarray_2d(dynarray_2d const& p_o)
-    : m_data(p_o.m_data ? std::make_unique<value_type[]>(p_o.m_cols*p_o.m_rows) : nullptr)
+    : m_data(p_o.m_data ? std::make_unique<value_type[]>(p_o.m_cols * p_o.m_rows) : nullptr)
     , m_rows(p_o.m_rows)
-    , m_cols(p_o.m_cols)
-  {
-    memcpy(m_data.get(), p_o.m_data.get(), m_cols*m_rows);
+    , m_cols(p_o.m_cols) {
+    memcpy(m_data.get(), p_o.m_data.get(), m_cols * m_rows);
   }
 
   ~dynarray_2d() = default;
 
-  const_reference operator()(size_t p_r, size_t p_c) const {
-    return m_data[m_cols*p_r + p_c];
-  }
+  const_reference operator()(size_t p_r, size_t p_c) const { return m_data[m_cols * p_r + p_c]; }
 
-  reference operator()(size_t p_r, size_t p_c) {
-    return m_data[m_cols*p_r + p_c];
-  }
+  reference operator()(size_t p_r, size_t p_c) { return m_data[m_cols * p_r + p_c]; }
 
   bool operator<(dynarray_2d const& p_o) const {
     const_pointer first1_p = m_data.get();
     const_pointer first2_p = p_o.m_data.get();
     const_pointer last1_p = first1_p + m_cols * m_rows;
     const_pointer last2_p = first2_p + p_o.m_cols * p_o.m_rows;
-    for (;(first1_p != last1_p) && (first2_p != last2_p); ++first1_p, ++first2_p) {
-      if (*first1_p < *first2_p) { return true; }
-      if (*first2_p < *first1_p) { return false; }
+    for (; (first1_p != last1_p) && (first2_p != last2_p); ++first1_p, ++first2_p) {
+      if (*first1_p < *first2_p) {
+        return true;
+      }
+      if (*first2_p < *first1_p) {
+        return false;
+      }
     }
     return (first1_p == last1_p) && (first2_p != last2_p);
   }

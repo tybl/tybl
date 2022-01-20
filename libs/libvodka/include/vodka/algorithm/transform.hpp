@@ -5,9 +5,9 @@
 
 namespace tybl::vodka {
 
-template<typename InIt1, class InIt2, class OutIt, class BinaryOp>
+template <typename InIt1, class InIt2, class OutIt, class BinaryOp>
 constexpr OutIt transform(InIt1 aBeg, InIt1 aEnd, InIt2 bBeg, OutIt dest, BinaryOp biOp) {
-  for (;aBeg != aEnd; ++aBeg, ++bBeg, ++dest) {
+  for (; aBeg != aEnd; ++aBeg, ++bBeg, ++dest) {
     *dest = biOp(*aBeg, *bBeg);
   }
   return dest;

@@ -5,7 +5,8 @@
 
 namespace ledger {
 
-Payee::Payee(std::string name) : m_name(std::move(name)) { }
+Payee::Payee(std::string name)
+  : m_name(std::move(name)) {}
 
 std::string const& Payee::name() const { return m_name; }
 
