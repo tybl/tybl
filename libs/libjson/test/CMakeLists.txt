@@ -3,7 +3,7 @@
 ################################################################################
 
 add_executable(json_t)
-target_link_libraries(json_t PRIVATE compiler_settings json test_base)
+target_link_libraries(json_t PRIVATE compiler_settings json test_base vodka)
 target_sources(json_t
   PRIVATE
     src/main.cpp

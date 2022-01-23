@@ -2,6 +2,8 @@
 #include "json/value.hpp"
 //#include "vodka/util/parse_error.hpp"   // for parse_error
 
+#include "vodka/parse_error.hpp"
+
 #include <cassert>
 #include <iostream>
 #include <regex>
@@ -271,7 +273,7 @@ static std::vector<token> lex(std::string_view p_in) {
         break;
       default:
         printf("not sure what to do with: '%c'\n", p_in.front());
-        throw std::runtime_error("Error: Encountered unexpected character while lexing JSON");
+        throw tybl::vodka::parse_error("Error: Encountered unexpected character while lexing JSON");
     }
   }
   return result;
@@ -302,7 +304,7 @@ std::string_view parse_literal(std::string_view& p_in) {
   static constexpr std::string_view prefix = LITERAL;
   auto result = p_in.substr(0, prefix.length());
   if (prefix != result) {
-    throw std::runtime_error("Error: Expected to find JSON literal '{}'");
+    throw tybl::vodka::parse_error("Error: Expected to find JSON literal '{}'");
   }
   p_in.remove_prefix(prefix.length());
   printf(LITERAL);
@@ -313,7 +315,7 @@ static std::string_view parse_number(std::string_view& p_in) {
   static std::regex re("^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
   auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
   if (!rei->ready() || rei->empty() || rei->position() != 0) {
-    throw std::runtime_error("Error: Expected JSON Number");
+    throw tybl::vodka::parse_error("Error: Expected JSON Number");
   }
   auto len = static_cast<size_t>(rei->length());
   std::string_view result(p_in.data(), len);
@@ -324,35 +326,35 @@ static std::string_view parse_number(std::string_view& p_in) {
 
 static std::string_view parse_string(std::string_view& p_in) {
   if (!parse_character<'"'>(p_in)) {
-    throw std::runtime_error("Error: JSON String not found");
+    throw tybl::vodka::parse_error("Error: JSON String not found");
   }
   size_t i = 0;
   for (; (i < p_in.size()) && ('"' != p_in[i]); ++i) {
     if (is_in_range<char, 0x0, 0x19>(p_in[i])) {
-      throw std::runtime_error("Error: String includes unescaped character in the range 0000 . 0019");
+      throw tybl::vodka::parse_error("Error: String includes unescaped character in the range 0000 . 0019");
     }
     if ('\\' == p_in[i]) {
       if (i + 1 >= p_in.size()) {
-        throw std::runtime_error("Error: Not enough hexadecimal characters after escape");
+        throw tybl::vodka::parse_error("Error: Not enough hexadecimal characters after escape");
       }
       ++i;
       if (('"' != p_in[i]) && ('\\' != p_in[i]) && ('/' != p_in[i]) && ('b' != p_in[i]) && ('f' != p_in[i]) &&
           ('n' != p_in[i]) && ('r' != p_in[i]) && ('t' != p_in[i]) && ('u' != p_in[i])) {
-        throw std::runtime_error("Error: Unexpected escaped character");
+        throw tybl::vodka::parse_error("Error: Unexpected escaped character");
       }
       if ('u' == p_in[i]) {
         if (i + 4 >= p_in.size()) {
-          throw std::runtime_error("Error: Not enough hexadecimal characters in escaped 'u'");
+          throw tybl::vodka::parse_error("Error: Not enough hexadecimal characters in escaped 'u'");
         }
         if (!is_hex(p_in[i + 1]) || !is_hex(p_in[i + 2]) || !is_hex(p_in[i + 3]) || !is_hex(p_in[i + 4])) {
-          throw std::runtime_error("Error: Non-hexadecimal characters in escaped 'u'");
+          throw tybl::vodka::parse_error("Error: Non-hexadecimal characters in escaped 'u'");
         }
         i += 4;
       }
     }
   }
   if (p_in.size() == i) {
-    throw std::runtime_error("Error: JSON input ended before string was closed");
+    throw tybl::vodka::parse_error("Error: JSON input ended before string was closed");
   }
   auto result = p_in.substr(0, i);
   p_in.remove_prefix(i + 1);
@@ -363,7 +365,7 @@ static std::string_view parse_string(std::string_view& p_in) {
 // Recursive
 static std::vector<tybl::json::value> parse_array(std::string_view& p_in) {
   if (!parse_character<'['>(p_in)) {
-    throw std::runtime_error("Error: JSON Array not found");
+    throw tybl::vodka::parse_error("Error: JSON Array not found");
   }
   printf("[");
   std::vector<tybl::json::value> result;
@@ -377,7 +379,7 @@ static std::vector<tybl::json::value> parse_array(std::string_view& p_in) {
     }
   }
   if (!parse_character<']'>(p_in)) {
-    throw std::runtime_error("Error: Encountered unexpected character while parsing JSON Array");
+    throw tybl::vodka::parse_error("Error: Encountered unexpected character while parsing JSON Array");
   }
   printf("]");
   return result;
@@ -386,7 +388,7 @@ static std::vector<tybl::json::value> parse_array(std::string_view& p_in) {
 // Recursive
 static std::map<std::string_view, tybl::json::value> parse_object(std::string_view& p_in) {
   if (!parse_character<'{'>(p_in)) {
-    throw std::runtime_error("Error: JSON Object not found");
+    throw tybl::vodka::parse_error("Error: JSON Object not found");
   }
   printf("{");
   std::map<std::string_view, tybl::json::value> result;
@@ -395,7 +397,7 @@ static std::map<std::string_view, tybl::json::value> parse_object(std::string_vi
     std::string_view key = parse_string(p_in);
     parse_whitespace(p_in);
     if (!parse_character<':'>(p_in)) {
-      throw std::runtime_error("Error: Missing ':' within JSON Object1");
+      throw tybl::vodka::parse_error("Error: Missing ':' within JSON Object1");
     }
     printf(":");
     result[key] = parse_element(p_in);
@@ -405,14 +407,14 @@ static std::map<std::string_view, tybl::json::value> parse_object(std::string_vi
       key = parse_string(p_in);
       parse_whitespace(p_in);
       if (!parse_character<':'>(p_in)) {
-        throw std::runtime_error("Error: Missing ':' within JSON Object2");
+        throw tybl::vodka::parse_error("Error: Missing ':' within JSON Object2");
       }
       printf(":");
       result[key] = parse_element(p_in);
     }
   }
   if (!parse_character<'}'>(p_in)) {
-    throw std::runtime_error("Error: Encountered unexpected character while parsing JSON Object");
+    throw tybl::vodka::parse_error("Error: Encountered unexpected character while parsing JSON Object");
   }
   printf("}");
   return result;
@@ -422,7 +424,7 @@ static std::map<std::string_view, tybl::json::value> parse_object(std::string_vi
 tybl::json::value parse_value(std::string_view& p_in) {
   tybl::json::value result;
   if (p_in.empty()) {
-    throw std::runtime_error("Error: Expected JSON value before end of input");
+    throw tybl::vodka::parse_error("Error: Expected JSON value before end of input");
   }
   switch (p_in.front()) {
     case '"': result = parse_string(p_in); break;
@@ -442,7 +444,7 @@ tybl::json::value parse_value(std::string_view& p_in) {
     case 'n': result = parse_literal<NIL>(p_in); break;
     case 't': result = parse_literal<TRUE>(p_in); break;
     case '{': result = parse_object(p_in); break;
-    default: throw std::runtime_error("Error: Encountered unexpected character while parsing JSON value");
+    default: throw tybl::vodka::parse_error("Error: Encountered unexpected character while parsing JSON value");
   }
   return result;
 } // parse_value(std::string_view&)

@@ -6,6 +6,7 @@ add_library(vodka INTERFACE)
 target_include_directories(vodka INTERFACE include)
 target_sources(vodka
   INTERFACE
+    include/vodka/parse_error.hpp
     include/vodka/array/array.hpp
     include/vodka/array/get.hpp
     include/vodka/array/to_array.hpp
