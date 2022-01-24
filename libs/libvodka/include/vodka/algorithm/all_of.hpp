@@ -9,7 +9,7 @@ namespace tybl::vodka {
 
 template <typename Iter, typename Pred>
 constexpr bool all_of(Iter first, Iter last, Pred p) {
-  return (find_if_not(first, last, p) == last);
+  return (::tybl::vodka::find_if_not(first, last, p) == last);
 }
 
 } // namespace tybl::vodka

@@ -6,6 +6,7 @@ add_executable(libvodka_t)
 target_link_libraries(libvodka_t PRIVATE compiler_settings vodka test_base)
 target_sources(libvodka_t
   PRIVATE
+    src/vodka/algorithm/all_of.cpp
     src/vodka/algorithm/inner_product.cpp
     src/vodka/algorithm/max.cpp
     src/vodka/array/array.cpp
