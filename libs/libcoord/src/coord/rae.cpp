@@ -3,21 +3,21 @@
 
 #include "coord/frd.hpp"
 
-#include <cmath>
+#include <cmath> // cos, sin
 
 namespace tybl::coord {
 
-rae_t::rae_t(double p_r, double p_a, double p_e)
-  : m_range(p_r)
-  , m_azimuth(p_a)
-  , m_elevation(p_e) {}
+rae_t::rae_t(double p_range, double p_azimuth, double p_elevation)
+  : m_range(p_range)
+  , m_azimuth(p_azimuth)
+  , m_elevation(p_elevation) {}
 
 auto rae_t::to_frd() const -> frd_t {
-  const auto hyp = std::cos(m_elevation) * m_range;
-  const auto f = std::sin(m_azimuth) * hyp;
-  const auto r = std::cos(m_azimuth) * hyp;
-  const auto d = std::sin(m_elevation) * m_range;
-  return {f, r, d};
+  const auto hypotenuse = std::cos(elevation()) * range();
+  const auto front = std::sin(azimuth()) * hypotenuse;
+  const auto right = std::cos(azimuth()) * hypotenuse;
+  const auto down = std::sin(elevation()) * range();
+  return {front, right, down};
 }
 
 auto rae_t::range() const -> double { return m_range; }

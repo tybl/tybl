@@ -13,7 +13,7 @@ class rae_t {
   double m_elevation;
 
 public:
-  rae_t(double p_r, double p_a, double p_e);
+  rae_t(double p_range, double p_azimuth, double p_elevation);
 
   auto to_frd() const -> frd_t;
 
