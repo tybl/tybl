@@ -11,4 +11,5 @@ TEST_CASE("tybl::vodka::inner_product") {
 
   CHECK( 24 != tybl::vodka::inner_product(a.begin(), a.end(), b.begin(), 0));
   CHECK( 21 == tybl::vodka::inner_product(a.begin(), a.end(), b.begin(), 0));
+  CHECK( 24 == tybl::vodka::inner_product(a.begin(), a.end(), b.begin(), 3));
 }
