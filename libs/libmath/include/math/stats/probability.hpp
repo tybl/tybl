@@ -14,10 +14,10 @@ public:
 
   explicit operator double() const { return m_value; }
 
-  auto operator&&(probability const& o) const -> probability { return probability(mValue * o.mValue); }
+  auto operator&&(probability const& o) const -> probability { return probability(m_value * o.m_value); }
 
   auto operator||(probability const& o) const -> probability {
-    return probability(mValue + o.mValue - mValue * o.mValue);
+    return probability(m_value + o.m_value - m_value * o.m_value);
   }
 
 }; // class probability
