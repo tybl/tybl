@@ -1,20 +1,20 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_VODKA_ALGORITHM_INNERPRODUCT_HPP
-#define TYBL_VODKA_ALGORITHM_INNERPRODUCT_HPP
+#ifndef _TYBL__VODKA__ALGORITHM__INNER_PRODUCT__HPP_
+#define _TYBL__VODKA__ALGORITHM__INNER_PRODUCT__HPP_
 
 #include "vodka/utility/move.hpp"
 
 namespace tybl::vodka {
 
 template <typename Iter1, typename Iter2, typename Type>
-constexpr Type inner_product(Iter1 first1, Iter1 last1, Iter2 first2, Type init) {
-  for (; first1 != last1; ++first1, ++first2) {
-    init = ::tybl::vodka::move(init) + *first1 * *first2;
+constexpr Type inner_product(Iter1 p_range1_begin, Iter1 p_range1_end, Iter2 p_range2_begin, Type p_initial_value) {
+  for (; p_range1_begin != p_range1_end; ++p_range1_begin, ++p_range2_begin) {
+    p_initial_value = ::tybl::vodka::move(p_initial_value) + *p_range1_begin * *p_range2_begin;
   }
-  return init;
+  return p_initial_value;
 } // inner_product()
 
 } // namespace tybl::vodka
 
-#endif // TYBL_VODKA_ALGORITHM_INNERPRODUCT_HPP
+#endif // _TYBL__VODKA__ALGORITHM__INNER_PRODUCT__HPP_
