@@ -22,11 +22,15 @@ target_sources(vodka
     include/vodka/numeric/gcd.hpp
     include/vodka/string_view/basic_string_view.hpp
     include/vodka/type_traits/bool_constant.hpp
+    include/vodka/type_traits/conditional.hpp
     include/vodka/type_traits/enable_if.hpp
     include/vodka/type_traits/false_type.hpp
     include/vodka/type_traits/integral_constant.hpp
     include/vodka/type_traits/is_bool.hpp
+    include/vodka/type_traits/is_const.hpp
+    include/vodka/type_traits/is_function.hpp
     include/vodka/type_traits/is_lvalue_reference.hpp
+    include/vodka/type_traits/is_reference.hpp
     include/vodka/type_traits/is_same.hpp
     include/vodka/type_traits/is_void.hpp
     include/vodka/type_traits/remove_const.hpp

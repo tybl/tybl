@@ -18,6 +18,10 @@ target_sources(libvodka_t
     src/vodka/type_traits/is_void.cpp
     src/vodka/type_traits/true_type.cpp
     src/vodka/utility/forward.cpp
+    vodka/type_traits/conditional.cpp
+    vodka/type_traits/is_const.cpp
+    vodka/type_traits/is_function.cpp
+    vodka/type_traits/is_reference.cpp
 )
 add_test(NAME test_libvodka COMMAND libvodka_t)
 
