@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef _TYBL__VODKA__ALGORITHM__EQUAL__HPP_
-#define _TYBL__VODKA__ALGORITHM__EQUAL__HPP_
+#ifndef _TYBL__VODKA__ALGORITHM__ARE_EQUAL__HPP_
+#define _TYBL__VODKA__ALGORITHM__ARE_EQUAL__HPP_
 
 namespace tybl::vodka {
 
@@ -17,4 +17,4 @@ bool are_equal(Range1Iterator p_range1_begin, Range1Iterator p_range1_end, Range
 
 } // namespace tybl::vodka
 
-#endif // _TYBL__VODKA__ALGORITHM__EQUAL__HPP_
+#endif // _TYBL__VODKA__ALGORITHM__ARE_EQUAL__HPP_
