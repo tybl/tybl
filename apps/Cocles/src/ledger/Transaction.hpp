@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_TRANSACTION_HPP
-#define COCLES_LEDGER_TRANSACTION_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_TRANSACTION_HPP
+#define TYBL_COCLES_LEDGER_TRANSACTION_HPP
 
 #include "Adjustment.hpp"
 #include "Payee.hpp"
@@ -10,23 +11,22 @@
 namespace ledger {
 
 struct Transaction {
-   struct Builder;
+  struct Builder;
 
-   explicit Transaction(Builder const& b);
+  explicit Transaction(Builder const& b);
 
-   [[nodiscard]] std::vector<Adjustment> const& adjustments() const;
+  [[nodiscard]] std::vector<Adjustment> const& adjustments() const;
 
-   [[nodiscard]] util::Date const& date() const;
+  [[nodiscard]] util::Date const& date() const;
 
-   [[nodiscard]] Payee const& payee() const;
+  [[nodiscard]] Payee const& payee() const;
 
 private:
-   util::Date m_date;
-   Payee      m_payee;
-   std::vector<Adjustment> m_adjustments;
+  util::Date m_date;
+  Payee m_payee;
+  std::vector<Adjustment> m_adjustments;
 }; // struct Transaction
-
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_TRANSACTION_HPP
+#endif // TYBL_COCLES_LEDGER_TRANSACTION_HPP

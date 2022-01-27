@@ -1,43 +1,30 @@
 // License: The Unlicense (https://unlicense.org)
-#include "frd.hpp"
+#include "coord/frd.hpp"
 
-#include "ecef.hpp"
+#include "coord/ecef.hpp"
 
-#include <Eigen/Geometry>
+namespace tybl::coord {
 
-namespace vodka::coord {
+frd_t::frd_t(double p_f, double p_r, double p_d)
+  : m_frd({p_f, p_r, p_d}) {}
 
-frd_t::frd_t(units::length::meter_t const& f,
-             units::length::meter_t const& r,
-             units::length::meter_t const& d)
-  : frd(f.to<double>(), r.to<double>(), d.to<double>()) { }
-
-auto frd_t::to_ecef(ecef_t const& ref_pos, Eigen::Quaterniond const& ref_rot) const -> ecef_t {
-  return ecef_t(ref_rot * frd + static_cast<Eigen::Vector3d>(ref_pos));
+auto frd_t::to_ecef(ecef_t const& p_ref_pos, lynel::quaternion const& /*ref_rot*/) const -> ecef_t {
+  static_cast<void>(this);
+  // TODO(tybl)
+  // return ecef_t(ref_rot * frd + static_cast<lynel::vec3d>(ref_pos));
+  return p_ref_pos;
 }
 
-auto frd_t::x() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[0]);
-}
+auto frd_t::x() const -> double { return m_frd.x; }
 
-auto frd_t::y() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[1]);
-}
+auto frd_t::y() const -> double { return m_frd.y; }
 
-auto frd_t::z() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[2]);
-}
+auto frd_t::z() const -> double { return m_frd.z; }
 
-auto frd_t::f() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[0]);
-}
+auto frd_t::f() const -> double { return m_frd.x; }
 
-auto frd_t::r() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[1]);
-}
+auto frd_t::r() const -> double { return m_frd.y; }
 
-auto frd_t::d() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(frd[2]);
-}
+auto frd_t::d() const -> double { return m_frd.z; }
 
-} // namespace vodka::coord
+} // namespace tybl::coord

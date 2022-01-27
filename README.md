@@ -18,6 +18,8 @@
 ### Interesting
 * [Good commit messages](https://lazau.com/articles/good_commit_messages.html)
 * [You Don't Need Loops](https://github.com/you-dont-need/You-Dont-Need-Loops)
+* [Trunk Base Development](https://trunkbaseddevelopment.com/)
+* [hacking C++](https://hackingcpp.com/index.html)
 
 ## Libraries
 
@@ -59,3 +61,5 @@
 * [Compiler Explorer](https://godbolt.org/)
 * [Quick Bench](http://quick-bench.com/)
 * [coz profiler](https://github.com/plasma-umass/coz)
+* [rr](https://rr-project.org/): record a failure once, then debug the recording, deterministically, as many times as you want.
+* [Sourcetrail](https://www.sourcetrail.com/): Graphical source code explorer

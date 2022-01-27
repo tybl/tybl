@@ -1,44 +1,69 @@
 ################################################################################
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
-cmake_minimum_required(VERSION 3.14) # FetchContent_MakeAvailable
-
-project(libvodka
-  VERSION 0.0.9
-  DESCRIPTION "Learning through reimplementing the standard library"
-  LANGUAGES CXX)
-
-option(TYBL_BUILD_ALL_TESTS "Build and run tests as a subproject" OFF)
-
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-  include(CTest)
-  include(FetchContent)
-  include(util/cmake/compiler_settings.cmake)
-  #include(util/cmake/Linters.cmake)
-
-  # Use doctest as unit test framework
-  FetchContent_Declare(doctest
-    GIT_REPOSITORY https://github.com/onqtam/doctest.git
-    GIT_SHALLOW    TRUE
-    GIT_TAG        "2.4.0")
-  FetchContent_MakeAvailable(doctest)
-endif()
 
 add_library(vodka INTERFACE)
 target_include_directories(vodka INTERFACE include)
 target_sources(vodka
   INTERFACE
+    include/vodka/algorithm/all_of.hpp
+    include/vodka/algorithm/are_equal.hpp
+    include/vodka/algorithm/find_if_not.hpp
+    include/vodka/algorithm/inner_product.hpp
+    include/vodka/algorithm/max.hpp
+    include/vodka/algorithm/min.hpp
+    include/vodka/algorithm/transform.hpp
     include/vodka/array/array.hpp
     include/vodka/array/get.hpp
     include/vodka/array/to_array.hpp
+    include/vodka/cstddef/byte.hpp
+    include/vodka/functional/less.hpp
+    include/vodka/functional/less_equal.hpp
+    include/vodka/numeric/gcd.hpp
+    include/vodka/string_view/basic_string_view.hpp
+    include/vodka/type_traits/bool_constant.hpp
+    include/vodka/type_traits/conditional.hpp
+    include/vodka/type_traits/enable_if.hpp
+    include/vodka/type_traits/false_type.hpp
     include/vodka/type_traits/integral_constant.hpp
+    include/vodka/type_traits/is_bool.hpp
+    include/vodka/type_traits/is_const.hpp
+    include/vodka/type_traits/is_function.hpp
+    include/vodka/type_traits/is_lvalue_reference.hpp
+    include/vodka/type_traits/is_reference.hpp
+    include/vodka/type_traits/is_same.hpp
+    include/vodka/type_traits/is_void.hpp
     include/vodka/type_traits/remove_const.hpp
     include/vodka/type_traits/remove_cv.hpp
-    include/vodka/type_traits/remove_volatile.hpp
     include/vodka/type_traits/remove_reference.hpp
+    include/vodka/type_traits/remove_volatile.hpp
+    include/vodka/type_traits/true_type.hpp
+    include/vodka/type_traits/void_t.hpp
     include/vodka/utility/forward.hpp
-    include/vodka/utility/move.hpp)
+    include/vodka/utility/move.hpp
+    include/vodka/parse_error.hpp
+)
 
-if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) OR TYBL_BUILD_ALL_TESTS)
-  add_subdirectory(test)
-endif()
+add_executable(libvodka_t)
+target_link_libraries(libvodka_t PRIVATE compiler_settings vodka test_base)
+target_sources(libvodka_t
+  PRIVATE
+    test/vodka/algorithm/all_of.cpp
+    test/vodka/algorithm/are_equal.cpp
+    test/vodka/algorithm/inner_product.cpp
+    test/vodka/algorithm/max.cpp
+    test/vodka/array/array.cpp
+    test/vodka/functional/less_equal.cpp
+    test/vodka/span/span.cpp
+    test/vodka/string_view/basic_string_view.cpp
+    test/vodka/type_traits/conditional.cpp
+    test/vodka/type_traits/false_type.cpp
+    test/vodka/type_traits/integral_constant.cpp
+    test/vodka/type_traits/is_const.cpp
+    test/vodka/type_traits/is_function.cpp
+    test/vodka/type_traits/is_reference.cpp
+    test/vodka/type_traits/is_void.cpp
+    test/vodka/type_traits/true_type.cpp
+    test/vodka/utility/forward.cpp
+)
+add_test(NAME test_libvodka COMMAND libvodka_t)

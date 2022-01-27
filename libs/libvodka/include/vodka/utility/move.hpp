@@ -8,9 +8,8 @@
 namespace tybl::vodka {
 
 template <typename T>
-constexpr auto
-move(T&& obj) noexcept -> remove_reference_t<T>&& {
-  return static_cast<remove_reference_t<T>&&>(obj);
+constexpr auto move(T&& p_obj) noexcept -> remove_reference_t<T>&& {
+  return static_cast<remove_reference_t<T>&&>(p_obj);
 }
 
 } // namespace tybl::vodka

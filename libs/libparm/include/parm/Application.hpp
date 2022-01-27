@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef PARM_APPLICATION_HPP
-#define PARM_APPLICATION_HPP
+#pragma once
+#ifndef TYBL_PARM_APPLICATION_HPP
+#define TYBL_PARM_APPLICATION_HPP
 
 #include "Parameter.hpp"
 
@@ -23,23 +24,19 @@ class Application {
   // std::map or std::unordered_map could be used
   // TODO: Investigate performance characteristics of either
   std::map<std::string_view, list_iterator> mArgumentMap;
-public:
 
+public:
   Application(std::string pName, std::string pVersion)
     : mName(pName)
-    , mVersion(pVersion)
-  {
-    add_argument("-h", "--help")
-      .help("shows help message and exits");
-    add_argument("-v", "--version")
-      .help("prints version information and exits");
+    , mVersion(pVersion) {
+    add_argument("-h", "--help").help("shows help message and exits");
+    add_argument("-v", "--version").help("prints version information and exits");
   }
 
   // Ref: https://www.modernescpp.com/index.php/c-core-guidelines-rules-for-variadic-templates
   template <typename... Args>
   auto add_argument(Args&&... args) -> Argument& {
-    auto arg_it =
-      mArguments.emplace(std::cend(mArguments), std::forward<Args>(args)...);
+    auto arg_it = mArguments.emplace(std::cend(mArguments), std::forward<Args>(args)...);
     index_argument(arg_it);
     return *arg_it;
   }
@@ -64,7 +61,7 @@ private:
   // For printing usage
   size_t longest_argument_length() const {
     return std::accumulate(mArgumentMap.cbegin(), mArgumentMap.cend(), 0ULL,
-      [](size_t m, auto const& r) { return std::max(m, r.second->length()); });
+                           [](size_t m, auto const& r) { return std::max(m, r.second->length()); });
   }
 
   void index_argument(list_iterator pArgIt) {
@@ -76,4 +73,4 @@ private:
 
 } // namespace parm
 
-#endif // PARM_APPLICATION_HPP
+#endif // TYBL_PARM_APPLICATION_HPP

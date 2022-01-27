@@ -9,8 +9,7 @@
 namespace tybl::vodka {
 
 template <typename T>
-struct is_bool
-  : is_same<bool, remove_cv_t<T>> { };
+struct is_bool : is_same<bool, remove_cv_t<T>> {};
 
 template <typename T>
 inline constexpr bool is_bool_v = is_bool<T>::value;

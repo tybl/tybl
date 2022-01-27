@@ -38,13 +38,15 @@ struct array {
 
   // No explicit construct/copy/destroy for aggregate type
 
-  constexpr void fill(const_reference val) {
+  constexpr void fill(const_reference p_val) {
     for (auto& elem : m_elems) {
-      elem = val;
+      elem = p_val;
     }
   }
 
-  constexpr void swap(array& a) noexcept(std::is_nothrow_swappable<value_type>::value) { std::swap_ranges(data(), data() + N, a.data()); }
+  constexpr void swap(array& p_a) noexcept(std::is_nothrow_swappable<value_type>::value) {
+    std::swap_ranges(data(), data() + N, p_a.data());
+  }
 
   // iterators:
   [[nodiscard]] constexpr auto begin() noexcept -> iterator { return iterator(data()); }
@@ -57,25 +59,25 @@ struct array {
   [[nodiscard]] constexpr auto empty() const noexcept -> bool { return N == 0; }
 
   // element access:
-  [[nodiscard]] constexpr auto operator[](size_type n) noexcept -> reference {
-    assert(n < N);
-    return m_elems[n];
+  [[nodiscard]] constexpr auto operator[](size_type p_n) noexcept -> reference {
+    assert(p_n < N);
+    return m_elems[p_n];
   }
-  [[nodiscard]] constexpr auto operator[](size_type n) const noexcept -> const_reference {
-    assert(n < N);
-    return m_elems[n];
+  [[nodiscard]] constexpr auto operator[](size_type p_n) const noexcept -> const_reference {
+    assert(p_n < N);
+    return m_elems[p_n];
   }
-  [[nodiscard]] constexpr auto at(size_type n) -> reference {
-    if (n >= N) {
+  [[nodiscard]] constexpr auto at(size_type p_n) -> reference {
+    if (p_n >= N) {
       throw std::out_of_range("array::at");
     }
-    return m_elems[n];
+    return m_elems[p_n];
   }
-  [[nodiscard]] constexpr auto at(size_type n) const -> const_reference {
-    if (n >= N) {
+  [[nodiscard]] constexpr auto at(size_type p_n) const -> const_reference {
+    if (p_n >= N) {
       throw std::out_of_range("array::at");
     }
-    return m_elems[n];
+    return m_elems[p_n];
   }
   [[nodiscard]] constexpr auto front() noexcept -> reference { return (*this)[0]; }
   [[nodiscard]] constexpr auto front() const noexcept -> const_reference { return (*this)[0]; }
@@ -93,8 +95,8 @@ struct array {
 
 #if !TYBL_CAN_SYNTHESIZE_COMPARISONS
 template <typename T, size_t N>
-constexpr auto operator==(array<T, N> const& lhs, array<T, N> const& rhs) -> bool {
-  auto l = lhs.begin(), e = lhs.end(), r = rhs.begin();
+constexpr auto operator==(array<T, N> const& p_lhs, array<T, N> const& p_rhs) -> bool {
+  auto l = p_lhs.begin(), e = p_lhs.end(), r = p_rhs.begin();
   do { // array cannot be zero sized, so we can safely dereference begin()
     if (*l != *r) {
       return false;
@@ -106,13 +108,13 @@ constexpr auto operator==(array<T, N> const& lhs, array<T, N> const& rhs) -> boo
 }
 
 template <typename T, size_t N>
-constexpr auto operator!=(array<T, N> const& lhs, array<T, N> const& rhs) -> bool {
-  return !(lhs == rhs);
+constexpr auto operator!=(array<T, N> const& p_lhs, array<T, N> const& p_rhs) -> bool {
+  return !(p_lhs == p_rhs);
 }
 
 template <typename T, size_t N>
-constexpr auto operator<(array<T, N> const& lhs, array<T, N> const& rhs) -> bool {
-  auto l = lhs.begin(), e = lhs.end(), r = rhs.begin();
+constexpr auto operator<(array<T, N> const& p_lhs, array<T, N> const& p_rhs) -> bool {
+  auto l = p_lhs.begin(), e = p_lhs.end(), r = p_rhs.begin();
   do { // array cannot be zero sized, so we can safely dereference begin()
     if (*l < *r) {
       return true;
@@ -124,18 +126,18 @@ constexpr auto operator<(array<T, N> const& lhs, array<T, N> const& rhs) -> bool
 }
 
 template <typename T, size_t N>
-constexpr auto operator>(array<T, N> const& lhs, array<T, N> const& rhs) -> bool {
-  return rhs < lhs;
+constexpr auto operator>(array<T, N> const& p_lhs, array<T, N> const& p_rhs) -> bool {
+  return p_rhs < p_lhs;
 }
 
 template <typename T, size_t N>
-constexpr auto operator<=(array<T, N> const& lhs, array<T, N> const& rhs) -> bool {
-  return !(rhs < lhs);
+constexpr auto operator<=(array<T, N> const& p_lhs, array<T, N> const& p_rhs) -> bool {
+  return !(p_rhs < p_lhs);
 }
 
 template <typename T, size_t N>
-constexpr auto operator>=(array<T, N> const& lhs, array<T, N> const& rhs) -> bool {
-  return !(lhs < rhs);
+constexpr auto operator>=(array<T, N> const& p_lhs, array<T, N> const& p_rhs) -> bool {
+  return !(p_lhs < p_rhs);
 }
 #endif // !TYBL_CAN_SYNTHESIZE_COMPARISONS
 

@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef COCLES_LEDGER_EXTENDED_ADJUSTMENT_HPP
-#define COCLES_LEDGER_EXTENDED_ADJUSTMENT_HPP
+#pragma once
+#ifndef TYBL_COCLES_LEDGER_EXTENDEDADJUSTMENT_HPP
+#define TYBL_COCLES_LEDGER_EXTENDEDADJUSTMENT_HPP
 
 #include "Account.hpp"
 #include "Payee.hpp"
@@ -11,23 +12,23 @@ namespace ledger {
 
 struct ExtendedAdjustment {
 
-   ExtendedAdjustment(util::Date date, Payee payee, Account account, util::Money amount);
+  ExtendedAdjustment(util::Date date, Payee payee, Account account, util::Money amount);
 
-   [[nodiscard]] util::Date const& date() const;
+  [[nodiscard]] util::Date const& date() const;
 
-   [[nodiscard]] Payee const& payee() const;
+  [[nodiscard]] Payee const& payee() const;
 
-   [[nodiscard]] Account const& account() const;
+  [[nodiscard]] Account const& account() const;
 
-   [[nodiscard]] util::Money const& amount() const;
+  [[nodiscard]] util::Money const& amount() const;
 
 private:
-   util::Date  m_date;
-   Payee       m_payee;
-   Account     m_account;
-   util::Money m_amount;
+  util::Date m_date;
+  Payee m_payee;
+  Account m_account;
+  util::Money m_amount;
 }; // struct ExtendedAdjustment
 
 } // namespace ledger
 
-#endif // COCLES_LEDGER_EXTENDED_ADJUSTMENT_HPP
+#endif // TYBL_COCLES_LEDGER_EXTENDEDADJUSTMENT_HPP

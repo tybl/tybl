@@ -1,36 +1,29 @@
 // License: The Unlicense (https://unlicense.org)
-#include "rae.hpp"
+#include "coord/rae.hpp"
 
-#include "frd.hpp"
+#include "coord/frd.hpp"
 
-namespace vodka::coord {
+#include <cmath> // cos, sin
 
-rae_t::rae_t(units::length::meter_t const& r,
-             units::angle::radian_t const& a,
-             units::angle::radian_t const& e)
-  : mRange(r)
-  , mAzimuth(a)
-  , mElevation(e)
-  { }
+namespace tybl::coord {
+
+rae_t::rae_t(double p_range, double p_azimuth, double p_elevation)
+  : m_range(p_range)
+  , m_azimuth(p_azimuth)
+  , m_elevation(p_elevation) {}
 
 auto rae_t::to_frd() const -> frd_t {
-  const auto hyp = units::math::cos(mElevation) * mRange;
-  const auto f = units::math::sin(mAzimuth) * hyp;
-  const auto r = units::math::cos(mAzimuth) * hyp;
-  const auto d = units::math::sin(mElevation) * mRange;
-  return frd_t(f, r, d);
+  const auto hypotenuse = std::cos(elevation()) * range();
+  const auto front = std::sin(azimuth()) * hypotenuse;
+  const auto right = std::cos(azimuth()) * hypotenuse;
+  const auto down = std::sin(elevation()) * range();
+  return {front, right, down};
 }
 
-auto rae_t::range() const -> units::length::meter_t {
-  return mRange;
-}
+auto rae_t::range() const -> double { return m_range; }
 
-auto rae_t::azimuth() const -> units::angle::radian_t {
-  return mAzimuth;
-}
+auto rae_t::azimuth() const -> double { return m_azimuth; }
 
-auto rae_t::elevation() const -> units::angle::radian_t {
-  return mElevation;
-}
+auto rae_t::elevation() const -> double { return m_elevation; }
 
-} // namespace vodka::coord
+} // namespace tybl::coord

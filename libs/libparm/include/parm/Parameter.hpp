@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#ifndef PARM_PARAMETER_HPP
-#define PARM_PARAMETER_HPP
+#pragma once
+#ifndef TYBL_PARM_PARAMETER_HPP
+#define TYBL_PARM_PARAMETER_HPP
 
 #include <numeric>
 #include <string>
@@ -13,6 +14,7 @@ class Argument {
 
   std::vector<std::string> mNames;
   std::string mHelp;
+
 public:
   // Ref: https://stackoverflow.com/questions/13978916/inserting-a-variadic-argument-list-into-a-vector
   template <typename... Args>
@@ -28,13 +30,12 @@ public:
 private:
   // For printing usage
   size_t length() const {
-    return std::accumulate(std::begin(mNames), std::end(mNames), size_t(0),
-      [](const auto &sum, const auto &s) {
-        return sum + s.size() + 1; // +1 for space between names
-      });
+    return std::accumulate(std::begin(mNames), std::end(mNames), size_t(0), [](const auto& sum, const auto& s) {
+      return sum + s.size() + 1; // +1 for space between names
+    });
   }
 }; // class Argument
 
 } // namespace parm
 
-#endif // PARM_PARAMETER_HPP
+#endif // TYBL_PARM_PARAMETER_HPP

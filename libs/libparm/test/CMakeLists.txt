@@ -2,12 +2,14 @@
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
 
-add_library(compile_settings INTERFACE)
-target_compile_features(compile_settings INTERFACE cxx_std_17)
-target_compile_options(compile_settings INTERFACE -g)
+add_executable(libparm_t)
+target_link_libraries(libparm_t
+  PRIVATE
+    compiler_settings
+    parm
+    test_base)
+target_sources(libparm_t
+  PRIVATE
+    src/test_help.cpp)
 
-# libfuzzer requires Clang
-if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-  add_subdirectory(fuzz_test)
-endif()
-add_subdirectory(unit_test)
+add_test(NAME test_libparm COMMAND libparm_t)

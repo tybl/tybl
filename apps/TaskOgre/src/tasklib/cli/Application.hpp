@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
+#ifndef TYBL_TASKOGRE_TASKLIB_CLI_APPLICATION_HPP
+#define TYBL_TASKOGRE_TASKLIB_CLI_APPLICATION_HPP
 
 #include "Command.hpp"
 
@@ -12,20 +14,16 @@ namespace ogre {
 class Application {
   Command mCommand;
   tybl::vodka::string_view mVersion;
-public:
 
+public:
   Application(tybl::vodka::string_view name, tybl::vodka::string_view version)
     : mCommand(name)
-    , mVersion(version)
-  {
+    , mVersion(version) {
     // The ctor receives the app name and version. It doesn't receive the
     // command-line arguments. As such, it is not aware of any overridden
     // configuration values.
-    mCommand.add_option("-v", "--version")
-            .add_help("Displays the version and exits");
-    mCommand.add_subcommand("add")
-            .add_help("")
-            .add_action([](Parameters const&) -> int { return 0; });
+    mCommand.add_option("-v", "--version").add_help("Displays the version and exits");
+    mCommand.add_subcommand("add").add_help("").add_action([](Parameters const&) -> int { return 0; });
   }
 
   auto run(int argc, char const* argv[]) -> int {
@@ -36,3 +34,5 @@ public:
 }; // class Application
 
 } // namespace ogre
+
+#endif // TYBL_TASKOGRE_TASKLIB_CLI_APPLICATION_HPP

@@ -1,33 +1,28 @@
 // License: The Unlicense (https://unlicense.org)
-#include "ecef.hpp"
+#include "coord/ecef.hpp"
 
-#include "lla.hpp"
+#include "coord/lla.hpp"
+#include "vodka/utility/move.hpp"
 
-namespace vodka::coord {
+#include <stdexcept>
 
-ecef_t::ecef_t(Eigen::Vector3d pos)
-  : ecef(std::move(pos)) { }
+namespace tybl::coord {
 
-ecef_t::operator Eigen::Vector3d() const {
-  return ecef;
-}
+ecef_t::ecef_t(lynel::cvec3<double> p_pos)
+  : m_ecef(vodka::move(p_pos)) {}
+
+ecef_t::operator lynel::cvec3<double>() const { return m_ecef; }
 
 auto ecef_t::to_lla() const -> lla_t {
-  // TODO(tlyons): Implement this function
+  // TODO(tybl): Implement this function
   static_cast<void>(this);
-  throw std::runtime_error(__func__);
+  throw std::runtime_error(__func__); // NOLINT
 }
 
-auto ecef_t::x() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(ecef[0]);
-}
+auto ecef_t::x() const -> double { return m_ecef.x; }
 
-auto ecef_t::y() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(ecef[1]);
-}
+auto ecef_t::y() const -> double { return m_ecef.y; }
 
-auto ecef_t::z() const -> units::length::meter_t {
-  return static_cast<units::length::meter_t>(ecef[2]);
-}
+auto ecef_t::z() const -> double { return m_ecef.z; }
 
-} // namespace vodka::coord
+} // namespace tybl::coord
