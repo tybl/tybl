@@ -27,7 +27,15 @@ add_executable(stacksolve)
 target_link_libraries(stacksolve PRIVATE stacksolvelib)
 target_sources(stacksolve PRIVATE src/main.cpp)
 
-add_subdirectory(test)
+  add_executable(stacksolver_t)
+  target_link_libraries(stacksolver_t PRIVATE compiler_settings test_base stacksolvelib)
+  target_sources(stacksolver_t
+    PRIVATE
+      test/src/Board.cpp
+      test/src/stacksolve/stack_state.cpp
+  )
+
+  add_test(NAME test_stacksolver COMMAND stacksolver_t)
 
 else()
   message("Note: Not building \"StackSolver\"; install gcc > v10.1 to enable")
