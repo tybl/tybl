@@ -7,7 +7,7 @@ target_include_directories(vodka INTERFACE include)
 target_sources(vodka
   INTERFACE
     include/vodka/algorithm/all_of.hpp
-    include/vodka/algorithm/equal.hpp
+    include/vodka/algorithm/are_equal.hpp
     include/vodka/algorithm/find_if_not.hpp
     include/vodka/algorithm/inner_product.hpp
     include/vodka/algorithm/max.hpp
