@@ -49,6 +49,7 @@ target_link_libraries(libvodka_t PRIVATE compiler_settings vodka test_base)
 target_sources(libvodka_t
   PRIVATE
     test/vodka/algorithm/all_of.cpp
+    test/vodka/algorithm/are_equal.cpp
     test/vodka/algorithm/inner_product.cpp
     test/vodka/algorithm/max.cpp
     test/vodka/array/array.cpp
