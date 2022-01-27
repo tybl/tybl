@@ -13,7 +13,7 @@
 namespace nmea {
 
 // true if the text contains a non-alpha numeric value
-static bool has_non_alpha_num(std::string p_txt) {
+static bool has_non_alpha_num(std::string const& p_txt) {
   for (const char i : p_txt) {
     if (!std::isalnum(i)) {
       return true;
@@ -23,7 +23,7 @@ static bool has_non_alpha_num(std::string p_txt) {
 }
 
 // true if alphanumeric or '-'
-static bool valid_param_chars(std::string p_txt) {
+static bool valid_param_chars(std::string const& p_txt) {
   for (const char i : p_txt) {
     if (!std::isalnum(i)) {
       if (i != '-' && i != '.') {
