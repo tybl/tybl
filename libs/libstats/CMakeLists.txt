@@ -19,7 +19,7 @@ if(Eigen3_FOUND)
   )
   target_sources(libstats_t
     PRIVATE
-      src/main.cpp
+      test/stats/main.cpp
   )
   add_test(NAME test_libstats COMMAND libstats_t)
 

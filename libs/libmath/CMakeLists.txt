@@ -16,10 +16,10 @@ add_executable(libmath_t)
 target_link_libraries(libmath_t PRIVATE compiler_settings math test_base)
 target_sources(libmath_t
   PRIVATE
-    test/src/math/fixed_point.cpp
-    test/src/math/integer.cpp
-    test/src/math/next_power_of_two.cpp
-    test/src/math/stats/distribution.cpp
+    test/math/fixed_point.cpp
+    test/math/integer.cpp
+    test/math/next_power_of_two.cpp
+    test/math/stats/distribution.cpp
 )
 
 add_test(NAME test_libmath COMMAND libmath_t)
