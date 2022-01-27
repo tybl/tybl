@@ -2,12 +2,15 @@
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
 
-#[[ 
-# TODO: Create unit tests
-add_executable(libcoord_t)
-target_link_libraries(libcoord_t PRIVATE compiler_settings test_base)
-target_sources(libcoord_t
-  PRIVATE
+add_library(log)
+target_include_directories(log PUBLIC include)
+target_link_libraries(log
+  PUBLIC
+    compiler_settings
 )
-add_test(NAME test_libcoord COMMAND libcoord_t)
-]]
+target_sources(log
+  PRIVATE
+    src/log/logger.cpp
+  PUBLIC
+    include/log/logger.hpp
+)

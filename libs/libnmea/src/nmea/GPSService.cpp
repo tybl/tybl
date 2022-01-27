@@ -11,7 +11,7 @@ namespace nmea {
 
 // ------ Some helpers ----------
 // Takes the NMEA lat/long format (dddmm.mmmm, [N/S,E/W]) and converts to degrees N,E only
-static double convert_lat_lon_to_deg(std::string p_llstr, std::string p_dir) {
+static double convert_lat_lon_to_deg(std::string const& p_llstr, std::string const& p_dir) {
 
   double pd = std::stod(p_llstr);
   double deg = trunc(pd / 100); // get ddd from dddmm.mmmm
