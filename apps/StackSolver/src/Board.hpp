@@ -26,7 +26,7 @@ struct Board : public i_node {
   mutable Board const* m_parent;
   mutable size_t m_distance;
 
-  Board(std::istream& p_input);
+  explicit Board(std::istream& p_input);
 
   Board(Board const& p_o, edge const& p_e);
 

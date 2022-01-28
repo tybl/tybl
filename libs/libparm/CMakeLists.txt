@@ -7,6 +7,7 @@ target_include_directories(parm INTERFACE include)
 target_sources(parm
   INTERFACE
     include/parm/Application.hpp
-    include/parm/Parameter.hpp)
+    include/parm/Parameter.hpp
+)
 
-#add_subdirectory(test)
+# TODO(tybl): Create unit tests

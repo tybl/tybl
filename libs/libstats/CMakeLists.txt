@@ -11,7 +11,17 @@ if(Eigen3_FOUND)
   target_link_libraries(stats INTERFACE Eigen3::Eigen)
   target_sources(stats INTERFACE include/stats/distribution.hpp)
 
-  add_subdirectory(test)
+  add_executable(libstats_t)
+  target_link_libraries(libstats_t
+    PRIVATE
+      doctest::doctest
+      stats
+  )
+  target_sources(libstats_t
+    PRIVATE
+      test/stats/main.cpp
+  )
+  add_test(NAME test_libstats COMMAND libstats_t)
 
 else()
   message("Note: Not building \"libstats\"; install Eigen3 to enable")

@@ -1,6 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
 #include "gps/almanac.hpp"
 
+#include <vodka/algorithm/max.hpp>
+
 namespace gps {
 
 almanac::almanac()
@@ -14,7 +16,7 @@ void almanac::clear() {
   satellites.clear();
 }
 
-void almanac::update_satellite(gps::satellite p_sat) {
+void almanac::update_satellite(gps::satellite const& p_sat) {
   if (satellites.size() > m_visible_size) { // we missed the new almanac start page, start over.
     clear();
   }
@@ -22,7 +24,7 @@ void almanac::update_satellite(gps::satellite p_sat) {
   satellites.push_back(p_sat);
 }
 
-double almanac::percent_complete() {
+double almanac::percent_complete() const {
   if (m_total_pages == 0) {
     return 0.0;
   }
@@ -30,7 +32,7 @@ double almanac::percent_complete() {
   return static_cast<double>(m_processed_pages) / m_total_pages * 100.0;
 }
 
-double almanac::average_snr() {
+double almanac::average_snr() const {
 
   double avg = 0;
   double relevant = 0;
@@ -49,7 +51,7 @@ double almanac::average_snr() {
   return avg;
 }
 
-double almanac::min_snr() {
+double almanac::min_snr() const {
   double min = 9999999;
   if (satellites.empty()) {
     return 0;
@@ -69,14 +71,10 @@ double almanac::min_snr() {
   return min;
 }
 
-double almanac::max_snr() {
+double almanac::max_snr() const {
   double max = 0;
   for (const auto& satellite : satellites) {
-    if (satellite.snr > 0) {
-      if (satellite.snr > max) {
-        max = satellite.snr;
-      }
-    }
+    max = tybl::vodka::max(max, satellite.snr);
   }
   return max;
 }

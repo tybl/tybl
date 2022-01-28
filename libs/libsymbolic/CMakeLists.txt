@@ -7,4 +7,4 @@ target_include_directories(symbolic PUBLIC include)
 #target_link_libraries(symbolic PUBLIC )
 #target_sources(symbolic PRIVATE PUBLIC )
 
-add_subdirectory(test)
+# TODO(tybl): Create unit tests
