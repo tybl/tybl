@@ -2,12 +2,15 @@
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
 
-add_library(parm INTERFACE)
-target_include_directories(parm INTERFACE include)
+add_library(parm)
+target_include_directories(parm PUBLIC include)
+target_link_libraries(parm PUBLIC compiler_settings vodka)
 target_sources(parm
-  INTERFACE
+  PUBLIC
     include/parm/Application.hpp
     include/parm/Parameter.hpp
+  PRIVATE
+    src/parm/Application.cpp
 )
 
 # TODO(tybl): Create unit tests
