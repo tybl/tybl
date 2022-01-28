@@ -7,7 +7,7 @@
 
 struct node_weight {
 
-  bool operator()(i_node const* p_lhs, i_node const* p_rhs) {
+  bool operator()(i_node const* p_lhs, i_node const* p_rhs) const {
     auto lp = p_lhs->priority();
     auto rp = p_rhs->priority();
     return (lp < rp) || (lp == rp && p_lhs->distance() > p_rhs->distance());

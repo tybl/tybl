@@ -25,10 +25,8 @@ static bool has_non_alpha_num(std::string const& p_txt) {
 // true if alphanumeric or '-'
 static bool valid_param_chars(std::string const& p_txt) {
   for (const char i : p_txt) {
-    if (!std::isalnum(i)) {
-      if (i != '-' && i != '.') {
-        return false;
-      }
+    if (!std::isalnum(i) && (i != '-') && (i != '.')) {
+      return false;
     }
   }
   return true;
@@ -67,7 +65,7 @@ void Parser::set_sentence_handler(std::string p_cmd_key, std::function<void(cons
   m_event_table.insert({p_cmd_key, p_handler});
 }
 
-std::string Parser::get_list_of_sentence_handlers() {
+std::string Parser::get_list_of_sentence_handlers() const {
   if (m_event_table.empty()) {
     return ""; // TODO(tybl): empty c-string vs std::string constructor
   }
@@ -144,19 +142,19 @@ void Parser::read_line(std::string p_cmd) {
 }
 
 // Loggers
-void Parser::on_info(sentence& /*nmea*/, std::string p_txt) {
+void Parser::on_info(sentence& /*nmea*/, std::string const& p_txt) const {
   if (log) {
     std::cout << "[Info]    " << p_txt << std::endl;
   }
 }
 
-void Parser::on_warn(sentence& /*nmea*/, std::string p_txt) {
+void Parser::on_warn(sentence& /*nmea*/, std::string const& p_txt) const {
   if (log) {
     std::cout << "[Warning] " << p_txt << std::endl;
   }
 }
 
-void Parser::on_err(sentence& /*nmea*/, std::string p_txt) { throw parse_error("[ERROR] " + p_txt); }
+void Parser::on_err(sentence& /*nmea*/, std::string const& p_txt) { throw parse_error("[ERROR] " + p_txt); }
 
 // takes a complete NMEA string and gets the data bits from it,
 // calls the corresponding handler in m_event_table, based on the 5 letter sentence code
@@ -237,7 +235,7 @@ void Parser::read_sentence(std::string p_cmd) {
 
 // takes the string *between* the '$' and '*' in nmea sentence,
 // then calculates a rolling XOR on the bytes
-uint8_t Parser::calc_checksum(std::string p_s) {
+uint8_t Parser::calc_checksum(std::string const& p_s) {
   uint8_t checksum = 0;
   for (const char i : p_s) {
     checksum = static_cast<uint8_t>(checksum ^ i);
@@ -330,7 +328,6 @@ void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
   std::istringstream f(p_txt);
   std::string s;
   while (std::getline(f, s, ',')) {
-    // cout << s << endl;
     p_nmea.parameters.push_back(s);
   }
 

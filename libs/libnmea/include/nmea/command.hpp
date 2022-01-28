@@ -21,13 +21,13 @@ class command {
 public:
   command();
 
-  command(std::string p_name);
+  command(std::string const& p_name);
 
   virtual ~command();
 
   virtual std::string to_string();
 
-  std::string add_checksum(std::string p_s);
+  std::string add_checksum(std::string const& p_s);
 
 }; // struct command
 

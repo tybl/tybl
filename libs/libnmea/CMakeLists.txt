@@ -4,7 +4,7 @@
 
 add_library(nmea)
 target_include_directories(nmea PUBLIC include)
-target_link_libraries(nmea PUBLIC compiler_settings)
+target_link_libraries(nmea PUBLIC compiler_settings vodka)
 target_sources(nmea
   PRIVATE
     src/gps/almanac.cpp

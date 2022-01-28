@@ -20,17 +20,17 @@ class almanac {
   uint32_t m_total_pages;
   uint32_t m_processed_pages;
   void clear(); // will remove all information from the satellites
-  void update_satellite(gps::satellite p_sat);
+  void update_satellite(gps::satellite const& p_sat);
 
 public:
   almanac();
 
   // mapped by prn
   std::vector<gps::satellite> satellites;
-  double average_snr();
-  double min_snr();
-  double max_snr();
-  double percent_complete();
+  double average_snr() const;
+  double min_snr() const;
+  double max_snr() const;
+  double percent_complete() const;
 
 }; // class almanac
 
