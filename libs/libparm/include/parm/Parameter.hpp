@@ -9,32 +9,32 @@
 
 namespace parm {
 
-class Argument {
+class argument {
   friend class Application;
 
-  std::vector<std::string> mNames;
-  std::string mHelp;
+  std::vector<std::string> m_names;
+  std::string m_help;
 
 public:
   // Ref: https://stackoverflow.com/questions/13978916/inserting-a-variadic-argument-list-into-a-vector
   template <typename... Args>
-  Argument(Args... args)
-    : mNames{args...} {}
+  argument(Args... p_arguments)
+    : m_names{p_arguments...} {}
 
   // For printing usage
-  auto help(std::string_view help) {
-    mHelp = help;
+  auto help(std::string_view p_help) {
+    m_help = p_help;
     return *this;
   }
 
 private:
   // For printing usage
   size_t length() const {
-    return std::accumulate(std::begin(mNames), std::end(mNames), size_t(0), [](const auto& sum, const auto& s) {
-      return sum + s.size() + 1; // +1 for space between names
+    return std::accumulate(std::begin(m_names), std::end(m_names), size_t(0), [](const auto& p_sum, const auto& p_string) {
+      return p_sum + p_string.size() + 1; // +1 for space between names
     });
   }
-}; // class Argument
+}; // class argument
 
 } // namespace parm
 

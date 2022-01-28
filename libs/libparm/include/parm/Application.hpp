@@ -13,42 +13,42 @@
 namespace parm {
 
 class Application {
-  std::string mName;        // For printing usage
-  std::string mVersion;     // For printing usage
-  std::string mDescription; // For printing usage
-  std::string mEpilog;      // For printing usage
+  std::string m_name;        // For printing usage
+  std::string m_version;     // For printing usage
+  std::string m_description; // For printing usage
+  std::string m_epilog;      // For printing usage
 
   // std::list prevents iterators from being invalidated
-  using list_iterator = std::list<Argument>::iterator;
-  std::list<Argument> mArguments;
+  using list_iterator = std::list<argument>::iterator;
+  std::list<argument> m_arguments;
 
   // std::map or std::unordered_map could be used
   // TODO: Investigate performance characteristics of either
-  std::map<std::string_view, list_iterator> mArgumentMap;
+  std::map<std::string_view, list_iterator> m_argument_map;
 
 public:
-  Application(std::string pName, std::string pVersion);
+  Application(std::string p_name, std::string p_version);
 
   // Ref: https://www.modernescpp.com/index.php/c-core-guidelines-rules-for-variadic-templates
   template <typename... Args>
-  auto add_argument(Args&&... args) -> Argument&;
+  auto add_argument(Args&&... p_args) -> argument&;
 
   auto run(int, char const**) -> int;
 
 private:
-  void parse_arguments(std::vector<std::string> const& /*args*/);
+  void parse_arguments(std::vector<std::string> const& /*p_args*/);
 
   // For printing usage
   size_t longest_argument_length() const;
 
-  void index_argument(list_iterator pArgIt);
+  void index_argument(list_iterator p_argument_iterator);
 
 }; // class Application
 
 // Ref: https://www.modernescpp.com/index.php/c-core-guidelines-rules-for-variadic-templates
 template <typename... Args>
-auto Application::add_argument(Args&&... args) -> Argument& {
-  auto arg_it = mArguments.emplace(std::cend(mArguments), std::forward<Args>(args)...);
+auto Application::add_argument(Args&&... p_args) -> argument& {
+  auto arg_it = m_arguments.emplace(std::cend(m_arguments), std::forward<Args>(p_args)...);
   index_argument(arg_it);
   return *arg_it;
 }
