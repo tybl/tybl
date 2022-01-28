@@ -1,6 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
 #include "Board.hpp"
 
+#include <log/logger.hpp>
+
 #include <algorithm>
 #include <cassert>
 #include <fstream>
@@ -9,8 +11,7 @@
 #include <iostream>
 
 Board::Board(std::istream& p_input)
-  : m_priority(0)
-  , m_stats(std::make_shared<shared_stats>())
+  : m_stats(std::make_shared<shared_stats>())
   , m_id(0)
   , m_parent(nullptr)
   , m_distance(0) {
@@ -76,16 +77,16 @@ auto Board::operator+(edge const& p_e) const -> i_node const* {
 }
 
 void Board::print() const {
-  std::cout << "\nd: " << distance() << ", p(): " << priority();
+  tybl::log::log() << "\nd: " << distance() << ", p(): " << priority();
   const size_t height = m_stats->m_max_stack_height;
   for (size_t i = 0; i < height; ++i) {
-    std::cout << '\n';
+    tybl::log::log() << '\n';
     size_t r = (height - 1) - i;
     for (auto const& c : m_contents) {
       if (r < c.size()) {
-        std::cout << c.at(r);
+        tybl::log::log() << c.at(r);
       } else {
-        std::cout << ' ';
+        tybl::log::log() << ' ';
       }
     }
   }

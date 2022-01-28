@@ -11,7 +11,7 @@
 
 namespace parm {
 
-Application::Application(std::string p_name, std::string p_version)
+Application::Application(std::string const& p_name, std::string const& p_version)
   : m_name(p_name)
   , m_version(p_version) {
   add_argument("-h", "--help").help("shows help message and exits");
@@ -19,12 +19,14 @@ Application::Application(std::string p_name, std::string p_version)
 }
 
 auto Application::run(int, char const**) -> int {
+  // TODO(tybl):
   // 1. Parse arguments
   // 2. Invoke commands
   return 0;
 }
 
 void Application::parse_arguments(std::vector<std::string> const& /*p_args*/) {
+  // TODO(tybl):
   // 1. Ignore first argument, as it is the name that invoked the program
   // 2. For each of the argument_strings in p_args,
   //  a. Check if the argument_string is a positional argument

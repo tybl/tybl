@@ -20,7 +20,7 @@ struct shared_stats {
 
 struct Board : public i_node {
   std::vector<std::string> m_contents;
-  size_t m_priority;
+  size_t m_priority = 0;
   std::shared_ptr<shared_stats> m_stats;
   size_t m_id;
   mutable Board const* m_parent;

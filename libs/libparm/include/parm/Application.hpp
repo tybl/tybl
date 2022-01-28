@@ -27,7 +27,7 @@ class Application {
   std::map<std::string_view, list_iterator> m_argument_map;
 
 public:
-  Application(std::string p_name, std::string p_version);
+  Application(std::string const& p_name, std::string const& p_version);
 
   // Ref: https://www.modernescpp.com/index.php/c-core-guidelines-rules-for-variadic-templates
   template <typename... Args>
