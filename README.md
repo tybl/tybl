@@ -67,3 +67,4 @@
 ## TODO
 
 - [ ] Move resources to docs folder
+- [ ] Enable Github CI
