@@ -9,6 +9,7 @@
 namespace tybl::log {
 
 std::ostream& log(std::string const& p_output, uint32_t p_line_number);
+std::ostream& log();
 
 } // namespace tybl::log
 
