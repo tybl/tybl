@@ -1,21 +1,22 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_JSON_VALUE_HPP
-#define TYBL_JSON_VALUE_HPP
+#ifndef _TYBL__JSON__VALUE__HPP_
+#define _TYBL__JSON__VALUE__HPP_
+
+#include <vodka/string_view/basic_string_view.hpp>
 
 #include <map>
-#include <string_view>
 #include <variant>
 #include <vector>
 
 namespace tybl::json {
 
-struct value : public std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>> {
-  using Base = std::variant<std::string_view, std::vector<value>, std::map<std::string_view, value>>;
+struct value : public std::variant<tybl::vodka::string_view, std::vector<value>, std::map<tybl::vodka::string_view, value>> {
+  using Base = std::variant<tybl::vodka::string_view, std::vector<value>, std::map<tybl::vodka::string_view, value>>;
   using Base::operator=;
   using Base::Base;
 };
 
 } // namespace tybl::json
 
-#endif // TYBL_JSON_VALUE_HPP
+#endif // _TYBL__JSON__VALUE__HPP_

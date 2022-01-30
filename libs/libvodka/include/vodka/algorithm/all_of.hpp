@@ -8,8 +8,8 @@
 namespace tybl::vodka {
 
 template <typename Iter, typename Pred>
-constexpr bool all_of(Iter first, Iter last, Pred p) {
-  return (::tybl::vodka::find_if_not(first, last, p) == last);
+constexpr bool all_of(Iter p_range_begin, Iter p_range_end, Pred p_predicate) {
+  return (::tybl::vodka::find_if_not(p_range_begin, p_range_end, p_predicate) == p_range_end);
 }
 
 } // namespace tybl::vodka

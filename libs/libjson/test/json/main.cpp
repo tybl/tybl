@@ -1,8 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
 #include "json/value.hpp"
-//#include "vodka/util/parse_error.hpp"   // for parse_error
 
-#include "vodka/parse_error.hpp"
+#include <vodka/string_view/basic_string_view.hpp>
+#include <vodka/parse_error.hpp>
 
 #include <cassert>
 #include <iostream>
@@ -59,14 +59,14 @@ enum class TokenType {
 // Invariants:
 //    * Non-zero length
 //    * No leading whitespace
-//    * Must be valid token (i.e. string...) TODO(tblyons): Not sure about this
+//    * Must be valid token (i.e. string...)
 struct token {
 
   TokenType type() const { return calculate_type(m_value); }
 
-  std::string_view value() const { return m_value; }
+  tybl::vodka::string_view value() const { return m_value; }
 
-  token(std::string_view p_sv)
+  explicit token(tybl::vodka::string_view p_sv)
     : m_value(p_sv) {}
 
   // Intent: Determine the token type of the input.
@@ -82,7 +82,7 @@ struct token {
   // Decisions:
   //    * Empty input:
   //    * Leading whitespace:
-  static TokenType calculate_type(std::string_view p_in) {
+  static TokenType calculate_type(tybl::vodka::string_view p_in) {
     assert(!p_in.empty());
     TokenType result = TokenType::UNKNOWN;
     // TODO(tblyons): Can we guarantee this function will never be called with
@@ -131,7 +131,7 @@ struct token {
   // Decisions:
   //    * Empty input:
   //    * Invalid token:
-  static size_t length(std::string_view p_in) {
+  static size_t length(tybl::vodka::string_view p_in) {
     size_t result = 1;
     if (p_in.empty()) {
       return 0;
@@ -141,11 +141,9 @@ struct token {
       case TokenType::TRUE: result = 4; break;
       case TokenType::FALSE: result = 5; break;
       case TokenType::STRING:
-        // TODO(tblyons): Calculate string length
         result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), str_re)->length());
         break;
       case TokenType::NUMBER:
-        // TODO(tblyons): Calculate number length
         result = static_cast<size_t>(std::cregex_iterator(p_in.begin(), p_in.end(), num_re)->length());
         break;
       case TokenType::OBJECT_OPEN:
@@ -155,19 +153,19 @@ struct token {
       case TokenType::SEPARATOR:
       case TokenType::DELIMITER:
       case TokenType::UNKNOWN:
-      default: break; // default value of 1 is correct
+        break; // default value of 1 is correct
     }
     return result;
   }
 
 private:
-  std::string_view m_value;
+  tybl::vodka::string_view m_value;
 }; // struct token
 
 #if 0
 struct token_iterator {
 
-  token_iterator(std::string_view p_in) : m_value(p_in) {}
+  token_iterator(tybl::vodka::string_view p_in) : m_value(p_in) {}
 
   token_iterator operator++() {
     m_value.remove_prefix(token::length(m_value));
@@ -183,7 +181,7 @@ struct token_iterator {
    }
 
 private:
-   std::string_view m_value;
+   tybl::vodka::string_view m_value;
 }; // struct token_iterator
 
 struct Json {
@@ -202,7 +200,7 @@ private:
 }; // struct Json
 #endif
 
-static std::vector<token> lex(std::string_view p_in) {
+static std::vector<token> lex(tybl::vodka::string_view p_in) {
   std::vector<token> result;
   while (!p_in.empty()) {
     switch (p_in.front()) {
@@ -281,29 +279,29 @@ static std::vector<token> lex(std::string_view p_in) {
   return result;
 }
 
-value parse_element(std::string_view& p_in);
-value parse_value(std::string_view& p_in);
+value parse_element(tybl::vodka::string_view& p_in);
+value parse_value(tybl::vodka::string_view& p_in);
 
 static constexpr char FALSE[] = "false";
 static constexpr char NIL[] = "null";
 static constexpr char TRUE[] = "true";
 
 template <char CHAR>
-bool parse_character(std::string_view& p_in) {
+bool parse_character(tybl::vodka::string_view& p_in) {
   bool result = (!p_in.empty() && CHAR == p_in.front());
-  p_in.remove_prefix(static_cast<std::string_view::size_type>(result));
+  p_in.remove_prefix(static_cast<tybl::vodka::string_view::size_type>(result));
   return result;
-} // parse_character(std::string_view&)
+} // parse_character(tybl::vodka::string_view&)
 
-static void parse_whitespace(std::string_view& p_in) {
-  static constexpr std::string_view WHITESPACE_CHARS("\x09\x0A\x0D\x20");
+static void parse_whitespace(tybl::vodka::string_view& p_in) {
+  static constexpr tybl::vodka::string_view WHITESPACE_CHARS("\x09\x0A\x0D\x20");
   auto pos = p_in.find_first_not_of(WHITESPACE_CHARS);
-  p_in.remove_prefix((p_in.npos != pos) ? pos : 0); // consume whitespace
-} // parse_whitespace(std::string_view&)
+  p_in.remove_prefix((tybl::vodka::string_view::npos != pos) ? pos : 0); // consume whitespace
+} // parse_whitespace(tybl::vodka::string_view&)
 
 template <const char* LITERAL>
-std::string_view parse_literal(std::string_view& p_in) {
-  static constexpr std::string_view prefix = LITERAL;
+tybl::vodka::string_view parse_literal(tybl::vodka::string_view& p_in) {
+  static constexpr tybl::vodka::string_view prefix(LITERAL);
   auto result = p_in.substr(0, prefix.length());
   if (prefix != result) {
     throw vodka::parse_error("Error: Expected to find JSON literal '{}'");
@@ -311,22 +309,22 @@ std::string_view parse_literal(std::string_view& p_in) {
   p_in.remove_prefix(prefix.length());
   printf(LITERAL);
   return result;
-} // parse_literal(std::string_view&)
+} // parse_literal(tybl::vodka::string_view&)
 
-static std::string_view parse_number(std::string_view& p_in) {
+static tybl::vodka::string_view parse_number(tybl::vodka::string_view& p_in) {
   static std::regex re("^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
   auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
   if (!rei->ready() || rei->empty() || rei->position() != 0) {
     throw vodka::parse_error("Error: Expected JSON Number");
   }
   auto len = static_cast<size_t>(rei->length());
-  std::string_view result(p_in.data(), len);
+  tybl::vodka::string_view result(p_in.data(), len);
   p_in.remove_prefix(len);
   printf("#");
   return result;
-} // parse_number(std::string_view&)
+} // parse_number(tybl::vodka::string_view&)
 
-static std::string_view parse_string(std::string_view& p_in) {
+static tybl::vodka::string_view parse_string(tybl::vodka::string_view& p_in) {
   if (!parse_character<'"'>(p_in)) {
     throw vodka::parse_error("Error: JSON String not found");
   }
@@ -362,10 +360,10 @@ static std::string_view parse_string(std::string_view& p_in) {
   p_in.remove_prefix(i + 1);
   printf("\"");
   return result;
-} // parse_string(std::string_view&)
+} // parse_string(tybl::vodka::string_view&)
 
 // Recursive
-static std::vector<value> parse_array(std::string_view& p_in) {
+static std::vector<value> parse_array(tybl::vodka::string_view& p_in) {
   if (!parse_character<'['>(p_in)) {
     throw vodka::parse_error("Error: JSON Array not found");
   }
@@ -385,18 +383,18 @@ static std::vector<value> parse_array(std::string_view& p_in) {
   }
   printf("]");
   return result;
-} // parse_array(std::string_view&)
+} // parse_array(tybl::vodka::string_view&)
 
 // Recursive
-static std::map<std::string_view, value> parse_object(std::string_view& p_in) {
+static std::map<tybl::vodka::string_view, value> parse_object(tybl::vodka::string_view& p_in) {
   if (!parse_character<'{'>(p_in)) {
     throw vodka::parse_error("Error: JSON Object not found");
   }
   printf("{");
-  std::map<std::string_view, value> result;
+  std::map<tybl::vodka::string_view, value> result;
   parse_whitespace(p_in);
   if (!p_in.empty() && '}' != p_in.front()) {
-    std::string_view key = parse_string(p_in);
+    tybl::vodka::string_view key = parse_string(p_in);
     parse_whitespace(p_in);
     if (!parse_character<':'>(p_in)) {
       throw vodka::parse_error("Error: Missing ':' within JSON Object1");
@@ -420,10 +418,10 @@ static std::map<std::string_view, value> parse_object(std::string_view& p_in) {
   }
   printf("}");
   return result;
-} // parse_object(std::string_view&)
+} // parse_object(tybl::vodka::string_view&)
 
 // Recursive
-value parse_value(std::string_view& p_in) {
+value parse_value(tybl::vodka::string_view& p_in) {
   value result;
   if (p_in.empty()) {
     throw vodka::parse_error("Error: Expected JSON value before end of input");
@@ -449,32 +447,31 @@ value parse_value(std::string_view& p_in) {
     default: throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON value");
   }
   return result;
-} // parse_value(std::string_view&)
+} // parse_value(tybl::vodka::string_view&)
 
 // Recursive
-value parse_element(std::string_view& p_in) {
+value parse_element(tybl::vodka::string_view& p_in) {
   parse_whitespace(p_in);
   auto result = parse_value(p_in);
   parse_whitespace(p_in);
   return result;
-} // parse_element(std::string_view&)
+} // parse_element(tybl::vodka::string_view&)
 
-static value parse_json(std::string_view& p_in) {
+static value parse_json(tybl::vodka::string_view& p_in) {
   return parse_element(p_in);
-} // parse_json(std::string_view&)
+} // parse_json(tybl::vodka::string_view&)
 
 } // namespace tybl::json
 
 int main() {
-  std::string_view input(
+  tybl::vodka::string_view input(
       R"([ { "_id": "5e02311eb4f7fff26d6c8646", "index": 0, "guid": "0ea86154-c909-4220-97bc-21ae68a58474", "isActive": false, "balance": "$3,305.12", "picture": "http://placehold.it/32x32", "age": 23, "eyeColor": "green", "name": { "first": "Toni", "last": "Griffin" }, "company": "WAZZU", "email": "toni.griffin@wazzu.info", "phone": "+1 (869) 462-3047", "address": "570 Lake Street, Brazos, Wisconsin, 2880", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, June 26, 2015 10:53 PM", "latitude": "-81.846796", "longitude": "-144.778871", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Colon Vargas" }, { "id": 1, "name": "Hahn Summers" }, { "id": 2, "name": "Battle Gilliam" } ], "greeting": "Hello, Toni! You have 9 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311e2d3ae05377159db2", "index": 1, "guid": "ae96247d-dc1f-42f6-bc81-1cdd6b5c6829", "isActive": false, "balance": "$1,216.58", "picture": "http://placehold.it/32x32", "age": 23, "eyeColor": "brown", "name": { "first": "Betsy", "last": "Jacobson" }, "company": "JETSILK", "email": "betsy.jacobson@jetsilk.io", "phone": "+1 (904) 459-3265", "address": "402 Little Street, Oasis, Kentucky, 6452", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, July 9, 2015 4:20 AM", "latitude": "-70.234084", "longitude": "152.163603", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Guzman Landry" }, { "id": 1, "name": "Schroeder Whitfield" }, { "id": 2, "name": "Guerrero Glass" } ], "greeting": "Hello, Betsy! You have 10 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311eaaec27bddb05708e", "index": 2, "guid": "cff1b9ac-f291-414f-97ca-101976eaeef6", "isActive": true, "balance": "$2,621.82", "picture": "http://placehold.it/32x32", "age": 24, "eyeColor": "green", "name": { "first": "Clark", "last": "Barnes" }, "company": "PYRAMAX", "email": "clark.barnes@pyramax.tv", "phone": "+1 (943) 500-2711", "address": "339 Polar Street, Bowmansville, Missouri, 1724", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, February 5, 2016 6:26 AM", "latitude": "-18.563984", "longitude": "46.697694", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Elba Huff" }, { "id": 1, "name": "Kathleen Conner" }, { "id": 2, "name": "Hannah Burns" } ], "greeting": "Hello, Clark! You have 6 unread messages.", "favoriteFruit": "banana" }, { "_id": "5e02311ebd588df9ba3e0efe", "index": 3, "guid": "50f54d1c-aaeb-45c8-bcaa-3c7912acd29a", "isActive": true, "balance": "$3,393.94", "picture": "http://placehold.it/32x32", "age": 31, "eyeColor": "brown", "name": { "first": "Keller", "last": "Bates" }, "company": "OVIUM", "email": "keller.bates@ovium.co.uk", "phone": "+1 (873) 573-3712", "address": "809 Quay Street, Lorraine, Maryland, 8007", "about": "<TypeError: loremIpsum is not a function>", "registered": "Monday, April 18, 2016 11:35 AM", "latitude": "-38.828076", "longitude": "-11.594935", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Lorene Stephens" }, { "id": 1, "name": "Rosanna Pierce" }, { "id": 2, "name": "Ana Travis" } ], "greeting": "Hello, Keller! You have 10 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311ec64656551ff176fd", "index": 4, "guid": "efa71fb6-e9a7-4126-9fdd-7e8c364bdbca", "isActive": true, "balance": "$2,071.33", "picture": "http://placehold.it/32x32", "age": 26, "eyeColor": "blue", "name": { "first": "Ursula", "last": "Rosario" }, "company": "TWIIST", "email": "ursula.rosario@twiist.org", "phone": "+1 (961) 466-2258", "address": "142 Lawrence Avenue, Caspar, Pennsylvania, 7497", "about": "<TypeError: loremIpsum is not a function>", "registered": "Saturday, April 7, 2018 12:14 AM", "latitude": "8.87866", "longitude": "159.005552", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Espinoza Harding" }, { "id": 1, "name": "Cynthia Washington" }, { "id": 2, "name": "Felecia Mayo" } ], "greeting": "Hello, Ursula! You have 7 unread messages.", "favoriteFruit": "banana" }, { "_id": "5e02311e0b2739a8ab4c2b73", "index": 5, "guid": "424b50e2-7426-4ad3-9895-1915674ac20c", "isActive": false, "balance": "$1,763.35", "picture": "http://placehold.it/32x32", "age": 27, "eyeColor": "green", "name": { "first": "Parsons", "last": "Reynolds" }, "company": "BIOTICA", "email": "parsons.reynolds@biotica.us", "phone": "+1 (954) 537-2763", "address": "758 Highland Avenue, Sims, Northern Mariana Islands, 5317", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, April 13, 2017 7:29 PM", "latitude": "51.800116", "longitude": "-166.912803", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Carmella Rasmussen" }, { "id": 1, "name": "Cox Pope" }, { "id": 2, "name": "Christian Mills" } ], "greeting": "Hello, Parsons! You have 5 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311e9a939b787c8962f5", "index": 6, "guid": "c040191c-4d08-438a-8a18-bffb81725b29", "isActive": true, "balance": "$2,125.23", "picture": "http://placehold.it/32x32", "age": 20, "eyeColor": "brown", "name": { "first": "Sanford", "last": "Luna" }, "company": "REPETWIRE", "email": "sanford.luna@repetwire.ca", "phone": "+1 (986) 418-3119", "address": "206 Truxton Street, Tryon, South Carolina, 7676", "about": "<TypeError: loremIpsum is not a function>", "registered": "Sunday, January 17, 2016 3:58 AM", "latitude": "-5.489691", "longitude": "18.393453", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Katharine Leach" }, { "id": 1, "name": "Jackie Howard" }, { "id": 2, "name": "Ericka Kelley" } ], "greeting": "Hello, Sanford! You have 8 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311ed0701d0ce968a58c", "index": 7, "guid": "6956ec95-c140-4a7d-bdbf-186d2788abe4", "isActive": true, "balance": "$2,766.13", "picture": "http://placehold.it/32x32", "age": 38, "eyeColor": "blue", "name": { "first": "Witt", "last": "Winters" }, "company": "VETRON", "email": "witt.winters@vetron.net", "phone": "+1 (836) 510-3138", "address": "132 Wogan Terrace, Maury, Ohio, 1113", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, November 2, 2018 7:53 PM", "latitude": "28.934741", "longitude": "149.678983", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Iva Garcia" }, { "id": 1, "name": "Meyers Gentry" }, { "id": 2, "name": "Kenya Carpenter" } ], "greeting": "Hello, Witt! You have 6 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311e615133e998ffb689", "index": 8, "guid": "76f59cf9-a1f5-4289-8f04-97be29cbd557", "isActive": true, "balance": "$2,317.41", "picture": "http://placehold.it/32x32", "age": 26, "eyeColor": "green", "name": { "first": "Reilly", "last": "Meadows" }, "company": "CENTICE", "email": "reilly.meadows@centice.name", "phone": "+1 (987) 457-3166", "address": "132 Llama Court, Elrama, American Samoa, 5050", "about": "<TypeError: loremIpsum is not a function>", "registered": "Wednesday, August 17, 2016 1:43 AM", "latitude": "87.182673", "longitude": "97.286414", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Louisa Oneil" }, { "id": 1, "name": "Hendricks Franco" }, { "id": 2, "name": "Sherrie Cote" } ], "greeting": "Hello, Reilly! You have 6 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311ea3a55d6ed92a7718", "index": 9, "guid": "e7d3104c-18b7-4251-a0e3-eba8f26e5dc6", "isActive": true, "balance": "$3,915.23", "picture": "http://placehold.it/32x32", "age": 36, "eyeColor": "green", "name": { "first": "Buchanan", "last": "Dean" }, "company": "AMTAS", "email": "buchanan.dean@amtas.com", "phone": "+1 (986) 461-3487", "address": "950 Moffat Street, Century, New York, 8233", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, December 19, 2019 9:00 PM", "latitude": "-34.83994", "longitude": "-46.420874", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Woodard Stone" }, { "id": 1, "name": "Sharon Fulton" }, { "id": 2, "name": "Dejesus Reid" } ], "greeting": "Hello, Buchanan! You have 8 unread messages.", "favoriteFruit": "banana" } ])");
   auto result = tybl::json::parse_json(input);
   static_cast<void>(result);
   // document count = json/"root"/"home"/"user"/"doc"/"fin"/"budget"/"count";
-  input =
-      R"([ { "_id": "5e02311eb4f7fff26d6c8646", "index": 0, "guid": "0ea86154-c909-4220-97bc-21ae68a58474", "isActive": false, "balance": "$3,305.12", "picture": "http://placehold.it/32x32", "age": 23, "eyeColor": "green", "name": { "first": "Toni", "last": "Griffin" }, "company": "WAZZU", "email": "toni.griffin@wazzu.info", "phone": "+1 (869) 462-3047", "address": "570 Lake Street, Brazos, Wisconsin, 2880", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, June 26, 2015 10:53 PM", "latitude": "-81.846796", "longitude": "-144.778871", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Colon Vargas" }, { "id": 1, "name": "Hahn Summers" }, { "id": 2, "name": "Battle Gilliam" } ], "greeting": "Hello, Toni! You have 9 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311e2d3ae05377159db2", "index": 1, "guid": "ae96247d-dc1f-42f6-bc81-1cdd6b5c6829", "isActive": false, "balance": "$1,216.58", "picture": "http://placehold.it/32x32", "age": 23, "eyeColor": "brown", "name": { "first": "Betsy", "last": "Jacobson" }, "company": "JETSILK", "email": "betsy.jacobson@jetsilk.io", "phone": "+1 (904) 459-3265", "address": "402 Little Street, Oasis, Kentucky, 6452", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, July 9, 2015 4:20 AM", "latitude": "-70.234084", "longitude": "152.163603", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Guzman Landry" }, { "id": 1, "name": "Schroeder Whitfield" }, { "id": 2, "name": "Guerrero Glass" } ], "greeting": "Hello, Betsy! You have 10 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311eaaec27bddb05708e", "index": 2, "guid": "cff1b9ac-f291-414f-97ca-101976eaeef6", "isActive": true, "balance": "$2,621.82", "picture": "http://placehold.it/32x32", "age": 24, "eyeColor": "green", "name": { "first": "Clark", "last": "Barnes" }, "company": "PYRAMAX", "email": "clark.barnes@pyramax.tv", "phone": "+1 (943) 500-2711", "address": "339 Polar Street, Bowmansville, Missouri, 1724", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, February 5, 2016 6:26 AM", "latitude": "-18.563984", "longitude": "46.697694", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Elba Huff" }, { "id": 1, "name": "Kathleen Conner" }, { "id": 2, "name": "Hannah Burns" } ], "greeting": "Hello, Clark! You have 6 unread messages.", "favoriteFruit": "banana" }, { "_id": "5e02311ebd588df9ba3e0efe", "index": 3, "guid": "50f54d1c-aaeb-45c8-bcaa-3c7912acd29a", "isActive": true, "balance": "$3,393.94", "picture": "http://placehold.it/32x32", "age": 31, "eyeColor": "brown", "name": { "first": "Keller", "last": "Bates" }, "company": "OVIUM", "email": "keller.bates@ovium.co.uk", "phone": "+1 (873) 573-3712", "address": "809 Quay Street, Lorraine, Maryland, 8007", "about": "<TypeError: loremIpsum is not a function>", "registered": "Monday, April 18, 2016 11:35 AM", "latitude": "-38.828076", "longitude": "-11.594935", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Lorene Stephens" }, { "id": 1, "name": "Rosanna Pierce" }, { "id": 2, "name": "Ana Travis" } ], "greeting": "Hello, Keller! You have 10 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311ec64656551ff176fd", "index": 4, "guid": "efa71fb6-e9a7-4126-9fdd-7e8c364bdbca", "isActive": true, "balance": "$2,071.33", "picture": "http://placehold.it/32x32", "age": 26, "eyeColor": "blue", "name": { "first": "Ursula", "last": "Rosario" }, "company": "TWIIST", "email": "ursula.rosario@twiist.org", "phone": "+1 (961) 466-2258", "address": "142 Lawrence Avenue, Caspar, Pennsylvania, 7497", "about": "<TypeError: loremIpsum is not a function>", "registered": "Saturday, April 7, 2018 12:14 AM", "latitude": "8.87866", "longitude": "159.005552", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Espinoza Harding" }, { "id": 1, "name": "Cynthia Washington" }, { "id": 2, "name": "Felecia Mayo" } ], "greeting": "Hello, Ursula! You have 7 unread messages.", "favoriteFruit": "banana" }, { "_id": "5e02311e0b2739a8ab4c2b73", "index": 5, "guid": "424b50e2-7426-4ad3-9895-1915674ac20c", "isActive": false, "balance": "$1,763.35", "picture": "http://placehold.it/32x32", "age": 27, "eyeColor": "green", "name": { "first": "Parsons", "last": "Reynolds" }, "company": "BIOTICA", "email": "parsons.reynolds@biotica.us", "phone": "+1 (954) 537-2763", "address": "758 Highland Avenue, Sims, Northern Mariana Islands, 5317", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, April 13, 2017 7:29 PM", "latitude": "51.800116", "longitude": "-166.912803", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Carmella Rasmussen" }, { "id": 1, "name": "Cox Pope" }, { "id": 2, "name": "Christian Mills" } ], "greeting": "Hello, Parsons! You have 5 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311e9a939b787c8962f5", "index": 6, "guid": "c040191c-4d08-438a-8a18-bffb81725b29", "isActive": true, "balance": "$2,125.23", "picture": "http://placehold.it/32x32", "age": 20, "eyeColor": "brown", "name": { "first": "Sanford", "last": "Luna" }, "company": "REPETWIRE", "email": "sanford.luna@repetwire.ca", "phone": "+1 (986) 418-3119", "address": "206 Truxton Street, Tryon, South Carolina, 7676", "about": "<TypeError: loremIpsum is not a function>", "registered": "Sunday, January 17, 2016 3:58 AM", "latitude": "-5.489691", "longitude": "18.393453", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Katharine Leach" }, { "id": 1, "name": "Jackie Howard" }, { "id": 2, "name": "Ericka Kelley" } ], "greeting": "Hello, Sanford! You have 8 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311ed0701d0ce968a58c", "index": 7, "guid": "6956ec95-c140-4a7d-bdbf-186d2788abe4", "isActive": true, "balance": "$2,766.13", "picture": "http://placehold.it/32x32", "age": 38, "eyeColor": "blue", "name": { "first": "Witt", "last": "Winters" }, "company": "VETRON", "email": "witt.winters@vetron.net", "phone": "+1 (836) 510-3138", "address": "132 Wogan Terrace, Maury, Ohio, 1113", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, November 2, 2018 7:53 PM", "latitude": "28.934741", "longitude": "149.678983", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Iva Garcia" }, { "id": 1, "name": "Meyers Gentry" }, { "id": 2, "name": "Kenya Carpenter" } ], "greeting": "Hello, Witt! You have 6 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311e615133e998ffb689", "index": 8, "guid": "76f59cf9-a1f5-4289-8f04-97be29cbd557", "isActive": true, "balance": "$2,317.41", "picture": "http://placehold.it/32x32", "age": 26, "eyeColor": "green", "name": { "first": "Reilly", "last": "Meadows" }, "company": "CENTICE", "email": "reilly.meadows@centice.name", "phone": "+1 (987) 457-3166", "address": "132 Llama Court, Elrama, American Samoa, 5050", "about": "<TypeError: loremIpsum is not a function>", "registered": "Wednesday, August 17, 2016 1:43 AM", "latitude": "87.182673", "longitude": "97.286414", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Louisa Oneil" }, { "id": 1, "name": "Hendricks Franco" }, { "id": 2, "name": "Sherrie Cote" } ], "greeting": "Hello, Reilly! You have 6 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311ea3a55d6ed92a7718", "index": 9, "guid": "e7d3104c-18b7-4251-a0e3-eba8f26e5dc6", "isActive": true, "balance": "$3,915.23", "picture": "http://placehold.it/32x32", "age": 36, "eyeColor": "green", "name": { "first": "Buchanan", "last": "Dean" }, "company": "AMTAS", "email": "buchanan.dean@amtas.com", "phone": "+1 (986) 461-3487", "address": "950 Moffat Street, Century, New York, 8233", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, December 19, 2019 9:00 PM", "latitude": "-34.83994", "longitude": "-46.420874", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Woodard Stone" }, { "id": 1, "name": "Sharon Fulton" }, { "id": 2, "name": "Dejesus Reid" } ], "greeting": "Hello, Buchanan! You have 8 unread messages.", "favoriteFruit": "banana" } ])";
-  auto lexed_result = tybl::json::lex(input);
-  for (auto lr : lexed_result) {
+  input = static_cast<tybl::vodka::string_view>(
+      R"([ { "_id": "5e02311eb4f7fff26d6c8646", "index": 0, "guid": "0ea86154-c909-4220-97bc-21ae68a58474", "isActive": false, "balance": "$3,305.12", "picture": "http://placehold.it/32x32", "age": 23, "eyeColor": "green", "name": { "first": "Toni", "last": "Griffin" }, "company": "WAZZU", "email": "toni.griffin@wazzu.info", "phone": "+1 (869) 462-3047", "address": "570 Lake Street, Brazos, Wisconsin, 2880", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, June 26, 2015 10:53 PM", "latitude": "-81.846796", "longitude": "-144.778871", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Colon Vargas" }, { "id": 1, "name": "Hahn Summers" }, { "id": 2, "name": "Battle Gilliam" } ], "greeting": "Hello, Toni! You have 9 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311e2d3ae05377159db2", "index": 1, "guid": "ae96247d-dc1f-42f6-bc81-1cdd6b5c6829", "isActive": false, "balance": "$1,216.58", "picture": "http://placehold.it/32x32", "age": 23, "eyeColor": "brown", "name": { "first": "Betsy", "last": "Jacobson" }, "company": "JETSILK", "email": "betsy.jacobson@jetsilk.io", "phone": "+1 (904) 459-3265", "address": "402 Little Street, Oasis, Kentucky, 6452", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, July 9, 2015 4:20 AM", "latitude": "-70.234084", "longitude": "152.163603", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Guzman Landry" }, { "id": 1, "name": "Schroeder Whitfield" }, { "id": 2, "name": "Guerrero Glass" } ], "greeting": "Hello, Betsy! You have 10 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311eaaec27bddb05708e", "index": 2, "guid": "cff1b9ac-f291-414f-97ca-101976eaeef6", "isActive": true, "balance": "$2,621.82", "picture": "http://placehold.it/32x32", "age": 24, "eyeColor": "green", "name": { "first": "Clark", "last": "Barnes" }, "company": "PYRAMAX", "email": "clark.barnes@pyramax.tv", "phone": "+1 (943) 500-2711", "address": "339 Polar Street, Bowmansville, Missouri, 1724", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, February 5, 2016 6:26 AM", "latitude": "-18.563984", "longitude": "46.697694", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Elba Huff" }, { "id": 1, "name": "Kathleen Conner" }, { "id": 2, "name": "Hannah Burns" } ], "greeting": "Hello, Clark! You have 6 unread messages.", "favoriteFruit": "banana" }, { "_id": "5e02311ebd588df9ba3e0efe", "index": 3, "guid": "50f54d1c-aaeb-45c8-bcaa-3c7912acd29a", "isActive": true, "balance": "$3,393.94", "picture": "http://placehold.it/32x32", "age": 31, "eyeColor": "brown", "name": { "first": "Keller", "last": "Bates" }, "company": "OVIUM", "email": "keller.bates@ovium.co.uk", "phone": "+1 (873) 573-3712", "address": "809 Quay Street, Lorraine, Maryland, 8007", "about": "<TypeError: loremIpsum is not a function>", "registered": "Monday, April 18, 2016 11:35 AM", "latitude": "-38.828076", "longitude": "-11.594935", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Lorene Stephens" }, { "id": 1, "name": "Rosanna Pierce" }, { "id": 2, "name": "Ana Travis" } ], "greeting": "Hello, Keller! You have 10 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311ec64656551ff176fd", "index": 4, "guid": "efa71fb6-e9a7-4126-9fdd-7e8c364bdbca", "isActive": true, "balance": "$2,071.33", "picture": "http://placehold.it/32x32", "age": 26, "eyeColor": "blue", "name": { "first": "Ursula", "last": "Rosario" }, "company": "TWIIST", "email": "ursula.rosario@twiist.org", "phone": "+1 (961) 466-2258", "address": "142 Lawrence Avenue, Caspar, Pennsylvania, 7497", "about": "<TypeError: loremIpsum is not a function>", "registered": "Saturday, April 7, 2018 12:14 AM", "latitude": "8.87866", "longitude": "159.005552", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Espinoza Harding" }, { "id": 1, "name": "Cynthia Washington" }, { "id": 2, "name": "Felecia Mayo" } ], "greeting": "Hello, Ursula! You have 7 unread messages.", "favoriteFruit": "banana" }, { "_id": "5e02311e0b2739a8ab4c2b73", "index": 5, "guid": "424b50e2-7426-4ad3-9895-1915674ac20c", "isActive": false, "balance": "$1,763.35", "picture": "http://placehold.it/32x32", "age": 27, "eyeColor": "green", "name": { "first": "Parsons", "last": "Reynolds" }, "company": "BIOTICA", "email": "parsons.reynolds@biotica.us", "phone": "+1 (954) 537-2763", "address": "758 Highland Avenue, Sims, Northern Mariana Islands, 5317", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, April 13, 2017 7:29 PM", "latitude": "51.800116", "longitude": "-166.912803", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Carmella Rasmussen" }, { "id": 1, "name": "Cox Pope" }, { "id": 2, "name": "Christian Mills" } ], "greeting": "Hello, Parsons! You have 5 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311e9a939b787c8962f5", "index": 6, "guid": "c040191c-4d08-438a-8a18-bffb81725b29", "isActive": true, "balance": "$2,125.23", "picture": "http://placehold.it/32x32", "age": 20, "eyeColor": "brown", "name": { "first": "Sanford", "last": "Luna" }, "company": "REPETWIRE", "email": "sanford.luna@repetwire.ca", "phone": "+1 (986) 418-3119", "address": "206 Truxton Street, Tryon, South Carolina, 7676", "about": "<TypeError: loremIpsum is not a function>", "registered": "Sunday, January 17, 2016 3:58 AM", "latitude": "-5.489691", "longitude": "18.393453", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Katharine Leach" }, { "id": 1, "name": "Jackie Howard" }, { "id": 2, "name": "Ericka Kelley" } ], "greeting": "Hello, Sanford! You have 8 unread messages.", "favoriteFruit": "apple" }, { "_id": "5e02311ed0701d0ce968a58c", "index": 7, "guid": "6956ec95-c140-4a7d-bdbf-186d2788abe4", "isActive": true, "balance": "$2,766.13", "picture": "http://placehold.it/32x32", "age": 38, "eyeColor": "blue", "name": { "first": "Witt", "last": "Winters" }, "company": "VETRON", "email": "witt.winters@vetron.net", "phone": "+1 (836) 510-3138", "address": "132 Wogan Terrace, Maury, Ohio, 1113", "about": "<TypeError: loremIpsum is not a function>", "registered": "Friday, November 2, 2018 7:53 PM", "latitude": "28.934741", "longitude": "149.678983", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Iva Garcia" }, { "id": 1, "name": "Meyers Gentry" }, { "id": 2, "name": "Kenya Carpenter" } ], "greeting": "Hello, Witt! You have 6 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311e615133e998ffb689", "index": 8, "guid": "76f59cf9-a1f5-4289-8f04-97be29cbd557", "isActive": true, "balance": "$2,317.41", "picture": "http://placehold.it/32x32", "age": 26, "eyeColor": "green", "name": { "first": "Reilly", "last": "Meadows" }, "company": "CENTICE", "email": "reilly.meadows@centice.name", "phone": "+1 (987) 457-3166", "address": "132 Llama Court, Elrama, American Samoa, 5050", "about": "<TypeError: loremIpsum is not a function>", "registered": "Wednesday, August 17, 2016 1:43 AM", "latitude": "87.182673", "longitude": "97.286414", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Louisa Oneil" }, { "id": 1, "name": "Hendricks Franco" }, { "id": 2, "name": "Sherrie Cote" } ], "greeting": "Hello, Reilly! You have 6 unread messages.", "favoriteFruit": "strawberry" }, { "_id": "5e02311ea3a55d6ed92a7718", "index": 9, "guid": "e7d3104c-18b7-4251-a0e3-eba8f26e5dc6", "isActive": true, "balance": "$3,915.23", "picture": "http://placehold.it/32x32", "age": 36, "eyeColor": "green", "name": { "first": "Buchanan", "last": "Dean" }, "company": "AMTAS", "email": "buchanan.dean@amtas.com", "phone": "+1 (986) 461-3487", "address": "950 Moffat Street, Century, New York, 8233", "about": "<TypeError: loremIpsum is not a function>", "registered": "Thursday, December 19, 2019 9:00 PM", "latitude": "-34.83994", "longitude": "-46.420874", "tags": [ "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>", "<TypeError: loremIpsum is not a function>" ], "range": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ], "friends": [ { "id": 0, "name": "Woodard Stone" }, { "id": 1, "name": "Sharon Fulton" }, { "id": 2, "name": "Dejesus Reid" } ], "greeting": "Hello, Buchanan! You have 8 unread messages.", "favoriteFruit": "banana" } ])");
+  for (auto lexed_result = tybl::json::lex(input); auto lr : lexed_result) {
     std::cout << lr.value() << std::endl;
   }
   return 0;
