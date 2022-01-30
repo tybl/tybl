@@ -51,9 +51,9 @@ struct Board : public i_node {
   auto num_found() const -> size_t override;
 
   void apply(edge const& p_e);
-  static auto count_suffix_matching(std::string const& p_s, char p_c) -> size_t;
+  static auto count_suffix_matching(std::string_view p_s, char p_c) -> size_t;
   size_t calc_priority() const;
-  bool is_full(std::string const& p_s) const;
+  bool is_full(std::string_view p_s) const;
   bool is_full_and_homogeneous(std::string const& p_s) const;
   static auto is_homogeneous(std::string const& p_s) -> bool;
   bool is_valid(edge const& p_e) const;

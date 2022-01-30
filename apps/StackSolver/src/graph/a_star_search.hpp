@@ -15,14 +15,14 @@ struct a_star_search {
   std::vector<Iter> m_work_queue;
 
   struct node_weight {
-    bool operator()(Iter const& p_lhs, Iter const& p_rhs) {
+    bool operator()(Iter const& p_lhs, Iter const& p_rhs) const {
       auto lp = p_lhs->priority();
       auto rp = p_rhs->priority();
       return (lp < rp) || (lp == rp && p_lhs->distance() > p_rhs->distance());
     }
   }; // struct node_weight
 
-  a_star_search(Node p_start) {
+  explicit a_star_search(Node p_start) {
     auto res = m_found.insert(p_start);
     m_work_queue.push_back(res.first);
   }
@@ -34,8 +34,7 @@ struct a_star_search {
       if (curr->is_goal()) {
         return curr;
       }
-      auto nodes = curr->get_adjacent();
-      for (auto n : nodes) {
+      for (auto nodes = curr->get_adjacent(); auto n : nodes) {
         auto res = m_found.insert(n);
         if (res.second) {
           m_work_queue.push_back(res.first);
