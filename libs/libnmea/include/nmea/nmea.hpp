@@ -1,13 +1,12 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef TYBL_NMEA_NMEA_HPP
-#define TYBL_NMEA_NMEA_HPP
+#ifndef _TYBL__NMEA__NMEA__HPP_
+#define _TYBL__NMEA__NMEA__HPP_
 
 #include "nmea/GPSService.hpp"
 #include "nmea/Parser.hpp"
 #include "nmea/command.hpp"
-#include "nmea/parse_error.hpp"
 #include "nmea/query_rate.hpp"
 #include "nmea/serial_configuration.hpp"
 
-#endif // TYBL_NMEA_NMEA_HPP
+#endif // _TYBL__NMEA__NMEA__HPP_

@@ -1,8 +1,10 @@
 // License: The Unlicense (https://unlicense.org)
 //#include "nmea/NumberConversionError.hpp"
 #include "nmea/Parser.hpp"
-#include "nmea/parse_error.hpp"
+//#include "nmea/parse_error.hpp"
 #include "nmea/sentence.hpp"
+
+#include <vodka/parse_error.hpp>
 
 #include <cctype>
 #include <iostream>
@@ -154,7 +156,7 @@ void Parser::on_warn(sentence& /*nmea*/, std::string const& p_txt) const {
   }
 }
 
-void Parser::on_err(sentence& /*nmea*/, std::string const& p_txt) { throw parse_error("[ERROR] " + p_txt); }
+void Parser::on_err(sentence& /*nmea*/, std::string const& p_txt) { throw tybl::vodka::parse_error("[ERROR] " + p_txt); }
 
 // takes a complete NMEA string and gets the data bits from it,
 // calls the corresponding handler in m_event_table, based on the 5 letter sentence code
@@ -196,7 +198,7 @@ void Parser::read_sentence(std::string p_cmd) {
   // Separates the data now that everything is formatted
   try {
     parse_text(nmea, p_cmd);
-  } catch (parse_error&) {
+  } catch (tybl::vodka::parse_error&) {
     throw;
   } catch (std::exception& e) {
     std::string s = " >> NMEA Parser Internal Error: Indexing error?... ";

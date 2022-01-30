@@ -1,6 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
 #include "nmea/nmea.hpp"
 
+#include <vodka/parse_error.hpp>
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -39,8 +41,8 @@ int main(int argc, char* argv[]) {
     while (std::getline(file, line)) {
       try {
         parser.read_line(line);
-      } catch (nmea::parse_error& e) { // TODO(tybl): Can/should this be const&?
-        std::cout << e.message << std::endl;
+      } catch (tybl::vodka::parse_error& e) { // TODO(tybl): Can/should this be const&?
+        std::cout << e.what() << std::endl;
         // You can keep feeding data to the gps service...
         // The previous data is ignored and the parser is reset.
       }

@@ -2,7 +2,7 @@
 #include "nmea/GPSService.hpp"
 
 #include "gps/satellite.hpp"
-#include "nmea/parse_error.hpp"
+#include <vodka/parse_error.hpp>
 
 #include <cmath>
 #include <iostream>
@@ -102,11 +102,11 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
   */
   try {
     if (!p_nmea.is_checksum_ok()) {
-      throw parse_error("Invalid checksum");
+      throw tybl::vodka::parse_error("Invalid checksum");
     }
 
     if (p_nmea.parameters.size() < 14) {
-      throw parse_error("GPS data is missing parameters.");
+      throw tybl::vodka::parse_error("GPS data is missing parameters.");
     }
 
     // TIMESTAMP
@@ -157,12 +157,12 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
     }
     this->on_update();
   } catch (std::invalid_argument&) {
-    parse_error pe("[$GPGGA] Could not convert string to a number", p_nmea);
+    tybl::vodka::parse_error pe("[$GPGGA] Could not convert string to a number");
     throw pe;
-  } catch (parse_error& ex) {
-    parse_error pe("GPS Data Bad Format [$GPGGA] :: " + ex.message, p_nmea);
+  } /*catch (tybl::vodka::parse_error& ex) {
+    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPGGA] :: " + ex.what());
     throw pe;
-  }
+  }*/
 }
 
 void GPSService::read_gpgsa(sentence const& p_nmea) {
@@ -189,13 +189,13 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
     if (!p_nmea.is_checksum_ok()) {
       std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-      throw parse_error("Checksum is invalid!");
+      throw tybl::vodka::parse_error("Checksum is invalid!");
     }
 
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
     if (p_nmea.parameters.size() < 17) {
       std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-      throw parse_error("GPS data is missing parameters.");
+      throw tybl::vodka::parse_error("GPS data is missing parameters.");
     }
 
     // FIX TYPE
@@ -235,13 +235,13 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
     this->on_update();
   } catch (std::invalid_argument&) {
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-    parse_error pe("[$GPGSA] Could not convert string to number", p_nmea);
+    tybl::vodka::parse_error pe("[$GPGSA] Could not convert string to number");
     throw pe;
-  } catch (parse_error& ex) {
+  } /* catch (tybl::vodka::parse_error& ex) {
     std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-    parse_error pe("GPS Data Bad Format [$GPGSA] :: " + ex.message, p_nmea);
+    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPGSA] :: " + ex.message, p_nmea);
     throw pe;
-  }
+  }*/
   std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 }
 
@@ -271,12 +271,12 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
 
   try {
     if (!p_nmea.is_checksum_ok()) {
-      throw parse_error("Checksum is invalid!");
+      throw tybl::vodka::parse_error("Checksum is invalid!");
     }
 
     // can't do this check because the length varies depending on satellites...
     // if(nmea.parameters.size() < 18) {
-    //  throw parse_error("GPS data is missing parameters.");
+    //  throw tybl::vodka::parse_error("GPS data is missing parameters.");
     //}
 
     // VISIBLE SATELLITES
@@ -322,12 +322,12 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
     this->on_update();
 
   } catch (std::invalid_argument&) {
-    parse_error pe("[$GPGSV] Could not convert string to number", p_nmea);
+    tybl::vodka::parse_error pe("[$GPGSV] Could not convert string to number");
     throw pe;
-  } catch (parse_error& ex) {
-    parse_error pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, p_nmea);
+  } /* catch (tybl::vodka::parse_error& ex) {
+    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, p_nmea);
     throw pe;
-  }
+  }*/
 }
 
 void GPSService::read_gprmc(sentence const& p_nmea) {
@@ -353,11 +353,11 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
 
   try {
     if (!p_nmea.is_checksum_ok()) {
-      throw parse_error("Checksum is invalid!");
+      throw tybl::vodka::parse_error("Checksum is invalid!");
     }
 
     if (p_nmea.parameters.size() < 11) {
-      throw parse_error("GPS data is missing parameters.");
+      throw tybl::vodka::parse_error("GPS data is missing parameters.");
     }
 
     // TIMESTAMP
@@ -404,12 +404,12 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
     }
     this->on_update();
   } catch (std::invalid_argument&) {
-    parse_error pe("[$GPRMC] Could not convert string to number", p_nmea);
+    tybl::vodka::parse_error pe("[$GPRMC] Could not convert string to number");
     throw pe;
-  } catch (parse_error& ex) {
-    parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, p_nmea);
+  }/* catch (tybl::vodka::parse_error& ex) {
+    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, p_nmea);
     throw pe;
-  }
+  }*/
 }
 
 void GPSService::read_gpvtg(sentence const& p_nmea) {
@@ -428,11 +428,11 @@ void GPSService::read_gpvtg(sentence const& p_nmea) {
 
   try {
     if (!p_nmea.is_checksum_ok()) {
-      throw parse_error("Checksum is invalid!");
+      throw tybl::vodka::parse_error("Checksum is invalid!");
     }
 
     if (p_nmea.parameters.size() < 8) {
-      throw parse_error("GPS data is missing parameters.");
+      throw tybl::vodka::parse_error("GPS data is missing parameters.");
     }
 
     // SPEED
@@ -441,12 +441,12 @@ void GPSService::read_gpvtg(sentence const& p_nmea) {
 
     this->on_update();
   } catch (std::invalid_argument&) {
-    parse_error pe("[$GPVTG] Could not convert string to number", p_nmea);
+    tybl::vodka::parse_error pe("[$GPVTG] Could not convert string to number");
     throw pe;
-  } catch (parse_error& ex) {
-    parse_error pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, p_nmea);
+  }/* catch (tybl::vodka::parse_error& ex) {
+    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, p_nmea);
     throw pe;
-  }
+  }*/
 }
 
 } // namespace nmea
