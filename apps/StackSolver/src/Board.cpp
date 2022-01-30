@@ -34,7 +34,6 @@ Board::Board(std::istream& p_input)
 
 Board::Board(Board const& p_o, edge const& p_e)
   : m_contents(p_o.m_contents)
-  , m_priority(0)
   , m_stats(p_o.m_stats)
   , m_id(m_stats->m_boards.size())
   , m_parent(&p_o)
@@ -64,14 +63,13 @@ auto Board::generate_steps() const -> std::vector<edge> {
 }
 
 auto Board::operator+(edge const& p_e) const -> i_node const* {
-  auto result = m_stats->m_boards.emplace(*this, p_e);
-  Board const& b = *result.first;
-  if (result.second) {
-    return &b;
+  auto [b, is_new] = m_stats->m_boards.emplace(*this, p_e);
+  if (is_new) {
+    return std::to_address(b);
   }
-  if (distance() + 1 < b.distance()) {
-    b.m_parent = this;
-    b.m_distance = m_distance + 1;
+  if (distance() + 1 < b->distance()) {
+    b->m_parent = this;
+    b->m_distance = m_distance + 1;
   }
   return nullptr;
 }
@@ -126,12 +124,12 @@ auto Board::calc_priority() const -> size_t {
   return result;
 }
 
-auto Board::count_suffix_matching(std::string const& p_s, char p_c) -> size_t {
+auto Board::count_suffix_matching(std::string_view p_s, char p_c) -> size_t {
   auto i = p_s.rbegin();
   while (i != p_s.rend() && *i == p_c) {
     ++i;
   }
-  return std::distance(p_s.rbegin(), i);
+  return static_cast<size_t>(std::distance(p_s.rbegin(), i));
 }
 
 auto Board::is_valid(edge const& p_e) const -> bool {
@@ -154,10 +152,10 @@ auto Board::is_valid(edge const& p_e) const -> bool {
 }
 
 auto Board::is_homogeneous(std::string const& p_s) -> bool {
-  return std::all_of(p_s.begin(), p_s.end(), [&](char p_c) { return p_s.front() == p_c; });
+  return std::ranges::all_of(p_s.begin(), p_s.end(), [&](char p_c) { return p_s.front() == p_c; });
 }
 
-auto Board::is_full(std::string const& p_s) const -> bool { return p_s.size() == m_stats->m_max_stack_height; }
+auto Board::is_full(std::string_view p_s) const -> bool { return p_s.size() == m_stats->m_max_stack_height; }
 
 auto Board::is_full_and_homogeneous(std::string const& p_s) const -> bool {
   return is_full(p_s) && is_homogeneous(p_s);

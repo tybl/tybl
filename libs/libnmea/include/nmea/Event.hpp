@@ -32,7 +32,7 @@ class Event<void(Args...)> {
     if (&p_ref != this) {
       m_handlers = p_ref.m_handlers;
     }
-  };
+  }
 
   bool remove_handler(ListIterator p_handler_i) {
     if (p_handler_i == m_handlers.end()) {
@@ -41,7 +41,7 @@ class Event<void(Args...)> {
 
     m_handlers.erase(p_handler_i);
     return true;
-  };
+  }
 
 public:
   // Typenames
@@ -51,13 +51,13 @@ public:
   // (none)
 
   // Properties
-  bool enabled;
+  bool enabled = true;
 
   // Functions
   Event()
     : enabled(true) {}
 
-  virtual ~Event() {}
+  virtual ~Event() = default;
 
   Event(const Event& p_ref) { copy(p_ref); }
 
@@ -96,20 +96,20 @@ public:
     bool sts = remove_handler(p_handler.m_iterator);
     p_handler.m_iterator = m_handlers.end();
     return sts;
-  };
+  }
 
   void clear() {
     for (auto h = m_handlers.begin(); h != m_handlers.end(); h++) {
       (*h).m_iterator = m_handlers.end();
     }
     m_handlers.clear();
-  };
+  }
 
   void operator()(Args... p_args) { return call(p_args...); };
   EventHandler<void(Args...)> operator+=(EventHandler<void(Args...)> p_handler) { return register_handler(p_handler); };
   EventHandler<void(Args...)> operator+=(std::function<void(Args...)> p_handler) {
     return register_handler(p_handler);
-  };
+  }
   bool operator-=(EventHandler<void(Args...)>& p_handler) { return remove_handler(p_handler); };
   bool operator-=(uint64_t p_handler_id) { return remove_handler(p_handler_id); };
 
