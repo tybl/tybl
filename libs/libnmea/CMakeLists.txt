@@ -13,7 +13,6 @@ target_sources(nmea
     src/gps/fix.cpp
     src/nmea/Command.cpp
     src/nmea/GPSService.cpp
-    src/nmea/parse_error.cpp
     src/nmea/Parser.cpp
     src/nmea/query_rate.cpp
     src/nmea/sentence.cpp
@@ -26,7 +25,6 @@ target_sources(nmea
     include/nmea/Event.hpp
     include/nmea/EventHandler.hpp
     include/nmea/nmea.hpp
-    include/nmea/parse_error.hpp
     include/nmea/Parser.hpp
     include/nmea/sentence.hpp
 )
