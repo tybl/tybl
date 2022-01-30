@@ -7,15 +7,15 @@
 #include "vodka/algorithm/min.hpp"
 #include "vodka/type_traits/enable_if.hpp"
 
-#include <stddef.h> // size_t
+#include <cstddef> // size_t
 
 namespace tybl::lynel {
 
-constexpr bool is_vec(size_t p_extent, size_t p_rows, size_t p_cols) {
+constexpr auto is_vec(size_t p_extent, size_t p_rows, size_t p_cols) -> bool {
   return ((p_rows == p_extent) && (1 == p_cols)) || ((p_cols == p_extent) && (1 == p_rows));
 }
 
-constexpr bool is_mat(size_t p_extent, size_t p_rows, size_t p_cols) { return (p_cols == p_extent) && (1 < p_rows); }
+constexpr auto is_mat(size_t p_extent, size_t p_rows, size_t p_cols) -> bool { return (p_cols == p_extent) && (1 < p_rows); }
 
 template <typename T, size_t R, size_t C, typename S = void>
 struct basic_matrix;
@@ -108,8 +108,8 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(3, M, N)>> {
     z /= p_s;
     return *this;
   }
-  constexpr auto dot(basic_matrix const& p_v) const -> value_type { return (x * p_v.x) + (y * p_v.y) + (z * p_v.z); }
-  constexpr auto cross(basic_matrix const& p_v) const -> basic_matrix {
+  [[nodiscard]] constexpr auto dot(basic_matrix const& p_v) const -> value_type { return (x * p_v.x) + (y * p_v.y) + (z * p_v.z); }
+  [[nodiscard]] constexpr auto cross(basic_matrix const& p_v) const -> basic_matrix {
     return basic_matrix{(y * p_v.z) - (z * p_v.y), (z * p_v.x) - (x * p_v.z), (x * p_v.y) - (y * p_v.x)};
   }
 };

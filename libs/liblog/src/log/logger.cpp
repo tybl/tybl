@@ -5,12 +5,10 @@
 
 namespace tybl::log {
 
-std::ostream& log(std::string const& p_output, uint32_t p_line_number) {
-  return std::cout << p_output << ": " << p_line_number;
-}
-
 std::ostream& log() {
   return std::cout;
 }
+
+// TODO(tybl): std::ostream& log(const std::source_location p_source_location) { return std::cout; }
 
 } // namespace tybl::log

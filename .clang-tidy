@@ -1,13 +1,18 @@
 ---
 # Reasons for excluded checks
+# - 'altera-unroll-loops':      This check is an unnecessary suggestion and adds noise
+# - 'altera-struct-pack-align': This check is an unnecessary suggestion and adds noise
 # - 'fuchsia-default-arguments-calls': This check prevents usage of a large part of the standard library
+# - 'fuchsia-overloaded-operator':
 # - 'fuchsia-trailing-return': This check is at odds with the 'modernize-use-trailing-return-type' check
 # - 'llvm-header-guard': I like the concept of this check, but it vacillates between requiring full and relative paths
+# - 'llvmlibc-callee-namespace': This check only makes sense for developing LLVM libc
+# - 'llvmlibc-implementation-in-namespace': This check only makes sense for developing LLVM libc
 # - 'llvmlibc-restrict-system-libc-headers': There's no need to restrict system headers
-#Checks:         '*,-fuchsia-default-arguments-calls,-fuchsia-default-arguments-declarations,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-altera-unroll-loops,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-altera-struct-pack-align'
-Checks:           '-*,readability-avoid-const-params-in-decls,readability-braces-around-statements,readability-const-return-type,readability-container-data-pointer,readability-else-after-return,readability-identifier-naming,readability-redundant-access-specifiers'
-#WarningsAsErrors: ''
-#HeaderFilterRegex: '.*'
+# - 'misc-no-recursion':
+# - 'misc-non-private-member-variables-in-classes':
+# - 'readability-function-cognitive-complexity':
+Checks:           '*,-altera-unroll-loops,-altera-struct-pack-align,-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-misc-no-recursion,-misc-non-private-member-variables-in-classes,-readability-function-cognitive-complexity'
 HeaderFilterRegex: '\.hpp'
 FormatStyle:     file
 CheckOptions:

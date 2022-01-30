@@ -15,13 +15,13 @@ class rae_t {
 public:
   rae_t(double p_range, double p_azimuth, double p_elevation);
 
-  auto to_frd() const -> frd_t;
+  [[nodiscard]] auto to_frd() const -> frd_t;
 
-  auto range() const -> double;
+  [[nodiscard]] auto range() const -> double;
 
-  auto azimuth() const -> double;
+  [[nodiscard]] auto azimuth() const -> double;
 
-  auto elevation() const -> double;
+  [[nodiscard]] auto elevation() const -> double;
 
 }; // class rae_t
 

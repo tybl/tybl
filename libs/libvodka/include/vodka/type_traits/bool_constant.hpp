@@ -7,8 +7,8 @@
 
 namespace tybl::vodka {
 
-template <bool _Val>
-using bool_constant = integral_constant<bool, _Val>;
+template <bool BoolValue>
+using bool_constant = integral_constant<bool, BoolValue>;
 
 } // namespace tybl::vodka
 
