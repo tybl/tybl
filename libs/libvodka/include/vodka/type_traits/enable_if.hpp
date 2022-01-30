@@ -5,14 +5,16 @@
 
 namespace tybl::vodka {
 
-template <bool, typename T = void>
+template <bool, typename TrueType = void>
 struct enable_if {};
-template <typename T>
-struct enable_if<true, T> {
-  typedef T type;
+
+template <typename TrueType>
+struct enable_if<true, TrueType> {
+  using type = TrueType;
 };
-template <bool B, typename T = void>
-using enable_if_t = typename enable_if<B, T>::type;
+
+template <bool B, typename TrueType = void>
+using enable_if_t = typename enable_if<B, TrueType>::type;
 
 } // namespace tybl::vodka
 

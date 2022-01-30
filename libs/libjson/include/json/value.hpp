@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef _TYBL__JSON__VALUE__HPP_
-#define _TYBL__JSON__VALUE__HPP_
+#ifndef TYBL_JSON_VALUE_HPP
+#define TYBL_JSON_VALUE_HPP
 
 #include <vodka/string_view/basic_string_view.hpp>
 
@@ -19,4 +19,4 @@ struct value : public std::variant<tybl::vodka::string_view, std::vector<value>,
 
 } // namespace tybl::json
 
-#endif // _TYBL__JSON__VALUE__HPP_
+#endif // TYBL_JSON_VALUE_HPP

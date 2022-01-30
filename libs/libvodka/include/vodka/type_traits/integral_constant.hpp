@@ -5,15 +5,15 @@
 
 namespace tybl::vodka {
 
-template <typename T, T V>
+template <typename Type, Type Value>
 struct integral_constant {
 
-  using value_type = T;
+  using value_type = Type;
   using type = integral_constant;
 
-  static constexpr value_type value = V;
+  static constexpr value_type value = Value;
 
-  constexpr operator value_type() const noexcept { return value; }
+  constexpr explicit operator value_type() const noexcept { return value; }
 
   [[nodiscard]] constexpr auto operator()() const noexcept -> value_type { return value; }
 };

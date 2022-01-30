@@ -13,19 +13,19 @@ class ned_t {
   lynel::cvec3<double> m_ned;
 
 public:
-  auto to_ecef(ecef_t const& p_ref_pos) const -> ecef_t;
+  [[nodiscard]] auto to_ecef(ecef_t const& p_ref_pos) const -> ecef_t;
 
-  auto x() const -> double;
+  [[nodiscard]] auto x() const -> double;
 
-  auto y() const -> double;
+  [[nodiscard]] auto y() const -> double;
 
-  auto z() const -> double;
+  [[nodiscard]] auto z() const -> double;
 
-  auto n() const -> double;
+  [[nodiscard]] auto n() const -> double;
 
-  auto e() const -> double;
+  [[nodiscard]] auto e() const -> double;
 
-  auto d() const -> double;
+  [[nodiscard]] auto d() const -> double;
 
 }; // class ned_t
 

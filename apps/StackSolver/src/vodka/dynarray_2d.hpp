@@ -45,11 +45,11 @@ public:
 
   ~dynarray_2d() = default;
 
-  const_reference operator()(size_t p_r, size_t p_c) const { return m_data[m_cols * p_r + p_c]; }
+  auto operator()(size_t p_r, size_t p_c) const -> const_reference { return m_data[m_cols * p_r + p_c]; }
 
-  reference operator()(size_t p_r, size_t p_c) { return m_data[m_cols * p_r + p_c]; }
+  auto operator()(size_t p_r, size_t p_c) -> reference { return m_data[m_cols * p_r + p_c]; }
 
-  bool operator<(dynarray_2d const& p_o) const {
+  [[nodiscard]] bool operator<(dynarray_2d const& p_o) const {
     const_pointer first1_p = m_data.get();
     const_pointer first2_p = p_o.m_data.get();
     const_pointer last1_p = first1_p + m_cols * m_rows;
@@ -65,11 +65,11 @@ public:
     return (first1_p == last1_p) && (first2_p != last2_p);
   }
 
-  size_type cols() const { return m_cols; }
+  [[nodiscard]] auto cols() const -> size_type { return m_cols; }
 
-  size_type rows() const { return m_rows; }
+  [[nodiscard]] auto rows() const -> size_type { return m_rows; }
 
-  std::span<const value_type> row(size_t p_r) const {
+  [[nodiscard]] auto row(size_t p_r) const -> std::span<const value_type> {
     return std::span<const value_type>(m_data.get() + (m_cols * p_r), m_cols);
   }
 

@@ -13,13 +13,13 @@ class lla_t {
   double m_altitude;
 
 public:
-  auto to_ecef() const -> ecef_t;
+  [[nodiscard]] auto to_ecef() const -> ecef_t;
 
-  auto latitude() const -> double;
+  [[nodiscard]] auto latitude() const -> double;
 
-  auto longitude() const -> double;
+  [[nodiscard]] auto longitude() const -> double;
 
-  auto altitude() const -> double;
+  [[nodiscard]] auto altitude() const -> double;
 
 }; // class lla_c
 
