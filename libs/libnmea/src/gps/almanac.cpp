@@ -5,10 +5,6 @@
 
 namespace gps {
 
-almanac::almanac()
-  : m_total_pages(0)
-  , m_processed_pages(0) {}
-
 void almanac::clear() {
   m_total_pages = 0;
   m_processed_pages = 0;

@@ -15,7 +15,7 @@ struct Board;
 
 struct shared_stats {
   std::set<Board> m_boards;
-  size_t m_max_stack_height;
+  size_t m_max_stack_height = 0;
 }; // struct shared_stats
 
 struct Board : public i_node {
@@ -52,11 +52,11 @@ struct Board : public i_node {
 
   void apply(edge const& p_e);
   static auto count_suffix_matching(std::string_view p_s, char p_c) -> size_t;
-  size_t calc_priority() const;
-  bool is_full(std::string_view p_s) const;
-  bool is_full_and_homogeneous(std::string const& p_s) const;
+  auto calc_priority() const -> size_t;
+  auto is_full(std::string_view p_s) const -> bool;
+  auto is_full_and_homogeneous(std::string const& p_s) const -> bool;
   static auto is_homogeneous(std::string const& p_s) -> bool;
-  bool is_valid(edge const& p_e) const;
+  auto is_valid(edge const& p_e) const -> bool;
 };
 
 #endif // TYBL_STACKSOLVER_BOARD_HPP

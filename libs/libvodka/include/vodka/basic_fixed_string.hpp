@@ -3,6 +3,8 @@
 #ifndef TYBL_VODKA_BASICFIXEDSTRING_HPP
 #define TYBL_VODKA_BASICFIXEDSTRING_HPP
 
+#include <vodka/string_view/basic_string_view.hpp>
+
 #include <cstddef>
 
 namespace tybl::vodka {
@@ -15,6 +17,8 @@ struct basic_fixed_string {
   [[nodiscard]] constexpr size_t size() const noexcept { return Size; }
 
   [[nodiscard]] explicit constexpr operator CharType const*() const noexcept { return m_buffer; }
+
+  [[nodiscard]] explicit constexpr operator tybl::vodka::string_view() const noexcept { return { m_buffer, Size }; }
 
 }; // struct basic_fixed_string
 
