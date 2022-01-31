@@ -41,6 +41,7 @@ target_sources(vodka
     include/vodka/type_traits/void_t.hpp
     include/vodka/utility/forward.hpp
     include/vodka/utility/move.hpp
+    include/vodka/basic_fixed_string.hpp
     include/vodka/parse_error.hpp
 )
 
@@ -53,6 +54,7 @@ target_sources(libvodka_t
     test/vodka/algorithm/inner_product.cpp
     test/vodka/algorithm/max.cpp
     test/vodka/array/array.cpp
+    test/vodka/basic_fixed_string.cpp
     test/vodka/functional/less_equal.cpp
     test/vodka/span/span.cpp
     test/vodka/string_view/basic_string_view.cpp
