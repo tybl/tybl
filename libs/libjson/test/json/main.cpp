@@ -25,9 +25,9 @@ static auto parse_json(tybl::vodka::string_view& p_in) -> value {
 }
 
 private:
-static constexpr const char FALSE[] = "false";
-static constexpr const char NIL[] = "null";
-static constexpr const char TRUE[] = "true";
+static constexpr const tybl::vodka::basic_fixed_string FALSE{"false"};
+static constexpr const tybl::vodka::basic_fixed_string NIL{"null"};
+static constexpr const tybl::vodka::basic_fixed_string TRUE{"true"};
 static constexpr tybl::vodka::string_view WHITESPACE_CHARS{"\x09\x0A\x0D\x20"};
 
 static constexpr auto is_digit(char p_c) -> bool { return is_in_range<char, '0', '9'>(p_c); }
@@ -78,37 +78,25 @@ static auto parse_element(tybl::vodka::string_view& p_in) -> value {
   return result;
 }
 
-template <const char* Literal>
-static auto parse_literal(tybl::vodka::string_view& p_in) -> tybl::vodka::string_view {
-  static constexpr tybl::vodka::string_view prefix(Literal);
-  auto result = p_in.substr(0, prefix.length());
-  if (prefix != result) {
-    throw vodka::parse_error("Error: Expected to find JSON literal '{}'");
-  }
-  p_in.remove_prefix(prefix.length());
-  //printf(Literal);
-  return result;
-}
-
 template <tybl::vodka::basic_fixed_string Literal>
 static auto parse_literal(tybl::vodka::string_view& p_in) -> tybl::vodka::string_view {
   auto result = p_in.substr(0, Literal.size());
-  if (Literal != result) {
+  if (static_cast<tybl::vodka::string_view>(Literal) != result) {
     throw vodka::parse_error("Error: Expected to find JSON literal '{}'");
   }
-  p_in.remove_prefix(Literal.length());
+  p_in.remove_prefix(Literal.size());
   //printf(Literal);
   return result;
 }
 
 static auto parse_number(tybl::vodka::string_view& p_in) -> tybl::vodka::string_view {
   static std::regex re("^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
-  auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
+  const auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
   if (!rei->ready() || rei->empty() || rei->position() != 0) {
     throw vodka::parse_error("Error: Expected JSON Number");
   }
   auto len = static_cast<size_t>(rei->length());
-  tybl::vodka::string_view result(p_in.data(), len);
+  auto result = p_in.substr(0, len);
   p_in.remove_prefix(len);
   //printf("#");
   return result;

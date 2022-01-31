@@ -15,7 +15,7 @@ struct a_star_search {
   std::vector<Iter> m_work_queue;
 
   struct node_weight {
-    bool operator()(Iter const& p_lhs, Iter const& p_rhs) const {
+    auto operator()(Iter const& p_lhs, Iter const& p_rhs) const -> bool {
       auto lp = p_lhs->priority();
       auto rp = p_rhs->priority();
       return (lp < rp) || (lp == rp && p_lhs->distance() > p_rhs->distance());
@@ -27,7 +27,7 @@ struct a_star_search {
     m_work_queue.push_back(res.first);
   }
 
-  Iter search() {
+  auto search() -> Iter {
     while (!m_work_queue.empty()) {
       auto curr = m_work_queue.back();
       m_work_queue.pop_back();
@@ -46,7 +46,7 @@ struct a_star_search {
     return m_found.end();
   }
 
-  std::set<Node> const& get_found_nodes() const { return m_found; }
+  [[nodiscard]] auto get_found_nodes() const -> std::set<Node> const& { return m_found; }
 
 }; // struct a_star_search
 

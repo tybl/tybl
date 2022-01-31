@@ -90,7 +90,7 @@ void Board::print() const {
   }
 }
 
-size_t Board::num_found() const { return m_stats->m_boards.size(); }
+auto Board::num_found() const -> size_t { return m_stats->m_boards.size(); }
 
 void Board::print_steps() const {
   if (nullptr != m_parent) {

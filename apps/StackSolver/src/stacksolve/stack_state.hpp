@@ -6,21 +6,21 @@
 #include "vodka/dynarray_2d.hpp"
 
 #include <vector>
+#include <algorithm>
 
 namespace tybl::stacksolve {
 
 class stack_state {
   vodka::dynarray_2d<char> m_contents;
-  stack_state const* m_parent;
+  stack_state const* m_parent = nullptr;
 
 public:
-  stack_state(vodka::dynarray_2d<char>&& p_contents)
-    : m_contents(std::move(p_contents))
-    , m_parent(nullptr) {}
+  explicit stack_state(vodka::dynarray_2d<char>&& p_contents)
+    : m_contents(std::move(p_contents)) {}
 
-  auto distance_from_start() const -> size_t { return (m_parent) ? (m_parent->distance_from_start() + 1) : 0; }
+  [[nodiscard]] auto distance_from_start() const -> size_t { return m_parent ? (m_parent->distance_from_start() + 1) : 0; }
 
-  auto priority() const -> size_t { return distance_from_start() + distance_to_goal(); }
+  [[nodiscard]] auto priority() const -> size_t { return distance_from_start() + distance_to_goal(); }
 
   auto operator<(stack_state const& p_o) const -> bool { return m_contents < p_o.m_contents; }
 
@@ -32,7 +32,7 @@ public:
     return result;
   }
 
-  auto is_goal() const -> bool {
+  [[nodiscard]] auto is_goal() const -> bool {
     for (size_t i = 0UL; i < m_contents.rows(); ++i) {
       if (!(is_empty(i) || is_full_and_homogeneous(m_contents.row(i)))) {
         return false;
@@ -41,23 +41,18 @@ public:
     return true;
   }
 
-  auto get_adjacent() const -> std::vector<stack_state> {
-    // TODO
-    return std::vector<stack_state>();
+  [[nodiscard]] static auto get_adjacent() -> std::vector<stack_state> {
+    // TODO(tybl)
+    return {};
   }
 
-  bool is_empty(size_t p_row) const { return '0' == m_contents(p_row, 0); }
+  [[nodiscard]] auto is_empty(size_t p_row) const -> bool { return '0' == m_contents(p_row, 0); }
 
-  bool is_full_and_homogeneous(std::span<const char> p_row) const {
-    for (auto const c : p_row) {
-      if (p_row.front() != c) {
-        return false;
-      }
-    }
-    return true;
+  [[nodiscard]] static auto is_full_and_homogeneous(std::span<const char> p_row) -> bool {
+    return std::ranges::all_of(p_row.begin(), p_row.end(), [p_row](auto c) { return c == p_row.front(); });
   }
 
-  size_t num_to_move(std::span<const char> p_row) const {
+  static auto num_to_move(std::span<const char> p_row)-> size_t {
     size_t result = 0;
     for (auto c : p_row) {
       result += static_cast<size_t>(p_row.front() != c);

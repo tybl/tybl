@@ -31,7 +31,7 @@ public:
     , m_rows(p_r)
     , m_cols(p_c) {}
 
-  dynarray_2d(dynarray_2d&& p_o)
+  dynarray_2d(dynarray_2d&& p_o) noexcept
     : m_data(std::move(p_o.m_data))
     , m_rows(p_o.m_rows)
     , m_cols(p_o.m_cols) {}
@@ -49,7 +49,7 @@ public:
 
   auto operator()(size_t p_r, size_t p_c) -> reference { return m_data[m_cols * p_r + p_c]; }
 
-  [[nodiscard]] bool operator<(dynarray_2d const& p_o) const {
+  [[nodiscard]] auto operator<(dynarray_2d const& p_o) const -> bool {
     const_pointer first1_p = m_data.get();
     const_pointer first2_p = p_o.m_data.get();
     const_pointer last1_p = first1_p + m_cols * m_rows;

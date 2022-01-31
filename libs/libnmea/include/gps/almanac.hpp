@@ -17,14 +17,12 @@ namespace gps {
 class almanac {
   friend nmea::GPSService;
   uint32_t m_visible_size;
-  uint32_t m_total_pages;
-  uint32_t m_processed_pages;
+  uint32_t m_total_pages = 0;
+  uint32_t m_processed_pages = 0;
   void clear(); // will remove all information from the satellites
   void update_satellite(gps::satellite const& p_sat);
 
 public:
-  almanac();
-
   // mapped by prn
   std::vector<gps::satellite> satellites;
   double average_snr() const;

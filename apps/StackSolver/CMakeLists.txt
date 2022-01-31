@@ -20,7 +20,8 @@ target_include_directories(stacksolvelib PUBLIC src)
 target_link_libraries(stacksolvelib PUBLIC log)
 target_sources(stacksolvelib
   PRIVATE
-        src/executor.cpp
+    src/executor.cpp
+    src/i_node.cpp
     src/Board.cpp
 )
 
