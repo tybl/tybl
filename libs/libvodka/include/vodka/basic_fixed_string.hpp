@@ -18,7 +18,7 @@ struct basic_fixed_string {
 
   [[nodiscard]] explicit constexpr operator CharType const*() const noexcept { return m_buffer; }
 
-  [[nodiscard]] explicit constexpr operator tybl::vodka::string_view() const noexcept { return { m_buffer, Size }; }
+  [[nodiscard]] explicit constexpr operator tybl::vodka::string_view() const noexcept { return { static_cast<const char*>(m_buffer), Size }; }
 
 }; // struct basic_fixed_string
 
