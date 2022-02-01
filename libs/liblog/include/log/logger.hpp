@@ -4,8 +4,6 @@
 #define TYBL_LOG_LOGGER_HPP
 
 #include <iosfwd>
-#include <source_location>
-#include <string>
 
 namespace tybl::log {
 
