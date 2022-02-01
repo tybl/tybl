@@ -1,18 +1,23 @@
 ---
-# Reasons for excluded checks
-# - 'altera-unroll-loops':      This check is an unnecessary suggestion and adds noise
-# - 'altera-struct-pack-align': This check is an unnecessary suggestion and adds noise
-# - 'fuchsia-default-arguments-calls': This check prevents usage of a large part of the standard library
-# - 'fuchsia-overloaded-operator':
-# - 'fuchsia-trailing-return': This check is at odds with the 'modernize-use-trailing-return-type' check
-# - 'llvm-header-guard': I like the concept of this check, but it vacillates between requiring full and relative paths
-# - 'llvmlibc-callee-namespace': This check only makes sense for developing LLVM libc
-# - 'llvmlibc-implementation-in-namespace': This check only makes sense for developing LLVM libc
-# - 'llvmlibc-restrict-system-libc-headers': There's no need to restrict system headers
-# - 'misc-no-recursion':
-# - 'misc-non-private-member-variables-in-classes':
-# - 'readability-function-cognitive-complexity':
-Checks:           '*,-altera-unroll-loops,-altera-struct-pack-align,-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-misc-no-recursion,-misc-non-private-member-variables-in-classes,-readability-function-cognitive-complexity'
+# Disabled checks that are noisy, but may be useful in the future
+#   'altera-unroll-loops':      This check is an unnecessary suggestion and adds noise
+#   'altera-struct-pack-align': This check is an unnecessary suggestion and adds noise
+#   'bugprone-easily-swappable-parameters':
+#   'cert-err58-cpp'
+#   'fuchsia-statically-constructed-objects
+#   'misc-no-recursion':
+#   'misc-non-private-member-variables-in-classes':
+#   'readability-function-cognitive-complexity':
+#
+# Excluded checks that likely won't be turned back on
+#   'fuchsia-default-arguments-calls': This check prevents usage of a large part of the standard library
+#   'fuchsia-overloaded-operator':
+#   'fuchsia-trailing-return': This check is at odds with the 'modernize-use-trailing-return-type' check
+#   'llvm-header-guard': I like the concept of this check, but it vacillates between requiring full and relative paths
+#   'llvmlibc-callee-namespace': This check only makes sense for developing LLVM libc
+#   'llvmlibc-implementation-in-namespace': This check only makes sense for developing LLVM libc
+#   'llvmlibc-restrict-system-libc-headers': There's no need to restrict system headers
+Checks:           '*,-altera-unroll-loops,-altera-struct-pack-align,-bugprone-easily-swappable-parameters,-cert-err58-cpp,-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,-fuchsia-statically-constructed-objects,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-misc-no-recursion,-misc-non-private-member-variables-in-classes,-readability-function-cognitive-complexity,-readability-magic-numbers'
 HeaderFilterRegex: '\.hpp'
 FormatStyle:     file
 CheckOptions:
