@@ -18,7 +18,7 @@ public:
   explicit stack_state(vodka::dynarray_2d<char>&& p_contents)
     : m_contents(std::move(p_contents)) {}
 
-  [[nodiscard]] auto distance_from_start() const -> size_t { return m_parent ? (m_parent->distance_from_start() + 1) : 0; }
+  [[nodiscard]] auto distance_from_start() const -> size_t { return m_parent != nullptr ? (m_parent->distance_from_start() + 1) : 0; }
 
   [[nodiscard]] auto priority() const -> size_t { return distance_from_start() + distance_to_goal(); }
 
@@ -49,7 +49,7 @@ public:
   [[nodiscard]] auto is_empty(size_t p_row) const -> bool { return '0' == m_contents(p_row, 0); }
 
   [[nodiscard]] static auto is_full_and_homogeneous(std::span<const char> p_row) -> bool {
-    return std::ranges::all_of(p_row.begin(), p_row.end(), [p_row](auto c) { return c == p_row.front(); });
+    return std::ranges::all_of(p_row.begin(), p_row.end(), [p_row](auto p_c) { return p_c == p_row.front(); });
   }
 
   static auto num_to_move(std::span<const char> p_row)-> size_t {

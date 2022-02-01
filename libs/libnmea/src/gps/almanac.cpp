@@ -47,7 +47,7 @@ double almanac::average_snr() const {
   return avg;
 }
 
-double almanac::min_snr() const {
+auto almanac::min_snr() const -> double {
   double min = 9999999;
   if (satellites.empty()) {
     return 0;

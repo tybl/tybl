@@ -16,27 +16,26 @@ struct fixed_point_t {
 
   using ratio = RATIO;
 
-  constexpr fixed_point_t()
-    : m_value() {}
+  constexpr fixed_point_t() = default;
 
   explicit constexpr fixed_point_t(double p_value)
     : m_value(static_cast<int64_t>(p_value * ratio::den) / ratio::num) {}
 
-  constexpr fixed_point_t& operator+=(const fixed_point_t& p_other) {
+  constexpr auto operator+=(const fixed_point_t& p_other) -> fixed_point_t& {
     m_value += p_other.m_value;
     return *this;
   }
 
-  constexpr fixed_point_t& operator-=(const fixed_point_t& p_other) {
+  constexpr auto operator-=(const fixed_point_t& p_other) -> fixed_point_t& {
     m_value -= p_other.m_value;
     return *this;
   }
 
-  constexpr int64_t whole_number() const { return (m_value * ratio::num) / ratio::den; }
+  [[nodiscard]] constexpr auto whole_number() const -> int64_t { return (m_value * ratio::num) / ratio::den; }
 
-  int64_t& significand() { return m_value; }
+  auto significand() -> int64_t& { return m_value; }
 
-  constexpr int64_t significand() const { return m_value; }
+  [[nodiscard]] constexpr auto significand() const -> int64_t { return m_value; }
 
   struct rational_t {
 
@@ -48,14 +47,14 @@ struct fixed_point_t {
     uint64_t m_denominator;
   };
 
-  constexpr rational_t fraction() const { return rational_t((m_value * ratio::num) % ratio::den, ratio::den); }
+  constexpr auto fraction() const -> rational_t { return rational_t((m_value * ratio::num) % ratio::den, ratio::den); }
 
 private:
-  int64_t m_value;
+  int64_t m_value{};
 }; // struct fixed_point_t
 
 template <typename RATIO>
-std::ostream& operator<<(std::ostream& p_out, const fixed_point_t<RATIO>& p_fp) {
+auto operator<<(std::ostream& p_out, const fixed_point_t<RATIO>& p_fp) -> std::ostream& {
   if /*constexpr*/ (RATIO::den == 1) {
     return p_out << p_fp.whole_number();
   }
