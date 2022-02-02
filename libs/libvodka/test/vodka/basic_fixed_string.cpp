@@ -6,7 +6,9 @@
 #include <cstring>
 
 template <tybl::vodka::basic_fixed_string Name>
-const char* GetName() { return static_cast<const char*>(Name); }
+auto GetName() -> const char* {
+  return static_cast<const char*>(Name);
+}
 
 TEST_CASE("tybl::vodka::basic_fixed_string") {
   constexpr tybl::vodka::basic_fixed_string fs1{"Hello"};

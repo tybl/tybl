@@ -20,7 +20,7 @@ void almanac::update_satellite(gps::satellite const& p_sat) {
   satellites.push_back(p_sat);
 }
 
-double almanac::percent_complete() const {
+auto almanac::percent_complete() const -> double {
   if (m_total_pages == 0) {
     return 0.0;
   }
@@ -28,7 +28,7 @@ double almanac::percent_complete() const {
   return static_cast<double>(m_processed_pages) / m_total_pages * 100.0;
 }
 
-double almanac::average_snr() const {
+auto almanac::average_snr() const -> double {
 
   double avg = 0;
   double relevant = 0;
@@ -67,7 +67,7 @@ auto almanac::min_snr() const -> double {
   return min;
 }
 
-double almanac::max_snr() const {
+auto almanac::max_snr() const -> double {
   double max = 0;
   for (const auto& satellite : satellites) {
     max = tybl::vodka::max(max, satellite.snr);

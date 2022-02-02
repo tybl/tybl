@@ -8,7 +8,8 @@
 namespace tybl::vodka {
 
 template <typename Iter1, typename Iter2, typename Type>
-constexpr Type inner_product(Iter1 p_range1_begin, Iter1 p_range1_end, Iter2 p_range2_begin, Type p_initial_value) {
+constexpr auto inner_product(Iter1 p_range1_begin, Iter1 p_range1_end, Iter2 p_range2_begin, Type p_initial_value)
+    -> Type {
   for (; p_range1_begin != p_range1_end; ++p_range1_begin, ++p_range2_begin) {
     p_initial_value = ::tybl::vodka::move(p_initial_value) + *p_range1_begin * *p_range2_begin;
   }

@@ -6,7 +6,7 @@
 namespace tybl::vodka {
 
 template <typename Iter, typename Pred>
-constexpr Iter find_if_not(Iter first, Iter last, Pred p) {
+constexpr auto find_if_not(Iter first, Iter last, Pred p) -> Iter {
   for (; first != last; ++first) {
     if (!p(*first)) {
       return first;

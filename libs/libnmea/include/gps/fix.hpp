@@ -20,7 +20,7 @@ namespace gps {
 class fix {
   friend nmea::GPSService;
   bool m_has_lock;
-  bool set_lock(bool p_b); // returns true if lock status **changed***, false otherwise.
+  auto set_lock(bool p_b) -> bool; // returns true if lock status **changed***, false otherwise.
 
 public:
   fix();
@@ -52,17 +52,18 @@ public:
   int32_t tracking_satellites;
   int32_t visible_satellites;
 
-  bool locked();
-  double horizontal_accuracy();
-  double vertical_accuracy();
-  bool has_estimate();
+  auto locked() const -> bool;
+  auto horizontal_accuracy() const -> double;
+  auto vertical_accuracy() const -> double;
+  auto has_estimate() const -> bool;
 
-  std::chrono::seconds time_since_last_update(); // Return seconds difference from last timestamp and right now.
+  auto time_since_last_update() const
+      -> std::chrono::seconds; // Return seconds difference from last timestamp and right now.
 
-  std::string to_string();
+  auto to_string() -> std::string;
   operator std::string();
 
-  static std::string ordinal_direction(double p_deg, bool p_abbrev = false);
+  static auto ordinal_direction(double p_deg, bool p_abbrev = false) -> std::string;
 }; // class fix
 
 } // namespace gps

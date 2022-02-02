@@ -36,7 +36,7 @@ struct serial_configuration : public command {
     parity = 0;
   }
 
-  std::string to_string() override;
+  auto to_string() -> std::string override;
 
 }; // struct serial_configuration
 

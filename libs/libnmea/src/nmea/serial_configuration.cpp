@@ -20,7 +20,7 @@ Table 2-4 Set Serial Port Data Format
  Checksum  *0C
  <CR> <LF> End of message termination
 */
-std::string serial_configuration::to_string() {
+auto serial_configuration::to_string() -> std::string {
   std::stringstream ss;
 
   ss << "1," << baud << "," << databits << "," << stopbits << "," << parity;

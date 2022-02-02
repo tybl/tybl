@@ -6,7 +6,7 @@
 namespace tybl::vodka {
 
 template <class Range1Iterator, class Range2Iterator>
-bool are_equal(Range1Iterator p_range1_begin, Range1Iterator p_range1_end, Range2Iterator p_range2_begin) {
+auto are_equal(Range1Iterator p_range1_begin, Range1Iterator p_range1_end, Range2Iterator p_range2_begin) -> bool {
   for (; p_range1_begin != p_range1_end; ++p_range1_begin, ++p_range2_begin) {
     if (!(*p_range1_begin == *p_range2_begin)) {
       return false;

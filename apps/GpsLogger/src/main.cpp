@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <iostream>
 
-int main(int argc, char* argv[]) {
+auto main(int argc, char* argv[]) -> int {
   if (1 < argc) {
     // Create a GPS service that will keep track of the fix data.
     nmea::Parser parser;

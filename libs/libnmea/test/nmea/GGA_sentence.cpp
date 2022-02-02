@@ -33,7 +33,7 @@ public:
 
 }; // class gga_sentence
 
-std::unique_ptr<sentence> parse_gga(std::istream& p_in) {
+auto parse_gga(std::istream& p_in) -> std::unique_ptr<sentence> {
   std::string value;
   if (!std::getline(p_in, value, ',')) {
     throw std::runtime_error("Error: Failed to get NMEA GGA UTC time");
@@ -77,7 +77,7 @@ std::unique_ptr<sentence> parse_gga(std::istream& p_in) {
   return nullptr;
 }
 
-std::unique_ptr<sentence> parse_nmea(std::istream& p_in) {
+auto parse_nmea(std::istream& p_in) -> std::unique_ptr<sentence> {
   std::string value;
   if (std::getline(p_in, value, ',')) {
     if ("$GPGGA" == value) {
@@ -87,7 +87,7 @@ std::unique_ptr<sentence> parse_nmea(std::istream& p_in) {
   return nullptr;
 }
 
-std::unique_ptr<sentence> parse_gga(std::string_view /*input*/) {
+auto parse_gga(std::string_view /*input*/) -> std::unique_ptr<sentence> {
 #if 0
   constexpr std::string_view delim{","};
   for (const auto word : std::views::split_view(input, delim))
@@ -99,7 +99,7 @@ std::unique_ptr<sentence> parse_gga(std::string_view /*input*/) {
   return nullptr;
 }
 
-std::unique_ptr<sentence> parse(std::string_view p_input) {
+auto parse(std::string_view p_input) -> std::unique_ptr<sentence> {
   if (p_input.empty()) {
     std::cerr << __LINE__ << std::endl;
     return nullptr;
