@@ -52,12 +52,13 @@ public:
   int32_t tracking_satellites;
   int32_t visible_satellites;
 
-  auto locked() -> bool;
-  auto horizontal_accuracy() -> double;
-  auto vertical_accuracy() -> double;
-  auto has_estimate() -> bool;
+  auto locked() const -> bool;
+  auto horizontal_accuracy() const -> double;
+  auto vertical_accuracy() const -> double;
+  auto has_estimate() const -> bool;
 
-  auto time_since_last_update() -> std::chrono::seconds; // Return seconds difference from last timestamp and right now.
+  auto time_since_last_update() const
+      -> std::chrono::seconds; // Return seconds difference from last timestamp and right now.
 
   auto to_string() -> std::string;
   operator std::string();

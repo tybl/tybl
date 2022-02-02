@@ -26,7 +26,7 @@ public:
   double raw_time;
   int32_t raw_date;
 
-  auto get_time() -> time_t;
+  auto get_time() const -> time_t;
 
   // Set directly from the NMEA time stamp
   // hhmmss.sss

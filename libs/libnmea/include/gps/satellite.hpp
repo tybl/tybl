@@ -16,7 +16,7 @@ struct satellite {
 
   satellite();
 
-  auto to_string() -> std::string;
+  auto to_string() const -> std::string;
 
   operator std::string();
 

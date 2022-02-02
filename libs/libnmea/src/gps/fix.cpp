@@ -33,7 +33,7 @@ fix::~fix() {
 }
 
 // Returns the duration since the Host has received information
-auto fix::time_since_last_update() -> std::chrono::seconds {
+auto fix::time_since_last_update() const -> std::chrono::seconds {
   time_t now = time(NULL);
   std::tm stamp{};
 
@@ -49,7 +49,7 @@ auto fix::time_since_last_update() -> std::chrono::seconds {
   return std::chrono::seconds(secs);
 }
 
-auto fix::has_estimate() -> bool { return (latitude != 0 && longitude != 0) || (quality == 6); }
+auto fix::has_estimate() const -> bool { return (latitude != 0 && longitude != 0) || (quality == 6); }
 
 auto fix::set_lock(bool p_locked) -> bool {
   if (m_has_lock != p_locked) {
@@ -59,16 +59,16 @@ auto fix::set_lock(bool p_locked) -> bool {
   return false;
 }
 
-auto fix::locked() -> bool { return m_has_lock; }
+auto fix::locked() const -> bool { return m_has_lock; }
 
 // Returns meters
-auto fix::horizontal_accuracy() -> double {
+auto fix::horizontal_accuracy() const -> double {
   // horizontal 2drms 95% = 4.0  -- from GPS CHIP datasheets
   return 4.0 * horizontal_dilution;
 }
 
 // Returns meters
-auto fix::vertical_accuracy() -> double {
+auto fix::vertical_accuracy() const -> double {
   // Vertical 2drms 95% = 6.0  -- from GPS CHIP datasheets
   return 6.0 * vertical_dilution;
 }

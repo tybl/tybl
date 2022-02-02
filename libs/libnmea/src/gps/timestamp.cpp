@@ -34,7 +34,7 @@ auto timestamp::month_name(int32_t p_index) -> std::string {
 }
 
 // Returns seconds since Jan 1, 1970. Classic Epoch time.
-auto timestamp::get_time() -> time_t {
+auto timestamp::get_time() const -> time_t {
   std::tm t{};
   t.tm_year = year - 1900; // This is year-1900, so 112 = 2012
   t.tm_mon = month;        // month from 0:Jan
