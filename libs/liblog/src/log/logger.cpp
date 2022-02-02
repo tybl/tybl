@@ -5,7 +5,7 @@
 
 namespace tybl::log {
 
-std::ostream& log() {
+auto log() -> std::ostream& {
   return std::cout;
 }
 

@@ -3,8 +3,8 @@
 #ifndef TYBL_LYNEL_MATRIX_HPP
 #define TYBL_LYNEL_MATRIX_HPP
 
-#include <assert.h> // assert()
-#include <stdlib.h> // size_t
+#include <cassert> // assert()
+#include <cstdlib> // size_t
 
 namespace tybl::lynel {
 
