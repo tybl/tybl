@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef _TYBL__VODKA__STRING_VIEW__BASIC_STRING_VIEW__HPP_
-#define _TYBL__VODKA__STRING_VIEW__BASIC_STRING_VIEW__HPP_
+#ifndef TYBL_VODKA_STRINGVIEW_BASICSTRINGVIEW_HPP
+#define TYBL_VODKA_STRINGVIEW_BASICSTRINGVIEW_HPP
 
 #include "vodka/algorithm/min.hpp"
 #include "vodka/type_traits/is_same.hpp"
@@ -22,31 +22,31 @@
 namespace tybl::vodka {
 
 // str_find_first_not_of
-template<class CharType, class _SizeT, class CharTraits, _SizeT __npos>
-_SizeT constexpr str_find_first_not_of(const CharType * p_p, _SizeT p_sz, const CharType* p_s, _SizeT p_pos, _SizeT p_n) noexcept {
+template<class CharType, class SizeType, class CharTraits, SizeType NPOS>
+constexpr auto str_find_first_not_of(const CharType * p_p, SizeType p_sz, const CharType* p_s, SizeType p_pos, SizeType p_n) noexcept -> SizeType {
   if (p_pos < p_sz) {
     const CharType* pe_p = p_p + p_sz;
     for (const CharType* ps_p = p_p + p_pos; ps_p != pe_p; ++ps_p) {
       if (CharTraits::find(p_s, p_n, *ps_p) == nullptr) {
-        return static_cast<_SizeT>(ps_p - p_p);
+        return static_cast<SizeType>(ps_p - p_p);
       }
     }
   }
-  return __npos;
+  return NPOS;
 }
 
 
-template<class CharType, class _SizeT, class CharTraits, _SizeT __npos>
-_SizeT constexpr str_find_first_not_of(const CharType * p_p, _SizeT p_sz, CharType p_c, _SizeT p_pos)  noexcept {
+template<class CharType, class SizeType, class CharTraits, SizeType NPOS>
+constexpr auto str_find_first_not_of(const CharType * p_p, SizeType p_sz, CharType p_c, SizeType p_pos) noexcept -> SizeType {
   if (p_pos < p_sz) {
     const CharType* pe_p = p_p + p_sz;
     for (const CharType* ps_p = p_p + p_pos; ps_p != pe_p; ++ps_p) {
       if (!CharTraits::eq(*ps_p, p_c)) {
-        return static_cast<_SizeT>(ps_p - p_p);
+        return static_cast<SizeType>(ps_p - p_p);
       }
     }
   }
-  return __npos;
+  return NPOS;
 }
 
 template <class CharType, class CharTraits = std::char_traits<CharType>>
@@ -73,17 +73,18 @@ struct basic_string_view {
 
 private:
   const_pointer m_data;
-  size_type m_size;
+  size_type m_size = 0;
 
 public:
   // [string.view.cons], construct/copy
   constexpr basic_string_view() noexcept
-    : m_data(nullptr)
-    , m_size(0) {}
+    : m_data(nullptr) {}
 
+  //TODO(tybl): Do I need to explicitly define this?
   constexpr basic_string_view(basic_string_view const&) noexcept = default;
 
-  constexpr basic_string_view& operator=(basic_string_view const&) noexcept = default;
+  //TODO(tybl): Do I need to explicitly define this?
+  constexpr auto operator=(basic_string_view const&) noexcept -> basic_string_view& = default;
 
   constexpr basic_string_view(CharType const* p_s, size_type p_len) noexcept
     : m_data(p_s)
@@ -116,13 +117,13 @@ public:
 #endif
 
   // [string.view.capacity], capacity
-  [[nodiscard]] constexpr size_type size() const noexcept { return m_size; }
+  [[nodiscard]] constexpr auto size() const noexcept -> size_type { return m_size; }
 
-  [[nodiscard]] constexpr size_type length() const noexcept { return m_size; }
+  [[nodiscard]] constexpr auto length() const noexcept -> size_type { return m_size; }
 
-  [[nodiscard]] constexpr size_type max_size() const noexcept { return std::numeric_limits<size_type>::max() / sizeof(value_type); }
+  [[nodiscard]] constexpr auto max_size() const noexcept -> size_type { return std::numeric_limits<size_type>::max() / sizeof(value_type); }
 
-  [[nodiscard]] constexpr bool empty() const noexcept { return m_size == 0; }
+  [[nodiscard]] constexpr auto empty() const noexcept -> bool { return m_size == 0; }
 
   // [string.view.access], element access
   [[nodiscard]] constexpr auto operator[](size_type p_pos) const noexcept -> const_reference {
@@ -141,7 +142,7 @@ public:
     return /*_LIBCPP_ASSERT(!empty(), "string_view::back(): string is empty"),*/ m_data[m_size - 1];
   }
 
-  constexpr const_pointer data() const noexcept { return m_data; }
+  [[nodiscard]] constexpr auto data() const noexcept -> const_pointer { return m_data; }
 
   // [string.view.modifiers], modifiers:
   constexpr void remove_prefix(size_type p_n) noexcept {
@@ -163,7 +164,7 @@ public:
     p_o.m_size = __sz;
   }
 
-  inline size_type copy(CharType* p_str, size_type p_n, size_type p_pos = 0) const {
+  inline auto copy(CharType* p_str, size_type p_n, size_type p_pos = 0) const -> size_type {
     if (p_pos > size()) {
       throw std::out_of_range("string_view::copy");
     }
@@ -172,12 +173,12 @@ public:
     return __rlen;
   }
 
-  constexpr basic_string_view substr(size_type p_pos = 0, size_type p_n = npos) const {
+  [[nodiscard]] constexpr auto substr(size_type p_pos = 0, size_type p_n = npos) const -> basic_string_view {
     return p_pos > size() ? (throw std::out_of_range("string_view::substr"), basic_string_view())
                           : basic_string_view(data() + p_pos, min(p_n, size() - p_pos));
   }
 
-  constexpr int compare(basic_string_view p_sv) const noexcept {
+  [[nodiscard]] constexpr auto compare(basic_string_view p_sv) const noexcept -> int {
     size_type min_len = ::tybl::vodka::min(size(), p_sv.size());
     int result = CharTraits::compare(data(), p_sv.data(), min_len);
     if (result == 0 && size() != p_sv.size()) { // first min_len chars matched
@@ -186,11 +187,11 @@ public:
     return result;
   }
 
-  constexpr int compare(size_type p_pos, size_type p_n, basic_string_view p_sv) const {
+  [[nodiscard]] constexpr auto compare(size_type p_pos, size_type p_n, basic_string_view p_sv) const -> int {
     return substr(p_pos, p_n).compare(p_sv);
   }
 
-  constexpr int compare(size_type p_pos1, size_type p_n1, basic_string_view p_sv, size_type p_pos2,
+  [[nodiscard]] constexpr int compare(size_type p_pos1, size_type p_n1, basic_string_view p_sv, size_type p_pos2,
                                size_type p_n2) const {
     return substr(p_pos1, p_n1).compare(p_sv.substr(p_pos2, p_n2));
   }
@@ -323,7 +324,7 @@ public:
 
 
   // find_first_not_of
-  constexpr auto find_first_not_of(basic_string_view p_str, size_type p_pos =0) const noexcept -> size_type
+  [[nodiscard]] constexpr auto find_first_not_of(basic_string_view p_str, size_type p_pos =0) const noexcept -> size_type
   {
       return str_find_first_not_of<value_type, size_type, traits_type, npos>(data(), size(), p_str.data(), p_pos,
                                                                            p_str.size());
@@ -597,4 +598,4 @@ constexpr auto operator"" _sv(const char32_t* p_str, size_t p_len) noexcept -> b
 
 } // namespace tybl::vodka
 
-#endif // _TYBL__VODKA__STRING_VIEW__BASIC_STRING_VIEW__HPP_
+#endif // TYBL_VODKA_STRINGVIEW_BASICSTRINGVIEW_HPP

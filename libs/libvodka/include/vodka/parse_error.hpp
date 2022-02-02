@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef _TYBL__VODKA__PARSE_ERROR__HPP_
-#define _TYBL__VODKA__PARSE_ERROR__HPP_
+#ifndef TYBL_VODKA_PARSEERROR_HPP
+#define TYBL_VODKA_PARSEERROR_HPP
 
 #include <stdexcept>
 
@@ -13,4 +13,4 @@ struct parse_error : public std::runtime_error {
 
 } // namespace tybl::vodka
 
-#endif // _TYBL__VODKA__PARSE_ERROR__HPP_
+#endif // TYBL_VODKA_PARSEERROR_HPP
