@@ -33,7 +33,7 @@ fix::~fix() {
 }
 
 // Returns the duration since the Host has received information
-std::chrono::seconds fix::time_since_last_update() {
+auto fix::time_since_last_update() const -> std::chrono::seconds {
   time_t now = time(NULL);
   std::tm stamp{};
 
@@ -49,9 +49,9 @@ std::chrono::seconds fix::time_since_last_update() {
   return std::chrono::seconds(secs);
 }
 
-bool fix::has_estimate() { return (latitude != 0 && longitude != 0) || (quality == 6); }
+auto fix::has_estimate() const -> bool { return (latitude != 0 && longitude != 0) || (quality == 6); }
 
-bool fix::set_lock(bool p_locked) {
+auto fix::set_lock(bool p_locked) -> bool {
   if (m_has_lock != p_locked) {
     m_has_lock = p_locked;
     return true;
@@ -59,22 +59,22 @@ bool fix::set_lock(bool p_locked) {
   return false;
 }
 
-bool fix::locked() { return m_has_lock; }
+auto fix::locked() const -> bool { return m_has_lock; }
 
 // Returns meters
-double fix::horizontal_accuracy() {
+auto fix::horizontal_accuracy() const -> double {
   // horizontal 2drms 95% = 4.0  -- from GPS CHIP datasheets
   return 4.0 * horizontal_dilution;
 }
 
 // Returns meters
-double fix::vertical_accuracy() {
+auto fix::vertical_accuracy() const -> double {
   // Vertical 2drms 95% = 6.0  -- from GPS CHIP datasheets
   return 6.0 * vertical_dilution;
 }
 
 // Takes a degree travel heading (0-360') and returns the name
-std::string fix::ordinal_direction(double p_deg, bool p_abbrev) {
+auto fix::ordinal_direction(double p_deg, bool p_abbrev) -> std::string {
 
   // normalize, just in case
   auto c = static_cast<int32_t>(round(p_deg / 360.0 * 8.0));
@@ -92,7 +92,7 @@ std::string fix::ordinal_direction(double p_deg, bool p_abbrev) {
   return dirs[r];
 }
 
-std::string fix_status_to_string(char p_status) {
+auto fix_status_to_string(char p_status) -> std::string {
   switch (p_status) {
     case 'A': return "Active";
     case 'V': return "Void";
@@ -100,7 +100,7 @@ std::string fix_status_to_string(char p_status) {
   }
 }
 
-std::string fix_type_to_string(uint8_t p_type) {
+auto fix_type_to_string(uint8_t p_type) -> std::string {
   switch (p_type) {
     case 1: return "None";
     case 2: return "2D";
@@ -109,7 +109,7 @@ std::string fix_type_to_string(uint8_t p_type) {
   }
 }
 
-std::string fix_quality_to_string(uint8_t p_quality) {
+auto fix_quality_to_string(uint8_t p_quality) -> std::string {
   switch (p_quality) {
     case 0: return "Invalid";
     case 1: return "Standard";
@@ -122,7 +122,7 @@ std::string fix_quality_to_string(uint8_t p_quality) {
   }
 }
 
-std::string fix::to_string() {
+auto fix::to_string() -> std::string {
   std::stringstream ss;
   std::ios_base::fmtflags oldflags = ss.flags();
 

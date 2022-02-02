@@ -11,9 +11,9 @@ sentence::sentence()
 
 sentence::~sentence() = default;
 
-bool sentence::valid() const { return m_is_valid; }
+auto sentence::valid() const -> bool { return m_is_valid; }
 
-bool sentence::is_checksum_ok() const {
+auto sentence::is_checksum_ok() const -> bool {
   return (m_is_checksum_calculated) && (m_parsed_checksum == m_calculated_checksum);
 }
 

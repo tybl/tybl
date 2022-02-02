@@ -25,9 +25,9 @@ public:
 
   virtual ~command();
 
-  virtual std::string to_string();
+  virtual auto to_string() -> std::string;
 
-  std::string add_checksum(std::string const& p_s);
+  auto add_checksum(std::string const& p_s) -> std::string;
 
 }; // struct command
 

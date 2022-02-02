@@ -61,11 +61,11 @@ struct basic_unsigned_integer {
   basic_unsigned_integer(const basic_unsigned_integer& p_other) {
     std::copy(p_other.mantissa.begin(), p_other.mantissa.end(), mantissa.begin());
   }
-  basic_unsigned_integer& operator=(basic_unsigned_integer p_other) {
+  auto operator=(basic_unsigned_integer p_other) -> basic_unsigned_integer& {
     std::swap(mantissa, p_other.mantissa);
     return *this;
   }
-  basic_unsigned_integer& operator+=(TYPE p_other) {
+  auto operator+=(TYPE p_other) -> basic_unsigned_integer& {
     larger_uint carry = p_other;
     for (size_t i = 0; i < size && 0 != carry; ++i) {
       carry = add_at_index(i, carry);
@@ -75,7 +75,7 @@ struct basic_unsigned_integer {
     }
     return *this;
   }
-  basic_unsigned_integer& operator+=(const basic_unsigned_integer& p_other) {
+  auto operator+=(const basic_unsigned_integer& p_other) -> basic_unsigned_integer& {
     larger_uint carry = 0;
     for (size_t i = 0; i < size; ++i) {
       carry = add_at_index(i, static_cast<larger_uint>(carry + p_other.mantissa[i]));
@@ -85,7 +85,7 @@ struct basic_unsigned_integer {
     }
     return *this;
   }
-  basic_unsigned_integer& operator-=(const basic_unsigned_integer& p_other) {
+  auto operator-=(const basic_unsigned_integer& p_other) -> basic_unsigned_integer& {
     TYPE carry = 0;
     for (size_t i = 0; i < size; ++i) {
       TYPE temp = mantissa[i];
@@ -97,7 +97,7 @@ struct basic_unsigned_integer {
     }
     return *this;
   }
-  basic_unsigned_integer& operator*=(TYPE p_other) {
+  auto operator*=(TYPE p_other) -> basic_unsigned_integer& {
     larger_uint carry = 0;
     for (size_t i = 0; i < size; ++i) {
       larger_uint overflow = multiply_at_index(i, p_other);
@@ -111,7 +111,7 @@ struct basic_unsigned_integer {
     }
     return *this;
   }
-  basic_unsigned_integer& operator*=(const basic_unsigned_integer& p_other) {
+  auto operator*=(const basic_unsigned_integer& p_other) -> basic_unsigned_integer& {
     larger_uint carry = 0;
     for (size_t i = 0; i < size; ++i) {
       for (size_t j = 0; j < size && (i + j) < size; ++j) {
@@ -124,23 +124,23 @@ struct basic_unsigned_integer {
     }
     return *this;
   }
-  basic_unsigned_integer& operator/=(const basic_unsigned_integer& /*other*/) {
+  auto operator/=(const basic_unsigned_integer& /*other*/) -> basic_unsigned_integer& {
     // TODO(tybl): implement operator/=()
     throw std::bad_function_call();
     return *this;
   }
-  basic_unsigned_integer& operator++() { return operator+=(1); }
-  basic_unsigned_integer operator++(int) {
+  auto operator++() -> basic_unsigned_integer& { return operator+=(1); }
+  auto operator++(int) -> basic_unsigned_integer {
     basic_unsigned_integer<TYPE, size> temp(*this);
     operator+=(1);
     return temp;
   }
-  basic_unsigned_integer& operator>>=(size_t /*places*/) {
+  auto operator>>=(size_t /*places*/) -> basic_unsigned_integer& {
     // TODO(tybl): implement operator>>=()
     throw std::bad_function_call();
     return *this;
   }
-  basic_unsigned_integer& operator<<=(size_t p_places) {
+  auto operator<<=(size_t p_places) -> basic_unsigned_integer& {
     const size_t whole_shifts = p_places / binary_digits;
     const size_t limb_shift = p_places % binary_digits;
     const size_t overflow_shift = binary_digits - limb_shift;
@@ -163,28 +163,28 @@ struct basic_unsigned_integer {
     }
     return *this;
   }
-  bool operator==(const basic_unsigned_integer& p_other) const {
+  auto operator==(const basic_unsigned_integer& p_other) const -> bool {
     return std::equal(mantissa.begin(), mantissa.end(), p_other.mantissa.begin());
   }
-  bool operator!=(const basic_unsigned_integer& p_other) const { return !operator==(p_other); }
-  bool operator<=(const basic_unsigned_integer& p_other) const { return !operator>(p_other); }
-  bool operator>=(const basic_unsigned_integer& p_other) const { return !operator<(p_other); }
-  bool operator<(const basic_unsigned_integer& p_other) const {
+  auto operator!=(const basic_unsigned_integer& p_other) const -> bool { return !operator==(p_other); }
+  auto operator<=(const basic_unsigned_integer& p_other) const -> bool { return !operator>(p_other); }
+  auto operator>=(const basic_unsigned_integer& p_other) const -> bool { return !operator<(p_other); }
+  auto operator<(const basic_unsigned_integer& p_other) const -> bool {
     return std::lexicographical_compare(mantissa.crbegin(), mantissa.crend(), p_other.mantissa.crbegin(),
                                         p_other.mantissa.crend());
   }
-  bool operator>(const basic_unsigned_integer& p_other) const {
+  auto operator>(const basic_unsigned_integer& p_other) const -> bool {
     return std::lexicographical_compare(mantissa.crbegin(), mantissa.crend(), p_other.mantissa.crbegin(),
                                         p_other.mantissa.crend(), std::greater<TYPE>());
   }
 
 private:
-  TYPE multiply_at_index(size_t p_index, larger_uint p_value) {
+  auto multiply_at_index(size_t p_index, larger_uint p_value) -> TYPE {
     larger_uint result = static_cast<larger_uint>(p_value * mantissa[p_index]);
     mantissa[p_index] = static_cast<TYPE>(result & limb_mask);
     return static_cast<TYPE>(result >> binary_digits);
   }
-  TYPE add_at_index(size_t p_index, larger_uint p_value) {
+  auto add_at_index(size_t p_index, larger_uint p_value) -> TYPE {
     larger_uint result = static_cast<larger_uint>(p_value + mantissa[p_index]);
     mantissa[p_index] = static_cast<TYPE>(result & limb_mask);
     return static_cast<TYPE>(result >> binary_digits);
@@ -195,7 +195,7 @@ public:
 };
 
 template <typename TYPE, size_t size>
-std::ostream& operator<<(std::ostream& p_out, const basic_unsigned_integer<TYPE, size>& p_value) {
+auto operator<<(std::ostream& p_out, const basic_unsigned_integer<TYPE, size>& p_value) -> std::ostream& {
   p_out << std::hex;
   for (auto limb : p_value.mantissa) {
     p_out << static_cast<uint64_t>(limb) << " ";

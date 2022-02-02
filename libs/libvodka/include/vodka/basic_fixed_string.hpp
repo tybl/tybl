@@ -14,7 +14,7 @@ struct basic_fixed_string {
 
   CharType m_buffer[Size + 1];
 
-  [[nodiscard]] constexpr size_t size() const noexcept { return Size; }
+  [[nodiscard]] constexpr auto size() const noexcept -> size_t { return Size; }
 
   [[nodiscard]] explicit constexpr operator CharType const*() const noexcept { return m_buffer; }
 

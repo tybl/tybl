@@ -37,7 +37,7 @@ void Application::parse_arguments(std::vector<std::string> const& /*p_args*/) {
 }
 
 // For printing usage
-size_t Application::longest_argument_length() const {
+auto Application::longest_argument_length() const -> size_t {
   return std::accumulate(m_argument_map.cbegin(), m_argument_map.cend(), 0ULL,
                          [](size_t p_max_length, auto const& p_argument_entry) { return tybl::vodka::max(p_max_length, p_argument_entry.second->length()); });
 }

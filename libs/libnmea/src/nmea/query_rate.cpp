@@ -38,7 +38,7 @@ namespace nmea {
 //   int rate;
 //   int checksum_enable;
 // Creates a valid NMEA $PSRF103 command sentence.
-std::string query_rate::to_string() {
+auto query_rate::to_string() -> std::string {
   std::stringstream ss;
 
   ss << std::setfill('0') << std::setw(2) << message_id << "," << std::setfill('0') << std::setw(2) << mode << ","

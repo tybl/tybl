@@ -39,7 +39,8 @@ public:
   void set_sentence_handler(std::string p_cmd_key,
                             std::function<void(const sentence&)>
                                 p_handler);    // one handler called for any named sentence where name is the "cmdKey"
-  std::string get_list_of_sentence_handlers() const; // show a list of message names that currently have m_handlers.
+  auto get_list_of_sentence_handlers() const
+      -> std::string; // show a list of message names that currently have m_handlers.
 
   // Byte streaming functions
   void read_byte(char p_b);
@@ -52,7 +53,7 @@ public:
   void read_sentence(std::string p_cmd); // called when parser receives a sentence from the byte stream. Can also be
                                          // called by user to inject sentences.
 
-  static uint8_t calc_checksum(std::string const&); // returns checksum of string -- XOR
+  static auto calc_checksum(std::string const&) -> uint8_t; // returns checksum of string -- XOR
 
 }; // class Parser
 

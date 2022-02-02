@@ -51,7 +51,7 @@ struct query_rate : public command {
     checksum_enable = 1;
   };
 
-  std::string to_string() override;
+  auto to_string() -> std::string override;
 
 }; // struct query_rate
 
