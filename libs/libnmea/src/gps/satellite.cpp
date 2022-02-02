@@ -12,7 +12,7 @@ satellite::satellite()
   , elevation(0)
   , azimuth(0) {}
 
-std::string satellite::to_string() {
+auto satellite::to_string() -> std::string {
   std::stringstream ss;
 
   ss << "[PRN: " << std::setw(3) << std::setfill(' ') << prn << " "

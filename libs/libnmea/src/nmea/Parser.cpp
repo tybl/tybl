@@ -15,7 +15,7 @@
 namespace nmea {
 
 // true if the text contains a non-alpha numeric value
-static bool has_non_alpha_num(std::string const& p_txt) {
+static auto has_non_alpha_num(std::string const& p_txt) -> bool {
   for (const char i : p_txt) {
     if (!std::isalnum(i)) {
       return true;
@@ -25,7 +25,7 @@ static bool has_non_alpha_num(std::string const& p_txt) {
 }
 
 // true if alphanumeric or '-'
-static bool valid_param_chars(std::string const& p_txt) {
+static auto valid_param_chars(std::string const& p_txt) -> bool {
   for (const char i : p_txt) {
     if (!std::isalnum(i) && (i != '-') && (i != '.')) {
       return false;
@@ -67,7 +67,7 @@ void Parser::set_sentence_handler(std::string p_cmd_key, std::function<void(cons
   m_event_table.insert({p_cmd_key, p_handler});
 }
 
-std::string Parser::get_list_of_sentence_handlers() const {
+auto Parser::get_list_of_sentence_handlers() const -> std::string {
   if (m_event_table.empty()) {
     return ""; // TODO(tybl): empty c-string vs std::string constructor
   }
@@ -237,7 +237,7 @@ void Parser::read_sentence(std::string p_cmd) {
 
 // takes the string *between* the '$' and '*' in nmea sentence,
 // then calculates a rolling XOR on the bytes
-uint8_t Parser::calc_checksum(std::string const& p_s) {
+auto Parser::calc_checksum(std::string const& p_s) -> uint8_t {
   uint8_t checksum = 0;
   for (const char i : p_s) {
     checksum = static_cast<uint8_t>(checksum ^ i);

@@ -11,7 +11,7 @@ namespace nmea {
 
 // ------ Some helpers ----------
 // Takes the NMEA lat/long format (dddmm.mmmm, [N/S,E/W]) and converts to degrees N,E only
-static double convert_lat_lon_to_deg(std::string const& p_llstr, std::string const& p_dir) {
+static auto convert_lat_lon_to_deg(std::string const& p_llstr, std::string const& p_dir) -> double {
 
   double pd = std::stod(p_llstr);
   double deg = trunc(pd / 100); // get ddd from dddmm.mmmm
@@ -32,7 +32,7 @@ static double convert_lat_lon_to_deg(std::string const& p_llstr, std::string con
   return deg;
 }
 
-static double kts_to_kph(double p_knots) { return p_knots * 1.852; }
+static auto kts_to_kph(double p_knots) -> double { return p_knots * 1.852; }
 
 // ------------- GPSSERVICE CLASS -------------
 

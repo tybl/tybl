@@ -13,9 +13,9 @@ command::command(std::string const& p_name)
 
 command::~command() = default;
 
-std::string command::to_string() { return add_checksum(m_message); }
+auto command::to_string() -> std::string { return add_checksum(m_message); }
 
-std::string command::add_checksum(std::string const& p_s) {
+auto command::add_checksum(std::string const& p_s) -> std::string {
   std::stringstream zz;
   zz << m_name << "," << p_s;
   m_checksum = Parser::calc_checksum(zz.str());

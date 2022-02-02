@@ -191,18 +191,18 @@ public:
     return substr(p_pos, p_n).compare(p_sv);
   }
 
-  [[nodiscard]] constexpr int compare(size_type p_pos1, size_type p_n1, basic_string_view p_sv, size_type p_pos2,
-                               size_type p_n2) const {
+  [[nodiscard]] constexpr auto compare(size_type p_pos1, size_type p_n1, basic_string_view p_sv, size_type p_pos2,
+                                       size_type p_n2) const -> int {
     return substr(p_pos1, p_n1).compare(p_sv.substr(p_pos2, p_n2));
   }
 
-  constexpr int compare(const CharType* p_str) const noexcept { return compare(basic_string_view(p_str)); }
+  constexpr auto compare(const CharType* p_str) const noexcept -> int { return compare(basic_string_view(p_str)); }
 
-  constexpr int compare(size_type p_pos, size_type p_n, const CharType* p_str) const {
+  constexpr auto compare(size_type p_pos, size_type p_n, const CharType* p_str) const -> int {
     return substr(p_pos, p_n).compare(basic_string_view(p_str));
   }
 
-  constexpr int compare(size_type p_pos, size_type p_n1, const CharType* p_str, size_type p_n2) const {
+  constexpr auto compare(size_type p_pos, size_type p_n1, const CharType* p_str, size_type p_n2) const -> int {
     return substr(p_pos, p_n1).compare(basic_string_view(p_str, p_n2));
   }
 

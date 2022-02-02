@@ -37,9 +37,9 @@ public:
 
   virtual ~sentence();
 
-  bool is_checksum_ok() const;
+  auto is_checksum_ok() const -> bool;
 
-  bool valid() const;
+  auto valid() const -> bool;
 
 }; // class sentence
 

@@ -55,22 +55,22 @@ public:
 
   virtual ~EventHandler(){};
 
-  EventHandler& operator=(const EventHandler& p_ref) {
+  auto operator=(const EventHandler& p_ref) -> EventHandler& {
     copy(p_ref);
     return *this;
   }
 
   void operator()(Args... p_args) { m_handler(p_args...); }
 
-  bool operator==(const EventHandler& p_ref) { return m_id == p_ref.m_id; }
+  auto operator==(const EventHandler& p_ref) -> bool { return m_id == p_ref.m_id; }
 
-  bool operator!=(const EventHandler& p_ref) { return m_id != p_ref.m_id; }
+  auto operator!=(const EventHandler& p_ref) -> bool { return m_id != p_ref.m_id; }
 
-  uint64_t get_id() { return m_id; }
+  auto get_id() -> uint64_t { return m_id; }
 
   // Returns function pointer to the underlying function
   // or null if it's not a function but implements operator()
-  CFunctionPointer* get_function_pointer() {
+  auto get_function_pointer() -> CFunctionPointer* {
     return m_handler.template target<CFunctionPointer>();
     // CFunctionPointer* ptr = m_handler.template target<CFunctionPointer>();
     // return ptr;
