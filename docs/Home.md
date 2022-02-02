@@ -1,1 +1,1 @@
-[Tools](https://github.com/tybl/tybl/wiki/Tools)
+[Tools](Tools.md)
