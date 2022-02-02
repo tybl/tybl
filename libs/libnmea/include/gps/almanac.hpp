@@ -25,10 +25,10 @@ class almanac {
 public:
   // mapped by prn
   std::vector<gps::satellite> satellites;
-  auto average_snr() const -> double;
-  auto min_snr() const -> double;
-  auto max_snr() const -> double;
-  auto percent_complete() const -> double;
+  [[nodiscard]] auto average_snr() const -> double;
+  [[nodiscard]] auto min_snr() const -> double;
+  [[nodiscard]] auto max_snr() const -> double;
+  [[nodiscard]] auto percent_complete() const -> double;
 
 }; // class almanac
 

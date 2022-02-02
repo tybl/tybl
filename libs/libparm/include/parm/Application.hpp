@@ -39,7 +39,7 @@ private:
   void parse_arguments(std::vector<std::string> const& /*p_args*/);
 
   // For printing usage
-  auto longest_argument_length() const -> size_t;
+  [[nodiscard]] auto longest_argument_length() const -> size_t;
 
   void index_argument(list_iterator p_argument_iterator);
 

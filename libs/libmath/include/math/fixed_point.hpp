@@ -47,7 +47,9 @@ struct fixed_point_t {
     uint64_t m_denominator;
   };
 
-  constexpr auto fraction() const -> rational_t { return rational_t((m_value * ratio::num) % ratio::den, ratio::den); }
+  [[nodiscard]] constexpr auto fraction() const -> rational_t {
+    return rational_t((m_value * ratio::num) % ratio::den, ratio::den);
+  }
 
 private:
   int64_t m_value{};

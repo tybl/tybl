@@ -24,7 +24,7 @@ public:
 
   auto operator<(stack_state const& p_o) const -> bool { return m_contents < p_o.m_contents; }
 
-  auto distance_to_goal() const -> size_t {
+  [[nodiscard]] auto distance_to_goal() const -> size_t {
     size_t result = 0;
     for (size_t i = 0UL; i < m_contents.rows(); ++i) {
       result += num_to_move(m_contents.row(i));

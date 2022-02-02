@@ -73,7 +73,7 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(2, M, N)>> {
     y /= p_s;
     return *this;
   }
-  constexpr auto dot(basic_matrix const& p_v) const -> value_type { return (x * p_v.x) + (y * p_v.y); }
+  [[nodiscard]] constexpr auto dot(basic_matrix const& p_v) const -> value_type { return (x * p_v.x) + (y * p_v.y); }
 };
 
 // Rank 3 Column Vector specialization
@@ -150,7 +150,7 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(4, M, N)>> {
     w /= p_s;
     return *this;
   }
-  constexpr auto dot(basic_matrix const& p_v) const -> value_type {
+  [[nodiscard]] constexpr auto dot(basic_matrix const& p_v) const -> value_type {
     return (x * p_v.x) + (y * p_v.y) + (z * p_v.z) + (w * p_v.w);
   }
 };

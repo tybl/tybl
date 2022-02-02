@@ -330,9 +330,8 @@ public:
                                                                            p_str.size());
   }
 
-  constexpr auto find_first_not_of(CharType p_c, size_type p_pos =0) const noexcept -> size_type
-  {
-      return str_find_first_not_of<value_type, size_type, traits_type, npos>(data(), size(), p_c, p_pos);
+  [[nodiscard]] constexpr auto find_first_not_of(CharType p_c, size_type p_pos = 0) const noexcept -> size_type {
+    return str_find_first_not_of<value_type, size_type, traits_type, npos>(data(), size(), p_c, p_pos);
   }
 
   constexpr auto find_first_not_of(const CharType* p_str, size_type p_pos, size_type p_n) const -> size_type
