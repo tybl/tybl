@@ -15,15 +15,15 @@ class ecef_t {
 public:
   explicit ecef_t(lynel::cvec3<double> p_pos);
 
-  explicit operator lynel::cvec3<double>() const;
+  [[nodiscard,gnu::pure]] explicit operator lynel::cvec3<double>() const;
 
-  [[nodiscard]] auto to_lla() const -> lla_t;
+  [[nodiscard,gnu::pure]] auto to_lla() const -> lla_t;
 
-  [[nodiscard]] auto x() const -> double;
+  [[nodiscard,gnu::pure]] auto x() const -> double;
 
-  [[nodiscard]] auto y() const -> double;
+  [[nodiscard,gnu::pure]] auto y() const -> double;
 
-  [[nodiscard]] auto z() const -> double;
+  [[nodiscard,gnu::pure]] auto z() const -> double;
 
 }; // class ecef_t
 

@@ -15,11 +15,11 @@ class lla_t {
 public:
   [[nodiscard]] auto to_ecef() const -> ecef_t;
 
-  [[nodiscard]] auto latitude() const -> double;
+  [[nodiscard,gnu::pure]] auto latitude() const -> double;
 
-  [[nodiscard]] auto longitude() const -> double;
+  [[nodiscard,gnu::pure]] auto longitude() const -> double;
 
-  [[nodiscard]] auto altitude() const -> double;
+  [[nodiscard,gnu::pure]] auto altitude() const -> double;
 
 }; // class lla_c
 

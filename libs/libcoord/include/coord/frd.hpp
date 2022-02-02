@@ -16,19 +16,19 @@ class frd_t {
 public:
   frd_t(double p_f, double p_r, double p_d);
 
-  [[nodiscard]] auto to_ecef(ecef_t const& p_ref_pos, lynel::quaternion const& p_ref_rot) const -> ecef_t;
+  [[nodiscard,gnu::pure]] auto to_ecef(ecef_t const& p_ref_pos, lynel::quaternion const& p_ref_rot) const -> ecef_t;
 
-  [[nodiscard]] auto x() const -> double;
+  [[nodiscard,gnu::pure]] auto x() const -> double;
 
-  [[nodiscard]] auto y() const -> double;
+  [[nodiscard,gnu::pure]] auto y() const -> double;
 
-  [[nodiscard]] auto z() const -> double;
+  [[nodiscard,gnu::pure]] auto z() const -> double;
 
-  [[nodiscard]] auto f() const -> double;
+  [[nodiscard,gnu::pure]] auto f() const -> double;
 
-  [[nodiscard]] auto r() const -> double;
+  [[nodiscard,gnu::pure]] auto r() const -> double;
 
-  [[nodiscard]] auto d() const -> double;
+  [[nodiscard,gnu::pure]] auto d() const -> double;
 
 }; // class frd_t
 
