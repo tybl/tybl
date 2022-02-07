@@ -29,7 +29,6 @@ target_sources(vodka
     include/vodka/type_traits/is_function.hpp
     include/vodka/type_traits/is_lvalue_reference.hpp
     include/vodka/type_traits/is_reference.hpp
-    include/vodka/type_traits/is_same.hpp
     include/vodka/type_traits/is_void.hpp
     include/vodka/type_traits/remove_const.hpp
     include/vodka/type_traits/remove_cv.hpp

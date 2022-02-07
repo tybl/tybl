@@ -1,11 +1,10 @@
 // License: The Unlicense (https://unlicense.org)
 #include "lynel/basic_matrix.hpp"
 
-#include "vodka/type_traits/is_same.hpp"
-
 #include <doctest/doctest.h>
 
 #include <cmath> // M_PI
+#include <type_traits>
 
 using namespace tybl::lynel;
 
@@ -20,14 +19,14 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 29") {
 
   // B
   rvec4<int> b = {1, 2, 3, 1};
-  CHECK(!tybl::vodka::is_same<decltype(a), decltype(b)>::value);
+  CHECK(!std::is_same<decltype(a), decltype(b)>::value);
 
   // C
   cvec2<double> c = {-1, M_PI};
 
   // D
   rvec2<double> d = {7, 1.0 / 3.0};
-  CHECK(!tybl::vodka::is_same<decltype(c), decltype(d)>::value);
+  CHECK(!std::is_same<decltype(c), decltype(d)>::value);
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") { // NOLINT
