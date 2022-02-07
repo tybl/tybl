@@ -20,7 +20,6 @@ target_sources(vodka
     include/vodka/functional/less.hpp
     include/vodka/functional/less_equal.hpp
     include/vodka/numeric/gcd.hpp
-    include/vodka/string_view/basic_string_view.hpp
     include/vodka/type_traits/bool_constant.hpp
     include/vodka/type_traits/conditional.hpp
     include/vodka/type_traits/enable_if.hpp
@@ -57,7 +56,6 @@ target_sources(libvodka_t
     test/vodka/basic_fixed_string.cpp
     test/vodka/functional/less_equal.cpp
     test/vodka/span/span.cpp
-    test/vodka/string_view/basic_string_view.cpp
     test/vodka/type_traits/conditional.cpp
     test/vodka/type_traits/false_type.cpp
     test/vodka/type_traits/integral_constant.cpp
