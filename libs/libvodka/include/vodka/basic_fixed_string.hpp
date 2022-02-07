@@ -3,9 +3,8 @@
 #ifndef TYBL_VODKA_BASICFIXEDSTRING_HPP
 #define TYBL_VODKA_BASICFIXEDSTRING_HPP
 
-#include <vodka/string_view/basic_string_view.hpp>
-
 #include <cstddef>
+#include <string_view>
 
 namespace tybl::vodka {
 

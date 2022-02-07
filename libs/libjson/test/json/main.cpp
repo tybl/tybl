@@ -3,7 +3,6 @@
 
 #include <vodka/basic_fixed_string.hpp>
 #include <vodka/parse_error.hpp>
-#include <vodka/string_view/basic_string_view.hpp>
 
 #include <cassert>
 #include <iostream>
