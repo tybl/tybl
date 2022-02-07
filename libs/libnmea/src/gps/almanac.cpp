@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #include "gps/almanac.hpp"
 
-#include <vodka/algorithm/max.hpp>
+#include <algorithm>
 
 namespace gps {
 
@@ -70,7 +70,7 @@ auto almanac::min_snr() const -> double {
 auto almanac::max_snr() const -> double {
   double max = 0;
   for (const auto& satellite : satellites) {
-    max = tybl::vodka::max(max, satellite.snr);
+    max = std::max(max, satellite.snr);
   }
   return max;
 }

@@ -3,7 +3,6 @@
 #ifndef TYBL_LYNEL_BASICMATRIX_HPP
 #define TYBL_LYNEL_BASICMATRIX_HPP
 
-#include "vodka/algorithm/max.hpp"
 #include "vodka/algorithm/min.hpp"
 #include "vodka/type_traits/enable_if.hpp"
 

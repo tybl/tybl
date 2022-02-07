@@ -3,8 +3,7 @@
 
 #include "parm/Parameter.hpp"
 
-#include <vodka/algorithm/max.hpp>
-
+#include <algorithm>
 #include <list>
 #include <map>
 #include <string>
@@ -39,7 +38,7 @@ void Application::parse_arguments(std::vector<std::string> const& /*p_args*/) {
 // For printing usage
 auto Application::longest_argument_length() const -> size_t {
   return std::accumulate(m_argument_map.cbegin(), m_argument_map.cend(), 0ULL,
-                         [](size_t p_max_length, auto const& p_argument_entry) { return tybl::vodka::max(p_max_length, p_argument_entry.second->length()); });
+                         [](size_t p_max_length, auto const& p_argument_entry) { return std::max(p_max_length, p_argument_entry.second->length()); });
 }
 
 void Application::index_argument(list_iterator p_argument_iterator) {
