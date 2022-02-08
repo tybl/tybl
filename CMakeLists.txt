@@ -9,8 +9,8 @@ project(tybl
 	LANGUAGES CXX)
 
 include(CTest)
-include(FetchContent)
 include(utils/cmake/CompilerSettings.cmake)
+include(utils/cmake/external_libraries.cmake)
 include(utils/cmake/Linters.cmake)
 
 add_subdirectory(utils/doctest)

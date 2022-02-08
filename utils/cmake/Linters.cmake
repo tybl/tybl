@@ -2,6 +2,12 @@
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
 
+# Linters, at least at last check, cannot be assigned as a property of a target.
+# As such, they can only be enabled at the global level. Though, luckily, they
+# only applied to the targets declared after the global linter variable is
+# defined. If you don't want your linter settings applied to third party code,
+# you need to import that third party code prior to including this file.
+
 # TODO: Does it make sense not to enable linters on release builds?
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
