@@ -6,7 +6,6 @@ add_library(vodka INTERFACE)
 target_include_directories(vodka INTERFACE include)
 target_sources(vodka
   INTERFACE
-    include/vodka/algorithm/all_of.hpp
     include/vodka/algorithm/are_equal.hpp
     include/vodka/algorithm/find_if_not.hpp
     include/vodka/algorithm/min.hpp
@@ -45,7 +44,6 @@ add_executable(libvodka_t)
 target_link_libraries(libvodka_t PRIVATE compiler_settings vodka test_base)
 target_sources(libvodka_t
   PRIVATE
-    test/vodka/algorithm/all_of.cpp
     test/vodka/algorithm/are_equal.cpp
     test/vodka/array/array.cpp
     test/vodka/basic_fixed_string.cpp
