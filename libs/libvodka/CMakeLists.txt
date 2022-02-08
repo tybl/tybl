@@ -9,7 +9,6 @@ target_sources(vodka
     include/vodka/algorithm/all_of.hpp
     include/vodka/algorithm/are_equal.hpp
     include/vodka/algorithm/find_if_not.hpp
-    include/vodka/algorithm/inner_product.hpp
     include/vodka/algorithm/min.hpp
     include/vodka/algorithm/transform.hpp
     include/vodka/array/array.hpp
@@ -48,7 +47,6 @@ target_sources(libvodka_t
   PRIVATE
     test/vodka/algorithm/all_of.cpp
     test/vodka/algorithm/are_equal.cpp
-    test/vodka/algorithm/inner_product.cpp
     test/vodka/array/array.cpp
     test/vodka/basic_fixed_string.cpp
     test/vodka/functional/less_equal.cpp
