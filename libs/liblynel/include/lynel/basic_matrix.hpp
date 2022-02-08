@@ -3,10 +3,8 @@
 #ifndef TYBL_LYNEL_BASICMATRIX_HPP
 #define TYBL_LYNEL_BASICMATRIX_HPP
 
-#include "vodka/algorithm/min.hpp"
-#include "vodka/type_traits/enable_if.hpp"
-
 #include <cstddef> // size_t
+#include <type_traits>
 
 namespace tybl::lynel {
 
@@ -48,7 +46,7 @@ using rvec = basic_matrix<T, 1, N>;
 
 // Rank 2 Vector specialization
 template <typename T, size_t M, size_t N>
-struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(2, M, N)>> {
+struct basic_matrix<T, M, N, typename std::enable_if_t<is_vec(2, M, N)>> {
   using value_type = T;
   value_type x, y;
   constexpr auto operator==(basic_matrix const& p_v) const -> bool { return (x == p_v.x) && (y == p_v.y); }
@@ -77,7 +75,7 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(2, M, N)>> {
 
 // Rank 3 Column Vector specialization
 template <typename T, size_t M, size_t N>
-struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(3, M, N)>> {
+struct basic_matrix<T, M, N, typename std::enable_if_t<is_vec(3, M, N)>> {
   using value_type = T;
   value_type x, y, z;
   constexpr auto operator==(basic_matrix const& p_v) const -> bool {
@@ -115,7 +113,7 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(3, M, N)>> {
 
 // Rank 4 Column Vector specialization
 template <typename T, size_t M, size_t N>
-struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_vec(4, M, N)>> {
+struct basic_matrix<T, M, N, typename std::enable_if_t<is_vec(4, M, N)>> {
   using value_type = T;
   value_type x, y, z, w;
   constexpr auto operator==(basic_matrix const& p_v) const -> bool {
@@ -181,7 +179,7 @@ struct basic_matrix<T, 1, 1, void> {
 
 // Two column matrices
 template <typename T, size_t M, size_t N>
-struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_mat(2, M, N)>> {
+struct basic_matrix<T, M, N, typename std::enable_if_t<is_mat(2, M, N)>> {
   using value_type = T;
   cvec<value_type, M> x, y;
   constexpr auto operator==(basic_matrix const& p_v) const -> bool { return (x == p_v.x) && (y == p_v.y); }
@@ -209,7 +207,7 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_mat(2, M, N)>> {
 
 // Three column matrices
 template <typename T, size_t M, size_t N>
-struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_mat(3, M, N)>> {
+struct basic_matrix<T, M, N, typename std::enable_if_t<is_mat(3, M, N)>> {
   using value_type = T;
   cvec<value_type, M> x, y, z;
   constexpr auto operator==(basic_matrix const& p_v) const -> bool {
@@ -243,7 +241,7 @@ struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_mat(3, M, N)>> {
 
 // Three column matrices
 template <typename T, size_t M, size_t N>
-struct basic_matrix<T, M, N, typename vodka::enable_if_t<is_mat(4, M, N)>> {
+struct basic_matrix<T, M, N, typename std::enable_if_t<is_mat(4, M, N)>> {
   using value_type = T;
   cvec<value_type, M> x, y, z, w;
   constexpr auto operator==(basic_matrix const& p_v) const -> bool {

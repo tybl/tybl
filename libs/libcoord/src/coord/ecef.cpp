@@ -2,14 +2,13 @@
 #include "coord/ecef.hpp"
 
 #include "coord/lla.hpp"
-#include "vodka/utility/move.hpp"
 
 #include <stdexcept>
 
 namespace tybl::coord {
 
 ecef_t::ecef_t(lynel::cvec3<double> p_pos)
-  : m_ecef(vodka::move(p_pos)) {}
+  : m_ecef(p_pos) {}
 
 ecef_t::operator lynel::cvec3<double>() const { return m_ecef; }
 
