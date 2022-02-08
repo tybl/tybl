@@ -1,12 +1,15 @@
 // License: The Unlicense (https://unlicense.org)
 #pragma once
-#ifndef _TYBL__VODKA__DYNARRAY__HPP_
-#define _TYBL__VODKA__DYNARRAY__HPP_
+#ifndef TYBL_VODKA_DYNARRAY_HPP
+#define TYBL_VODKA_DYNARRAY_HPP
+
+#include <algorithm>
+#include <cstddef>
 
 namespace tybl::vodka {
 
 template <typename ElementType>
-struct dynarray {
+struct dynarray final {
 
   // types:
   using value_type      = ElementType;
@@ -25,48 +28,71 @@ private:
   pointer   m_data;
 
   // 
-  size_type m_capacity;
-  size_type m_size;
+  size_type m_size{};
 
 public:
 
-  dynarray(size_type p_capacity)
+  explicit dynarray(size_type p_capacity)
     : m_data(new value_type[p_capacity])
-    , m_capacity(p_capacity)
+    , m_size(p_capacity)
   {
   }
 
-  ~dynarray()
+  dynarray(dynarray const& p_other)
+    : m_data(new value_type[p_other.m_size])
+    , m_size(p_other.m_size)
   {
+    std::copy(p_other.begin(), p_other.end(), std::begin(m_data));
+  }
+
+  dynarray(dynarray&& p_other) noexcept
+    : m_data(p_other.m_data)
+    , m_size(p_other.m_size)
+  {
+    p_other.m_data = nullptr;
+  }
+
+  ~dynarray() { delete [] m_data; }
+
+  auto operator=(dynarray const& p_other) -> dynarray& {
+    if (this != &p_other) {
+      if (m_size != p_other.m_size) {
+        delete [] m_data;
+        m_data = p_other.m_size ? new value_type[p_other.m_size] : nullptr;
+        m_size = p_other.m_size;
+      }
+      std::copy(p_other.begin(), p_other.end(), m_data);
+    }
+    return *this;
+  }
+
+  auto operator=(dynarray&& p_other) noexcept -> dynarray& {
+    assert(this != &p_other);
     delete [] m_data;
+    m_data = p_other.m_data;
+    m_size = p_other.m_size;
+    p_other.m_data = nullptr;
+    p_other.m_size = 0U;
+    return *this;
   }
 
-  dynarray& operator=(dynarray p_other)
-  {
-  }
+  // Element Access
+  auto operator[](size_type p_index) -> reference { return m_data[p_index]; }
 
-  reference operator[](size_type p_index) {
-    return m_data[p_index];
-  }
+  [[nodiscard]] auto operator[](size_type p_index) const -> const_reference { return m_data[p_index]; }
 
-  const_reference operator[](size_type p_index) const {
-    return m_data[p_index];
-  }
+  // Iterators
+  [[nodiscard]] auto begin() const -> const_iterator { return m_data; }
 
-  bool empty() const {
-    return !m_size;
-  }
+  [[nodiscard]] auto end() const -> const_iterator { return m_data + m_size; }
 
-  size_type size() const {
-    return m_size;
-  }
+  // Capacity
+  [[nodiscard]] auto empty() const -> bool { return 0U == m_size; }
 
-  size_type capacity() const {
-    return m_capacity;
-  }
+  [[nodiscard]] auto size() const -> size_type { return m_size; }
 
 }; // struct dynarray
 
-}; // namespace tybl::vodka
+} // namespace tybl::vodka
 
-#endif // _TYBL__VODKA__DYNARRAY__HPP_
+#endif // TYBL_VODKA_DYNARRAY_HPP

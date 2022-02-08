@@ -7,6 +7,7 @@ target_include_directories(vodka INTERFACE include)
 target_sources(vodka
   INTERFACE
     include/vodka/basic_fixed_string.hpp
+    include/vodka/dynarray.hpp
     include/vodka/parse_error.hpp
 )
 
