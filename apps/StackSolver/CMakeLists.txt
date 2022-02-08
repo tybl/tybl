@@ -4,7 +4,7 @@
 
 if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "10.1")
 
-	#[[
+#[[
 add_executable(find_all)
 target_compile_features(find_all PUBLIC cxx_std_20) # 20: std::set::emplace(), std::ranges
 target_sources(find_all
@@ -29,15 +29,15 @@ add_executable(stacksolve)
 target_link_libraries(stacksolve PRIVATE stacksolvelib)
 target_sources(stacksolve PRIVATE src/main.cpp)
 
-  add_executable(stacksolver_t)
-  target_link_libraries(stacksolver_t PRIVATE compiler_settings test_base stacksolvelib)
-  target_sources(stacksolver_t
-    PRIVATE
-      test/src/Board.cpp
-      test/src/stacksolve/stack_state.cpp
-  )
+add_executable(test_stacksolver)
+target_link_libraries(test_stacksolver PRIVATE compiler_settings test_base stacksolvelib)
+target_sources(test_stacksolver
+  PRIVATE
+    test/src/Board.cpp
+    test/src/stacksolve/stack_state.cpp
+)
 
-  add_test(NAME test_stacksolver COMMAND stacksolver_t)
+add_test(NAME stacksolver_test COMMAND test_stacksolver)
 
 else()
   message("Note: Not building \"StackSolver\"; install gcc > v10.1 to enable")

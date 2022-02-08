@@ -11,10 +11,10 @@ target_sources(vodka
     include/vodka/parse_error.hpp
 )
 
-add_executable(libvodka_t)
-target_link_libraries(libvodka_t PRIVATE compiler_settings vodka test_base)
-target_sources(libvodka_t
+add_executable(test_libvodka)
+target_link_libraries(test_libvodka PRIVATE compiler_settings vodka test_base)
+target_sources(test_libvodka
   PRIVATE
     test/vodka/basic_fixed_string.cpp
 )
-add_test(NAME test_libvodka COMMAND libvodka_t)
+add_test(NAME libvodka_test COMMAND test_libvodka)

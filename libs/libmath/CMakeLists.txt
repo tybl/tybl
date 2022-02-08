@@ -12,9 +12,9 @@ target_sources(math
     include/math/pow10.hpp
 )
 
-add_executable(libmath_t)
-target_link_libraries(libmath_t PRIVATE compiler_settings math test_base)
-target_sources(libmath_t
+add_executable(test_libmath)
+target_link_libraries(test_libmath PRIVATE compiler_settings math test_base)
+target_sources(test_libmath
   PRIVATE
     test/math/fixed_point.cpp
     test/math/integer.cpp
@@ -22,4 +22,4 @@ target_sources(libmath_t
     test/math/stats/distribution.cpp
 )
 
-add_test(NAME test_libmath COMMAND libmath_t)
+add_test(NAME libmath_test COMMAND test_libmath)

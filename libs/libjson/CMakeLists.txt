@@ -12,11 +12,11 @@ target_sources(json
 )
 ]]
 
-add_executable(json_t)
-target_link_libraries(json_t PRIVATE compiler_settings json test_base vodka)
-target_sources(json_t
+add_executable(test_libjson)
+target_link_libraries(test_libjson PRIVATE compiler_settings json test_base vodka)
+target_sources(test_libjson
   PRIVATE
     test/json/main.cpp
 )
 
-add_test(NAME test_json COMMAND json_t)
+add_test(NAME libjson_test COMMAND test_libjson)

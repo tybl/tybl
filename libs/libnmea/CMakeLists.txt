@@ -29,12 +29,12 @@ target_sources(nmea
     include/nmea/sentence.hpp
 )
 
-add_executable(libnmea_t)
-target_link_libraries(libnmea_t PRIVATE compiler_settings nmea test_base)
-target_sources(libnmea_t
+add_executable(test_libnmea)
+target_link_libraries(test_libnmea PRIVATE compiler_settings nmea test_base)
+target_sources(test_libnmea
   PRIVATE
     test/nmea/GGA_sentence.cpp
     #test/nmea/GSA_sentence.cpp
 )
 
-add_test(NAME test_libnmea COMMAND libnmea_t)
+add_test(NAME libnmea_test COMMAND test_libnmea)

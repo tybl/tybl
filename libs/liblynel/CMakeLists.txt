@@ -12,12 +12,12 @@ target_sources(lynel
     include/lynel/quaternion.hpp
 )
 
-add_executable(lynel_t)
-target_link_libraries(lynel_t PRIVATE compiler_settings test_base lynel vodka)
-target_sources(lynel_t
+add_executable(test_liblynel)
+target_link_libraries(test_liblynel PRIVATE compiler_settings test_base lynel vodka)
+target_sources(test_liblynel
   PRIVATE
     test/books/LinearAlgebra_TheoryIntuitionCode.cpp
     test/lynel/matrix.cpp
 )
 
-add_test(NAME test_lynel COMMAND lynel_t)
+add_test(NAME liblynel_test COMMAND test_liblynel)
