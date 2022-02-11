@@ -3,12 +3,11 @@
 #ifndef TYBL_LOG_LOGGER_HPP
 #define TYBL_LOG_LOGGER_HPP
 
-#include <iosfwd>
+#include <string>
 
 namespace tybl::log {
 
-auto log() -> std::ostream&;
-// TODO(tybl): std::ostream& log(std::source_location p_source_location = std::source_location::current());
+void log(std::string const& p_output);
 
 } // namespace tybl::log
 

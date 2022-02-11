@@ -1,14 +1,12 @@
 // License: The Unlicense (https://unlicense.org)
 #include <log/logger.hpp>
 
-#include <iostream>
+#include <unistd.h>
 
 namespace tybl::log {
 
-auto log() -> std::ostream& {
-  return std::cout;
+void log(std::string const& p_output) {
+  ::write(STDOUT_FILENO, p_output.data(), p_output.size());
 }
-
-// TODO(tybl): std::ostream& log(const std::source_location p_source_location) { return std::cout; }
 
 } // namespace tybl::log
