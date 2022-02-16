@@ -1,6 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #include "json/value.hpp"
 
+#include <parse/character.hpp>
 #include <vodka/basic_fixed_string.hpp>
 #include <vodka/parse_error.hpp>
 
@@ -20,193 +21,183 @@ static const std::regex num_re{"^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+
 
 struct json_parser {
 
-static auto parse_json(std::string_view& p_in) -> value {
-  return json_parser::parse_element(p_in);
-}
+  static auto parse_json(std::string_view& p_in) -> value { return json_parser::parse_element(p_in); }
 
 private:
-static constexpr const tybl::vodka::basic_fixed_string FALSE{"false"};
-static constexpr const tybl::vodka::basic_fixed_string NIL{"null"};
-static constexpr const tybl::vodka::basic_fixed_string TRUE{"true"};
-static constexpr std::string_view WHITESPACE_CHARS{"\x09\x0A\x0D\x20"};
+  static constexpr const tybl::vodka::basic_fixed_string FALSE{"false"};
+  static constexpr const tybl::vodka::basic_fixed_string NIL{"null"};
+  static constexpr const tybl::vodka::basic_fixed_string TRUE{"true"};
+  static constexpr std::string_view WHITESPACE_CHARS{"\x09\x0A\x0D\x20"};
 
-static constexpr auto is_digit(char p_c) -> bool { return is_in_range<char, '0', '9'>(p_c); }
+  static auto is_digit(char p_c) -> bool { return is_in_range<char, '0', '9'>(p_c); }
 
-static constexpr auto is_hex(char p_c) -> bool {
-  return is_digit(p_c) || is_in_range<char, 'A', 'F'>(p_c) || is_in_range<char, 'a', 'f'>(p_c);
-}
-
-template <class Type, Type low, Type high>
-static constexpr auto is_in_range(Type p_c) -> bool {
-  static_assert(low <= high);
-  return ((low <= p_c) && (p_c <= high));
-}
-
-static auto parse_array(std::string_view& p_in) -> std::vector<value> {
-  if (!parse_character<'['>(p_in)) {
-    throw vodka::parse_error("Error: JSON Array not found");
+  static auto is_hex(char p_c) -> bool {
+    return is_digit(p_c) || is_in_range<char, 'A', 'F'>(p_c) || is_in_range<char, 'a', 'f'>(p_c);
   }
-  //printf("[");
-  std::vector<value> result;
-  parse_whitespace(p_in);
-  if (!p_in.empty() && ']' != p_in.front()) {
-    result.push_back(parse_value(p_in));
-    parse_whitespace(p_in);
-    while (parse_character<','>(p_in)) {
-      //printf(",");
-      result.push_back(parse_element(p_in));
+
+  template <class Type, Type low, Type high>
+  static auto is_in_range(Type p_c) -> bool {
+    static_assert(low <= high, "Calling is_in_range with invalid range");
+    return ((low <= p_c) && (p_c <= high));
+  }
+
+  static auto parse_array(std::string_view& p_in) -> std::vector<value> {
+    if (!parse::character<'['>(p_in)) {
+      throw vodka::parse_error("Error: JSON Array not found");
     }
-  }
-  if (!parse_character<']'>(p_in)) {
-    throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON Array");
-  }
-  //printf("]");
-  return result;
-}
-
-template <char CHAR>
-static auto parse_character(std::string_view& p_in) -> bool {
-  bool result = (!p_in.empty() && CHAR == p_in.front());
-  p_in.remove_prefix(static_cast<std::string_view::size_type>(result));
-  return result;
-}
-
-static auto parse_element(std::string_view& p_in) -> value {
-  json_parser::parse_whitespace(p_in);
-  auto result = json_parser::parse_value(p_in);
-  json_parser::parse_whitespace(p_in);
-  return result;
-}
-
-template <tybl::vodka::basic_fixed_string Literal>
-static auto parse_literal(std::string_view& p_in) -> std::string_view {
-  auto result = p_in.substr(0, Literal.size());
-  if (static_cast<std::string_view>(Literal) != result) {
-    throw vodka::parse_error("Error: Expected to find JSON literal '{}'");
-  }
-  p_in.remove_prefix(Literal.size());
-  //printf(Literal);
-  return result;
-}
-
-static auto parse_number(std::string_view& p_in) -> std::string_view {
-  static std::regex re("^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
-  const auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
-  if (!rei->ready() || rei->empty() || rei->position() != 0) {
-    throw vodka::parse_error("Error: Expected JSON Number");
-  }
-  auto len = static_cast<size_t>(rei->length());
-  auto result = p_in.substr(0, len);
-  p_in.remove_prefix(len);
-  //printf("#");
-  return result;
-}
-
-static auto parse_object(std::string_view& p_in) -> std::map<std::string_view, value> {
-  if (!parse_character<'{'>(p_in)) {
-    throw vodka::parse_error("Error: JSON Object not found");
-  }
-  //printf("{");
-  std::map<std::string_view, value> result;
-  parse_whitespace(p_in);
-  if (!p_in.empty() && '}' != p_in.front()) {
-    std::string_view key = parse_string(p_in);
+    // printf("[");
+    std::vector<value> result;
     parse_whitespace(p_in);
-    if (!parse_character<':'>(p_in)) {
-      throw vodka::parse_error("Error: Missing ':' within JSON Object1");
-    }
-    //printf(":");
-    result[key] = parse_element(p_in);
-    while (parse_character<','>(p_in)) {
-      //printf(",");
+    if (!p_in.empty() && ']' != p_in.front()) {
+      result.push_back(parse_value(p_in));
       parse_whitespace(p_in);
-      key = parse_string(p_in);
-      parse_whitespace(p_in);
-      if (!parse_character<':'>(p_in)) {
-        throw vodka::parse_error("Error: Missing ':' within JSON Object2");
+      while (parse::character<','>(p_in)) {
+        // printf(",");
+        result.push_back(parse_element(p_in));
       }
-      //printf(":");
+    }
+    if (!parse::character<']'>(p_in)) {
+      throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON Array");
+    }
+    // printf("]");
+    return result;
+  }
+
+  static auto parse_element(std::string_view& p_in) -> value {
+    json_parser::parse_whitespace(p_in);
+    auto result = json_parser::parse_value(p_in);
+    json_parser::parse_whitespace(p_in);
+    return result;
+  }
+
+  template <tybl::vodka::basic_fixed_string Literal>
+  static auto parse_literal(std::string_view& p_in) -> std::string_view {
+    auto result = p_in.substr(0, Literal.size());
+    if (static_cast<std::string_view>(Literal) != result) {
+      throw vodka::parse_error("Error: Expected to find JSON literal '{}'");
+    }
+    p_in.remove_prefix(Literal.size());
+    // printf(Literal);
+    return result;
+  }
+
+  static auto parse_number(std::string_view& p_in) -> std::string_view {
+    static std::regex re("^[-]?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?");
+    const auto rei = std::cregex_iterator(p_in.begin(), p_in.end(), re);
+    if (!rei->ready() || rei->empty() || rei->position() != 0) {
+      throw vodka::parse_error("Error: Expected JSON Number");
+    }
+    auto len = static_cast<size_t>(rei->length());
+    auto result = p_in.substr(0, len);
+    p_in.remove_prefix(len);
+    // printf("#");
+    return result;
+  }
+
+  static auto parse_object(std::string_view& p_in) -> std::map<std::string_view, value> {
+    if (!parse::character<'{'>(p_in)) {
+      throw vodka::parse_error("Error: JSON Object not found");
+    }
+    // printf("{");
+    std::map<std::string_view, value> result;
+    parse_whitespace(p_in);
+    if (!p_in.empty() && '}' != p_in.front()) {
+      std::string_view key = parse_string(p_in);
+      parse_whitespace(p_in);
+      if (!parse::character<':'>(p_in)) {
+        throw vodka::parse_error("Error: Missing ':' within JSON Object1");
+      }
+      // printf(":");
       result[key] = parse_element(p_in);
-    }
-  }
-  if (!parse_character<'}'>(p_in)) {
-    throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON Object");
-  }
-  //printf("}");
-  return result;
-}
-
-static auto parse_string(std::string_view& p_in) -> std::string_view {
-  if (!parse_character<'"'>(p_in)) {
-    throw vodka::parse_error("Error: JSON String not found");
-  }
-  size_t i = 0;
-  for (; (i < p_in.size()) && ('"' != p_in[i]); ++i) {
-    if (is_in_range<char, 0x0, 0x19>(p_in[i])) {
-      throw vodka::parse_error("Error: String includes unescaped character in the range 0000 . 0019");
-    }
-    if ('\\' == p_in[i]) {
-      if (i + 1 >= p_in.size()) {
-        throw vodka::parse_error("Error: Not enough hexadecimal characters after escape");
-      }
-      ++i;
-      if (('"' != p_in[i]) && ('\\' != p_in[i]) && ('/' != p_in[i]) && ('b' != p_in[i]) && ('f' != p_in[i]) &&
-          ('n' != p_in[i]) && ('r' != p_in[i]) && ('t' != p_in[i]) && ('u' != p_in[i])) {
-        throw vodka::parse_error("Error: Unexpected escaped character");
-      }
-      if ('u' == p_in[i]) {
-        if (i + 4 >= p_in.size()) {
-          throw vodka::parse_error("Error: Not enough hexadecimal characters in escaped 'u'");
+      while (parse::character<','>(p_in)) {
+        // printf(",");
+        parse_whitespace(p_in);
+        key = parse_string(p_in);
+        parse_whitespace(p_in);
+        if (!parse::character<':'>(p_in)) {
+          throw vodka::parse_error("Error: Missing ':' within JSON Object2");
         }
-        if (!is_hex(p_in[i + 1]) || !is_hex(p_in[i + 2]) || !is_hex(p_in[i + 3]) || !is_hex(p_in[i + 4])) {
-          throw vodka::parse_error("Error: Non-hexadecimal characters in escaped 'u'");
-        }
-        i += 4;
+        // printf(":");
+        result[key] = parse_element(p_in);
       }
     }
+    if (!parse::character<'}'>(p_in)) {
+      throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON Object");
+    }
+    // printf("}");
+    return result;
   }
-  if (p_in.size() == i) {
-    throw vodka::parse_error("Error: JSON input ended before string was closed");
-  }
-  auto result = p_in.substr(0, i);
-  p_in.remove_prefix(i + 1);
-  //printf("\"");
-  return result;
-}
 
-static auto parse_value(std::string_view& p_in) -> value {
-  value result;
-  if (p_in.empty()) {
-    throw vodka::parse_error("Error: Expected JSON value before end of input");
+  static auto parse_string(std::string_view& p_in) -> std::string_view {
+    if (!parse::character<'"'>(p_in)) {
+      throw vodka::parse_error("Error: JSON String not found");
+    }
+    size_t i = 0;
+    for (; (i < p_in.size()) && ('"' != p_in[i]); ++i) {
+      if (is_in_range<char, 0x0, 0x19>(p_in[i])) {
+        throw vodka::parse_error("Error: String includes unescaped character in the range 0000 . 0019");
+      }
+      if ('\\' == p_in[i]) {
+        if (i + 1 >= p_in.size()) {
+          throw vodka::parse_error("Error: Not enough hexadecimal characters after escape");
+        }
+        ++i;
+        if (('"' != p_in[i]) && ('\\' != p_in[i]) && ('/' != p_in[i]) && ('b' != p_in[i]) && ('f' != p_in[i]) &&
+            ('n' != p_in[i]) && ('r' != p_in[i]) && ('t' != p_in[i]) && ('u' != p_in[i])) {
+          throw vodka::parse_error("Error: Unexpected escaped character");
+        }
+        if ('u' == p_in[i]) {
+          if (i + 4 >= p_in.size()) {
+            throw vodka::parse_error("Error: Not enough hexadecimal characters in escaped 'u'");
+          }
+          if (!is_hex(p_in[i + 1]) || !is_hex(p_in[i + 2]) || !is_hex(p_in[i + 3]) || !is_hex(p_in[i + 4])) {
+            throw vodka::parse_error("Error: Non-hexadecimal characters in escaped 'u'");
+          }
+          i += 4;
+        }
+      }
+    }
+    if (p_in.size() == i) {
+      throw vodka::parse_error("Error: JSON input ended before string was closed");
+    }
+    auto result = p_in.substr(0, i);
+    p_in.remove_prefix(i + 1);
+    // printf("\"");
+    return result;
   }
-  switch (p_in.front()) {
-    case '"': result = parse_string(p_in); break;
-    case '-':
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9': result = parse_number(p_in); break;
-    case '[': result = parse_array(p_in); break;
-    case 'f': result = parse_literal<FALSE>(p_in); break;
-    case 'n': result = parse_literal<NIL>(p_in); break;
-    case 't': result = parse_literal<TRUE>(p_in); break;
-    case '{': result = parse_object(p_in); break;
-    default: throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON value");
+
+  static auto parse_value(std::string_view& p_in) -> value {
+    value result;
+    if (p_in.empty()) {
+      throw vodka::parse_error("Error: Expected JSON value before end of input");
+    }
+    switch (p_in.front()) {
+      case '"': result = parse_string(p_in); break;
+      case '-':
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9': result = parse_number(p_in); break;
+      case '[': result = parse_array(p_in); break;
+      case 'f': result = parse_literal<FALSE>(p_in); break;
+      case 'n': result = parse_literal<NIL>(p_in); break;
+      case 't': result = parse_literal<TRUE>(p_in); break;
+      case '{': result = parse_object(p_in); break;
+      default: throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON value");
+    }
+    return result;
   }
-  return result;
-}
 
-static void parse_whitespace(std::string_view& p_in) {
-  auto pos = p_in.find_first_not_of(WHITESPACE_CHARS);
-  p_in.remove_prefix((std::string_view::npos != pos) ? pos : 0); // consume whitespace
-}
-
+  static void parse_whitespace(std::string_view& p_in) {
+    auto pos = p_in.find_first_not_of(WHITESPACE_CHARS);
+    p_in.remove_prefix((std::string_view::npos != pos) ? pos : 0); // consume whitespace
+  }
 
 }; // struct json_parser
 
@@ -341,8 +332,7 @@ struct token {
       case TokenType::ARRAY_CLOSE:
       case TokenType::SEPARATOR:
       case TokenType::DELIMITER:
-      case TokenType::UNKNOWN:
-        break; // default value of 1 is correct
+      case TokenType::UNKNOWN: break; // default value of 1 is correct
     }
     return result;
   }
@@ -388,7 +378,6 @@ private:
    std::string m_value;
 }; // struct Json
 #endif
-
 
 static auto lex(std::string_view p_in) -> std::vector<token> {
   std::vector<token> result;
@@ -444,7 +433,7 @@ static auto lex(std::string_view p_in) -> std::vector<token> {
         p_in.remove_prefix(4);
         break;
       default:
-        //printf("not sure what to do with: '%c'\n", p_in.front());
+        // printf("not sure what to do with: '%c'\n", p_in.front());
         throw vodka::parse_error("Error: Encountered unexpected character while lexing JSON");
     }
   }
@@ -475,7 +464,7 @@ static std::string_view parse_number(std::string_view& p_in) {
 } // parse_number(std::string_view&)
 
 static std::string_view parse_string(std::string_view& p_in) {
-  if (!parse_character<'"'>(p_in)) {
+  if (!parse::parse_char<'"'>(p_in)) {
     throw vodka::parse_error("Error: JSON String not found");
   }
   size_t i = 0;
@@ -514,7 +503,7 @@ static std::string_view parse_string(std::string_view& p_in) {
 
 // Recursive
 static std::vector<value> parse_array(std::string_view& p_in) {
-  if (!parse_character<'['>(p_in)) {
+  if (!parse::parse_char<'['>(p_in)) {
     throw vodka::parse_error("Error: JSON Array not found");
   }
   printf("[");
@@ -523,12 +512,12 @@ static std::vector<value> parse_array(std::string_view& p_in) {
   if (!p_in.empty() && ']' != p_in.front()) {
     result.push_back(parse_value(p_in));
     parse_whitespace(p_in);
-    while (parse_character<','>(p_in)) {
+    while (parse::parse_char<','>(p_in)) {
       printf(",");
       result.push_back(parse_element(p_in));
     }
   }
-  if (!parse_character<']'>(p_in)) {
+  if (!parse::parse_char<']'>(p_in)) {
     throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON Array");
   }
   printf("]");
@@ -537,7 +526,7 @@ static std::vector<value> parse_array(std::string_view& p_in) {
 
 // Recursive
 static std::map<std::string_view, value> parse_object(std::string_view& p_in) {
-  if (!parse_character<'{'>(p_in)) {
+  if (!parse::parse_char<'{'>(p_in)) {
     throw vodka::parse_error("Error: JSON Object not found");
   }
   printf("{");
@@ -546,24 +535,24 @@ static std::map<std::string_view, value> parse_object(std::string_view& p_in) {
   if (!p_in.empty() && '}' != p_in.front()) {
     std::string_view key = parse_string(p_in);
     parse_whitespace(p_in);
-    if (!parse_character<':'>(p_in)) {
+    if (!parse::parse_char<':'>(p_in)) {
       throw vodka::parse_error("Error: Missing ':' within JSON Object1");
     }
     printf(":");
     result[key] = parse_element(p_in);
-    while (parse_character<','>(p_in)) {
+    while (parse::parse_char<','>(p_in)) {
       printf(",");
       parse_whitespace(p_in);
       key = parse_string(p_in);
       parse_whitespace(p_in);
-      if (!parse_character<':'>(p_in)) {
+      if (!parse::parse_char<':'>(p_in)) {
         throw vodka::parse_error("Error: Missing ':' within JSON Object2");
       }
       printf(":");
       result[key] = parse_element(p_in);
     }
   }
-  if (!parse_character<'}'>(p_in)) {
+  if (!parse::parse_char<'}'>(p_in)) {
     throw vodka::parse_error("Error: Encountered unexpected character while parsing JSON Object");
   }
   printf("}");
@@ -610,7 +599,7 @@ value parse_element(std::string_view& p_in) {
 static value parse_json(std::string_view& p_in) {
   return parse_element(p_in);
 } // parse_json(std::string_view&)
-#endif 
+#endif
 
 } // namespace tybl::json
 
