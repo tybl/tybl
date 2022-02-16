@@ -77,14 +77,14 @@ auto Board::operator+(edge const& p_e) const -> i_node const* {
 }
 
 void Board::print() const {
-  tybl::log::log(fmt::format("\nd: {}, p(): {}", distance(), priority()));
+  tybl::log::log("\nd: {}, p(): {}", distance(), priority());
   const size_t height = m_stats->m_max_stack_height;
   for (size_t i = 0; i < height; ++i) {
     tybl::log::log("\n");
     size_t r = (height - 1) - i;
     for (auto const& c : m_contents) {
       if (r < c.size()) {
-        tybl::log::log(fmt::format("{}", c.at(r)));
+        tybl::log::log("{}", c.at(r));
       } else {
         tybl::log::log(" ");
       }

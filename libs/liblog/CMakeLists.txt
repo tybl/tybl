@@ -7,6 +7,7 @@ target_include_directories(log PUBLIC include)
 target_link_libraries(log
   PUBLIC
     compiler_settings
+    fmt
 )
 target_sources(log
   PRIVATE
