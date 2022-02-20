@@ -3,9 +3,9 @@
 #ifndef TYBL_NMEA_GPS_FIX_HPP
 #define TYBL_NMEA_GPS_FIX_HPP
 
-#include "gps/almanac.hpp"
-#include "gps/satellite.hpp"
-#include "gps/timestamp.hpp"
+#include <nmea/gps/almanac.hpp>
+#include <nmea/gps/satellite.hpp>
+#include <nmea/gps/timestamp.hpp>
 
 #include <chrono>
 #include <cstdint>

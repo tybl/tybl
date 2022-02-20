@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "gps/fix.hpp"
+#include <nmea/gps/fix.hpp>
 
 //#include "gps/satellite.hpp"
 

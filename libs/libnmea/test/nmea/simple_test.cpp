@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
 #include <log/logger.hpp>
 #include <nmea/GPSService.hpp>
-#include <nmea/Parser.hpp>
+#include <nmea/byte_parser.hpp>
 
 #include <doctest/doctest.h>
 

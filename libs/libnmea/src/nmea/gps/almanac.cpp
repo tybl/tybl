@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "gps/almanac.hpp"
+#include "nmea/gps/almanac.hpp"
 
 #include <algorithm>
 

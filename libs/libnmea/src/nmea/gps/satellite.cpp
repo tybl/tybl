@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include <gps/satellite.hpp>
+#include <nmea/gps/satellite.hpp>
 
 #include <fmt/core.h>
 

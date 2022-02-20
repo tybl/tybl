@@ -7,10 +7,11 @@ target_include_directories(nmea PUBLIC include)
 target_link_libraries(nmea PUBLIC compiler_settings fmt log vodka)
 target_sources(nmea
   PRIVATE
-    src/gps/almanac.cpp
-    src/gps/satellite.cpp
-    src/gps/timestamp.cpp
-    src/gps/fix.cpp
+    src/nmea/gps/almanac.cpp
+    src/nmea/gps/satellite.cpp
+    src/nmea/gps/timestamp.cpp
+    src/nmea/gps/fix.cpp
+    src/nmea/byte_parser.cpp
     src/nmea/Command.cpp
     src/nmea/GPSService.cpp
     src/nmea/Parser.cpp
@@ -18,10 +19,11 @@ target_sources(nmea
     src/nmea/sentence.cpp
     src/nmea/serial_configuration.cpp
   PUBLIC
-    include/gps/almanac.hpp
-    include/gps/satellite.hpp
-    include/gps/timestamp.hpp
-    include/gps/fix.hpp
+    include/nmea/gps/almanac.hpp
+    include/nmea/gps/satellite.hpp
+    include/nmea/gps/timestamp.hpp
+    include/nmea/gps/fix.hpp
+    include/nmea/byte_parser.hpp
     include/nmea/Event.hpp
     include/nmea/EventHandler.hpp
     include/nmea/nmea.hpp

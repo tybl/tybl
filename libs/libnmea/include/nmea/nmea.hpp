@@ -7,6 +7,7 @@
 #include <nmea/EventHandler.hpp>
 #include <nmea/GPSService.hpp>
 #include <nmea/Parser.hpp>
+#include <nmea/byte_parser.hpp>
 #include <nmea/command.hpp>
 #include <nmea/query_rate.hpp>
 #include <nmea/sentence.hpp>

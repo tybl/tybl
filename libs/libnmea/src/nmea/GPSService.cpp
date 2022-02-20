@@ -1,7 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#include "nmea/GPSService.hpp"
+#include <nmea/GPSService.hpp>
 
-#include "gps/satellite.hpp"
+#include <nmea/gps/satellite.hpp>
 #include <log/logger.hpp>
 #include <vodka/parse_error.hpp>
 

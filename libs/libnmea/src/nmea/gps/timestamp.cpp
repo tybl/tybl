@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "gps/timestamp.hpp"
+#include <nmea/gps/timestamp.hpp>
 
 #include <array>
 #include <cmath> // trunc

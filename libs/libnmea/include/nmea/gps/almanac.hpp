@@ -3,7 +3,7 @@
 #ifndef TYBL_NMEA_GPS_ALMANAC_HPP
 #define TYBL_NMEA_GPS_ALMANAC_HPP
 
-#include "gps/satellite.hpp"
+#include <nmea/gps/satellite.hpp>
 
 #include <cstdint>
 #include <vector>
