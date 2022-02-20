@@ -22,27 +22,17 @@ class Parser {
                                     // huge m_buffer string internally
   bool m_filling_buffer{false};
 
-  void parse_text(sentence& p_nmea,
-                  std::string p_s); // fills the given NMEA sentence with the results of parsing the string.
-
-  void on_info(sentence& p_n, std::string const& p_s) const;
-  void on_warn(sentence& p_n, std::string const& p_s) const;
-  static void on_err(sentence& p_n, std::string const& p_s);
+  // fills the given NMEA sentence with the results of parsing the string.
+  void parse_text(sentence& p_nmea, std::string p_s);
 
 public:
-  Parser();
-
-  virtual ~Parser();
 
   bool log{false};
 
   Event<void(const sentence&)> on_sentence; // called every time parser receives any NMEA sentence
-  void set_sentence_handler(const std::string& p_cmd_key,
-                            const std::function<void(const sentence&)>&
-                                p_handler); // one handler called for any named sentence where name is the "cmdKey"
-  auto get_list_of_sentence_handlers() const
-      -> std::string; // show a list of message names that currently have m_handlers.
 
+  // one handler called for any named sentence where name is the "p_cmd_key"
+  void set_sentence_handler(const std::string& p_cmd_key, const std::function<void(const sentence&)>& p_handler);
 
   // This function expects the data to be a single line with an actual sentence in it, else it throws an error.
   void read_sentence(std::string p_cmd); // called when parser receives a sentence from the byte stream. Can also be

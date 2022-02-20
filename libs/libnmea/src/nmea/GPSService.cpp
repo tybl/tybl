@@ -2,8 +2,9 @@
 #include <nmea/GPSService.hpp>
 
 #include <nmea/gps/satellite.hpp>
-#include <log/logger.hpp>
 #include <vodka/parse_error.hpp>
+
+#include <spdlog/spdlog.h>
 
 #include <cmath>
 #include <iostream>
@@ -285,11 +286,11 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
 
         fix.m_almanac.update_satellite(sat);
       } catch (std::invalid_argument const& except) {
-        tybl::log::log("Caught std::invalid_argument: {}", except.what());
+        spdlog::warn("Failed to convert GSV satellite because no conversion could be performed: {}", except.what());
       } catch (std::out_of_range const& except) {
-        tybl::log::log("Caught std::out_of_range: {}", except.what());
+        spdlog::warn("Failed to convert GSV satellite because it was out of range: {}", except.what());
       } catch (...) {
-        tybl::log::log("Caught an unknown exception");
+        spdlog::warn("Unknown exception caught while converting GSV satellite");
       }
     }
 
@@ -305,8 +306,7 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
     this->on_update();
 
   } catch (std::invalid_argument&) {
-    tybl::vodka::parse_error pe("[$GPGSV] Could not convert string to number");
-    throw pe;
+    throw tybl::vodka::parse_error("[$GPGSV] Could not convert string to number");
   } /* catch (tybl::vodka::parse_error& ex) {
     tybl::vodka::parse_error pe("GPS Data Bad Format [$GPGSV] :: " + ex.message, p_nmea);
     throw pe;
@@ -386,8 +386,7 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
     }
     this->on_update();
   } catch (std::invalid_argument&) {
-    tybl::vodka::parse_error pe("[$GPRMC] Could not convert string to number");
-    throw pe;
+    throw tybl::vodka::parse_error("[$GPRMC] Could not convert string to number");
   } /* catch (tybl::vodka::parse_error& ex) {
      tybl::vodka::parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, p_nmea);
      throw pe;

@@ -1,13 +1,12 @@
 // License: The Unlicense (https://unlicense.org)
 
-#include <log/logger.hpp>
 #include <vodka/parse_error.hpp>
 
 #include <doctest/doctest.h>
+#include <spdlog/spdlog.h>
 
 #include <iostream>
 #include <memory>
-//#include <ranges>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -31,7 +30,7 @@ public:
     auto comma1 = p_s.find(',');
     auto comma2 = p_s.find(',', comma1);
     auto comma3 = p_s.find(',', comma2);
-    tybl::log::log("{},{},{}\n", comma1, comma2, comma3);
+    spdlog::info("{},{},{}\n", comma1, comma2, comma3);
   }
 
 }; // class gga_sentence

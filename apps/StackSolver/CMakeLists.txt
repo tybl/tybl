@@ -17,7 +17,7 @@ add_library(stacksolvelib)
 target_compile_features(stacksolvelib PUBLIC cxx_std_20) # 20: std::set::emplace()
 target_compile_options(stacksolvelib PUBLIC -Wall -Wextra -Wpedantic)
 target_include_directories(stacksolvelib PUBLIC src)
-target_link_libraries(stacksolvelib PUBLIC fmt log)
+target_link_libraries(stacksolvelib PUBLIC fmt spdlog)
 target_sources(stacksolvelib
   PRIVATE
     src/executor.cpp

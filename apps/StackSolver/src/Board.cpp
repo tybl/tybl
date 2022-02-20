@@ -1,9 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
 #include "Board.hpp"
 
-#include <log/logger.hpp>
-
-#include <fmt/core.h>
+#include <fmt/format.h>
+#include <spdlog/spdlog.h>
 
 #include <algorithm>
 #include <cassert>
@@ -77,16 +76,16 @@ auto Board::operator+(edge const& p_e) const -> i_node const* {
 }
 
 void Board::print() const {
-  tybl::log::log("\nd: {}, p(): {}", distance(), priority());
+  //spdlog::info("\nd: {}, p(): {}", distance(), priority());
   const size_t height = m_stats->m_max_stack_height;
   for (size_t i = 0; i < height; ++i) {
-    tybl::log::log("\n");
+    //tybl::log::log("\n");
     size_t r = (height - 1) - i;
     for (auto const& c : m_contents) {
       if (r < c.size()) {
-        tybl::log::log("{}", c.at(r));
+        //tybl::log::log("{}", c.at(r));
       } else {
-        tybl::log::log(" ");
+        //tybl::log::log(" ");
       }
     }
   }
