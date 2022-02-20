@@ -57,11 +57,15 @@ void gps_service::attach_to_parser(sentence_parser& p_parser) {
   $PSRF150  - gps module "ok to send"
   */
   p_parser.set_sentence_handler("PSRF150", [](const sentence& p_nmea) { read_psrf150(p_nmea); });
-  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
   p_parser.set_sentence_handler("GNGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
+  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
+  p_parser.set_sentence_handler("GLGSA", [this](const sentence& p_nmea) { read_gpgsa(p_nmea); });
   p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) { read_gpgsa(p_nmea); });
+  p_parser.set_sentence_handler("GLGSV", [this](const sentence& p_nmea) { read_gpgsv(p_nmea); });
   p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) { read_gpgsv(p_nmea); });
+  p_parser.set_sentence_handler("GNRMC", [this](const sentence& p_nmea) { read_gprmc(p_nmea); });
   p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) { read_gprmc(p_nmea); });
+  p_parser.set_sentence_handler("GNVTG", [this](const sentence& p_nmea) { read_gpvtg(p_nmea); });
   p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { read_gpvtg(p_nmea); });
 }
 

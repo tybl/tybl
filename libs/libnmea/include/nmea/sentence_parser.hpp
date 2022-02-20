@@ -27,8 +27,6 @@ class sentence_parser {
 
 public:
 
-  bool log{false};
-
   Event<void(sentence const&)> on_sentence; // called every time sentence_parser receives any NMEA sentence
 
   // one handler called for any named sentence where name is the "p_cmd_key"

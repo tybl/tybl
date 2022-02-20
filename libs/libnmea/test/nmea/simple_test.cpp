@@ -62,26 +62,26 @@ TEST_CASE("nmea::parse") {
   CHECK(13 == gps.fix.visible_satellites);
 
   // Q: What happens if we run the same string through the parser?
-  // A:
+  // A: Doesn't appear to change anything after the first
   parser.read_buffer(input);
 
-  CHECK(doctest::Approx(325.1) == gps.fix.altitude);
+  CHECK(doctest::Approx(325.1) == gps.fix.altitude); // Unchanged
   CHECK(0.0 == gps.fix.dilution); // Unchanged
   CHECK(0.0 == gps.fix.horizontal_dilution); // Unchanged
-  CHECK(doctest::Approx(40.249016667) == gps.fix.latitude);
-  CHECK(doctest::Approx(-79.640411667) == gps.fix.longitude);
-  CHECK(2 == gps.fix.quality);
+  CHECK(doctest::Approx(40.249016667) == gps.fix.latitude); // Unchanged
+  CHECK(doctest::Approx(-79.640411667) == gps.fix.longitude); // Unchanged
+  CHECK(2 == gps.fix.quality); // Unchanged
   CHECK(0.0 == gps.fix.speed); // Unchanged
-  CHECK('V' == gps.fix.status);
+  CHECK('V' == gps.fix.status); // Unchanged
   CHECK(1 == gps.fix.m_timestamp.day); // Unchanged
-  CHECK(17 == gps.fix.m_timestamp.hour);
-  CHECK(12 == gps.fix.m_timestamp.min);
+  CHECK(17 == gps.fix.m_timestamp.hour); // Unchanged
+  CHECK(12 == gps.fix.m_timestamp.min); // Unchanged
   CHECK(1 == gps.fix.m_timestamp.month); // Unchanged
   CHECK(1970 == gps.fix.m_timestamp.year); // Unchanged
-  CHECK(doctest::Approx(50.0) == gps.fix.m_timestamp.sec);
-  CHECK(13 == gps.fix.tracking_satellites);
+  CHECK(doctest::Approx(50.0) == gps.fix.m_timestamp.sec); // Unchanged
+  CHECK(13 == gps.fix.tracking_satellites); // Unchanged
   CHECK(0.0 == gps.fix.travel_angle); // Unchanged
   CHECK(1 == gps.fix.type); // Unchanged
   CHECK(0.0 == gps.fix.vertical_dilution); // Unchanged
-  CHECK(13 == gps.fix.visible_satellites);
+  CHECK(13 == gps.fix.visible_satellites); // Unchanged
 }

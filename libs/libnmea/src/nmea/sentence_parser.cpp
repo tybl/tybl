@@ -8,7 +8,6 @@
 #include <spdlog/spdlog.h>
 
 #include <cctype>
-#include <iostream>
 #include <sstream>
 
 namespace tybl::nmea {
@@ -172,7 +171,7 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
 
   // comma is the last character/only comma
   if (comma + 1 == p_txt.size()) {
-    p_nmea.parameters.emplace_back("");
+    p_nmea.parameters.emplace_back();
     p_nmea.m_is_valid = true;
     return;
   }
@@ -199,7 +198,7 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
 
     // cout << "NMEA parser Warning: extra comma at end of sentence, but no information...?" << endl;    // it's
     // actually standard, if checksum is disabled
-    p_nmea.parameters.emplace_back("");
+    p_nmea.parameters.emplace_back();
 
     spdlog::info("Found {} parameters.", p_nmea.parameters.size());
 

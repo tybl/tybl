@@ -3,17 +3,19 @@
 
 #include <vodka/parse_error.hpp>
 
+#include <spdlog/spdlog.h>
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 
 auto main(int argc, char* argv[]) -> int {
+  spdlog::set_level(spdlog::level::err);
+
   if (1 < argc) {
     // Create a GPS service that will keep track of the fix data.
     tybl::nmea::byte_parser parser;
     tybl::nmea::gps_service gps(parser);
-    // TODO(tybl): What's the default value for Parser::log
-    parser.log = false;
 
     std::cout << "fix  Sats  Sig\t\tSpeed    Dir  Lat       , Lon           Accuracy" << std::endl;
     // Handle any changes to the GPS fix... This is called whenever it's updated.
@@ -41,8 +43,8 @@ auto main(int argc, char* argv[]) -> int {
     while (std::getline(file, line)) {
       try {
         parser.read_line(line);
-      } catch (tybl::vodka::parse_error& e) { // TODO(tybl): Can/should this be const&?
-        std::cout << e.what() << std::endl;
+      } catch (tybl::vodka::parse_error const& e) {
+        spdlog::error("Error: Failed to parse GPS data: {}", e.what());
         // You can keep feeding data to the gps service...
         // The previous data is ignored and the parser is reset.
       }
@@ -50,6 +52,6 @@ auto main(int argc, char* argv[]) -> int {
 
     // Show the final fix information
     std::cout << gps.fix.to_string() << std::endl;
+    std::cin.ignore();
   }
-  std::cin.ignore();
 }
