@@ -5,7 +5,7 @@
 
 #include "nmea/command.hpp"
 
-namespace nmea {
+namespace tybl::nmea {
 
 //  $PSRF103,00,01,00,01*25
 /*
@@ -38,23 +38,20 @@ struct query_rate : public command {
 
   enum QueryRateMode { SETRATE = 0, QUERY = 1 };
 
-  sentence::MessageID message_id;
-  QueryRateMode mode;
-  int rate;
-  int checksum_enable;
+  sentence::MessageID message_id{sentence::Unknown};
+  QueryRateMode mode{QueryRateMode::SETRATE};
+  int rate{0};
+  int checksum_enable{1};
 
   query_rate()
-    : command("PSRF103") {
-    message_id = sentence::Unknown;
-    mode = QueryRateMode::SETRATE;
-    rate = 0;
-    checksum_enable = 1;
-  };
+    : command("PSRF103"){
+
+      };
 
   auto to_string() -> std::string override;
 
 }; // struct query_rate
 
-} // namespace nmea
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_QUERYRATE_HPP

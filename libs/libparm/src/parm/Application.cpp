@@ -7,17 +7,18 @@
 #include <list>
 #include <map>
 #include <string>
+#include <utility>
 
 namespace parm {
 
-Application::Application(std::string const& p_name, std::string const& p_version)
-  : m_name(p_name)
-  , m_version(p_version) {
+Application::Application(std::string p_name, std::string p_version)
+  : m_name(std::move(p_name))
+  , m_version(std::move(p_version)) {
   add_argument("-h", "--help").help("shows help message and exits");
   add_argument("-v", "--version").help("prints version information and exits");
 }
 
-auto Application::run(int, char const**) -> int {
+auto Application::run(int /*unused*/, char const** /*unused*/) -> int {
   // TODO(tybl):
   // 1. Parse arguments
   // 2. Invoke commands

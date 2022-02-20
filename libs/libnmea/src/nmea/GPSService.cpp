@@ -2,18 +2,19 @@
 #include "nmea/GPSService.hpp"
 
 #include "gps/satellite.hpp"
+#include <log/logger.hpp>
 #include <vodka/parse_error.hpp>
 
 #include <cmath>
 #include <iostream>
 
-namespace nmea {
+namespace tybl::nmea {
 
 // ------ Some helpers ----------
 // Takes the NMEA lat/long format (dddmm.mmmm, [N/S,E/W]) and converts to degrees N,E only
-static auto convert_lat_lon_to_deg(std::string const& p_llstr, std::string const& p_dir) -> double {
+static auto convert_lat_lon_to_deg(std::string const& p_lat_lon_str, std::string const& p_dir) -> double {
 
-  double pd = std::stod(p_llstr);
+  double pd = std::stod(p_lat_lon_str);
   double deg = trunc(pd / 100); // get ddd from dddmm.mmmm
   double mins = pd - deg * 100;
 
@@ -54,23 +55,22 @@ void GPSService::attach_to_parser(Parser& p_parser) {
   $GPZDA    - 1pps timing message
   $PSRF150  - gps module "ok to send"
   */
-  p_parser.set_sentence_handler("PSRF150", [this](const sentence& p_nmea) { this->read_psrf150(p_nmea); });
-  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { this->read_gpgga(p_nmea); });
-  p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) { this->read_gpgsa(p_nmea); });
-  p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) { this->read_gpgsv(p_nmea); });
-  p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) { this->read_gprmc(p_nmea); });
-  p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { this->read_gpvtg(p_nmea); });
+  p_parser.set_sentence_handler("PSRF150", [](const sentence& p_nmea) { read_psrf150(p_nmea); });
+  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
+  p_parser.set_sentence_handler("GNGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
+  p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) { read_gpgsa(p_nmea); });
+  p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) { read_gpgsv(p_nmea); });
+  p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) { read_gprmc(p_nmea); });
+  p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { read_gpvtg(p_nmea); });
 }
 
 void GPSService::read_psrf150(sentence const& /*p_nmea*/) {
-  std::cerr << "GPSService::read_psrf150(sentence const&)\n";
   // nothing right now...
   // Called with checksum 3E (valid) for GPS turning ON
   // Called with checksum 3F (invalid) for GPS turning OFF
 }
 
 void GPSService::read_gpgga(sentence const& p_nmea) {
-  std::cerr << "GPSService::read_gpgga(sentence const&)\n";
   /* -- EXAMPLE --
   $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47
 
@@ -110,7 +110,7 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
     }
 
     // TIMESTAMP
-    this->fix.timestamp.set_time(std::stod(p_nmea.parameters[0]));
+    this->fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -166,7 +166,6 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
 }
 
 void GPSService::read_gpgsa(sentence const& p_nmea) {
-  std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
   /*  -- EXAMPLE --
   $GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39
 
@@ -186,15 +185,11 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
   */
 
   try {
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
     if (!p_nmea.is_checksum_ok()) {
-      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
       throw tybl::vodka::parse_error("Checksum is invalid!");
     }
 
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
     if (p_nmea.parameters.size() < 17) {
-      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
       throw tybl::vodka::parse_error("GPS data is missing parameters.");
     }
 
@@ -203,50 +198,31 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
     auto fix_type = std::stoul(p_nmea.parameters[1]);
     fix.type = static_cast<uint8_t>(fix_type);
     if (fix_type == 1) {
-      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
-      lockupdate = this->fix.set_lock(false);
+      lockupdate = fix.set_lock(false);
     } else if (fix_type == 3) {
-      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-      lockupdate = this->fix.set_lock(true);
-    } else {
-      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
+      lockupdate = fix.set_lock(true);
     }
 
-    // DILUTION OF PRECISION  -- PDOP
-    double dop = std::stod(p_nmea.parameters[14]);
-    this->fix.dilution = dop;
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
+    fix.dilution = p_nmea.parameters[14].empty() ? 0.0 : std::stod(p_nmea.parameters[14]);
 
-    // HORIZONTAL DILUTION OF PRECISION -- HDOP
-    double hdop = std::stod(p_nmea.parameters[15]);
-    this->fix.horizontal_dilution = hdop;
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
+    fix.horizontal_dilution = p_nmea.parameters[15].empty() ? 0.0 : std::stod(p_nmea.parameters[15]);
 
-    // VERTICAL DILUTION OF PRECISION -- VDOP
-    double vdop = std::stod(p_nmea.parameters[16]);
-    this->fix.vertical_dilution = vdop;
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
+    fix.vertical_dilution = p_nmea.parameters[16].empty() ? 0.0 : std::stod(p_nmea.parameters[16]);
 
     // calling m_handlers
     if (lockupdate) {
-      std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-      this->on_lock_state_changed(this->fix.m_has_lock);
+      on_lock_state_changed(fix.m_has_lock);
     }
     this->on_update();
   } catch (std::invalid_argument&) {
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
-    tybl::vodka::parse_error pe("[$GPGSA] Could not convert string to number");
-    throw pe;
+    throw tybl::vodka::parse_error("[$GPGSA] Could not convert string to number");
   } /* catch (tybl::vodka::parse_error& ex) {
-    std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl;
     tybl::vodka::parse_error pe("GPS Data Bad Format [$GPGSA] :: " + ex.message, p_nmea);
     throw pe;
   }*/
-  std::cerr << "GPSService::read_gpgsa(sentence const&): " << __LINE__ << std::endl; //
 }
 
 void GPSService::read_gpgsv(sentence const& p_nmea) {
-  std::cerr << "GPSService::read_gpgsv(sentence const&)\n";
   /*  -- EXAMPLE --
   $GPGSV,2,1,08,01,40,083,46,02,17,308,41,12,07,344,39,14,22,228,45*75
 
@@ -285,36 +261,43 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
       this->fix.visible_satellites = 0; // if no satellites are tracking, then none are visible!
     }                                   // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
 
-    uint32_t total_pages = static_cast<uint32_t>(std::stoul(p_nmea.parameters[0]));
+    auto total_pages = static_cast<uint32_t>(std::stoul(p_nmea.parameters[0]));
 
     // if this is the first page, then reset the almanac
     if (1 == std::stoul(p_nmea.parameters[1])) { // current page
-      this->fix.almanac.clear();
+      this->fix.m_almanac.clear();
     }
 
-    this->fix.almanac.m_total_pages = total_pages;
-    this->fix.almanac.m_visible_size = static_cast<uint32_t>(this->fix.visible_satellites);
+    this->fix.m_almanac.m_total_pages = total_pages;
+    this->fix.m_almanac.m_visible_size = static_cast<uint32_t>(this->fix.visible_satellites);
 
     auto entriesInPage = (p_nmea.parameters.size() - 3) >> 2; // first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
-    gps::satellite sat;
     for (unsigned long i = 0; i < entriesInPage; i++) {
       auto prop = 3 + i * 4;
+      try {
+        tybl::nmea::gps::satellite sat{};
+        // PRN, ELEVATION, AZIMUTH, SNR
+        sat.prn = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop]));
+        sat.elevation = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 1]));
+        sat.azimuth = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 2]));
+        sat.snr = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 3]));
 
-      // PRN, ELEVATION, AZIMUTH, SNR
-      sat.prn = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop]));
-      sat.elevation = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 1]));
-      sat.azimuth = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 2]));
-      sat.snr = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 3]));
-
-      fix.almanac.update_satellite(sat);
+        fix.m_almanac.update_satellite(sat);
+      } catch (std::invalid_argument const& except) {
+        tybl::log::log("Caught std::invalid_argument: {}", except.what());
+      } catch (std::out_of_range const& except) {
+        tybl::log::log("Caught std::out_of_range: {}", except.what());
+      } catch (...) {
+        tybl::log::log("Caught an unknown exception");
+      }
     }
 
-    this->fix.almanac.m_processed_pages++;
+    this->fix.m_almanac.m_processed_pages++;
 
     //
     if (this->fix.visible_satellites == 0) {
-      this->fix.almanac.clear();
+      this->fix.m_almanac.clear();
     }
 
     // cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " <<
@@ -331,7 +314,6 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
 }
 
 void GPSService::read_gprmc(sentence const& p_nmea) {
-  std::cerr << "GPSService::read_gprmc(sentence const&)\n";
   /*  -- EXAMPLE ---
   $GPRMC,123519,A,4807.038,N,01131.000,E,022.4,084.4,230394,003.1,W*6A
   $GPRMC,235957.025,V,,,,,,,070810,,,N*4B
@@ -361,7 +343,7 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
     }
 
     // TIMESTAMP
-    this->fix.timestamp.set_time(std::stod(p_nmea.parameters[0]));
+    this->fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -396,7 +378,7 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
 
     this->fix.speed = kts_to_kph(std::stod(p_nmea.parameters[6])); // received as knots, convert to km/h
     this->fix.travel_angle = std::stod(p_nmea.parameters[7]);
-    fix.timestamp.set_date(std::stoi(p_nmea.parameters[8]));
+    fix.m_timestamp.set_date(std::stoi(p_nmea.parameters[8]));
 
     // calling m_handlers
     if (lockupdate) {
@@ -406,14 +388,13 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
   } catch (std::invalid_argument&) {
     tybl::vodka::parse_error pe("[$GPRMC] Could not convert string to number");
     throw pe;
-  }/* catch (tybl::vodka::parse_error& ex) {
-    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, p_nmea);
-    throw pe;
-  }*/
+  } /* catch (tybl::vodka::parse_error& ex) {
+     tybl::vodka::parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, p_nmea);
+     throw pe;
+   }*/
 }
 
 void GPSService::read_gpvtg(sentence const& p_nmea) {
-  std::cerr << "GPSService::read_gpvtg(sentence const&)\n";
   /*
   $GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48
 
@@ -443,10 +424,10 @@ void GPSService::read_gpvtg(sentence const& p_nmea) {
   } catch (std::invalid_argument&) {
     tybl::vodka::parse_error pe("[$GPVTG] Could not convert string to number");
     throw pe;
-  }/* catch (tybl::vodka::parse_error& ex) {
-    tybl::vodka::parse_error pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, p_nmea);
-    throw pe;
-  }*/
+  } /* catch (tybl::vodka::parse_error& ex) {
+     tybl::vodka::parse_error pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, p_nmea);
+     throw pe;
+   }*/
 }
 
-} // namespace nmea
+} // namespace tybl::nmea

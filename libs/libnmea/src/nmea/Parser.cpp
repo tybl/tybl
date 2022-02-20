@@ -1,8 +1,8 @@
 // License: The Unlicense (https://unlicense.org)
-//#include "nmea/NumberConversionError.hpp"
-#include "nmea/Parser.hpp"
-//#include "nmea/parse_error.hpp"
-#include "nmea/sentence.hpp"
+
+#include <nmea/Parser.hpp>
+
+#include <nmea/sentence.hpp>
 
 #include <vodka/parse_error.hpp>
 
@@ -10,9 +10,7 @@
 #include <iostream>
 #include <sstream>
 
-#define NMEA_PARSER_MAX_BUFFER_SIZE 2000
-
-namespace nmea {
+namespace tybl::nmea {
 
 // true if the text contains a non-alpha numeric value
 static auto has_non_alpha_num(std::string const& p_txt) -> bool {
@@ -34,35 +32,18 @@ static auto valid_param_chars(std::string const& p_txt) -> bool {
   return true;
 }
 
-// remove all whitespace
 static void squish(std::string& p_str) {
-  char chars[] = {'\t', ' '};
-  for (const char i : chars) {
-    // needs include <algorithm>
-    p_str.erase(std::remove(p_str.begin(), p_str.end(), i), p_str.end());
-  }
+  std::erase(p_str, '\t'); // Remove tabs
+  std::erase(p_str, ' ');  // Remove spaces
 }
-
-#if 0
-// remove side whitespace
-static void trim(std::string& str) {
-  std::stringstream trimmer;
-  trimmer << str;
-  str.clear();
-  trimmer >> str;
-}
-#endif
 
 // --------- NMEA PARSER --------------
 
-Parser::Parser()
-  : m_max_buffer_size(NMEA_PARSER_MAX_BUFFER_SIZE)
-  , m_filling_buffer(false)
-  , log(false) {}
+Parser::Parser() = default;
 
 Parser::~Parser() = default;
 
-void Parser::set_sentence_handler(std::string p_cmd_key, std::function<void(const sentence&)> p_handler) {
+void Parser::set_sentence_handler(const std::string& p_cmd_key, const std::function<void(const sentence&)>& p_handler) {
   m_event_table.erase(p_cmd_key);
   m_event_table.insert({p_cmd_key, p_handler});
 }
@@ -88,59 +69,41 @@ auto Parser::get_list_of_sentence_handlers() const -> std::string {
   return s;
 }
 
-void Parser::read_byte(char p_b) {
-  std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << " - " << static_cast<uint32_t>(p_b)
-            << (std::isgraph(p_b) ? p_b : '\0') << std::endl;
-  uint8_t start_byte = '$';
-
+void byte_parser::read_byte(char p_b) {
   if (m_filling_buffer) {
-    std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
+    m_buffer.push_back(p_b);
     if (p_b == '\n') {
-      std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      m_buffer.push_back(p_b);
       try {
         read_sentence(m_buffer);
-        m_buffer.clear();
         m_filling_buffer = false;
+        m_buffer.clear();
       } catch (std::exception&) {
-        std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-        // If anything happens, let it pass through, but reset the m_buffer first.
+        // If anything happens, let it pass through, but reset the buffer first
         m_buffer.clear();
         m_filling_buffer = false;
         throw;
       }
-    } else {
-      std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      if (m_buffer.size() < m_max_buffer_size) {
-        std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-        m_buffer.push_back(p_b);
-      } else {
-        std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-        m_buffer.clear(); // clear the host m_buffer so it won't overflow.
-        m_filling_buffer = false;
-      }
     }
-  } else {
-    std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-    if (p_b == start_byte) { // only start filling when we see the start byte.
-      std::cerr << "Parser::read_byte(uint8_t): " << __LINE__ << std::endl;
-      m_filling_buffer = true;
-      m_buffer.push_back(p_b);
+    if (m_buffer.size() > MAX_BUFFER_SIZE) {
+      m_buffer.clear();
+      m_filling_buffer = false;
     }
+  } else if ('$' == p_b) {
+    // only start filling the buffer when we see the start byte.
+    m_filling_buffer = true;
+    m_buffer.push_back(p_b);
   }
 }
 
-void Parser::read_buffer(char* p_b, uint32_t p_size) {
-  for (uint32_t i = 0; i < p_size; ++i) {
-    read_byte(p_b[i]);
+void byte_parser::read_buffer(std::string_view p_buffer) {
+  for (auto byte : p_buffer) {
+    read_byte(byte);
   }
 }
 
-void Parser::read_line(std::string p_cmd) {
-  p_cmd += "\r\n"; // TODO(tybl): Compare operator+=() to append()
-  for (const char i : p_cmd) {
-    read_byte(i);
-  }
+void byte_parser::read_line(std::string p_cmd) {
+  p_cmd.append("\r\n",2);
+  read_buffer(p_cmd);
 }
 
 // Loggers
@@ -156,12 +119,13 @@ void Parser::on_warn(sentence& /*nmea*/, std::string const& p_txt) const {
   }
 }
 
-void Parser::on_err(sentence& /*nmea*/, std::string const& p_txt) { throw tybl::vodka::parse_error("[ERROR] " + p_txt); }
+void Parser::on_err(sentence& /*nmea*/, std::string const& p_txt) {
+  throw tybl::vodka::parse_error("[ERROR] " + p_txt);
+}
 
 // takes a complete NMEA string and gets the data bits from it,
 // calls the corresponding handler in m_event_table, based on the 5 letter sentence code
 void Parser::read_sentence(std::string p_cmd) {
-  std::cerr << "Parser::read_sentence(std::string): " << __LINE__ << std::endl;
 
   sentence nmea;
 
@@ -182,14 +146,14 @@ void Parser::read_sentence(std::string p_cmd) {
     }
   }
 
-  std::ios_base::fmtflags oldflags = std::cout.flags();
+  std::ios_base::fmtflags old_flags = std::cout.flags();
 
   // Remove all whitespace characters.
-  size_t beginsize = p_cmd.size();
+  size_t begin_size = p_cmd.size();
   squish(p_cmd);
-  if (p_cmd.size() != beginsize) {
+  if (p_cmd.size() != begin_size) {
     std::stringstream ss;
-    ss << "New NMEA string was full of " << (beginsize - p_cmd.size()) << " whitespaces!";
+    ss << "New NMEA string was full of " << (begin_size - p_cmd.size()) << " whitespaces!";
     on_warn(nmea, ss.str());
   }
 
@@ -204,14 +168,14 @@ void Parser::read_sentence(std::string p_cmd) {
     std::string s = " >> NMEA Parser Internal Error: Indexing error?... ";
     throw std::runtime_error(s + e.what());
   }
-  std::cout.flags(oldflags); // reset
+  std::cout.flags(old_flags); // reset
 
   // Handle/Throw parse errors
   if (!nmea.valid()) {
-    size_t linewidth = 35;
+    size_t line_width = 35;
     std::stringstream ss;
-    if (nmea.text.size() > linewidth) {
-      ss << "Invalid text. (\"" << nmea.text.substr(0, linewidth) << "...\")";
+    if (nmea.text.size() > line_width) {
+      ss << "Invalid text. (\"" << nmea.text.substr(0, line_width) << "...\")";
     } else {
       ss << "Invalid text. (\"" << nmea.text << "\")";
     }
@@ -232,7 +196,7 @@ void Parser::read_sentence(std::string p_cmd) {
   } else {
     on_warn(nmea, std::string("Null event handler for type (name: \"") + nmea.name + "\")");
   }
-  std::cout.flags(oldflags); // reset
+  std::cout.flags(old_flags); // reset
 }
 
 // takes the string *between* the '$' and '*' in nmea sentence,
@@ -255,30 +219,28 @@ auto Parser::calc_checksum(std::string const& p_s) -> uint8_t {
 
 void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
 
+  p_nmea.m_is_valid = false; // assume it's invalid first
   if (p_txt.empty()) {
-    p_nmea.m_is_valid = false;
     return;
   }
 
-  p_nmea.m_is_valid = false; // assume it's invalid first
   p_nmea.text = p_txt;       // save the received text of the sentence
 
   // Looking for index of last '$'
-  size_t startbyte = 0;
   size_t dollar = p_txt.find_last_of('$');
   if (dollar == std::string::npos) {
     // No dollar sign... INVALID!
     return;
   }
-  startbyte = dollar;
+  auto start_byte = dollar;
 
   // Get rid of data up to last'$'
-  p_txt = p_txt.substr(startbyte + 1);
+  p_txt = p_txt.substr(start_byte + 1);
 
   // Look for checksum
   size_t checkstri = p_txt.find_last_of('*');
-  bool haschecksum = checkstri != std::string::npos;
-  if (haschecksum) {
+  bool has_checksum = checkstri != std::string::npos;
+  if (has_checksum) {
     // A checksum was passed in the message, so calculate what we expect to see
     p_nmea.m_calculated_checksum = calc_checksum(p_txt.substr(0, checkstri));
   } else {
@@ -318,7 +280,7 @@ void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
 
   // comma is the last character/only comma
   if (comma + 1 == p_txt.size()) {
-    p_nmea.parameters.push_back("");
+    p_nmea.parameters.emplace_back("");
     p_nmea.m_is_valid = true;
     return;
   }
@@ -338,14 +300,14 @@ void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
   if (*(p_txt.end() - 1) == ',') {
 
     // supposed to have checksum but there is a comma at the end... invalid
-    if (haschecksum) {
+    if (has_checksum) {
       p_nmea.m_is_valid = false;
       return;
     }
 
     // cout << "NMEA parser Warning: extra comma at end of sentence, but no information...?" << endl;    // it's
     // actually standard, if checksum is disabled
-    p_nmea.parameters.push_back("");
+    p_nmea.parameters.emplace_back("");
 
     std::stringstream sz;
     sz << "Found " << p_nmea.parameters.size() << " parameters.";
@@ -393,8 +355,6 @@ void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
   }
 
   p_nmea.m_is_valid = true;
-
-  return;
 }
 
-} // namespace nmea
+} // namespace tybl::nmea

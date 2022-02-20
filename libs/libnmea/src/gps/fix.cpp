@@ -3,46 +3,31 @@
 
 //#include "gps/satellite.hpp"
 
+#include <array>
 #include <cmath>
 #include <iomanip>
 #include <sstream>
 #include <string>
 
-namespace gps {
+namespace tybl::nmea::gps {
 
-fix::fix()
-  : m_has_lock(false) {
-  quality = 0;  // Searching...
-  status = 'V'; // Void
-  type = 1;     // 1=none, 2=2d, 3=3d
+// Searching...
+// Void
+// 1=none, 2=2d, 3=3d
 
-  dilution = 0;
-  horizontal_dilution = 0; // Horizontal - Best is 1, >20 is terrible, so 0 means uninitialized
-  vertical_dilution = 0;
-  latitude = 0;
-  longitude = 0;
-  speed = 0;
-  travel_angle = 0;
-  altitude = 0;
-  tracking_satellites = 0;
-  visible_satellites = 0;
-}
-
-fix::~fix() {
-  // TODO Auto-generated destructor stub
-}
+// Horizontal - Best is 1, >20 is terrible, so 0 means uninitialized
 
 // Returns the duration since the Host has received information
 auto fix::time_since_last_update() const -> std::chrono::seconds {
-  time_t now = time(NULL);
+  time_t now = time(nullptr);
   std::tm stamp{};
 
-  stamp.tm_hour = timestamp.hour;
-  stamp.tm_min = timestamp.min;
-  stamp.tm_sec = static_cast<int>(timestamp.sec);
-  stamp.tm_year = timestamp.year - 1900;
-  stamp.tm_mon = timestamp.month - 1;
-  stamp.tm_mday = timestamp.day;
+  stamp.tm_hour = m_timestamp.hour;
+  stamp.tm_min = m_timestamp.min;
+  stamp.tm_sec = static_cast<int>(m_timestamp.sec);
+  stamp.tm_year = m_timestamp.year - 1900;
+  stamp.tm_mon = m_timestamp.month - 1;
+  stamp.tm_mday = m_timestamp.day;
 
   time_t then = mktime(&stamp);
   auto secs = static_cast<uint64_t>(difftime(now, then));
@@ -51,9 +36,9 @@ auto fix::time_since_last_update() const -> std::chrono::seconds {
 
 auto fix::has_estimate() const -> bool { return (latitude != 0 && longitude != 0) || (quality == 6); }
 
-auto fix::set_lock(bool p_locked) -> bool {
-  if (m_has_lock != p_locked) {
-    m_has_lock = p_locked;
+auto fix::set_lock(bool p_lock) -> bool {
+  if (m_has_lock != p_lock) {
+    m_has_lock = p_lock;
     return true;
   }
   return false;
@@ -84,11 +69,12 @@ auto fix::ordinal_direction(double p_deg, bool p_abbrev) -> std::string {
   }
 
   if (p_abbrev) {
-    std::string dirs[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+
+    std::array<std::string, 9> dirs = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
     return dirs[r];
   }
-  std::string dirs[] = {"North",      "North East", "East",       "South East", "South",
-                        "South West", "West",       "North West", "North"};
+  std::array<std::string, 9> dirs = {"North",      "North East", "East",       "South East", "South",
+                                     "South West", "West",       "North West", "North"};
   return dirs[r];
 }
 
@@ -127,13 +113,13 @@ auto fix::to_string() -> std::string {
   std::ios_base::fmtflags oldflags = ss.flags();
 
   ss << "========================== GPS FIX ================================" << std::endl
-     << " Status: \t\t" << ((m_has_lock) ? "LOCK!" : "SEARCHING...") << std::endl
+     << " Status: \t\t" << (m_has_lock ? "LOCK!" : "SEARCHING...") << std::endl
      << " Satellites: \t\t" << tracking_satellites << " (tracking) of " << visible_satellites << " (visible)"
      << std::endl
      << " < fix Details >" << std::endl
      << "   Age:                " << time_since_last_update().count() << " s" << std::endl
-     << "   timestamp:          " << timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << timestamp.raw_time
-     << " time, " << timestamp.raw_date << " date)" << std::endl
+     << "   timestamp:          " << m_timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << m_timestamp.raw_time
+     << " time, " << m_timestamp.raw_date << " date)" << std::endl
      << "   Raw Status:         " << status << "  (" << fix_status_to_string(status) << ")" << std::endl
      << "   Type:               " << static_cast<int>(type) << "  (" << fix_type_to_string(type) << ")" << std::endl
      << "   Quality:            " << static_cast<int>(quality) << "  (" << fix_quality_to_string(quality) << ")"
@@ -150,15 +136,15 @@ auto fix::to_string() -> std::string {
   ss << "   Altitude:           " << altitude << " m" << std::endl
      << "   Speed:              " << speed << " km/h" << std::endl
      << "   Travel Dir:         " << travel_angle << " deg  [" << ordinal_direction(travel_angle) << "]" << std::endl
-     << "   SNR:                avg: " << almanac.average_snr() << " dB   [min: " << almanac.min_snr()
-     << " dB,  max:" << almanac.max_snr() << " dB]" << std::endl;
+     << "   SNR:                avg: " << m_almanac.average_snr() << " dB   [min: " << m_almanac.min_snr()
+     << " dB,  max:" << m_almanac.max_snr() << " dB]" << std::endl;
 
-  ss << " < almanac (" << almanac.percent_complete() << "%) >" << std::endl;
-  if (almanac.satellites.empty()) {
+  ss << " < almanac (" << m_almanac.percent_complete() << "%) >" << std::endl;
+  if (m_almanac.satellites.empty()) {
     ss << " > No satellite info in almanac." << std::endl;
   }
-  for (size_t i = 0; i < almanac.satellites.size(); i++) {
-    ss << "   [" << std::setw(2) << std::setfill(' ') << (i + 1) << "]   " << almanac.satellites[i].to_string()
+  for (size_t i = 0; i < m_almanac.satellites.size(); i++) {
+    ss << "   [" << std::setw(2) << std::setfill(' ') << (i + 1) << "]   " << m_almanac.satellites[i].to_string()
        << std::endl;
   }
 
@@ -167,4 +153,4 @@ auto fix::to_string() -> std::string {
 
 fix::operator std::string() { return to_string(); }
 
-} // namespace gps
+} // namespace tybl::nmea::gps

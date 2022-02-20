@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include "nmea/nmea.hpp"
+#include <nmea/nmea.hpp>
 
 #include <vodka/parse_error.hpp>
 
@@ -10,8 +10,8 @@
 auto main(int argc, char* argv[]) -> int {
   if (1 < argc) {
     // Create a GPS service that will keep track of the fix data.
-    nmea::Parser parser;
-    nmea::GPSService gps(parser);
+    tybl::nmea::byte_parser parser;
+    tybl::nmea::GPSService gps(parser);
     // TODO(tybl): What's the default value for Parser::log
     parser.log = false;
 
@@ -22,9 +22,9 @@ auto main(int argc, char* argv[]) -> int {
                 << gps.fix.tracking_satellites << "/" << std::setw(2) << std::setfill(' ') << gps.fix.visible_satellites
                 << " ";
       std::cout << std::fixed << std::setprecision(2) << std::setw(5) << std::setfill(' ')
-                << gps.fix.almanac.average_snr() << " dB   ";
+                << gps.fix.m_almanac.average_snr() << " dB   ";
       std::cout << std::fixed << std::setprecision(2) << std::setw(6) << std::setfill(' ') << gps.fix.speed << " km/h ["
-                << gps::fix::ordinal_direction(gps.fix.travel_angle, true) << "]  ";
+                << tybl::nmea::gps::fix::ordinal_direction(gps.fix.travel_angle, true) << "]  ";
       std::cout << std::fixed << std::setprecision(6) << gps.fix.latitude
                 << " "
                    "N, "

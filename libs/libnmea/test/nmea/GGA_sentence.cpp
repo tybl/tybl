@@ -1,6 +1,9 @@
 // License: The Unlicense (https://unlicense.org)
 
-#include "doctest/doctest.h"
+#include <log/logger.hpp>
+#include <vodka/parse_error.hpp>
+
+#include <doctest/doctest.h>
 
 #include <iostream>
 #include <memory>
@@ -22,13 +25,13 @@ struct sentence {
 
 class gga_sentence : public sentence {
 public:
-  virtual ~gga_sentence() = default;
+  ~gga_sentence() override = default;
 
   void parse(std::string const& p_s) override {
     auto comma1 = p_s.find(',');
     auto comma2 = p_s.find(',', comma1);
     auto comma3 = p_s.find(',', comma2);
-    std::cout << comma1 << ',' << comma2 << ',' << comma3 << std::endl;
+    tybl::log::log("{},{},{}\n", comma1, comma2, comma3);
   }
 
 }; // class gga_sentence
@@ -36,39 +39,39 @@ public:
 auto parse_gga(std::istream& p_in) -> std::unique_ptr<sentence> {
   std::string value;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA UTC time");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA UTC time");
   }
   std::cerr << __LINE__ << ": UTC Time: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA latitude value");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA latitude value");
   }
   std::cerr << __LINE__ << ": Latitude: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA N/S Indicator");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA N/S Indicator");
   }
   std::cerr << __LINE__ << ": N/S Indicator: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA Longitude");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA Longitude");
   }
   std::cerr << __LINE__ << ": Longitude: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA E/W Indicator");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA E/W Indicator");
   }
   std::cerr << __LINE__ << ": E/W Indicator: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA Position Indicator");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA Position Indicator");
   }
   std::cerr << __LINE__ << ": Position Indicator: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA Satellites Used");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA Satellites Used");
   }
   std::cerr << __LINE__ << ": Satellites Used: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA Horizontal Dilution of Precision");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA Horizontal Dilution of Precision");
   }
   std::cerr << __LINE__ << ": Horizontal Dilution of Precision: " << value << std::endl;
   if (!std::getline(p_in, value, ',')) {
-    throw std::runtime_error("Error: Failed to get NMEA GGA MSL Altitude");
+    throw tybl::vodka::parse_error("Error: Failed to get NMEA GGA MSL Altitude");
   }
   std::cerr << __LINE__ << ": MSL Altitude: " << value << std::endl;
   while (std::getline(p_in, value, ',')) {
@@ -78,8 +81,7 @@ auto parse_gga(std::istream& p_in) -> std::unique_ptr<sentence> {
 }
 
 auto parse_nmea(std::istream& p_in) -> std::unique_ptr<sentence> {
-  std::string value;
-  if (std::getline(p_in, value, ',')) {
+  if (std::string value; std::getline(p_in, value, ',')) {
     if ("$GPGGA" == value) {
       return parse_gga(p_in);
     }

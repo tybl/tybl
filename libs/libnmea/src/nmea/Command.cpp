@@ -3,13 +3,14 @@
 
 #include <iomanip>
 #include <sstream>
+#include <utility>
 
-namespace nmea {
+namespace tybl::nmea {
 
 command::command() = default;
 
-command::command(std::string const& p_name)
-  : m_name(p_name) {}
+command::command(std::string p_name)
+  : m_name(std::move(p_name)) {}
 
 command::~command() = default;
 
@@ -32,4 +33,4 @@ auto command::add_checksum(std::string const& p_s) -> std::string {
   return ss.str();
 };
 
-} // namespace nmea
+} // namespace tybl::nmea

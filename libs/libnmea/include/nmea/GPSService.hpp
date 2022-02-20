@@ -11,10 +11,10 @@
 #include <functional>
 #include <string>
 
-namespace nmea {
+namespace tybl::nmea {
 
 class GPSService {
-  void read_psrf150(sentence const& p_nmea);
+  static void read_psrf150(sentence const& p_nmea);
   void read_gpgga(sentence const& p_nmea);
   void read_gpgsa(sentence const& p_nmea);
   void read_gpgsv(sentence const& p_nmea);
@@ -36,6 +36,6 @@ public:
 
 }; // class GPSService
 
-} // namespace nmea
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_GPSSERVICE_HPP

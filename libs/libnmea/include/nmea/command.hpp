@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace nmea {
+namespace tybl::nmea {
 
 class command {
   // TODO(tybl): This struct doesn't contain the functionality to maintain
@@ -16,12 +16,12 @@ class command {
   std::string m_message;
   std::string m_name;
   // TODO(tybl): Should the checksum be an unsigned char?
-  uint8_t m_checksum;
+  uint8_t m_checksum{};
 
 public:
   command();
 
-  command(std::string const& p_name);
+  command(std::string p_name);
 
   virtual ~command();
 
@@ -31,6 +31,6 @@ public:
 
 }; // struct command
 
-} // namespace nmea
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_COMMAND_HPP

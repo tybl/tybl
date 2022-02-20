@@ -5,8 +5,9 @@
 
 #include <cstdint>
 #include <functional>
+#include <utility>
 
-namespace nmea {
+namespace tybl::nmea {
 
 template <class>
 class Event;
@@ -24,41 +25,17 @@ class EventHandler<void(Args...)> {
 
   // Properties
   std::function<void(Args...)> m_handler;
-  uint64_t m_id;
-
-  // Functions
-  void copy(const EventHandler& p_ref) {
-    if (&p_ref != this) {
-      m_iterator = p_ref.m_iterator;
-      m_handler = p_ref.m_handler;
-      m_id = p_ref.m_id;
-    }
-  }
+  uint64_t m_id{};
 
 public:
   // Typenames
-  typedef void (*CFunctionPointer)(Args...);
-
-  // Static members
-  // (none)
-
-  // Properties
-  // (none)
+  using CFunctionPointer = void (*)(Args...);
 
   // Functions
   EventHandler(std::function<void(Args...)> p_h)
     : m_iterator()
-    , m_handler(p_h)
+    , m_handler(std::move(p_h))
     , m_id(++LastID) {}
-
-  EventHandler(const EventHandler& p_ref) { copy(p_ref); }
-
-  virtual ~EventHandler(){};
-
-  auto operator=(const EventHandler& p_ref) -> EventHandler& {
-    copy(p_ref);
-    return *this;
-  }
 
   void operator()(Args... p_args) { m_handler(p_args...); }
 
@@ -81,6 +58,6 @@ public:
 template <typename... Args>
 uint64_t EventHandler<void(Args...)>::LastID = 0;
 
-} // namespace nmea
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_EVENTHANDLER_HPP

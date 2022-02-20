@@ -8,23 +8,23 @@
 #include <cstdint>
 #include <vector>
 
-namespace nmea {
+namespace tybl::nmea {
 class GPSService;
-} // namespace nmea
+} // namespace tybl::nmea
 
-namespace gps {
+namespace tybl::nmea::gps {
 
 class almanac {
   friend nmea::GPSService;
-  uint32_t m_visible_size;
+  uint32_t m_visible_size{};
   uint32_t m_total_pages = 0;
   uint32_t m_processed_pages = 0;
   void clear(); // will remove all information from the satellites
-  void update_satellite(gps::satellite const& p_sat);
+  void update_satellite(tybl::nmea::gps::satellite const& p_sat);
 
 public:
   // mapped by prn
-  std::vector<gps::satellite> satellites;
+  std::vector<tybl::nmea::gps::satellite> satellites;
   [[nodiscard]] auto average_snr() const -> double;
   [[nodiscard]] auto min_snr() const -> double;
   [[nodiscard]] auto max_snr() const -> double;
@@ -32,6 +32,6 @@ public:
 
 }; // class almanac
 
-} // namespace gps
+} // namespace tybl::nmea::gps
 
 #endif // TYBL_NMEA_GPS_ALMANAC_HPP

@@ -23,17 +23,17 @@ class Application {
   std::list<argument> m_arguments;
 
   // std::map or std::unordered_map could be used
-  // TODO: Investigate performance characteristics of either
+  // TODO(tybl): Investigate performance characteristics of either
   std::map<std::string_view, list_iterator> m_argument_map;
 
 public:
-  Application(std::string const& p_name, std::string const& p_version);
+  Application(std::string p_name, std::string p_version);
 
   // Ref: https://www.modernescpp.com/index.php/c-core-guidelines-rules-for-variadic-templates
   template <typename... Args>
   auto add_argument(Args&&... p_args) -> argument&;
 
-  auto run(int, char const**) -> int;
+  static auto run(int /*unused*/, char const** /*unused*/) -> int;
 
 private:
   void parse_arguments(std::vector<std::string> const& /*p_args*/);

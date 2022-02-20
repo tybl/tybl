@@ -6,14 +6,17 @@
 #include <cmath> // M_PI
 #include <type_traits>
 
-using namespace tybl::lynel;
-
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 23") {
   // These practice problems are symbolic manipulations and don't exercise
   // this library.
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 29") {
+  using tybl::lynel::cvec2;
+  using tybl::lynel::cvec4;
+  using tybl::lynel::rvec2;
+  using tybl::lynel::rvec4;
+
   // A
   cvec4<int> a = {1, 2, 3, 1};
 
@@ -30,6 +33,10 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 29") {
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") { // NOLINT
+  using tybl::lynel::cvec2;
+  using tybl::lynel::cvec3;
+  using tybl::lynel::rvec4;
+
   // A
   rvec4<double> a_in0 = {4, 5, 1, 0};
   rvec4<double> a_in1 = {-4, -3, 3, 10};
@@ -75,6 +82,10 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 33") {
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 36") {
+  using tybl::lynel::cvec3;
+  using tybl::lynel::cvec4;
+  using tybl::lynel::rvec3;
+
   // A
   rvec3<double> a_in0 = {4, 3, 0};
   rvec3<double> a_ans = {-8, -6, 0};
@@ -97,6 +108,9 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 36") {
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 50") { // NOLINT
+  using tybl::lynel::cvec2;
+  using tybl::lynel::cvec3;
+
   // A
   cvec2<int> a_in0 = {-4, -2};
   cvec2<int> a_in1 = {1, 3};
@@ -156,31 +170,41 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 50") {
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 62") {
+  using tybl::lynel::cvec2;
+  using tybl::lynel::cvec3;
+  using tybl::lynel::cvec4;
+  using tybl::lynel::mat2;
+  using tybl::lynel::mat3;
+  using tybl::lynel::mat4;
+  using tybl::lynel::rvec2;
+  using tybl::lynel::rvec3;
+  using tybl::lynel::rvec4;
+
   // A
   cvec2<int> a_in0 = {-1, 1};
   rvec2<int> a_in1 = {2, 3};
-  mat2<int> a_ans = {-2, 2, -3, 3};
+  mat2<int> a_ans = {{-2, 2}, {-3, 3}};
   auto a_result = a_in0 * a_in1;
   CHECK(a_ans == a_result);
 
   // B
   cvec2<int> b_in0 = {4, 6};
   rvec2<int> b_in1 = {2, 3};
-  mat2<int> b_ans = {8, 12, 12, 18};
+  mat2<int> b_ans = {{8, 12}, {12, 18}};
   auto b_result = b_in0 * b_in1;
   CHECK(b_ans == b_result);
 
   // C
   cvec3<int> c_in0 = {-1, 0, 1};
   rvec3<int> c_in1 = {1, 2, 3};
-  mat3<int> c_ans = {-1, 0, 1, -2, 0, 2, -3, 0, 3};
+  mat3<int> c_ans = {{-1, 0, 1}, {-2, 0, 2}, {-3, 0, 3}};
   auto c_result = c_in0 * c_in1;
   CHECK(c_ans == c_result);
 
   // D
   cvec4<int> d_in0 = {1, 3, 5, 7};
   rvec4<int> d_in1 = {0, 1, 1, 0};
-  mat4<int> d_ans = {0, 0, 0, 0, 1, 3, 5, 7, 1, 3, 5, 7, 0, 0, 0, 0};
+  mat4<int> d_ans = {{0, 0, 0, 0}, {1, 3, 5, 7}, {1, 3, 5, 7}, {0, 0, 0, 0}};
   auto d_result = d_in0 * d_in1;
   CHECK(d_ans == d_result);
 }
@@ -194,6 +218,8 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 64") {
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 65") {
+  using tybl::lynel::cvec3;
+
   // A
   cvec3<int> a_in0 = {5, 3, 4};
   cvec3<int> a_in1 = {-2, 1, -1};
@@ -229,17 +255,20 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 97") {
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 112") {}
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 126") {
+  using tybl::lynel::mat2;
+  using tybl::lynel::basic_matrix;
+
   // A
-  mat2<int> a_in0 = {1, 2, 1, 3};
-  mat2<int> a_in1 = {4, 2, 3, 1};
-  mat2<int> a_ans = {5, 4, 4, 4};
+  mat2<int> a_in0 = {{1, 2}, {1, 3}};
+  mat2<int> a_in1 = {{4, 2}, {3, 1}};
+  mat2<int> a_ans = {{5, 4}, {4, 4}};
   auto a_result = a_in0 + a_in1;
   CHECK(a_ans == a_result);
 
   // B
-  basic_matrix<int, 3, 2> b_in0 = {0, -4, -3, 5, 6, 0};
-  basic_matrix<int, 3, 2> b_in1 = {0, 1, 1, 1, 1, 0};
-  basic_matrix<int, 3, 2> b_ans = {0, -3, -2, 6, 7, 0};
+  basic_matrix<int, 3, 2> b_in0 = {{0, -4, -3}, {5, 6, 0}};
+  basic_matrix<int, 3, 2> b_in1 = {{0, 1, 1}, {1, 1, 0}};
+  basic_matrix<int, 3, 2> b_ans = {{0, -3, -2}, {6, 7, 0}};
   auto b_result = b_in0 + b_in1;
   CHECK(b_ans == b_result);
 }
@@ -251,10 +280,12 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 130") 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 142") {}
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") {
+  using tybl::lynel::basic_matrix;
+
   // A
-  basic_matrix<double, 2, 3> a_in0 = {3, 1, 0, 1, 3, 0};
-  basic_matrix<double, 3, 2> a_in1 = {4, 0, 4, 4, 1, 1};
-  basic_matrix<double, 2, 2> a_ans = {24, 4, 15, 5};
+  basic_matrix<double, 2, 3> a_in0 = {{3, 1}, {0, 1}, {3, 0}};
+  basic_matrix<double, 3, 2> a_in1 = {{4, 0, 4}, {4, 1, 1}};
+  basic_matrix<double, 2, 2> a_ans = {{24, 4}, {15, 5}};
   auto a_result = a_in0 * a_in1;
   CHECK(a_ans == a_result);
 
@@ -262,17 +293,19 @@ TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 147") 
 }
 
 TEST_CASE("Linear Algebra: Theory, Intuition, Code - Practice Problems pg 148") {
+  using tybl::lynel::basic_matrix;
+
   // A
-  basic_matrix<double, 2, 3> a_in0 = {3, 0, 4, 4, 0, 1};
-  basic_matrix<double, 3, 3> a_in1 = {2, 4, 0, -1, 0, 1, 2, 0, 1};
-  basic_matrix<double, 2, 3> a_ans = {22, 16, -3, 1, 6, 1};
+  basic_matrix<double, 2, 3> a_in0 = {{3, 0}, {4, 4}, {0, 1}};
+  basic_matrix<double, 3, 3> a_in1 = {{2, 4, 0}, {-1, 0, 1}, {2, 0, 1}};
+  basic_matrix<double, 2, 3> a_ans = {{22, 16}, {-3, 1}, {6, 1}};
   auto a_result = a_in0 * a_in1;
   CHECK(a_result == a_ans);
 
   // B
-  basic_matrix<double, 2, 2> b_in0 = {1, 1, 1, 2};
-  basic_matrix<double, 2, 2> b_in1 = {3, 0, 2, 1};
-  basic_matrix<double, 2, 2> b_ans = {3, 3, 3, 4};
+  basic_matrix<double, 2, 2> b_in0 = {{1, 1}, {1, 2}};
+  basic_matrix<double, 2, 2> b_in1 = {{3, 0}, {2, 1}};
+  basic_matrix<double, 2, 2> b_ans = {{3, 3}, {3, 4}};
   auto b_result = b_in0 * b_in1;
   CHECK(b_result == b_ans);
 }

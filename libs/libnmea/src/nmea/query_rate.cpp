@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <sstream>
 
-namespace nmea {
+namespace tybl::nmea {
 
 //  $PSRF103,00,01,00,01*25
 /*
@@ -49,4 +49,4 @@ auto query_rate::to_string() -> std::string {
   return command::add_checksum(message);
 }
 
-} // namespace nmea
+} // namespace tybl::nmea

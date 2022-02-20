@@ -3,7 +3,7 @@
 
 #include <doctest/doctest.h>
 
-using namespace tybl::lynel;
+using tybl::lynel::matrix;
 
 TEST_CASE("matrix::operator==()") {
   matrix<double, 3, 3> a = {0, 1, 2, 3, 4, 5, 6, 7, 8};

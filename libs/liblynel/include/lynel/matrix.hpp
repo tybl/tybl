@@ -3,6 +3,7 @@
 #ifndef TYBL_LYNEL_MATRIX_HPP
 #define TYBL_LYNEL_MATRIX_HPP
 
+#include <array>
 #include <cassert> // assert()
 #include <cstdlib> // size_t
 
@@ -19,18 +20,18 @@ struct matrix {
   using const_reference = value_type const&;
   using size_type = size_t;
 
-  Type m_array[Rows * Cols];
+  std::array<Type, Rows * Cols> m_array;
 
   [[nodiscard]] constexpr auto operator()(size_t p_i, size_t p_j) const -> const_reference {
     assert(p_i < Rows);
     assert(p_j < Cols);
-    return m_array[p_i * Cols + p_j];
+    return m_array.at(p_i * Cols + p_j);
   }
 
   constexpr auto operator()(size_t p_i, size_t p_j) -> reference {
     assert(p_i < Rows);
     assert(p_j < Cols);
-    return m_array[p_i * Cols + p_j];
+    return m_array.at(p_i * Cols + p_j);
   }
 
   auto operator*=(value_type p_s) -> matrix& {
@@ -102,7 +103,7 @@ auto multiply(matrix<Type, Rows, Middle> const& p_lhs, matrix<Type, Middle, Cols
 
 template <typename Type, size_t Rows, size_t Cols>
 auto transpose(matrix<Type, Rows, Cols> const& p_m) -> matrix<Type, Cols, Rows> {
-  matrix<Type, Cols, Rows> result;
+  matrix<Type, Cols, Rows> result; // NOLINT
   for (size_t i = 0; i < Rows; ++i) {
     for (size_t j = 0; j < Cols; ++j) {
       result(j, i) = p_m(i, j);

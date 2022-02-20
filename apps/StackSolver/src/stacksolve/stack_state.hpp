@@ -5,8 +5,8 @@
 
 #include "vodka/dynarray_2d.hpp"
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 namespace tybl::stacksolve {
 

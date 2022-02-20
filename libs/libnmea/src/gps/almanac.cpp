@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-namespace gps {
+namespace tybl::nmea::gps {
 
 void almanac::clear() {
   m_total_pages = 0;
@@ -12,7 +12,7 @@ void almanac::clear() {
   satellites.clear();
 }
 
-void almanac::update_satellite(gps::satellite const& p_sat) {
+void almanac::update_satellite(tybl::nmea::gps::satellite const& p_sat) {
   if (satellites.size() > m_visible_size) { // we missed the new almanac start page, start over.
     clear();
   }
@@ -75,4 +75,4 @@ auto almanac::max_snr() const -> double {
   return max;
 }
 
-} // namespace gps
+} // namespace tybl::nmea::gps

@@ -1,12 +1,12 @@
 // License: The Unlicense (https://unlicense.org)
-#include "nmea/serial_configuration.hpp"
+#include <nmea/serial_configuration.hpp>
 
-#include <sstream>
+#include <fmt/core.h>
 
-namespace nmea {
+namespace tybl::nmea {
 
 /*
-// $PSRF100,0,9600,8,1,0*0C
+$PSRF100,0,9600,8,1,0*0C
 
 Table 2-4 Set Serial Port Data Format
  Name    Example    Unit Description
@@ -21,12 +21,7 @@ Table 2-4 Set Serial Port Data Format
  <CR> <LF> End of message termination
 */
 auto serial_configuration::to_string() -> std::string {
-  std::stringstream ss;
-
-  ss << "1," << baud << "," << databits << "," << stopbits << "," << parity;
-  std::string message = ss.str();
-
-  return command::add_checksum(message);
+  return fmt::format("1,{},{},{},{}", baud, data_bits, stop_bits, parity);
 }
 
-} // namespace nmea
+} // namespace tybl::nmea

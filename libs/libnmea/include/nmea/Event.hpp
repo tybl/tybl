@@ -8,31 +8,21 @@
 #include <functional>
 #include <list>
 
-namespace nmea {
+namespace tybl::nmea {
 
 template <class>
 class Event;
+
 template <class>
 class EventHandler;
 
 template <typename... Args>
 class Event<void(Args...)> {
   friend EventHandler<void(Args...)>;
-  // Typenames
-  typedef typename std::list<EventHandler<void(Args...)>>::iterator ListIterator;
 
-  // Static members
-  // (none)
+  using ListIterator = typename std::list<EventHandler<void(Args...)>>::iterator;
 
-  // Properties
   std::list<EventHandler<void(Args...)>> m_handlers;
-
-  // Functions
-  void copy(const Event& p_ref) {
-    if (&p_ref != this) {
-      m_handlers = p_ref.m_handlers;
-    }
-  }
 
   auto remove_handler(ListIterator p_handler_i) -> bool {
     if (p_handler_i == m_handlers.end()) {
@@ -44,22 +34,7 @@ class Event<void(Args...)> {
   }
 
 public:
-  // Typenames
-  // (none)
-
-  // Static members
-  // (none)
-
-  // Properties
   bool enabled = true;
-
-  // Functions
-  Event()
-    : enabled(true) {}
-
-  virtual ~Event() = default;
-
-  Event(const Event& p_ref) { copy(p_ref); }
 
   void call(Args... p_args) {
     if (!enabled) {
@@ -87,7 +62,7 @@ public:
 
   auto register_handler(std::function<void(Args...)> p_handler) -> EventHandler<void(Args...)> {
     EventHandler<void(Args...)> wrapper(p_handler);
-    ListIterator itr = m_handlers.insert(m_handlers.end(), wrapper);
+    auto itr = m_handlers.insert(m_handlers.end(), wrapper);
     wrapper.m_iterator = itr;
     return wrapper;
   }
@@ -106,22 +81,21 @@ public:
   }
 
   void operator()(Args... p_args) { return call(p_args...); };
+
   auto operator+=(EventHandler<void(Args...)> p_handler) -> EventHandler<void(Args...)> {
     return register_handler(p_handler);
-  };
+  }
+
   auto operator+=(std::function<void(Args...)> p_handler) -> EventHandler<void(Args...)> {
     return register_handler(p_handler);
   }
-  auto operator-=(EventHandler<void(Args...)>& p_handler) -> bool { return remove_handler(p_handler); };
-  auto operator-=(uint64_t p_handler_id) -> bool { return remove_handler(p_handler_id); };
 
-  auto operator=(const EventHandler<void(Args...)>& p_ref) -> EventHandler<void(Args...)>& {
-    copy(p_ref);
-    return *this;
-  };
+  auto operator-=(EventHandler<void(Args...)>& p_handler) -> bool { return remove_handler(p_handler); };
+
+  auto operator-=(uint64_t p_handler_id) -> bool { return remove_handler(p_handler_id); };
 
 }; // class Event
 
-} // namespace nmea
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_EVENT_HPP

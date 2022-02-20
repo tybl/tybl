@@ -1,24 +1,14 @@
 // License: The Unlicense (https://unlicense.org)
 #include "gps/timestamp.hpp"
 
+#include <array>
 #include <cmath> // trunc
 #include <ctime>
 #include <sstream>
 
-namespace gps {
+namespace tybl::nmea::gps {
 
-timestamp::timestamp() {
-  hour = 0;
-  min = 0;
-  sec = 0;
-
-  month = 1;
-  day = 1;
-  year = 1970;
-
-  raw_time = 0;
-  raw_date = 0;
-}
+timestamp::timestamp() = default;
 
 // indexed from 1!
 auto timestamp::month_name(int32_t p_index) -> std::string {
@@ -28,8 +18,8 @@ auto timestamp::month_name(int32_t p_index) -> std::string {
     return ss.str();
   }
 
-  std::string names[] = {"January", "February", "March",     "April",   "May",      "June",
-                         "July",    "August",   "September", "October", "November", "December"};
+  std::array<std::string, 12> names = {"January", "February", "March",     "April",   "May",      "June",
+                                       "July",    "August",   "September", "October", "November", "December"};
   return names[p_index - 1];
 }
 
@@ -68,11 +58,11 @@ void timestamp::set_date(int32_t p_raw_date) {
   }
 }
 
-auto timestamp::to_string() -> std::string {
+auto timestamp::to_string() const -> std::string {
   std::stringstream ss;
   ss << hour << "h " << min << "m " << sec << "s"
      << "  " << month_name(month) << " " << day << " " << year;
   return ss.str();
 }
 
-} // namespace gps
+} // namespace tybl::nmea::gps

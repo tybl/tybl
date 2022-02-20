@@ -180,12 +180,12 @@ struct basic_unsigned_integer {
 
 private:
   auto multiply_at_index(size_t p_index, larger_uint p_value) -> TYPE {
-    larger_uint result = static_cast<larger_uint>(p_value * mantissa[p_index]);
+    auto result = static_cast<larger_uint>(p_value * mantissa[p_index]);
     mantissa[p_index] = static_cast<TYPE>(result & limb_mask);
     return static_cast<TYPE>(result >> binary_digits);
   }
   auto add_at_index(size_t p_index, larger_uint p_value) -> TYPE {
-    larger_uint result = static_cast<larger_uint>(p_value + mantissa[p_index]);
+    auto result = static_cast<larger_uint>(p_value + mantissa[p_index]);
     mantissa[p_index] = static_cast<TYPE>(result & limb_mask);
     return static_cast<TYPE>(result >> binary_digits);
   }

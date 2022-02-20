@@ -6,27 +6,27 @@
 #include <cstdint>
 #include <string>
 
-namespace gps {
+namespace tybl::nmea::gps {
 
 class timestamp {
-  auto month_name(int32_t p_index) -> std::string;
+  static auto month_name(int32_t p_index) -> std::string;
 
 public:
   timestamp();
 
-  int32_t hour;
-  int32_t min;
-  double sec;
+  int32_t hour{0};
+  int32_t min{0};
+  double sec{0};
 
-  int32_t month;
-  int32_t day;
-  int32_t year;
+  int32_t month{1};
+  int32_t day{1};
+  int32_t year{1970};
 
   // Values collected directly from the GPS
-  double raw_time;
-  int32_t raw_date;
+  double raw_time{0};
+  int32_t raw_date{0};
 
-  auto get_time() const -> time_t;
+  [[nodiscard]] auto get_time() const -> time_t;
 
   // Set directly from the NMEA time stamp
   // hhmmss.sss
@@ -36,9 +36,9 @@ public:
   // ddmmyy
   void set_date(int32_t p_raw_date);
 
-  auto to_string() -> std::string;
+  [[nodiscard]] auto to_string() const -> std::string;
 }; // class timestamp
 
-} // namespace gps
+} // namespace tybl::nmea::gps
 
 #endif // TYBL_NMEA_GPS_TIMESTAMP_HPP

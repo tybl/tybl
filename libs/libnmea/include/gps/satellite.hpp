@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-namespace gps {
+namespace tybl::nmea::gps {
 
 struct satellite {
   double snr;       // 0-99 dB
@@ -14,14 +14,12 @@ struct satellite {
   double elevation; // 0-90 deg
   double azimuth;   // 0-359 deg
 
-  satellite();
+  [[nodiscard]] auto to_string() const -> std::string;
 
-  auto to_string() const -> std::string;
-
-  operator std::string();
+  explicit operator std::string() const;
 
 }; // struct satellite
 
-} // namespace gps
+} // namespace tybl::nmea::gps
 
 #endif // TYBL_NMEA_GPS_SATELLITE_HPP
