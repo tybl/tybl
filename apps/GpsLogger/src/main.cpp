@@ -11,7 +11,7 @@ auto main(int argc, char* argv[]) -> int {
   if (1 < argc) {
     // Create a GPS service that will keep track of the fix data.
     tybl::nmea::byte_parser parser;
-    tybl::nmea::GPSService gps(parser);
+    tybl::nmea::gps_service gps(parser);
     // TODO(tybl): What's the default value for Parser::log
     parser.log = false;
 

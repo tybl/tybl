@@ -11,6 +11,7 @@ namespace tybl::nmea {
 
 template <class>
 class Event;
+
 template <class>
 class EventHandler;
 
@@ -25,6 +26,7 @@ class EventHandler<void(Args...)> {
 
   // Properties
   std::function<void(Args...)> m_handler;
+
   uint64_t m_id{};
 
 public:

@@ -3,7 +3,7 @@
 #ifndef TYBL_NMEA_EVENT_HPP
 #define TYBL_NMEA_EVENT_HPP
 
-#include <nmea/EventHandler.hpp>
+#include <nmea/event_handler.hpp>
 
 #include <functional>
 #include <list>

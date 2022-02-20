@@ -3,7 +3,7 @@
 #ifndef TYBL_NMEA_SERIALCONFIGURATION_HPP
 #define TYBL_NMEA_SERIALCONFIGURATION_HPP
 
-#include "nmea/command.hpp"
+#include <nmea/command.hpp>
 
 namespace tybl::nmea {
 

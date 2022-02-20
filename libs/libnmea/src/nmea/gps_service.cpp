@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include <nmea/GPSService.hpp>
+#include <nmea/gps_service.hpp>
 
 #include <nmea/gps/satellite.hpp>
 #include <vodka/parse_error.hpp>
@@ -38,13 +38,13 @@ static auto kts_to_kph(double p_knots) -> double { return p_knots * 1.852; }
 
 // ------------- GPSSERVICE CLASS -------------
 
-GPSService::GPSService(Parser& p_parser) {
+gps_service::gps_service(sentence_parser& p_parser) {
   attach_to_parser(p_parser); // attach to parser in the GPS object
 }
 
-GPSService::~GPSService() = default;
+gps_service::~gps_service() = default;
 
-void GPSService::attach_to_parser(Parser& p_parser) {
+void gps_service::attach_to_parser(sentence_parser& p_parser) {
 
   // http://www.gpsinformation.org/dale/nmea.htm
   /* used sentences...
@@ -65,13 +65,13 @@ void GPSService::attach_to_parser(Parser& p_parser) {
   p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { read_gpvtg(p_nmea); });
 }
 
-void GPSService::read_psrf150(sentence const& /*p_nmea*/) {
+void gps_service::read_psrf150(sentence const& /*p_nmea*/) {
   // nothing right now...
   // Called with checksum 3E (valid) for GPS turning ON
   // Called with checksum 3F (invalid) for GPS turning OFF
 }
 
-void GPSService::read_gpgga(sentence const& p_nmea) {
+void gps_service::read_gpgga(sentence const& p_nmea) {
   /* -- EXAMPLE --
   $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47
 
@@ -166,7 +166,7 @@ void GPSService::read_gpgga(sentence const& p_nmea) {
   }*/
 }
 
-void GPSService::read_gpgsa(sentence const& p_nmea) {
+void gps_service::read_gpgsa(sentence const& p_nmea) {
   /*  -- EXAMPLE --
   $GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39
 
@@ -223,7 +223,7 @@ void GPSService::read_gpgsa(sentence const& p_nmea) {
   }*/
 }
 
-void GPSService::read_gpgsv(sentence const& p_nmea) {
+void gps_service::read_gpgsv(sentence const& p_nmea) {
   /*  -- EXAMPLE --
   $GPGSV,2,1,08,01,40,083,46,02,17,308,41,12,07,344,39,14,22,228,45*75
 
@@ -313,7 +313,7 @@ void GPSService::read_gpgsv(sentence const& p_nmea) {
   }*/
 }
 
-void GPSService::read_gprmc(sentence const& p_nmea) {
+void gps_service::read_gprmc(sentence const& p_nmea) {
   /*  -- EXAMPLE ---
   $GPRMC,123519,A,4807.038,N,01131.000,E,022.4,084.4,230394,003.1,W*6A
   $GPRMC,235957.025,V,,,,,,,070810,,,N*4B
@@ -393,7 +393,7 @@ void GPSService::read_gprmc(sentence const& p_nmea) {
    }*/
 }
 
-void GPSService::read_gpvtg(sentence const& p_nmea) {
+void gps_service::read_gpvtg(sentence const& p_nmea) {
   /*
   $GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48
 

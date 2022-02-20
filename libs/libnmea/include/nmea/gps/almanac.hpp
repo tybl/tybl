@@ -9,13 +9,14 @@
 #include <vector>
 
 namespace tybl::nmea {
-class GPSService;
-} // namespace tybl::nmea
 
-namespace tybl::nmea::gps {
+class gps_service;
+
+namespace gps {
 
 class almanac {
-  friend nmea::GPSService;
+  friend nmea::gps_service;
+
   uint32_t m_visible_size{};
   uint32_t m_total_pages = 0;
   uint32_t m_processed_pages = 0;
@@ -32,6 +33,8 @@ public:
 
 }; // class almanac
 
-} // namespace tybl::nmea::gps
+} // namespace gps
+
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_GPS_ALMANAC_HPP

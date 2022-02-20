@@ -1,5 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-#include <nmea/GPSService.hpp>
+#include <nmea/gps_service.hpp>
 #include <nmea/byte_parser.hpp>
 
 #include <doctest/doctest.h>
@@ -8,11 +8,11 @@
 
 TEST_CASE("nmea::parse") {
   tybl::nmea::byte_parser parser;
-  // Q: Why does the Parser object get injected into the GPSService object?
-  // A: Because the GPSService needs to register for which NMEA sentences it
+  // Q: Why does the Parser object get injected into the gps_service object?
+  // A: Because the gps_service needs to register for which NMEA sentences it
   //    wants to observe. There are several of them, so it is easier for the
-  //    GPSService to do it, since it knows which ones it cares about.
-  tybl::nmea::GPSService gps(parser);
+  //    gps_service to do it, since it knows which ones it cares about.
+  tybl::nmea::gps_service gps(parser);
 
   // Let's make sure gps_service is initialized to a known state
   CHECK(0.0 == gps.fix.altitude);

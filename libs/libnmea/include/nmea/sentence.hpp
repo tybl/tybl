@@ -8,10 +8,10 @@
 
 namespace tybl::nmea {
 
-class Parser;
+class sentence_parser;
 
 class sentence {
-  friend Parser;
+  friend sentence_parser;
   bool m_is_valid{};
 
 public:

@@ -12,13 +12,13 @@
 #include <string>
 
 namespace tybl::nmea {
-class GPSService;
-} // namespace tybl::nmea
 
-namespace tybl::nmea::gps {
+class gps_service;
+
+namespace gps {
 
 class fix {
-  friend nmea::GPSService;
+  friend gps_service;
   bool m_has_lock{};
   auto set_lock(bool p_lock) -> bool; // returns true if lock status **changed***, false otherwise.
 
@@ -63,6 +63,8 @@ public:
   static auto ordinal_direction(double p_deg, bool p_abbrev = false) -> std::string;
 }; // class fix
 
-} // namespace tybl::nmea::gps
+} // namespace gps
+
+} // namespace tybl::nmea
 
 #endif // TYBL_NMEA_GPS_FIX_HPP

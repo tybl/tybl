@@ -3,12 +3,12 @@
 #ifndef TYBL_NMEA_BYTEPARSER_HPP
 #define TYBL_NMEA_BYTEPARSER_HPP
 
-#include <nmea/Parser.hpp>
+#include <nmea/sentence_parser.hpp>
 
 namespace tybl::nmea {
 
 struct byte_parser
-  : public Parser
+  : public sentence_parser
 {
   void read_byte(char p_b);
 

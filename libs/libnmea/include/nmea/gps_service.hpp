@@ -3,9 +3,9 @@
 #ifndef TYBL_NMEA_GPSSERVICE_HPP
 #define TYBL_NMEA_GPSSERVICE_HPP
 
-#include "gps/fix.hpp"
-#include "nmea/Event.hpp"
-#include "nmea/Parser.hpp"
+#include <nmea/event.hpp>
+#include <nmea/gps/fix.hpp>
+#include <nmea/sentence_parser.hpp>
 
 #include <chrono>
 #include <functional>
@@ -13,7 +13,7 @@
 
 namespace tybl::nmea {
 
-class GPSService {
+class gps_service {
   static void read_psrf150(sentence const& p_nmea);
   void read_gpgga(sentence const& p_nmea);
   void read_gpgsa(sentence const& p_nmea);
@@ -24,17 +24,17 @@ class GPSService {
 public:
   gps::fix fix;
 
-  GPSService(Parser& p_parser);
+  gps_service(sentence_parser& p_parser);
 
-  virtual ~GPSService();
+  virtual ~gps_service();
 
   Event<void(bool)> on_lock_state_changed; // user assignable handler, called whenever lock changes
 
   Event<void()> on_update; // user assignable handler, called whenever fix changes
 
-  void attach_to_parser(Parser& p_parser); // will attach to this parser's nmea sentence events
+  void attach_to_parser(sentence_parser& p_parser); // will attach to this parser's nmea sentence events
 
-}; // class GPSService
+}; // class gps_service
 
 } // namespace tybl::nmea
 

@@ -3,8 +3,7 @@
 #ifndef TYBL_NMEA_COMMAND_HPP
 #define TYBL_NMEA_COMMAND_HPP
 
-#include "nmea/Parser.hpp"
-
+#include <cstdint>
 #include <string>
 
 namespace tybl::nmea {
@@ -15,7 +14,7 @@ class command {
   // properly build it.
   std::string m_message;
   std::string m_name;
-  // TODO(tybl): Should the checksum be an unsigned char?
+  // TODO(tybl): Should the checksum be an unsigned char? Or better: std::byte
   uint8_t m_checksum{};
 
 public:

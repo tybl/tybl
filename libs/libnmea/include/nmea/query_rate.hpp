@@ -3,7 +3,8 @@
 #ifndef TYBL_NMEA_QUERYRATE_HPP
 #define TYBL_NMEA_QUERYRATE_HPP
 
-#include "nmea/command.hpp"
+#include <nmea/command.hpp>
+#include <nmea/sentence.hpp>
 
 namespace tybl::nmea {
 
@@ -44,9 +45,7 @@ struct query_rate : public command {
   int checksum_enable{1};
 
   query_rate()
-    : command("PSRF103"){
-
-      };
+    : command("PSRF103") { }
 
   auto to_string() -> std::string override;
 

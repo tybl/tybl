@@ -1,6 +1,5 @@
 // License: The Unlicense (https://unlicense.org)
-
-#include <nmea/Parser.hpp>
+#include <nmea/sentence_parser.hpp>
 
 #include <nmea/sentence.hpp>
 
@@ -31,14 +30,14 @@ static void squish(std::string& p_str) {
 
 // --------- NMEA PARSER --------------
 
-void Parser::set_sentence_handler(const std::string& p_cmd_key, const std::function<void(const sentence&)>& p_handler) {
+void sentence_parser::set_sentence_handler(const std::string& p_cmd_key, const std::function<void(const sentence&)>& p_handler) {
   m_event_table.erase(p_cmd_key);
   m_event_table.insert({p_cmd_key, p_handler});
 }
 
 // takes a complete NMEA string and gets the data bits from it,
 // calls the corresponding handler in m_event_table, based on the 5 letter sentence code
-void Parser::read_sentence(std::string p_cmd) {
+void sentence_parser::read_sentence(std::string p_cmd) {
 
   sentence nmea;
 
@@ -74,7 +73,7 @@ void Parser::read_sentence(std::string p_cmd) {
   } catch (tybl::vodka::parse_error const&) {
     throw;
   } catch (std::exception const& e) {
-    throw std::runtime_error(std::string(" >> NMEA Parser Internal Error: Indexing error?... ") + e.what());
+    throw std::runtime_error(std::string(" >> NMEA sentence_parser Internal Error: Indexing error?... ") + e.what());
   }
 
   if (!nmea.valid()) {
@@ -102,7 +101,7 @@ void Parser::read_sentence(std::string p_cmd) {
 
 // takes the string *between* the '$' and '*' in nmea sentence,
 // then calculates a rolling XOR on the bytes
-auto Parser::calc_checksum(std::string const& p_s) -> uint8_t {
+auto sentence_parser::calc_checksum(std::string const& p_s) -> uint8_t {
   uint8_t checksum = 0;
   for (const char i : p_s) {
     checksum = static_cast<uint8_t>(checksum ^ i);
@@ -110,7 +109,7 @@ auto Parser::calc_checksum(std::string const& p_s) -> uint8_t {
   return checksum;
 }
 
-void Parser::parse_text(sentence& p_nmea, std::string p_txt) {
+void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
 
   p_nmea.m_is_valid = false; // assume it's invalid first
   if (p_txt.empty()) {

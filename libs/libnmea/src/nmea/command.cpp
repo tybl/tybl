@@ -1,5 +1,7 @@
 // License: The Unlicense (https://unlicense.org)
-#include "nmea/command.hpp"
+#include <nmea/command.hpp>
+
+#include <nmea/sentence_parser.hpp>
 
 #include <iomanip>
 #include <sstream>
@@ -19,7 +21,7 @@ auto command::to_string() -> std::string { return add_checksum(m_message); }
 auto command::add_checksum(std::string const& p_s) -> std::string {
   std::stringstream zz;
   zz << m_name << "," << p_s;
-  m_checksum = Parser::calc_checksum(zz.str());
+  m_checksum = sentence_parser::calc_checksum(zz.str());
 
   std::stringstream ss;
   std::ios_base::fmtflags prev_flags = ss.flags();
