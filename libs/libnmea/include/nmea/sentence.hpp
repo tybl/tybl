@@ -34,9 +34,9 @@ public:
     ZDA = 8
   };
 
-  [[nodiscard]] auto is_checksum_ok() const -> bool;
+  [[nodiscard, gnu::pure]] auto is_checksum_ok() const -> bool;
 
-  [[nodiscard]] auto valid() const -> bool;
+  [[nodiscard, gnu::pure]] auto valid() const -> bool;
 
 }; // class sentence
 

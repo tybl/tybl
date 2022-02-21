@@ -33,6 +33,6 @@ auto command::add_checksum(std::string const& p_s) -> std::string {
   // just this temporary stringstream. Is that true?
   ss.flags(prev_flags);
   return ss.str();
-};
+}
 
 } // namespace tybl::nmea

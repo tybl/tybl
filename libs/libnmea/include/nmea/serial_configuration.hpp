@@ -23,10 +23,10 @@ Checksum  *0C
 <CR> <LF> End of message termination
 */
 struct serial_configuration : public command {
-  int32_t baud{4800};  // 4800, 9600, 19200, 38400
+  int32_t baud{4800};   // 4800, 9600, 19200, 38400
   int32_t data_bits{8}; // 7, 8 Databits
   int32_t stop_bits{1}; // 0, 1 Stopbits
-  int32_t parity{0};   // 0=none, 1=odd, 2=even Parity
+  int32_t parity{0};    // 0=none, 1=odd, 2=even Parity
 
   serial_configuration()
     : command("PSRF100") {}

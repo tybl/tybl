@@ -19,7 +19,9 @@ static auto has_non_alpha_num(std::string_view p_txt) -> bool {
 
 // true if alphanumeric or '-'
 static auto valid_param_chars(std::string_view p_txt) -> bool {
-  return std::all_of(p_txt.begin(), p_txt.end(), [](char p_char){ return static_cast<bool>(std::isalnum(p_char)) || '-' == p_char || '.' == p_char; });
+  return std::all_of(p_txt.begin(), p_txt.end(), [](char p_char) {
+    return static_cast<bool>(std::isalnum(p_char)) || '-' == p_char || '.' == p_char;
+  });
 }
 
 static void squish(std::string& p_str) {
@@ -29,7 +31,8 @@ static void squish(std::string& p_str) {
 
 // --------- NMEA PARSER --------------
 
-void sentence_parser::set_sentence_handler(const std::string& p_cmd_key, const std::function<void(const sentence&)>& p_handler) {
+void sentence_parser::set_sentence_handler(const std::string& p_cmd_key,
+                                           const std::function<void(const sentence&)>& p_handler) {
   m_event_table.erase(p_cmd_key);
   m_event_table.insert({p_cmd_key, p_handler});
 }
@@ -115,7 +118,7 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
     return;
   }
 
-  p_nmea.text = p_txt;       // save the received text of the sentence
+  p_nmea.text = p_txt; // save the received text of the sentence
 
   // Looking for index of last '$'
   size_t dollar = p_txt.find_last_of('$');

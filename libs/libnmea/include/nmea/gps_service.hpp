@@ -24,7 +24,7 @@ class gps_service {
 public:
   gps::fix fix;
 
-  gps_service(sentence_parser& p_parser);
+  explicit gps_service(sentence_parser& p_parser);
 
   virtual ~gps_service();
 

@@ -26,10 +26,10 @@ class almanac {
 public:
   // mapped by prn
   std::vector<tybl::nmea::gps::satellite> satellites;
-  [[nodiscard]] auto average_snr() const -> double;
-  [[nodiscard]] auto min_snr() const -> double;
-  [[nodiscard]] auto max_snr() const -> double;
-  [[nodiscard]] auto percent_complete() const -> double;
+  [[nodiscard, gnu::pure]] auto average_snr() const -> double;
+  [[nodiscard, gnu::pure]] auto min_snr() const -> double;
+  [[nodiscard, gnu::pure]] auto max_snr() const -> double;
+  [[nodiscard, gnu::pure]] auto percent_complete() const -> double;
 
 }; // class almanac
 

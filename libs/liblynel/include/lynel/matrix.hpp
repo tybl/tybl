@@ -44,7 +44,7 @@ struct matrix {
   auto operator==(matrix const& p_o) const {
     bool result = true;
     for (size_t i = 0; i < Rows * Cols; ++i) {
-      result &= (m_array[i] == p_o.m_array[i]);
+      result &= (m_array.at(i) == p_o.m_array.at(i));
     }
     return result;
   }

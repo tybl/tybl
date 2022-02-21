@@ -17,11 +17,11 @@ public:
 
   [[nodiscard]] auto to_frd() const -> frd_t;
 
-  [[nodiscard]] auto range() const -> double;
+  [[nodiscard,gnu::pure]] auto range() const -> double;
 
-  [[nodiscard]] auto azimuth() const -> double;
+  [[nodiscard,gnu::pure]] auto azimuth() const -> double;
 
-  [[nodiscard]] auto elevation() const -> double;
+  [[nodiscard,gnu::pure]] auto elevation() const -> double;
 
 }; // class rae_t
 

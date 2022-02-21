@@ -162,8 +162,7 @@ void gps_service::read_gpgga(sentence const& p_nmea) {
     }
     this->on_update();
   } catch (std::invalid_argument&) {
-    tybl::vodka::parse_error pe("[$GPGGA] Could not convert string to a number");
-    throw pe;
+    throw tybl::vodka::parse_error("[$GPGGA] Could not convert string to a number");
   } /*catch (tybl::vodka::parse_error& ex) {
     tybl::vodka::parse_error pe("GPS Data Bad Format [$GPGGA] :: " + ex.what());
     throw pe;
@@ -278,7 +277,7 @@ void gps_service::read_gpgsv(sentence const& p_nmea) {
 
     auto entriesInPage = (p_nmea.parameters.size() - 3) >> 2; // first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
-    for (unsigned long i = 0; i < entriesInPage; i++) {
+    for (uint64_t i = 0; i < entriesInPage; i++) {
       auto prop = 3 + i * 4;
       try {
         tybl::nmea::gps::satellite sat{};
@@ -371,25 +370,21 @@ void gps_service::read_gprmc(sentence const& p_nmea) {
     if (!p_nmea.parameters[1].empty()) {
       status = p_nmea.parameters[1][0];
     }
-    this->fix.status = status;
-    if (status == 'V') {
-      lockupdate = this->fix.set_lock(false);
-    } else if (status == 'A') {
-      lockupdate = this->fix.set_lock(true);
-    } else {
-      lockupdate = this->fix.set_lock(false); // not A or V, so must be wrong... no lock
+    fix.status = status;
+    if (status == 'A') {
+      lockupdate = fix.set_lock(true);
     }
 
-    this->fix.speed = kts_to_kph(std::stod(p_nmea.parameters[6])); // received as knots, convert to km/h
-    this->fix.travel_angle = std::stod(p_nmea.parameters[7]);
+    fix.speed = kts_to_kph(std::stod(p_nmea.parameters[6])); // received as knots, convert to km/h
+    fix.travel_angle = std::stod(p_nmea.parameters[7]);
     fix.m_timestamp.set_date(std::stoi(p_nmea.parameters[8]));
 
     // calling m_handlers
     if (lockupdate) {
-      this->on_lock_state_changed(this->fix.m_has_lock);
+      on_lock_state_changed(fix.m_has_lock);
     }
-    this->on_update();
-  } catch (std::invalid_argument&) {
+    on_update();
+  } catch (std::invalid_argument const&) {
     throw tybl::vodka::parse_error("[$GPRMC] Could not convert string to number");
   } /* catch (tybl::vodka::parse_error& ex) {
      tybl::vodka::parse_error pe("GPS Data Bad Format [$GPRMC] :: " + ex.message, p_nmea);
@@ -421,12 +416,11 @@ void gps_service::read_gpvtg(sentence const& p_nmea) {
 
     // SPEED
     // if empty, is converted to 0
-    this->fix.speed = std::stod(p_nmea.parameters[6]); // km/h
+    fix.speed = std::stod(p_nmea.parameters[6]); // km/h
 
-    this->on_update();
-  } catch (std::invalid_argument&) {
-    tybl::vodka::parse_error pe("[$GPVTG] Could not convert string to number");
-    throw pe;
+    on_update();
+  } catch (std::invalid_argument const&) {
+    throw tybl::vodka::parse_error("[$GPVTG] Could not convert string to number");
   } /* catch (tybl::vodka::parse_error& ex) {
      tybl::vodka::parse_error pe("GPS Data Bad Format [$GPVTG] :: " + ex.message, p_nmea);
      throw pe;

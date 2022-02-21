@@ -34,7 +34,7 @@ public:
   using CFunctionPointer = void (*)(Args...);
 
   // Functions
-  EventHandler(std::function<void(Args...)> p_h)
+  explicit EventHandler(std::function<void(Args...)> p_h)
     : m_iterator()
     , m_handler(std::move(p_h))
     , m_id(++LastID) {}

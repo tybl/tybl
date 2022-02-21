@@ -26,17 +26,16 @@ class sentence_parser {
   void parse_text(sentence& p_nmea, std::string p_s);
 
 public:
-
   Event<void(sentence const&)> on_sentence; // called every time sentence_parser receives any NMEA sentence
 
   // one handler called for any named sentence where name is the "p_cmd_key"
   void set_sentence_handler(std::string const& p_cmd_key, std::function<void(sentence const&)> const& p_handler);
 
   // This function expects the data to be a single line with an actual sentence in it, else it throws an error.
-  void read_sentence(std::string p_cmd); // called when sentence_parser receives a sentence from the byte stream. Can also be
-                                         // called by user to inject sentences.
+  void read_sentence(std::string p_cmd); // called when sentence_parser receives a sentence from the byte stream. Can
+                                         // also be called by user to inject sentences.
 
-  static auto calc_checksum(std::string const& /*p_s*/) -> uint8_t; // returns checksum of string -- XOR
+  [[gnu::pure]] static auto calc_checksum(std::string const& /*p_s*/) -> uint8_t; // returns checksum of string -- XOR
 
 }; // class sentence_parser
 

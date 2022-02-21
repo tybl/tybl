@@ -26,8 +26,8 @@ public:
   almanac m_almanac;
   timestamp m_timestamp;
 
-  char status{'V'};     // Status: A=active, V=void (not locked)
-  uint8_t type{1};    // Type: 1=none, 2=2d, 3=3d
+  char status{'V'};  // Status: A=active, V=void (not locked)
+  uint8_t type{1};   // Type: 1=none, 2=2d, 3=3d
   uint8_t quality{}; // Quality:
                      //    0 = invalid
                      //    1 = GPS fix (SPS)
@@ -49,10 +49,10 @@ public:
   int32_t tracking_satellites{};
   int32_t visible_satellites{};
 
-  [[nodiscard]] auto locked() const -> bool;
-  [[nodiscard]] auto horizontal_accuracy() const -> double;
-  [[nodiscard]] auto vertical_accuracy() const -> double;
-  [[nodiscard]] auto has_estimate() const -> bool;
+  [[nodiscard, gnu::pure]] auto locked() const -> bool;
+  [[nodiscard, gnu::pure]] auto horizontal_accuracy() const -> double;
+  [[nodiscard, gnu::pure]] auto vertical_accuracy() const -> double;
+  [[nodiscard, gnu::pure]] auto has_estimate() const -> bool;
 
   [[nodiscard]] auto time_since_last_update() const
       -> std::chrono::seconds; // Return seconds difference from last timestamp and right now.

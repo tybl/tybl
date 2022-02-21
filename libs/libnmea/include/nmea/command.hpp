@@ -20,7 +20,7 @@ class command {
 public:
   command();
 
-  command(std::string p_name);
+  explicit command(std::string p_name);
 
   virtual ~command();
 

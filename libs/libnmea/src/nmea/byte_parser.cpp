@@ -36,9 +36,9 @@ void byte_parser::read_buffer(std::string_view p_buffer) {
   }
 }
 
-void byte_parser::read_line(std::string p_cmd) {
-  p_cmd.append("\r\n", 2);
-  read_buffer(p_cmd);
+void byte_parser::read_line(std::string p_line) {
+  p_line.append("\r\n", 2);
+  read_buffer(p_line);
 }
 
 } // namespace tybl::nmea

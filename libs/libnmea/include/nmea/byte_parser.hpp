@@ -7,9 +7,7 @@
 
 namespace tybl::nmea {
 
-struct byte_parser
-  : public sentence_parser
-{
+struct byte_parser : public sentence_parser {
   void read_byte(char p_b);
 
   void read_buffer(std::string_view p_buffer);

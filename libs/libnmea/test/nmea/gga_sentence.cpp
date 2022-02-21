@@ -5,9 +5,9 @@
 #include <doctest/doctest.h>
 #include <spdlog/spdlog.h>
 
+#include <iomanip>
 #include <iostream>
 #include <memory>
-#include <iomanip>
 #include <sstream>
 #include <string>
 #include <string_view>
