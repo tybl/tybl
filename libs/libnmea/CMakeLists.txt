@@ -42,3 +42,14 @@ target_sources(test_libnmea
 )
 
 add_test(NAME libnmea_test COMMAND test_libnmea)
+
+# libfuzzer requires Clang
+if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+  set(FUZZ_TIMEOUT 10 CACHE STRING "Maximum time, in seconds, to run fuzz test")
+
+  add_executable(fuzz_libnmea)
+  target_compile_options(fuzz_libnmea PRIVATE -fsanitize=fuzzer,undefined,address)
+  target_link_libraries(fuzz_libnmea PRIVATE compiler_settings nmea -coverage -fsanitize=fuzzer,undefined,address)
+  target_sources(fuzz_libnmea PRIVATE test/nmea/fuzz_test.cpp)
+  add_test(NAME libnmea_fuzz_test COMMAND fuzz_libnmea -max_total_time=${FUZZ_TIMEOUT})
+endif()
