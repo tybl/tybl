@@ -3,3 +3,6 @@
 2. The `#ifndef` definition will be REPONAME_TARGETNAME_PATH_FILE_HPP (not including `src/` or `include/`)
 3. Private member variables are lowercase and have a prefix of 'm_'
 4. Parameters are lowercase and have a prefix of 'p_'
+
+## C++ Blogs
+- [foonathan::blog()](https://www.foonathan.net/) Thoughts from a C++ library developer.
