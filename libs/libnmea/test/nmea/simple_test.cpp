@@ -6,6 +6,68 @@
 
 #include <string_view>
 
+TEST_CASE("read_gga") {
+  tybl::nmea::byte_parser parser;
+  tybl::nmea::gps_service gps(parser);
+  std::string_view input{"$GNGGA,171250.000,4014.9259,N,07938.4143,W,2,13,0.72,325.1,M,-33.0,M,,*4D\n"};
+  parser.read_buffer(input);
+  CHECK(17 == gps.fix.m_timestamp.hour);
+  CHECK(12 == gps.fix.m_timestamp.min);
+  CHECK(doctest::Approx(50.0) == gps.fix.m_timestamp.sec);
+  CHECK(doctest::Approx(40.249016667) == gps.fix.latitude);
+  CHECK(doctest::Approx(-79.640411667) == gps.fix.longitude);
+  CHECK(2 == gps.fix.quality);
+  CHECK(13 == gps.fix.visible_satellites);
+  // TODO(tybl): CHECK(doctest::Approx(0.72) == gps.fix.horizontal_dilution);
+  CHECK(doctest::Approx(325.1) == gps.fix.altitude);
+  // TODO(tybl): Height of geoid about WGS84
+  // No time since last DGPS update
+  // No DGPS reference station id
+}
+
+TEST_CASE("read_gsa") {
+  // Satellites active
+  tybl::nmea::byte_parser parser;
+  tybl::nmea::gps_service gps(parser);
+  // TODO(tybl): Change input string to be a GSA sentence
+  std::string_view input{"$GNGGA,171250.000,4014.9259,N,07938.4143,W,2,13,0.72,325.1,M,-33.0,M,,*4D\n"};
+  parser.read_buffer(input);
+  CHECK(17 == gps.fix.m_timestamp.hour);
+  CHECK(12 == gps.fix.m_timestamp.min);
+  CHECK(doctest::Approx(50.0) == gps.fix.m_timestamp.sec);
+  CHECK(doctest::Approx(40.249016667) == gps.fix.latitude);
+  CHECK(doctest::Approx(-79.640411667) == gps.fix.longitude);
+  CHECK(2 == gps.fix.quality);
+  CHECK(13 == gps.fix.visible_satellites);
+  //CHECK(doctest::Approx(0.72) == gps.fix.horizontal_dilution);
+  CHECK(doctest::Approx(325.1) == gps.fix.altitude);
+  // Height of geoid about WGS84
+  // No time since last DGPS update
+  // No DGPS reference station id
+}
+
+TEST_CASE("read_gsv") {
+  // Satellites in view
+  tybl::nmea::byte_parser parser;
+  tybl::nmea::gps_service gps(parser);
+  // TODO(tybl): Change input string to be a GSV sentence
+  std::string_view input{"$GNGGA,171250.000,4014.9259,N,07938.4143,W,2,13,0.72,325.1,M,-33.0,M,,*4D\n"};
+  parser.read_buffer(input);
+  CHECK(17 == gps.fix.m_timestamp.hour);
+  CHECK(12 == gps.fix.m_timestamp.min);
+  CHECK(doctest::Approx(50.0) == gps.fix.m_timestamp.sec);
+  CHECK(doctest::Approx(40.249016667) == gps.fix.latitude);
+  CHECK(doctest::Approx(-79.640411667) == gps.fix.longitude);
+  CHECK(2 == gps.fix.quality);
+  CHECK(13 == gps.fix.visible_satellites);
+  // CHECK(doctest::Approx(0.72) == gps.fix.horizontal_dilution);
+  CHECK(doctest::Approx(325.1) == gps.fix.altitude);
+  // Height of geoid about WGS84
+  // No time since last DGPS update
+  // No DGPS reference station id
+}
+
+
 TEST_CASE("nmea::parse") {
   tybl::nmea::byte_parser parser;
   // Q: Why does the Parser object get injected into the gps_service object?
