@@ -37,6 +37,7 @@ add_executable(test_libnmea)
 target_link_libraries(test_libnmea PRIVATE compiler_settings fmt nmea test_base)
 target_sources(test_libnmea
   PRIVATE
+    test/nmea/Checksum.cpp
     test/nmea/gga_sentence.cpp
     test/nmea/simple_test.cpp
 )
