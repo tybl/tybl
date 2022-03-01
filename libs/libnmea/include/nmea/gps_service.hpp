@@ -15,11 +15,11 @@ namespace tybl::nmea {
 
 class gps_service {
   static void read_psrf150(sentence const& p_nmea);
-  void read_gpgga(sentence const& p_nmea);
-  void read_gpgsa(sentence const& p_nmea);
-  void read_gpgsv(sentence const& p_nmea);
-  void read_gprmc(sentence const& p_nmea);
-  void read_gpvtg(sentence const& p_nmea);
+  void read_gga(sentence const& p_nmea);
+  void read_gsa(sentence const& p_nmea);
+  void read_gsv(sentence const& p_nmea);
+  void read_rmc(sentence const& p_nmea);
+  void read_vtg(sentence const& p_nmea);
 
 public:
   gps::fix fix;

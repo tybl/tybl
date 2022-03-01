@@ -57,16 +57,16 @@ void gps_service::attach_to_parser(sentence_parser& p_parser) {
   $PSRF150  - gps module "ok to send"
   */
   p_parser.set_sentence_handler("PSRF150", [](const sentence& p_nmea) { read_psrf150(p_nmea); });
-  p_parser.set_sentence_handler("GNGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
-  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { read_gpgga(p_nmea); });
-  p_parser.set_sentence_handler("GLGSA", [this](const sentence& p_nmea) { read_gpgsa(p_nmea); });
-  p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) { read_gpgsa(p_nmea); });
-  p_parser.set_sentence_handler("GLGSV", [this](const sentence& p_nmea) { read_gpgsv(p_nmea); });
-  p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) { read_gpgsv(p_nmea); });
-  p_parser.set_sentence_handler("GNRMC", [this](const sentence& p_nmea) { read_gprmc(p_nmea); });
-  p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) { read_gprmc(p_nmea); });
-  p_parser.set_sentence_handler("GNVTG", [this](const sentence& p_nmea) { read_gpvtg(p_nmea); });
-  p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { read_gpvtg(p_nmea); });
+  p_parser.set_sentence_handler("GNGGA", [this](const sentence& p_nmea) { read_gga(p_nmea); });
+  p_parser.set_sentence_handler("GPGGA", [this](const sentence& p_nmea) { read_gga(p_nmea); });
+  p_parser.set_sentence_handler("GLGSA", [this](const sentence& p_nmea) { read_gsa(p_nmea); });
+  p_parser.set_sentence_handler("GPGSA", [this](const sentence& p_nmea) { read_gsa(p_nmea); });
+  p_parser.set_sentence_handler("GLGSV", [this](const sentence& p_nmea) { read_gsv(p_nmea); });
+  p_parser.set_sentence_handler("GPGSV", [this](const sentence& p_nmea) { read_gsv(p_nmea); });
+  p_parser.set_sentence_handler("GNRMC", [this](const sentence& p_nmea) { read_rmc(p_nmea); });
+  p_parser.set_sentence_handler("GPRMC", [this](const sentence& p_nmea) { read_rmc(p_nmea); });
+  p_parser.set_sentence_handler("GNVTG", [this](const sentence& p_nmea) { read_vtg(p_nmea); });
+  p_parser.set_sentence_handler("GPVTG", [this](const sentence& p_nmea) { read_vtg(p_nmea); });
 }
 
 void gps_service::read_psrf150(sentence const& /*p_nmea*/) {
@@ -75,7 +75,7 @@ void gps_service::read_psrf150(sentence const& /*p_nmea*/) {
   // Called with checksum 3F (invalid) for GPS turning OFF
 }
 
-void gps_service::read_gpgga(sentence const& p_nmea) {
+void gps_service::read_gga(sentence const& p_nmea) {
   /* -- EXAMPLE --
   $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M,,*47
 
@@ -169,7 +169,7 @@ void gps_service::read_gpgga(sentence const& p_nmea) {
   }*/
 }
 
-void gps_service::read_gpgsa(sentence const& p_nmea) {
+void gps_service::read_gsa(sentence const& p_nmea) {
   /*  -- EXAMPLE --
   $GPGSA,A,3,04,05,,09,12,,,24,,,,,2.5,1.3,2.1*39
 
@@ -226,7 +226,7 @@ void gps_service::read_gpgsa(sentence const& p_nmea) {
   }*/
 }
 
-void gps_service::read_gpgsv(sentence const& p_nmea) {
+void gps_service::read_gsv(sentence const& p_nmea) {
   /*  -- EXAMPLE --
   $GPGSV,2,1,08,01,40,083,46,02,17,308,41,12,07,344,39,14,22,228,45*75
 
@@ -316,7 +316,7 @@ void gps_service::read_gpgsv(sentence const& p_nmea) {
   }*/
 }
 
-void gps_service::read_gprmc(sentence const& p_nmea) {
+void gps_service::read_rmc(sentence const& p_nmea) {
   /*  -- EXAMPLE ---
   $GPRMC,123519,A,4807.038,N,01131.000,E,022.4,084.4,230394,003.1,W*6A
   $GPRMC,235957.025,V,,,,,,,070810,,,N*4B
@@ -392,7 +392,7 @@ void gps_service::read_gprmc(sentence const& p_nmea) {
    }*/
 }
 
-void gps_service::read_gpvtg(sentence const& p_nmea) {
+void gps_service::read_vtg(sentence const& p_nmea) {
   /*
   $GPVTG,054.7,T,034.4,M,005.5,N,010.2,K*48
 
