@@ -38,8 +38,7 @@ target_link_libraries(test_libnmea PRIVATE compiler_settings fmt nmea test_base)
 target_sources(test_libnmea
   PRIVATE
     test/nmea/Checksum.cpp
-    test/nmea/gga_sentence.cpp
-    test/nmea/simple_test.cpp
+    test/nmea/gps_service.cpp
 )
 
 add_test(NAME libnmea_test COMMAND test_libnmea)
