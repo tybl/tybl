@@ -80,7 +80,7 @@ public:
     m_handlers.clear();
   }
 
-  void operator()(Args... p_args) { return call(p_args...); };
+  void operator()(Args... p_args) { return call(p_args...); }
 
   auto operator+=(EventHandler<void(Args...)> p_handler) -> EventHandler<void(Args...)> {
     return register_handler(p_handler);
@@ -90,9 +90,9 @@ public:
     return register_handler(p_handler);
   }
 
-  auto operator-=(EventHandler<void(Args...)>& p_handler) -> bool { return remove_handler(p_handler); };
+  auto operator-=(EventHandler<void(Args...)>& p_handler) -> bool { return remove_handler(p_handler); }
 
-  auto operator-=(uint64_t p_handler_id) -> bool { return remove_handler(p_handler_id); };
+  auto operator-=(uint64_t p_handler_id) -> bool { return remove_handler(p_handler_id); }
 
 }; // class Event
 
