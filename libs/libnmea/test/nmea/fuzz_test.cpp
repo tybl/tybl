@@ -2,9 +2,11 @@
 #include <nmea/nmea.hpp>
 
 #include <fuzzer/FuzzedDataProvider.h>
+#include <spdlog/spdlog.h>
 
 extern "C" int LLVMFuzzerTestOneInput(uint8_t const* p_data, size_t p_size)
 {
+  spdlog::set_level(spdlog::level::off);
   tybl::nmea::byte_parser parser;
   // Q: Why does the Parser object get injected into the gps_service object?
   // A: Because the gps_service needs to register for which NMEA sentences it
