@@ -115,7 +115,7 @@ void gps_service::read_gga(sentence const& p_nmea) {
     }
 
     // TIMESTAMP
-    this->fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
+    fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -123,44 +123,44 @@ void gps_service::read_gga(sentence const& p_nmea) {
     sll = p_nmea.parameters[1];
     dir = p_nmea.parameters[2];
     if (!sll.empty()) {
-      this->fix.latitude = convert_lat_lon_to_deg(sll, dir);
+      fix.latitude = convert_lat_lon_to_deg(sll, dir);
     }
 
     // LONG
     sll = p_nmea.parameters[3];
     dir = p_nmea.parameters[4];
     if (!sll.empty()) {
-      this->fix.longitude = convert_lat_lon_to_deg(sll, dir);
+      fix.longitude = convert_lat_lon_to_deg(sll, dir);
     }
 
     // FIX QUALITY
     bool lockupdate = false;
     fix.quality = static_cast<uint8_t>(std::stoul(p_nmea.parameters[5]));
-    if (this->fix.quality == 0) {
-      lockupdate = this->fix.set_lock(false);
-    } else if (this->fix.quality == 1) {
-      lockupdate = this->fix.set_lock(true);
+    if (fix.quality == 0) {
+      lockupdate = fix.set_lock(false);
+    } else if (fix.quality == 1) {
+      lockupdate = fix.set_lock(true);
     } else {
     }
 
     // TRACKING SATELLITES
     fix.tracking_satellites = std::stoi(p_nmea.parameters[6]);
-    if (this->fix.visible_satellites < this->fix.tracking_satellites) {
-      this->fix.visible_satellites = this->fix.tracking_satellites; // the visible count is in another sentence.
+    if (fix.visible_satellites < fix.tracking_satellites) {
+      fix.visible_satellites = fix.tracking_satellites; // the visible count is in another sentence.
     }
 
     // ALTITUDE
     if (!p_nmea.parameters[8].empty()) {
-      this->fix.altitude = std::stod(p_nmea.parameters[8]);
+      fix.altitude = std::stod(p_nmea.parameters[8]);
     } else {
       // leave old value
     }
 
     // calling m_handlers
     if (lockupdate) {
-      this->on_lock_state_changed(this->fix.m_has_lock);
+      on_lock_state_changed(fix.m_has_lock);
     }
-    this->on_update();
+    on_update();
   } catch (std::invalid_argument&) {
     throw tybl::vodka::parse_error("[$GPGGA] Could not convert string to a number");
   } /*catch (tybl::vodka::parse_error& ex) {
@@ -217,7 +217,7 @@ void gps_service::read_gsa(sentence const& p_nmea) {
     if (lockupdate) {
       on_lock_state_changed(fix.m_has_lock);
     }
-    this->on_update();
+    on_update();
   } catch (std::invalid_argument&) {
     throw tybl::vodka::parse_error("[$GPGSA] Could not convert string to number");
   } /* catch (tybl::vodka::parse_error& ex) {
@@ -261,19 +261,19 @@ void gps_service::read_gsv(sentence const& p_nmea) {
 
     // VISIBLE SATELLITES
     fix.visible_satellites = std::stoi(p_nmea.parameters[2]);
-    if (this->fix.tracking_satellites == 0) {
-      this->fix.visible_satellites = 0; // if no satellites are tracking, then none are visible!
+    if (fix.tracking_satellites == 0) {
+      fix.visible_satellites = 0; // if no satellites are tracking, then none are visible!
     }                                   // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
 
     auto total_pages = static_cast<uint32_t>(std::stoul(p_nmea.parameters[0]));
 
     // if this is the first page, then reset the almanac
     if (1 == std::stoul(p_nmea.parameters[1])) { // current page
-      this->fix.m_almanac.clear();
+      fix.m_almanac.clear();
     }
 
-    this->fix.m_almanac.m_total_pages = total_pages;
-    this->fix.m_almanac.m_visible_size = static_cast<uint32_t>(this->fix.visible_satellites);
+    fix.m_almanac.m_total_pages = total_pages;
+    fix.m_almanac.m_visible_size = static_cast<uint32_t>(fix.visible_satellites);
 
     auto entriesInPage = (p_nmea.parameters.size() - 3) >> 2; // first 3 are not satellite info
     //- entries come in 4-ples, and truncate, so used shift
@@ -297,16 +297,16 @@ void gps_service::read_gsv(sentence const& p_nmea) {
       }
     }
 
-    this->fix.m_almanac.m_processed_pages++;
+    fix.m_almanac.m_processed_pages++;
 
     //
-    if (this->fix.visible_satellites == 0) {
-      this->fix.m_almanac.clear();
+    if (fix.visible_satellites == 0) {
+      fix.m_almanac.clear();
     }
 
-    // cout << "ALMANAC FINISHED page " << this->fix.almanac.m_processed_pages << " of " <<
-    // this->fix.almanac.m_total_pages << endl;
-    this->on_update();
+    // cout << "ALMANAC FINISHED page " << fix.almanac.m_processed_pages << " of " <<
+    // fix.almanac.m_total_pages << endl;
+    on_update();
 
   } catch (std::invalid_argument&) {
     throw tybl::vodka::parse_error("[$GPGSV] Could not convert string to number");
@@ -346,7 +346,7 @@ void gps_service::read_rmc(sentence const& p_nmea) {
     }
 
     // TIMESTAMP
-    this->fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
+    fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
 
     std::string sll;
     std::string dir;
@@ -354,14 +354,14 @@ void gps_service::read_rmc(sentence const& p_nmea) {
     sll = p_nmea.parameters[2];
     dir = p_nmea.parameters[3];
     if (!sll.empty()) {
-      this->fix.latitude = convert_lat_lon_to_deg(sll, dir);
+      fix.latitude = convert_lat_lon_to_deg(sll, dir);
     }
 
     // LONG
     sll = p_nmea.parameters[4];
     dir = p_nmea.parameters[5];
     if (!sll.empty()) {
-      this->fix.longitude = convert_lat_lon_to_deg(sll, dir);
+      fix.longitude = convert_lat_lon_to_deg(sll, dir);
     }
 
     // ACTIVE
