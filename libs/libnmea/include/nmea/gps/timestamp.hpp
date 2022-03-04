@@ -12,19 +12,6 @@ class timestamp {
   static auto month_name(int32_t p_index) -> std::string;
 
 public:
-  timestamp();
-
-  int32_t hour{0};
-  int32_t min{0};
-  double sec{0};
-
-  int32_t month{1};
-  int32_t day{1};
-  int32_t year{1970};
-
-  // Values collected directly from the GPS
-  double raw_time{0};
-  int32_t raw_date{0};
 
   [[nodiscard]] auto get_time() const -> time_t;
 
@@ -37,6 +24,25 @@ public:
   void set_date(int32_t p_raw_date);
 
   [[nodiscard]] auto to_string() const -> std::string;
+
+  auto raw_date() const noexcept -> int32_t { return m_raw_date; }
+  auto raw_time() const noexcept -> double { return m_raw_time; }
+  auto year() const noexcept -> int32_t { return m_year; }
+  auto month() const noexcept -> int32_t { return m_month; }
+  auto day() const noexcept -> int32_t { return m_day; }
+  auto hour() const noexcept -> int32_t { return m_hour; }
+  auto min() const noexcept -> int32_t { return m_min; }
+  auto sec() const noexcept -> double { return m_sec; }
+
+private:
+  double m_raw_time{0.0};
+  double m_sec{0};
+  int32_t m_min{0};
+  int32_t m_hour{0};
+  int32_t m_day{1};
+  int32_t m_month{1};
+  int32_t m_year{1970};
+  int32_t m_raw_date{0};
 }; // class timestamp
 
 } // namespace tybl::nmea::gps
