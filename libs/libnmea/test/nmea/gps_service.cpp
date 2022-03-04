@@ -13,9 +13,9 @@ TEST_CASE("read_gga") {
   std::string_view input{"$GNGGA,155644.000,4000.6896,N,07836.5715,W,2,11,0.93,369.5,M,-33.1,M,,*42\r\n"};
   parser.read_buffer(input);
 
-  CHECK(15 == gps.fix.m_timestamp.hour);
-  CHECK(56 == gps.fix.m_timestamp.min);
-  CHECK(doctest::Approx(44.0) == gps.fix.m_timestamp.sec);
+  CHECK(15 == gps.fix.m_timestamp.hour());
+  CHECK(56 == gps.fix.m_timestamp.min());
+  CHECK(doctest::Approx(44.0) == gps.fix.m_timestamp.sec());
   CHECK(doctest::Approx(40.011493333) == gps.fix.latitude);
   CHECK(doctest::Approx(-78.609525) == gps.fix.longitude);
   CHECK(2 == gps.fix.quality);
@@ -100,17 +100,17 @@ TEST_CASE("read_rmc") {
   std::string_view input{"$GNRMC,155644.000,A,4000.6896,N,07836.5715,W,55.03,340.39,251221,,,D*50\r\n"};
   parser.read_buffer(input);
 
-  CHECK(15 == gps.fix.m_timestamp.hour);
-  CHECK(56 == gps.fix.m_timestamp.min);
-  CHECK(doctest::Approx(44.0) == gps.fix.m_timestamp.sec);
+  CHECK(15 == gps.fix.m_timestamp.hour());
+  CHECK(56 == gps.fix.m_timestamp.min());
+  CHECK(doctest::Approx(44.0) == gps.fix.m_timestamp.sec());
   CHECK('A' == gps.fix.status); // This seems wrong
   CHECK(doctest::Approx(40.011493333) == gps.fix.latitude);
   CHECK(doctest::Approx(-78.609525) == gps.fix.longitude);
   CHECK(doctest::Approx(101.91556) == gps.fix.speed);
   CHECK(doctest::Approx(340.39) == gps.fix.travel_angle);
-  CHECK(25 == gps.fix.m_timestamp.day);
-  CHECK(12 == gps.fix.m_timestamp.month);
-  CHECK(2021 == gps.fix.m_timestamp.year);
+  CHECK(25 == gps.fix.m_timestamp.day());
+  CHECK(12 == gps.fix.m_timestamp.month());
+  CHECK(2021 == gps.fix.m_timestamp.year());
 }
 
 TEST_CASE("read_vtg") {

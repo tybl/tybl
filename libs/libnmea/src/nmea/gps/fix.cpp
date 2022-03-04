@@ -22,12 +22,12 @@ auto fix::time_since_last_update() const -> std::chrono::seconds {
   time_t now = time(nullptr);
   std::tm stamp{};
 
-  stamp.tm_hour = m_timestamp.hour;
-  stamp.tm_min = m_timestamp.min;
-  stamp.tm_sec = static_cast<int>(m_timestamp.sec);
-  stamp.tm_year = m_timestamp.year - 1900;
-  stamp.tm_mon = m_timestamp.month - 1;
-  stamp.tm_mday = m_timestamp.day;
+  stamp.tm_hour = m_timestamp.hour();
+  stamp.tm_min = m_timestamp.min();
+  stamp.tm_sec = static_cast<int>(m_timestamp.sec());
+  stamp.tm_year = m_timestamp.year() - 1900;
+  stamp.tm_mon = m_timestamp.month() - 1;
+  stamp.tm_mday = m_timestamp.day();
 
   time_t then = mktime(&stamp);
   auto secs = static_cast<uint64_t>(difftime(now, then));
@@ -118,8 +118,8 @@ auto fix::to_string() -> std::string {
      << std::endl
      << " < fix Details >" << std::endl
      << "   Age:                " << time_since_last_update().count() << " s" << std::endl
-     << "   timestamp:          " << m_timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << m_timestamp.raw_time
-     << " time, " << m_timestamp.raw_date << " date)" << std::endl
+     << "   timestamp:          " << m_timestamp.to_string() << "   UTC   \n\t\t\t(raw: " << m_timestamp.raw_time()
+     << " time, " << m_timestamp.raw_date() << " date)" << std::endl
      << "   Raw Status:         " << status << "  (" << fix_status_to_string(status) << ")" << std::endl
      << "   Type:               " << static_cast<int>(type) << "  (" << fix_type_to_string(type) << ")" << std::endl
      << "   Quality:            " << static_cast<int>(quality) << "  (" << fix_quality_to_string(quality) << ")"
