@@ -39,6 +39,7 @@ target_sources(test_libnmea
   PRIVATE
     test/nmea/Checksum.cpp
     test/nmea/gps_service.cpp
+    test/nmea/sentence_parser.cpp
 )
 
 add_test(NAME libnmea_test COMMAND test_libnmea)
