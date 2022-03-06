@@ -33,15 +33,13 @@ static void squish(std::string& p_str) {
 
 void sentence_parser::set_sentence_handler(const std::string& p_cmd_key,
                                            const std::function<void(const sentence&)>& p_handler) {
-  m_event_table.erase(p_cmd_key);
-  m_event_table.insert({p_cmd_key, p_handler});
+  m_event_table.insert_or_assign(p_cmd_key, p_handler);
 }
 
 // takes a complete NMEA string and gets the data bits from it,
 // calls the corresponding handler in m_event_table, based on the 5 letter sentence code
 void sentence_parser::read_sentence(std::string p_cmd) {
 
-  sentence nmea;
 
   spdlog::info("Processing NEW string...");
 
@@ -69,6 +67,7 @@ void sentence_parser::read_sentence(std::string p_cmd) {
 
   spdlog::info("NMEA string: (\"{}\")", p_cmd);
 
+  sentence nmea;
   // Separates the data now that everything is formatted
   try {
     parse_text(nmea, p_cmd);
@@ -111,17 +110,17 @@ auto sentence_parser::calc_checksum(std::string const& p_s) -> uint8_t {
   return checksum;
 }
 
-void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
+void sentence_parser::parse_text(sentence& p_nmea, std::string p_text) {
 
   p_nmea.m_is_valid = false; // assume it's invalid first
-  if (p_txt.empty()) {
+  if (p_text.empty()) {
     return;
   }
 
-  p_nmea.text = p_txt; // save the received text of the sentence
+  p_nmea.text = p_text; // save the received text of the sentence
 
   // Looking for index of last '$'
-  size_t dollar = p_txt.find_last_of('$');
+  size_t dollar = p_text.find_last_of('$');
   if (dollar == std::string::npos) {
     // No dollar sign... INVALID!
     return;
@@ -129,28 +128,28 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
   auto start_byte = dollar;
 
   // Get rid of data up to last'$'
-  p_txt = p_txt.substr(start_byte + 1);
+  p_text = p_text.substr(start_byte + 1);
 
   // Look for checksum
-  size_t checkstri = p_txt.find_last_of('*');
+  size_t checkstri = p_text.find_last_of('*');
   bool has_checksum = checkstri != std::string::npos;
   if (has_checksum) {
     // A checksum was passed in the message, so calculate what we expect to see
-    p_nmea.m_calculated_checksum = calc_checksum(p_txt.substr(0, checkstri));
+    p_nmea.m_calculated_checksum = calc_checksum(p_text.substr(0, checkstri));
   } else {
     // No checksum is only a warning because some devices allow sending data with no checksum.
     spdlog::warn("No checksum information provided");
   }
 
   // Handle comma edge cases
-  size_t comma = p_txt.find(',');
+  size_t comma = p_text.find(',');
   if (comma == std::string::npos) { // comma not found, but there is a name...
-    if (!p_txt.empty()) {           // the received data must just be the name
-      if (has_non_alpha_num(p_txt)) {
+    if (!p_text.empty()) {           // the received data must just be the name
+      if (has_non_alpha_num(p_text)) {
         p_nmea.m_is_valid = false;
         return;
       }
-      p_nmea.name = p_txt;
+      p_nmea.name = p_text;
       p_nmea.m_is_valid = true;
       return;
     }
@@ -166,24 +165,24 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
   }
 
   // name should not include first comma
-  p_nmea.name = p_txt.substr(0, comma);
+  p_nmea.name = p_text.substr(0, comma);
   if (has_non_alpha_num(p_nmea.name)) {
     p_nmea.m_is_valid = false;
     return;
   }
 
   // comma is the last character/only comma
-  if (comma + 1 == p_txt.size()) {
+  if (comma + 1 == p_text.size()) {
     p_nmea.parameters.emplace_back();
     p_nmea.m_is_valid = true;
     return;
   }
 
   // move to data after first comma
-  p_txt = p_txt.substr(comma + 1, p_txt.size() - (comma + 1));
+  p_text = p_text.substr(comma + 1, p_text.size() - (comma + 1));
 
   // parse parameters according to csv
-  std::istringstream f(p_txt);
+  std::istringstream f(p_text);
   std::string s;
   while (std::getline(f, s, ',')) {
     p_nmea.parameters.push_back(s);
@@ -191,7 +190,7 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string p_txt) {
 
   // above line parsing does not add a blank parameter if there is a comma at the end...
   //  so do it here.
-  if (*(p_txt.end() - 1) == ',') {
+  if (*(p_text.end() - 1) == ',') {
 
     // supposed to have checksum but there is a comma at the end... invalid
     if (has_checksum) {

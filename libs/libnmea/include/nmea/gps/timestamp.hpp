@@ -25,14 +25,14 @@ public:
 
   [[nodiscard]] auto to_string() const -> std::string;
 
-  auto raw_date() const noexcept -> int32_t { return m_raw_date; }
-  auto raw_time() const noexcept -> double { return m_raw_time; }
-  auto year() const noexcept -> int32_t { return m_year; }
-  auto month() const noexcept -> int32_t { return m_month; }
-  auto day() const noexcept -> int32_t { return m_day; }
-  auto hour() const noexcept -> int32_t { return m_hour; }
-  auto min() const noexcept -> int32_t { return m_min; }
-  auto sec() const noexcept -> double { return m_sec; }
+  [[nodiscard]] auto raw_date() const noexcept -> int32_t { return m_raw_date; }
+  [[nodiscard]] auto raw_time() const noexcept -> double { return m_raw_time; }
+  [[nodiscard]] auto year() const noexcept -> int32_t { return m_year; }
+  [[nodiscard]] auto month() const noexcept -> int32_t { return m_month; }
+  [[nodiscard]] auto day() const noexcept -> int32_t { return m_day; }
+  [[nodiscard]] auto hour() const noexcept -> int32_t { return m_hour; }
+  [[nodiscard]] auto min() const noexcept -> int32_t { return m_min; }
+  [[nodiscard]] auto sec() const noexcept -> double { return m_sec; }
 
 private:
   double m_raw_time{0.0};

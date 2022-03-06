@@ -12,7 +12,7 @@ void byte_parser::read_byte(char p_b) {
         read_sentence(m_buffer);
         m_filling_buffer = false;
         m_buffer.clear();
-      } catch (std::exception&) {
+      } catch (std::exception const&) {
         // If anything happens, let it pass through, but reset the buffer first
         m_buffer.clear();
         m_filling_buffer = false;

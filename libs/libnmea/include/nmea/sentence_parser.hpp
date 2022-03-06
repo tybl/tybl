@@ -23,7 +23,7 @@ class sentence_parser {
   bool m_filling_buffer{false};
 
   // fills the given NMEA sentence with the results of parsing the string.
-  void parse_text(sentence& p_nmea, std::string p_s);
+  void parse_text(sentence& p_nmea, std::string p_text);
 
 public:
   Event<void(sentence const&)> on_sentence; // called every time sentence_parser receives any NMEA sentence
