@@ -16,5 +16,6 @@ target_link_libraries(test_libvodka PRIVATE compiler_settings vodka test_base)
 target_sources(test_libvodka
   PRIVATE
     test/vodka/basic_fixed_string.cpp
+    test/vodka/split.cpp
 )
 add_test(NAME libvodka_test COMMAND test_libvodka)
