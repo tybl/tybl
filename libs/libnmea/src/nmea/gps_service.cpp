@@ -6,34 +6,25 @@
 
 #include <spdlog/spdlog.h>
 
+#include <charconv>
 #include <cmath>
 
 namespace tybl::nmea {
 
-// ------ Some helpers ----------
-// Takes the NMEA lat/long format (dddmm.mmmm, [N/S,E/W]) and converts to degrees N,E only
-static auto convert_lat_lon_to_deg(std::string const& p_lat_lon_str, std::string const& p_dir) -> double {
-
-  double pd = std::stod(p_lat_lon_str);
-  double deg = trunc(pd / 100); // get ddd from dddmm.mmmm
-  double mins = pd - deg * 100;
-
-  deg = deg + mins / 60.0;
-
-  char hdg = 'x';
-  if (!p_dir.empty()) {
-    hdg = p_dir[0];
+static auto convert_lat_lon_to_deg(std::string_view p_lat_lon_str, std::string_view p_dir) noexcept -> double {
+  auto combined = 0.0;
+  auto result = std::from_chars(p_lat_lon_str.begin(), p_lat_lon_str.end(), combined);
+  auto degrees = std::trunc(combined / 100.0);
+  if (result.ptr == p_lat_lon_str.end()) {
+    degrees += (combined - degrees * 100.0) / 60.0;
+    if (!p_dir.empty() && ('S' == p_dir.front() || 'W' == p_dir.front())) {
+      degrees *= -1.0;
+    }
   }
-
-  // everything should be N/E, so flip S,W
-  if (hdg == 'S' || hdg == 'W') {
-    deg *= -1.0;
-  }
-
-  return deg;
+  return degrees;
 }
 
-static auto kts_to_kph(double p_knots) -> double { return p_knots * 1.852; }
+static auto kts_to_kph(double p_knots) noexcept -> double { return p_knots * 1.85200; }
 
 // ------------- GPSSERVICE CLASS -------------
 
@@ -67,44 +58,40 @@ void gps_service::read_gga(sentence const& p_nmea) {
     }
 
     // TIMESTAMP
-    fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
+    double raw_time = 0;
+    std::from_chars(p_nmea.parameters[0].begin(), p_nmea.parameters[0].end(), raw_time);
+    fix.m_timestamp.set_time(raw_time);
 
     // LAT
-    std::string sll = p_nmea.parameters[1];
-    std::string dir = p_nmea.parameters[2];
-    if (!sll.empty()) {
-      fix.latitude = convert_lat_lon_to_deg(sll, dir);
+    if (!p_nmea.parameters[1].empty()) {
+      fix.latitude = convert_lat_lon_to_deg(p_nmea.parameters[1], p_nmea.parameters[2]);
     }
 
     // LONG
-    sll = p_nmea.parameters[3];
-    dir = p_nmea.parameters[4];
-    if (!sll.empty()) {
-      fix.longitude = convert_lat_lon_to_deg(sll, dir);
+    if (!p_nmea.parameters[3].empty()) {
+      fix.longitude = convert_lat_lon_to_deg(p_nmea.parameters[3], p_nmea.parameters[4]);
     }
 
     // FIX QUALITY
-    bool lockupdate = false;
-    fix.quality = static_cast<uint8_t>(std::stoul(p_nmea.parameters[5]));
+    bool lock_update = false;
+    std::from_chars(p_nmea.parameters[5].begin(), p_nmea.parameters[5].end(), fix.quality);
     if (fix.quality == 0) {
-      lockupdate = fix.set_lock(false);
+      lock_update = fix.set_lock(false);
     } else if (fix.quality == 1) {
-      lockupdate = fix.set_lock(true);
+      lock_update = fix.set_lock(true);
     }
 
     // TRACKING SATELLITES
-    fix.tracking_satellites = std::stoi(p_nmea.parameters[6]);
+    std::from_chars(p_nmea.parameters[6].begin(), p_nmea.parameters[6].end(), fix.tracking_satellites);
     if (fix.visible_satellites < fix.tracking_satellites) {
       fix.visible_satellites = fix.tracking_satellites; // the visible count is in another sentence.
     }
 
     // ALTITUDE
-    if (!p_nmea.parameters[8].empty()) {
-      fix.altitude = std::stod(p_nmea.parameters[8]);
-    }
+    std::from_chars(p_nmea.parameters[8].begin(), p_nmea.parameters[8].end(), fix.altitude);
 
     // calling m_handlers
-    if (lockupdate) {
+    if (lock_update) {
       on_lock_state_changed(fix.m_has_lock);
     }
     on_update();
@@ -125,19 +112,18 @@ void gps_service::read_gsa(sentence const& p_nmea) {
 
     // FIX TYPE
     bool lockupdate = false;
-    auto fix_type = std::stoul(p_nmea.parameters[1]);
-    fix.type = static_cast<uint8_t>(fix_type);
-    if (fix_type == 1) {
+    std::from_chars(p_nmea.parameters[1].begin(), p_nmea.parameters[1].end(), fix.type);
+    if (fix.type == 1) {
       lockupdate = fix.set_lock(false);
-    } else if (fix_type == 3) {
+    } else if (fix.type == 3) {
       lockupdate = fix.set_lock(true);
     }
 
-    fix.dilution = p_nmea.parameters[14].empty() ? 0.0 : std::stod(p_nmea.parameters[14]);
+    std::from_chars(p_nmea.parameters[14].begin(), p_nmea.parameters[14].end(), fix.dilution);
 
-    fix.horizontal_dilution = p_nmea.parameters[15].empty() ? 0.0 : std::stod(p_nmea.parameters[15]);
+    std::from_chars(p_nmea.parameters[15].begin(), p_nmea.parameters[15].end(), fix.horizontal_dilution);
 
-    fix.vertical_dilution = p_nmea.parameters[16].empty() ? 0.0 : std::stod(p_nmea.parameters[16]);
+    std::from_chars(p_nmea.parameters[16].begin(), p_nmea.parameters[16].end(), fix.vertical_dilution);
 
     // calling m_handlers
     if (lockupdate) {
@@ -156,15 +142,18 @@ void gps_service::read_gsv(sentence const& p_nmea) {
     }
 
     // VISIBLE SATELLITES
-    fix.visible_satellites = std::stoi(p_nmea.parameters[2]);
+    std::from_chars(p_nmea.parameters[2].begin(), p_nmea.parameters[2].end(), fix.visible_satellites);
     if (fix.tracking_satellites == 0) {
       fix.visible_satellites = 0; // if no satellites are tracking, then none are visible!
-    }                                   // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
+    }                             // Also NMEA defaults to 12 visible when chip powers on. Obviously not right.
 
-    auto total_pages = static_cast<uint32_t>(std::stoul(p_nmea.parameters[0]));
+    uint32_t total_pages = 0;
+    std::from_chars(p_nmea.parameters[0].begin(), p_nmea.parameters[0].end(), total_pages);
 
     // if this is the first page, then reset the almanac
-    if (1 == std::stoul(p_nmea.parameters[1])) { // current page
+    int page_index = 0;
+    std::from_chars(p_nmea.parameters[1].begin(), p_nmea.parameters[1].end(), page_index);
+    if (1 == page_index) { // current page
       fix.m_almanac.clear();
     }
 
@@ -178,10 +167,10 @@ void gps_service::read_gsv(sentence const& p_nmea) {
       try {
         tybl::nmea::gps::satellite sat{};
         // PRN, ELEVATION, AZIMUTH, SNR
-        sat.prn = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop]));
-        sat.elevation = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 1]));
-        sat.azimuth = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 2]));
-        sat.snr = static_cast<uint32_t>(std::stoul(p_nmea.parameters[prop + 3]));
+        std::from_chars(p_nmea.parameters[prop].begin(), p_nmea.parameters[prop].end(), sat.prn);
+        std::from_chars(p_nmea.parameters[prop + 1].begin(), p_nmea.parameters[prop + 1].end(), sat.elevation);
+        std::from_chars(p_nmea.parameters[prop + 2].begin(), p_nmea.parameters[prop + 2].end(), sat.azimuth);
+        std::from_chars(p_nmea.parameters[prop + 3].begin(), p_nmea.parameters[prop + 3].end(), sat.snr);
 
         fix.m_almanac.update_satellite(sat);
       } catch (std::invalid_argument const& except) {
@@ -217,20 +206,18 @@ void gps_service::read_rmc(sentence const& p_nmea) {
     }
 
     // TIMESTAMP
-    fix.m_timestamp.set_time(std::stod(p_nmea.parameters[0]));
+    double raw_time = 0;
+    std::from_chars(p_nmea.parameters[0].begin(), p_nmea.parameters[0].end(), raw_time);
+    fix.m_timestamp.set_time(raw_time);
 
     // LAT
-    std::string sll = p_nmea.parameters[2];
-    std::string dir = p_nmea.parameters[3];
-    if (!sll.empty()) {
-      fix.latitude = convert_lat_lon_to_deg(sll, dir);
+    if (!p_nmea.parameters[2].empty()) {
+      fix.latitude = convert_lat_lon_to_deg(p_nmea.parameters[2], p_nmea.parameters[3]);
     }
 
     // LONG
-    sll = p_nmea.parameters[4];
-    dir = p_nmea.parameters[5];
-    if (!sll.empty()) {
-      fix.longitude = convert_lat_lon_to_deg(sll, dir);
+    if (!p_nmea.parameters[4].empty()) {
+      fix.longitude = convert_lat_lon_to_deg(p_nmea.parameters[4], p_nmea.parameters[5]);
     }
 
     // ACTIVE
@@ -244,9 +231,13 @@ void gps_service::read_rmc(sentence const& p_nmea) {
       lockupdate = fix.set_lock(true);
     }
 
-    fix.speed = kts_to_kph(std::stod(p_nmea.parameters[6])); // received as knots, convert to km/h
-    fix.travel_angle = std::stod(p_nmea.parameters[7]);
-    fix.m_timestamp.set_date(std::stoi(p_nmea.parameters[8]));
+    double speed_kts = 0.0;
+    std::from_chars(p_nmea.parameters[6].begin(), p_nmea.parameters[6].end(), speed_kts);
+    fix.speed = kts_to_kph(speed_kts);
+    std::from_chars(p_nmea.parameters[7].begin(), p_nmea.parameters[7].end(), fix.travel_angle);
+    int raw_date = 0;
+    std::from_chars(p_nmea.parameters[8].begin(), p_nmea.parameters[8].end(), raw_date);
+    fix.m_timestamp.set_date(raw_date);
 
     // calling m_handlers
     if (lockupdate) {
@@ -270,7 +261,8 @@ void gps_service::read_vtg(sentence const& p_nmea) {
 
     // SPEED
     // if empty, is converted to 0
-    fix.speed = std::stod(p_nmea.parameters[6]); // km/h
+    std::from_chars(p_nmea.parameters[6].begin(), p_nmea.parameters[6].end(), fix.speed);
+    // fix.speed = std::stod(p_nmea.parameters[6]); // km/h
 
     on_update();
   } catch (std::invalid_argument const&) {

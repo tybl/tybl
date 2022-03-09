@@ -15,9 +15,9 @@ class sentence {
   bool m_is_valid{};
 
 public:
-  std::string text;                    // whole plaintext of the received command
-  std::string name;                    // name of the command
-  std::vector<std::string> parameters; // list of parameters from the command
+  std::string text;                         // whole plaintext of the received command
+  std::string name;                         // name of the command
+  std::vector<std::string_view> parameters; // list of parameters from the command
   std::string checksum;
   bool m_is_checksum_calculated{};
   uint8_t m_parsed_checksum{};

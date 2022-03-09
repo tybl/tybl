@@ -23,7 +23,7 @@ class sentence_parser {
   bool m_filling_buffer{false};
 
   // fills the given NMEA sentence with the results of parsing the string.
-  void parse_text(sentence& p_nmea, std::string p_text);
+  void parse_text(sentence& p_nmea, std::string const& p_text) const;
 
 public:
   Event<void(sentence const&)> on_sentence; // called every time sentence_parser receives any NMEA sentence
@@ -35,7 +35,7 @@ public:
   void read_sentence(std::string p_cmd); // called when sentence_parser receives a sentence from the byte stream. Can
                                          // also be called by user to inject sentences.
 
-  [[gnu::pure]] static auto calc_checksum(std::string const& /*p_s*/) -> uint8_t; // returns checksum of string -- XOR
+  [[gnu::pure]] static auto calc_checksum(std::string_view /*p_s*/) -> uint8_t; // returns checksum of string -- XOR
 
 }; // class sentence_parser
 

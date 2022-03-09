@@ -4,11 +4,11 @@
 #include <nmea/sentence.hpp>
 
 #include <vodka/parse_error.hpp>
+#include <vodka/split.hpp>
 
 #include <spdlog/spdlog.h>
 
 #include <cctype>
-#include <sstream>
 
 namespace tybl::nmea {
 
@@ -39,7 +39,6 @@ void sentence_parser::set_sentence_handler(const std::string& p_cmd_key,
 // takes a complete NMEA string and gets the data bits from it,
 // calls the corresponding handler in m_event_table, based on the 5 letter sentence code
 void sentence_parser::read_sentence(std::string p_cmd) {
-
 
   spdlog::info("Processing NEW string...");
 
@@ -100,135 +99,104 @@ void sentence_parser::read_sentence(std::string p_cmd) {
   }
 }
 
-// takes the string *between* the '$' and '*' in nmea sentence,
-// then calculates a rolling XOR on the bytes
-auto sentence_parser::calc_checksum(std::string const& p_s) -> uint8_t {
-  uint8_t checksum = 0;
-  for (const char i : p_s) {
-    checksum = static_cast<uint8_t>(checksum ^ i);
-  }
-  return checksum;
+auto sentence_parser::calc_checksum(std::string_view p_text) -> uint8_t {
+  return std::accumulate(p_text.begin(), p_text.end(), 0,
+                         [](uint8_t p_chksum, char p_char) { return static_cast<uint8_t>(p_chksum ^ p_char); });
 }
 
-void sentence_parser::parse_text(sentence& p_nmea, std::string p_text) {
+void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) const {
+  p_nmea.m_is_valid = false;
+  p_nmea.text = p_text;
+  std::string_view text(p_nmea.text);
 
-  p_nmea.m_is_valid = false; // assume it's invalid first
-  if (p_text.empty()) {
+  if (text.empty()) {
     return;
   }
 
-  p_nmea.text = p_text; // save the received text of the sentence
-
   // Looking for index of last '$'
-  size_t dollar = p_text.find_last_of('$');
-  if (dollar == std::string::npos) {
+  size_t start_byte = text.find_last_of('$');
+  if (start_byte == std::string_view::npos) {
     // No dollar sign... INVALID!
     return;
   }
-  auto start_byte = dollar;
 
   // Get rid of data up to last'$'
-  p_text = p_text.substr(start_byte + 1);
+  text = text.substr(start_byte + 1);
 
   // Look for checksum
-  size_t checkstri = p_text.find_last_of('*');
-  bool has_checksum = checkstri != std::string::npos;
+  size_t checksum_str_loc = text.find_last_of('*');
+  bool has_checksum = checksum_str_loc != std::string::npos;
   if (has_checksum) {
     // A checksum was passed in the message, so calculate what we expect to see
-    p_nmea.m_calculated_checksum = calc_checksum(p_text.substr(0, checkstri));
+    p_nmea.m_calculated_checksum = calc_checksum(text.substr(0, checksum_str_loc));
   } else {
     // No checksum is only a warning because some devices allow sending data with no checksum.
     spdlog::warn("No checksum information provided");
   }
 
   // Handle comma edge cases
-  size_t comma = p_text.find(',');
-  if (comma == std::string::npos) { // comma not found, but there is a name...
-    if (!p_text.empty()) {           // the received data must just be the name
-      if (has_non_alpha_num(p_text)) {
-        p_nmea.m_is_valid = false;
+  size_t comma = text.find(',');
+  if (comma == std::string_view::npos) { // comma not found, but there is a name...
+    if (!text.empty()) {                 // the received data must just be the name
+      if (has_non_alpha_num(text)) {
         return;
       }
-      p_nmea.name = p_text;
+      p_nmea.name = text;
       p_nmea.m_is_valid = true;
       return;
     }
     // it is a '$' with no information
-    p_nmea.m_is_valid = false;
     return;
   }
 
   //"$," case - no name
   if (comma == 0) {
-    p_nmea.m_is_valid = false;
     return;
   }
 
   // name should not include first comma
-  p_nmea.name = p_text.substr(0, comma);
+  p_nmea.name = text.substr(0, comma);
   if (has_non_alpha_num(p_nmea.name)) {
-    p_nmea.m_is_valid = false;
     return;
   }
 
   // comma is the last character/only comma
-  if (comma + 1 == p_text.size()) {
+  if (comma + 1 == text.size()) {
     p_nmea.parameters.emplace_back();
     p_nmea.m_is_valid = true;
     return;
   }
 
   // move to data after first comma
-  p_text = p_text.substr(comma + 1, p_text.size() - (comma + 1));
+  text = text.substr(comma + 1, text.size() - (comma + 1));
 
   // parse parameters according to csv
-  std::istringstream f(p_text);
-  std::string s;
-  while (std::getline(f, s, ',')) {
-    p_nmea.parameters.push_back(s);
-  }
+  p_nmea.parameters = tybl::vodka::split(text, ',');
 
-  // above line parsing does not add a blank parameter if there is a comma at the end...
-  //  so do it here.
-  if (*(p_text.end() - 1) == ',') {
+  spdlog::info("Found {} parameters.", p_nmea.parameters.size());
 
-    // supposed to have checksum but there is a comma at the end... invalid
-    if (has_checksum) {
-      p_nmea.m_is_valid = false;
-      return;
-    }
+  // TODO(tybl): The checksum should all be parsed at the same time, prior to splitting the fields
+  // possible checksum at end...
+  size_t endi = p_nmea.parameters.size() - 1;
+  size_t checki = p_nmea.parameters[endi].find_last_of('*');
+  if (checki != std::string_view::npos) {
+    auto last = p_nmea.parameters[endi];
+    p_nmea.parameters[endi] = last.substr(0, checki);
+    if (checki == last.size() - 1) {
+      spdlog::error("Checksum '*' character at end, but no data");
+    } else {
+      p_nmea.checksum = last.substr(checki + 1, last.size() - checki); // extract checksum without '*'
 
-    // cout << "NMEA parser Warning: extra comma at end of sentence, but no information...?" << endl;    // it's
-    // actually standard, if checksum is disabled
-    p_nmea.parameters.emplace_back();
+      spdlog::info("Found checksum: \"*{}\"", p_nmea.checksum);
 
-    spdlog::info("Found {} parameters.", p_nmea.parameters.size());
-
-  } else {
-    spdlog::info("Found {} parameters.", p_nmea.parameters.size());
-
-    // possible checksum at end...
-    size_t endi = p_nmea.parameters.size() - 1;
-    size_t checki = p_nmea.parameters[endi].find_last_of('*');
-    if (checki != std::string::npos) {
-      std::string last = p_nmea.parameters[endi];
-      p_nmea.parameters[endi] = last.substr(0, checki);
-      if (checki == last.size() - 1) {
-        spdlog::error("Checksum '*' character at end, but no data");
-      } else {
-        p_nmea.checksum = last.substr(checki + 1, last.size() - checki); // extract checksum without '*'
-
-        spdlog::info("Found checksum: \"*{}\"", p_nmea.checksum);
-
-        try {
-          p_nmea.m_parsed_checksum = static_cast<uint8_t>(std::stoul(p_nmea.checksum, nullptr, 16));
-          p_nmea.m_is_checksum_calculated = true;
-        } catch (std::invalid_argument const&) {
-          spdlog::error("Parsed checksum string was not readable as hex: \"{}\"", p_nmea.checksum);
-        }
-
-        spdlog::info("Checksum okay? {}", p_nmea.is_checksum_ok());
+      try {
+        p_nmea.m_parsed_checksum = static_cast<uint8_t>(std::stoul(p_nmea.checksum, nullptr, 16));
+        p_nmea.m_is_checksum_calculated = true;
+      } catch (std::invalid_argument const&) {
+        spdlog::error("Parsed checksum string was not readable as hex: \"{}\"", p_nmea.checksum);
       }
+
+      spdlog::info("Checksum okay? {}", p_nmea.is_checksum_ok());
     }
   }
 

@@ -78,19 +78,26 @@ TEST_CASE("read_gsv") {
   CHECK(doctest::Approx(35) == gps.fix.m_almanac.satellites[4].elevation);
   CHECK(doctest::Approx(220) == gps.fix.m_almanac.satellites[4].azimuth);
   CHECK(doctest::Approx(36) == gps.fix.m_almanac.satellites[4].snr);
-  // TODO(tybl): Ignore missing SNR if everything else is available
-  CHECK(21 == gps.fix.m_almanac.satellites[5].prn);
-  CHECK(doctest::Approx(22) == gps.fix.m_almanac.satellites[5].elevation);
-  CHECK(doctest::Approx(280) == gps.fix.m_almanac.satellites[5].azimuth);
-  CHECK(doctest::Approx(30) == gps.fix.m_almanac.satellites[5].snr);
-  CHECK(1 == gps.fix.m_almanac.satellites[6].prn);
-  CHECK(doctest::Approx(19) == gps.fix.m_almanac.satellites[6].elevation);
-  CHECK(doctest::Approx(305) == gps.fix.m_almanac.satellites[6].azimuth);
-  CHECK(doctest::Approx(31) == gps.fix.m_almanac.satellites[6].snr);
-  CHECK(23 == gps.fix.m_almanac.satellites[7].prn);
-  CHECK(doctest::Approx(15) == gps.fix.m_almanac.satellites[7].elevation);
-  CHECK(doctest::Approx(147) == gps.fix.m_almanac.satellites[7].azimuth);
-  CHECK(doctest::Approx(33) == gps.fix.m_almanac.satellites[7].snr);
+  CHECK(12 == gps.fix.m_almanac.satellites[5].prn);
+  CHECK(doctest::Approx(26) == gps.fix.m_almanac.satellites[5].elevation);
+  CHECK(doctest::Approx(56) == gps.fix.m_almanac.satellites[5].azimuth);
+  CHECK(doctest::Approx(0) == gps.fix.m_almanac.satellites[5].snr);
+  CHECK(21 == gps.fix.m_almanac.satellites[6].prn);
+  CHECK(doctest::Approx(22) == gps.fix.m_almanac.satellites[6].elevation);
+  CHECK(doctest::Approx(280) == gps.fix.m_almanac.satellites[6].azimuth);
+  CHECK(doctest::Approx(30) == gps.fix.m_almanac.satellites[6].snr);
+  CHECK(1 == gps.fix.m_almanac.satellites[7].prn);
+  CHECK(doctest::Approx(19) == gps.fix.m_almanac.satellites[7].elevation);
+  CHECK(doctest::Approx(305) == gps.fix.m_almanac.satellites[7].azimuth);
+  CHECK(doctest::Approx(31) == gps.fix.m_almanac.satellites[7].snr);
+  CHECK(23 == gps.fix.m_almanac.satellites[8].prn);
+  CHECK(doctest::Approx(15) == gps.fix.m_almanac.satellites[8].elevation);
+  CHECK(doctest::Approx(147) == gps.fix.m_almanac.satellites[8].azimuth);
+  CHECK(doctest::Approx(33) == gps.fix.m_almanac.satellites[8].snr);
+  CHECK(26 == gps.fix.m_almanac.satellites[9].prn);
+  CHECK(doctest::Approx(6) == gps.fix.m_almanac.satellites[9].elevation);
+  CHECK(doctest::Approx(187) == gps.fix.m_almanac.satellites[9].azimuth);
+  CHECK(doctest::Approx(0) == gps.fix.m_almanac.satellites[9].snr);
 }
 
 TEST_CASE("read_rmc") {
