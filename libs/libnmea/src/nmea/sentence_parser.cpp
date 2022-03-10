@@ -125,14 +125,13 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
   text = text.substr(start_byte + 1);
 
   // Checksum
-  size_t checksum_str_loc = text.find_last_of('*');
-  if (std::string_view::npos != checksum_str_loc) {
+  if (auto checksum_str_loc = text.find_last_of('*'); std::string_view::npos != checksum_str_loc) {
     p_nmea.checksum = text.substr(checksum_str_loc + 1);
     spdlog::info("Found checksum: \"*{}\"", p_nmea.checksum);
     text = text.substr(0, checksum_str_loc);
     p_nmea.m_calculated_checksum = calc_checksum(text);
     auto result = std::from_chars(p_nmea.checksum.begin(), p_nmea.checksum.end(), p_nmea.m_parsed_checksum, 16);
-    p_nmea.m_is_checksum_calculated = result.ptr == p_nmea.checksum.end();
+    p_nmea.m_is_checksum_calculated = result.ptr != p_nmea.checksum.begin();
     spdlog::info("Parsed checksum: \"*{:X}\"", p_nmea.m_parsed_checksum);
     spdlog::info("Checksum okay? {}", p_nmea.is_checksum_ok());
   } else {
