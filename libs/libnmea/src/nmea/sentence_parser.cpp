@@ -9,6 +9,7 @@
 #include <spdlog/spdlog.h>
 
 #include <cctype>
+#include <charconv>
 
 namespace tybl::nmea {
 
@@ -123,14 +124,18 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
   // Get rid of data up to last'$'
   text = text.substr(start_byte + 1);
 
-  // Look for checksum
+  // Checksum
   size_t checksum_str_loc = text.find_last_of('*');
-  bool has_checksum = checksum_str_loc != std::string::npos;
-  if (has_checksum) {
-    // A checksum was passed in the message, so calculate what we expect to see
-    p_nmea.m_calculated_checksum = calc_checksum(text.substr(0, checksum_str_loc));
+  if (std::string_view::npos != checksum_str_loc) {
+    p_nmea.checksum = text.substr(checksum_str_loc + 1);
+    spdlog::info("Found checksum: \"*{}\"", p_nmea.checksum);
+    text = text.substr(0, checksum_str_loc);
+    p_nmea.m_calculated_checksum = calc_checksum(text);
+    auto result = std::from_chars(p_nmea.checksum.begin(), p_nmea.checksum.end(), p_nmea.m_parsed_checksum, 16);
+    p_nmea.m_is_checksum_calculated = result.ptr == p_nmea.checksum.end();
+    spdlog::info("Parsed checksum: \"*{:X}\"", p_nmea.m_parsed_checksum);
+    spdlog::info("Checksum okay? {}", p_nmea.is_checksum_ok());
   } else {
-    // No checksum is only a warning because some devices allow sending data with no checksum.
     spdlog::warn("No checksum information provided");
   }
 
@@ -175,30 +180,6 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
 
   spdlog::info("Found {} parameters.", p_nmea.parameters.size());
 
-  // TODO(tybl): The checksum should all be parsed at the same time, prior to splitting the fields
-  // possible checksum at end...
-  size_t endi = p_nmea.parameters.size() - 1;
-  size_t checki = p_nmea.parameters[endi].find_last_of('*');
-  if (checki != std::string_view::npos) {
-    auto last = p_nmea.parameters[endi];
-    p_nmea.parameters[endi] = last.substr(0, checki);
-    if (checki == last.size() - 1) {
-      spdlog::error("Checksum '*' character at end, but no data");
-    } else {
-      p_nmea.checksum = last.substr(checki + 1, last.size() - checki); // extract checksum without '*'
-
-      spdlog::info("Found checksum: \"*{}\"", p_nmea.checksum);
-
-      try {
-        p_nmea.m_parsed_checksum = static_cast<uint8_t>(std::stoul(p_nmea.checksum, nullptr, 16));
-        p_nmea.m_is_checksum_calculated = true;
-      } catch (std::invalid_argument const&) {
-        spdlog::error("Parsed checksum string was not readable as hex: \"{}\"", p_nmea.checksum);
-      }
-
-      spdlog::info("Checksum okay? {}", p_nmea.is_checksum_ok());
-    }
-  }
 
   for (size_t i = 0; i < p_nmea.parameters.size(); i++) {
     if (!valid_param_chars(p_nmea.parameters[i])) {
