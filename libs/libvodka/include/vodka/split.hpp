@@ -2,13 +2,14 @@
 #ifndef TYBL_VODKA_SPLIT_HPP
 #define TYBL_VODKA_SPLIT_HPP
 
+#include <algorithm>
 #include <string_view>
 #include <vector>
 
 namespace tybl::vodka {
 
 auto split(std::string_view p_input_str, char p_delimiter) -> std::vector<std::string_view> {
-  std::vector<std::string_view> result;
+  std::vector<std::string_view> result(1 + std::count(p_input_str.begin(), p_input_str.end(), p_delimiter));
   auto end_index = p_input_str.find(p_delimiter);
   while (std::string_view::npos != end_index) {
     result.emplace_back(p_input_str.data(), end_index);
