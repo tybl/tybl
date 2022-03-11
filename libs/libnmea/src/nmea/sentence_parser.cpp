@@ -131,13 +131,14 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
     text = text.substr(0, checksum_str_loc);
     p_nmea.m_calculated_checksum = calc_checksum(text);
     auto result = std::from_chars(p_nmea.checksum.begin(), p_nmea.checksum.end(), p_nmea.m_parsed_checksum, 16);
-    p_nmea.m_is_checksum_calculated = result.ptr != p_nmea.checksum.begin();
+    p_nmea.m_is_checksum_calculated = result.ptr != p_nmea.checksum.data();
     spdlog::info("Parsed checksum: \"*{:X}\"", p_nmea.m_parsed_checksum);
     spdlog::info("Checksum okay? {}", p_nmea.is_checksum_ok());
   } else {
     spdlog::warn("No checksum information provided");
   }
 
+#if 0
   // Handle comma edge cases
   size_t comma = text.find(',');
   if (comma == std::string_view::npos) { // comma not found, but there is a name...
@@ -173,12 +174,14 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
 
   // move to data after first comma
   text = text.substr(comma + 1, text.size() - (comma + 1));
+#endif
 
   // parse parameters according to csv
   p_nmea.parameters = tybl::vodka::split(text, ',');
+  p_nmea.name = p_nmea.parameters.front();
+  p_nmea.parameters.erase(p_nmea.parameters.cbegin());
 
   spdlog::info("Found {} parameters.", p_nmea.parameters.size());
-
 
   for (size_t i = 0; i < p_nmea.parameters.size(); i++) {
     if (!valid_param_chars(p_nmea.parameters[i])) {
