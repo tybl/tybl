@@ -2,6 +2,10 @@
 
 #include <nmea/byte_parser.hpp>
 
+#include <vodka/parse_error.hpp>
+
+#include <spdlog/spdlog.h>
+
 namespace tybl::nmea {
 
 void byte_parser::read_byte(char p_b) {
@@ -31,8 +35,16 @@ void byte_parser::read_byte(char p_b) {
 }
 
 void byte_parser::read_buffer(std::string_view p_buffer) {
-  for (auto byte : p_buffer) {
-    read_byte(byte);
+  for (auto index = p_buffer.find('\n'); index != std::string_view::npos; index = p_buffer.find('\n'))
+  {
+    try { // TODO(tybl): Remove try/catch block
+      auto line = p_buffer.substr(0, index + 1);
+      read_sentence(std::string(line)); // TODO(tybl): Remove string construction
+      p_buffer = p_buffer.substr(index + 1);
+    } catch (tybl::vodka::parse_error const& except) {
+      p_buffer = p_buffer.substr(index + 1);
+      spdlog::error("Error: Failed to parse GPS data: {}", except.what());
+    }
   }
 }
 

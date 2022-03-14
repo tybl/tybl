@@ -8,16 +8,14 @@
 
 namespace tybl::vodka {
 
-auto split(std::string_view p_input_str, char p_delimiter) -> std::vector<std::string_view> {
+auto split(std::string_view p_str, char p_delim) -> std::vector<std::string_view> {
   std::vector<std::string_view> result;
-  result.reserve(1 + std::count(p_input_str.begin(), p_input_str.end(), p_delimiter));
-  auto end_index = p_input_str.find(p_delimiter);
-  while (std::string_view::npos != end_index) {
-    result.emplace_back(p_input_str.data(), end_index);
-    p_input_str = p_input_str.substr(end_index + 1);
-    end_index = p_input_str.find(p_delimiter);
+  result.reserve(1UL + static_cast<size_t>(std::count(p_str.begin(), p_str.end(), p_delim)));
+  for (auto index = p_str.find(p_delim); index != std::string_view::npos; index = p_str.find(p_delim)) {
+    result.emplace_back(p_str.data(), index);
+    p_str = p_str.substr(index + 1);
   }
-  result.emplace_back(p_input_str.data(), p_input_str.size());
+  result.emplace_back(p_str.data(), p_str.size());
   return result;
 }
 

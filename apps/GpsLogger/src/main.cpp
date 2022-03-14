@@ -9,7 +9,7 @@
 #include <fstream>
 
 auto main(int argc, char* argv[]) -> int {
-  spdlog::set_level(spdlog::level::err);
+  spdlog::set_level(spdlog::level::off);
 
   if (1 < argc) {
     // Create a GPS service that will keep track of the fix data.
@@ -26,17 +26,14 @@ auto main(int argc, char* argv[]) -> int {
                  gps.fix.latitude, gps.fix.longitude, gps.fix.horizontal_accuracy());
     };
 
-    std::string line;
     std::ifstream file(argv[1]);
-    while (std::getline(file, line)) {
-      try {
-        parser.read_line(line);
-      } catch (tybl::vodka::parse_error const& e) {
-        spdlog::error("Error: Failed to parse GPS data: {}", e.what());
-        // You can keep feeding data to the gps service...
-        // The previous data is ignored and the parser is reset.
-      }
-    }
+    file.seekg(0, std::ios::end);
+    auto file_size = file.tellg();
+    std::string buffer(static_cast<size_t>(file_size), ' ');
+    file.seekg(0);
+    file.read(buffer.data(), file_size);
+
+    parser.read_buffer(buffer);
 
     // Show the final fix information
     fmt::print("{}\n", gps.fix.to_string());
