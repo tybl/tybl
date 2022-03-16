@@ -138,44 +138,6 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
     spdlog::warn("No checksum information provided");
   }
 
-#if 0
-  // Handle comma edge cases
-  size_t comma = text.find(',');
-  if (comma == std::string_view::npos) { // comma not found, but there is a name...
-    if (!text.empty()) {                 // the received data must just be the name
-      if (has_non_alpha_num(text)) {
-        return;
-      }
-      p_nmea.name = text;
-      p_nmea.m_is_valid = true;
-      return;
-    }
-    // it is a '$' with no information
-    return;
-  }
-
-  //"$," case - no name
-  if (comma == 0) {
-    return;
-  }
-
-  // name should not include first comma
-  p_nmea.name = text.substr(0, comma);
-  if (has_non_alpha_num(p_nmea.name)) {
-    return;
-  }
-
-  // comma is the last character/only comma
-  if (comma + 1 == text.size()) {
-    p_nmea.parameters.emplace_back();
-    p_nmea.m_is_valid = true;
-    return;
-  }
-
-  // move to data after first comma
-  text = text.substr(comma + 1, text.size() - (comma + 1));
-#endif
-
   // parse parameters according to csv
   p_nmea.parameters = tybl::vodka::split(text, ',');
   p_nmea.name = p_nmea.parameters.front();
