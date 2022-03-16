@@ -34,12 +34,13 @@ target_sources(nmea
 )
 
 add_executable(test_libnmea)
-target_link_libraries(test_libnmea PRIVATE compiler_settings fmt nmea test_base)
+target_link_libraries(test_libnmea PRIVATE compiler_settings date::date fmt::fmt nmea test_base)
 target_sources(test_libnmea
   PRIVATE
     test/nmea/Checksum.cpp
     test/nmea/command.cpp
     test/nmea/gps_service.cpp
+    test/nmea/nmea.cpp
     test/nmea/sentence_parser.cpp
 )
 

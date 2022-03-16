@@ -4,6 +4,12 @@
 
 include(FetchContent)
 
+FetchContent_Declare(date
+        GIT_REPOSITORY https://github.com/HowardHinnant/date.git
+        GIT_SHALLOW    TRUE
+        GIT_TAG        "v3.0.1")
+FetchContent_MakeAvailable(date)
+
 FetchContent_Declare(doctest
   GIT_REPOSITORY https://github.com/onqtam/doctest.git
   GIT_SHALLOW    TRUE
