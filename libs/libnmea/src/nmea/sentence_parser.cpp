@@ -139,7 +139,7 @@ void sentence_parser::parse_text(sentence& p_nmea, std::string const& p_text) co
   }
 
   // parse parameters according to csv
-  p_nmea.parameters = tybl::vodka::split(text, ',');
+  p_nmea.parameters = tybl::vodka::split_on(text, ',');
   p_nmea.name = p_nmea.parameters.front();
   p_nmea.parameters.erase(p_nmea.parameters.cbegin());
 
