@@ -1,0 +1,37 @@
+cmake_minimum_required(VERSION 3.18)
+
+project(tybl_dependencies)
+
+include(ExternalProject)
+
+ExternalProject_Add(date
+	CMAKE_ARGS	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+	GIT_REPOSITORY	https://github.com/HowardHinnant/date.git
+	GIT_SHALLOW	TRUE
+	GIT_TAG		6e921e1b1d21e84a5c82416ba7ecd98e33a436d0
+	INSTALL_DIR	${CMAKE_SOURCE_DIR})
+
+ExternalProject_Add(doctest
+	CMAKE_ARGS	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+			-DDOCTEST_WITH_TESTS=OFF
+	GIT_REPOSITORY	https://github.com/onqtam/doctest.git
+	GIT_SHALLOW	TRUE
+	GIT_TAG		b7c21ec5ceeadb4951b00396fc1e4642dd347e5f
+	INSTALL_DIR	${CMAKE_SOURCE_DIR})
+
+ExternalProject_Add(fmt
+	CMAKE_ARGS	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+			-DFMT_DOC=OFF
+			-DFMT_TEST=OFF
+	GIT_REPOSITORY	https://github.com/fmtlib/fmt.git
+	GIT_SHALLOW	TRUE
+	GIT_TAG		b6f4ceaed0a0a24ccf575fab6c56dd50ccf6f1a9
+	INSTALL_DIR	${CMAKE_SOURCE_DIR})
+
+ExternalProject_Add(spdlog
+	CMAKE_ARGS	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+			-DSPDLOG_BUILD_EXAMPLE=OFF
+	GIT_REPOSITORY	https://github.com/gabime/spdlog.git
+	GIT_SHALLOW	TRUE
+	GIT_TAG		76fb40d95455f249bd70824ecfcae7a8f0930fa3
+	INSTALL_DIR	${CMAKE_SOURCE_DIR})
