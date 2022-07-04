@@ -19,6 +19,7 @@ target_sources(test_libmath
     test/math/fixed_point.cpp
     test/math/integer.cpp
     test/math/next_power_of_two.cpp
+    test/math/scaled_numeric.cpp
     test/math/stats/distribution.cpp
 )
 
