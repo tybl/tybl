@@ -1,3 +1,4 @@
+# License: The Unlicense (https://unlicense.org)
 cmake_minimum_required(VERSION 3.18)
 
 project(tybl_dependencies)
@@ -6,6 +7,7 @@ include(ExternalProject)
 
 ExternalProject_Add(date
 	CMAKE_ARGS	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+			-DENABLE_DATE_TESTING=OFF
 	GIT_REPOSITORY	https://github.com/HowardHinnant/date.git
 	GIT_SHALLOW	TRUE
 	GIT_TAG		6e921e1b1d21e84a5c82416ba7ecd98e33a436d0
@@ -31,6 +33,7 @@ ExternalProject_Add(fmt
 ExternalProject_Add(spdlog
 	CMAKE_ARGS	-DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
 			-DSPDLOG_BUILD_EXAMPLE=OFF
+			-DSPDLOG_FMT_EXTERNAL=ON
 	GIT_REPOSITORY	https://github.com/gabime/spdlog.git
 	GIT_SHALLOW	TRUE
 	GIT_TAG		76fb40d95455f249bd70824ecfcae7a8f0930fa3
