@@ -27,7 +27,7 @@ ExternalProject_Add(fmt
 			-DFMT_TEST=OFF
 	GIT_REPOSITORY	https://github.com/fmtlib/fmt.git
 	GIT_SHALLOW	TRUE
-	GIT_TAG		b6f4ceaed0a0a24ccf575fab6c56dd50ccf6f1a9
+	GIT_TAG		c4ee726532178e556d923372f29163bd206d7732 #v9.0.0
 	INSTALL_DIR	${CMAKE_SOURCE_DIR})
 
 ExternalProject_Add(spdlog
