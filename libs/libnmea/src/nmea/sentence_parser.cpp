@@ -13,11 +13,6 @@
 
 namespace tybl::nmea {
 
-// true if the text contains a non-alpha numeric value
-static auto has_non_alpha_num(std::string_view p_txt) -> bool {
-  return !std::all_of(p_txt.begin(), p_txt.end(), [](char p_char) { return static_cast<bool>(std::isalnum(p_char)); });
-}
-
 // true if alphanumeric or '-'
 static auto valid_param_chars(std::string_view p_txt) -> bool {
   return std::all_of(p_txt.begin(), p_txt.end(), [](char p_char) {
