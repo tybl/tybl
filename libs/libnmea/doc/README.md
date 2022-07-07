@@ -26,3 +26,12 @@ usable by C++20 applications.
 - Identify current location (parse latest GPS output)
 - Identify series of locations from a start time to an end time
 - Identify location at a specific time
+
+From what I can tell, the nmea stream tries to work in transactions. Or, in other words, the one GPS receiver I have
+interacted with dumps a few lines of NMEA sentences every second or so. Though, it doesn't appear that there is a
+container for the sentences. This means, while the data may arrive together temporally, I don't think I can rely on it
+to ensure that I have all the information required to report the current location. This makes me think that I want to
+use a parser interface similar to JSON or other parser. For example, Nematode used push parsing using callbacks when
+different NMEA sentences were parsed. However, to simplify things, I could just keep the current state and update it
+after each processed sentence. Though, thinking about it, that's basically a push parser with the updates being pushed
+to the state object. The state can either keep track of only the latest state or be a store of all the previous states.
