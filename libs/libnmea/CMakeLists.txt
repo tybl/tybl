@@ -2,6 +2,25 @@
 # License: The Unlicense (https://unlicense.org)
 ################################################################################
 
+add_library(nmea2)
+target_include_directories(nmea2 PUBLIC include)
+target_link_libraries(nmea2 PUBLIC compiler_settings vodka)
+target_sources(nmea2
+        PRIVATE
+        src/nmea/v2/latest_state.cpp
+        src/nmea/v2/parser.cpp
+        src/nmea/v2/state.cpp
+	src/nmea/v2/talker_id.cpp
+)
+
+add_executable(test_libnmea2)
+target_link_libraries(test_libnmea2 PRIVATE compiler_settings nmea2 test_base)
+target_sources(test_libnmea2
+        PRIVATE
+        test/nmea/v2/nmea.cpp
+)
+add_test(NAME libnmea2_test COMMAND test_libnmea2)
+
 add_library(nmea)
 target_include_directories(nmea PUBLIC include)
 target_link_libraries(nmea PUBLIC compiler_settings fmt::fmt spdlog::spdlog vodka)
