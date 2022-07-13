@@ -2,6 +2,8 @@
 
 #include <doctest/doctest.h>
 
+#include <string>
+
 TEST_CASE("tybl::vodka::split_on<string_view>")
 {
   {

@@ -22,6 +22,7 @@
  *      Search sorted buffer for k - n
  */
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <vector>

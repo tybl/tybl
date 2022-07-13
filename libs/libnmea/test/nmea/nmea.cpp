@@ -6,6 +6,7 @@
 #include <chrono>
 #include <date/date.h>
 #include <thread>
+#include <vector>
 
 namespace gps::nmea {
 

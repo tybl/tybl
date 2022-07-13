@@ -5,6 +5,7 @@
 
 #include "edge.hpp"
 
+#include <cstddef>
 #include <vector>
 
 struct i_node {
