@@ -15,11 +15,11 @@ void latest_state::apply_gga(gga_sentence const& p_sentence) {
   m_dgps_reference_station_id = p_sentence.dgps_reference_station_id;
 }
 
-void latest_state::apply_gsa(gsa_sentence const& p_sentence) {
+void latest_state::apply_gsa(gsa_sentence const& /*p_sentence*/) {
   // TODO
 }
 
-void latest_state::apply_gsv(gsv_sentence const& p_sentence) {
+void latest_state::apply_gsv(gsv_sentence const& /*p_sentence*/) {
   // TODO
 }
 

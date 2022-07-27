@@ -96,7 +96,7 @@ void sentence_parser::read_sentence(std::string p_cmd) {
 }
 
 auto sentence_parser::calc_checksum(std::string_view p_text) -> uint8_t {
-  return std::accumulate(p_text.begin(), p_text.end(), 0,
+  return std::accumulate(p_text.begin(), p_text.end(), static_cast<uint8_t>(0),
                          [](uint8_t p_chksum, char p_char) { return static_cast<uint8_t>(p_chksum ^ p_char); });
 }
 

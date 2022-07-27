@@ -71,11 +71,11 @@ auto fix::ordinal_direction(double p_deg, bool p_abbrev) -> std::string {
   if (p_abbrev) {
 
     std::array<std::string, 9> dirs = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
-    return dirs[r];
+    return dirs[static_cast<size_t>(r)];
   }
   std::array<std::string, 9> dirs = {"North",      "North East", "East",       "South East", "South",
                                      "South West", "West",       "North West", "North"};
-  return dirs[r];
+  return dirs[static_cast<size_t>(r)];
 }
 
 auto fix_status_to_string(char p_status) -> std::string {

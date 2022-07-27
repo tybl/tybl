@@ -32,7 +32,7 @@ inline auto split_on(std::string_view p_str, char p_delim) -> std::vector<std::s
 }
 
 inline auto split_on_a(std::string_view p_str, char p_delim) -> std::vector<std::string_view> {
-  //std::vector<std::string_view> result;
+  std::vector<std::string_view> result;
   //result.reserve(std::size(p_str));
   auto const* first_p = std::cbegin(p_str);
   auto const* last_p = std::cend(p_str);
@@ -43,7 +43,7 @@ inline auto split_on_a(std::string_view p_str, char p_delim) -> std::vector<std:
     pos_p = std::find(first_p, last_p, p_delim);
   }
   //result.emplace_back(first_p, last_p);
-  //return result;
+  return result;
 }
 
 #if 0

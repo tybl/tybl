@@ -11,6 +11,7 @@ void parser::parse(std::string_view p_input) {
   using namespace std::literals;
   p_input.remove_prefix(p_input.find('$') + 1); // +1 to remove `$` as well
   auto talker_id = parse_talker_id(p_input);
+  static_cast<void>(talker_id);
   if (p_input.starts_with("GGA"sv)) {
     p_input = parse_gga(p_input.substr(4));
   } else if (p_input.starts_with("GSA"sv)) {
@@ -50,11 +51,11 @@ auto parser::parse_rmc(std::string_view p_input) -> std::string_view {
   p_input.remove_prefix(2);
   res = std::from_chars(p_input.begin(), p_input.end(), result.latitude);
   p_input.remove_prefix(static_cast<size_t>(res.ptr - p_input.begin() + 1));
-  result.latitude *= ('N' == p_input.front()) ? 1 : -1;
+  result.latitude *= ('N' == p_input.front()) ? 1.0F : -1.0F;
   p_input.remove_prefix(2);
   res = std::from_chars(p_input.begin(), p_input.end(), result.longitude);
   p_input.remove_prefix(static_cast<size_t>(res.ptr - p_input.begin() + 1));
-  result.longitude *= ('E' == p_input.front()) ? 1 : -1;
+  result.longitude *= ('E' == p_input.front()) ? 1.0F : -1.0F;
   p_input.remove_prefix(2);
   res = std::from_chars(p_input.begin(), p_input.end(), result.speed);
   p_input.remove_prefix(static_cast<size_t>(res.ptr - p_input.begin() + 1));

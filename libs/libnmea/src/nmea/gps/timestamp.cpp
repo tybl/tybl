@@ -18,7 +18,7 @@ auto timestamp::month_name(int32_t p_index) -> std::string {
 
   std::array<std::string, 12> names = {"January", "February", "March",     "April",   "May",      "June",
                                        "July",    "August",   "September", "October", "November", "December"};
-  return names[p_index - 1];
+  return names.at(static_cast<size_t>(p_index - 1));
 }
 
 // Returns seconds since Jan 1, 1970. Classic Epoch time.
