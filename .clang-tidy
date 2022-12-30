@@ -19,7 +19,7 @@
 #   'llvmlibc-callee-namespace': This check only makes sense for developing LLVM libc
 #   'llvmlibc-implementation-in-namespace': This check only makes sense for developing LLVM libc
 #   'llvmlibc-restrict-system-libc-headers': There's no need to restrict system headers
-Checks:           '*,-altera-id-dependent-backward-branch,-altera-struct-pack-align,-altera-unroll-loops,-bugprone-easily-swappable-parameters,-cert-err58-cpp,-cppcoreguidelines-avoid-magic-numbers,-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,-fuchsia-statically-constructed-objects,-fuchsia-trailing-return,-llvm-header-guard,-llvmlibc-callee-namespace,-llvmlibc-implementation-in-namespace,-llvmlibc-restrict-system-libc-headers,-misc-no-recursion,-misc-non-private-member-variables-in-classes,-readability-function-cognitive-complexity,-readability-magic-numbers'
+Checks:           '*,-altera-id-dependent-backward-branch,-altera-struct-pack-align,-altera-unroll-loops,-bugprone-easily-swappable-parameters,-cert-err58-cpp,-cppcoreguidelines-avoid-magic-numbers,-fuchsia-*,-llvm-header-guard,-llvmlibc-*,-misc-no-recursion,-misc-non-private-member-variables-in-classes,-readability-function-cognitive-complexity,-readability-magic-numbers'
 HeaderFilterRegex: '\.hpp'
 FormatStyle:     file
 CheckOptions:
