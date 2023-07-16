@@ -4,7 +4,6 @@ pkgs.mkShell {
     pkgs.clang-tools_15
     pkgs.cmake
     pkgs.gcc
-    pkgs.jetbrains.clion
   ];
   nativeBuildInputs = [
     pkgs.doctest
